@@ -17,7 +17,13 @@
 
 - **Delivery Payload:** Cross-platform mobile app built with **React Native + Expo**. Runs on Android phones and iPhones. Designed for mobile form factor.
 
-- **Behavioral Rules:** _Awaiting user input (Question 5)._
+- **Behavioral Rules:**
+  - Login and anonymous user behavior are simulated via mocks only — no real authentication.
+  - The app should work fully offline since all data is local.
+  - Sharing is simulated — no real push notifications or server-side sync.
+  - Keep the UI simple and demo-ready. Prioritize happy path flows.
+  - Do not implement real payment, checkout, or account management.
+  - Tone: friendly, retail-oriented, Canadian Tire brand voice.
 
 ## Tech Stack
 
