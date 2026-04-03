@@ -1,0 +1,83 @@
+{
+  "epics": [
+    {
+      "id": "EPIC-0001",
+      "title": "Mobile Wishlist Core Features",
+      "description": "Deliver the core wishlist functionality for the CTC mobile application",
+      "releaseTarget": "MVP",
+      "status": "Planned",
+      "dependencies": []
+    }
+  ],
+  "stories": [],
+  "tasks": [],
+  "testCases": [],
+  "bugs": [],
+  "costs": {
+    "_totals": {
+      "costUsd": 0,
+      "inputTokens": 0,
+      "outputTokens": 0
+    },
+    "_bugs": {
+      "_totals": {
+        "costUsd": 0,
+        "inputTokens": 0,
+        "outputTokens": 0
+      }
+    }
+  },
+  "atRisk": {},
+  "coverage": {
+    "lines": 0,
+    "statements": 0,
+    "functions": 0,
+    "branches": 0,
+    "overall": 0,
+    "meetsTarget": false,
+    "available": false
+  },
+  "recentActivity": [
+    {
+      "sessionNum": 1,
+      "date": "2026-04-03",
+      "summary": "Installed PlanVisualizer tool from ksyed0/PlanVisualizer; Initialized project docs (RELEASE_PLAN, TEST_CASES, BUGS, AI_COST_LOG, LESSONS, ID_REGISTRY); Configured plan-visualizer.config.json for CTC-Mobile-Wishlist"
+    }
+  ],
+  "lessons": [],
+  "generatedAt": "2026-04-03T21:47:28.160Z",
+  "commitSha": "f9d09cf",
+  "buildNumber": "3",
+  "sessionTimeline": [],
+  "projectName": "CTC-Mobile-Wishlist",
+  "tagline": "CTC Mobile Wishlist application.",
+  "version": "1.0.0",
+  "githubUrl": "",
+  "budget": {
+    "totalBudget": null,
+    "totalSpent": 0,
+    "totalProjected": 0,
+    "percentUsed": null,
+    "burnRate": 0,
+    "daysRemaining": null,
+    "projectedExhaustion": null,
+    "thresholds": [
+      50,
+      75,
+      90,
+      100
+    ],
+    "crossedThresholds": [],
+    "epicBudgets": [
+      {
+        "id": "EPIC-0001",
+        "title": "Mobile Wishlist Core Features",
+        "budget": 0,
+        "spent": 0,
+        "remaining": 0,
+        "percentUsed": null
+      }
+    ],
+    "hasBudget": false
+  }
+}
