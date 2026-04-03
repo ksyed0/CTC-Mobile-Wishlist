@@ -200,7 +200,7 @@ Applying the moderate scenario proportionally to banner revenue and e-commerce p
 | Infrastructure | None (local mock data) |
 | **Total POC cost** | **Minimal — hackathon scope** |
 
-### 6.2 Production Build Estimate (Post-POC)
+### 6.2 Traditional Production Build Estimate
 
 | Phase | Duration | Est. Investment |
 |-------|----------|----------------|
@@ -209,18 +209,42 @@ Applying the moderate scenario proportionally to banner revenue and e-commerce p
 | Mobile Development (iOS + Android) | 8–12 weeks | $400K–600K |
 | QA, Security, Accessibility | 4–6 weeks | $200K–300K |
 | Launch & Monitoring | 2–4 weeks | $100K–150K |
-| **Total** | **6–9 months** | **$1.4M–2.2M** |
+| **Total (Traditional)** | **6–9 months** | **$1.4M–2.2M** |
 
-### 6.3 ROI Analysis (Moderate Scenario)
+### 6.3 EPAM EliteA Agentic AI SDLC Estimate
+
+EliteA is EPAM's proprietary agentic AI platform that orchestrates the full SDLC — from requirements to deployment — using specialized AI agents supervised by senior engineers. This approach delivers 3–5x velocity improvement over traditional development while maintaining enterprise-grade quality.
+
+**Key assumptions:**
+- 3–5x developer velocity via AI pair programming and code generation
+- Senior EPAM engineers supervise all AI-generated output (human-in-the-loop)
+- AI agents handle ~70% of boilerplate code, tests, and documentation
+- Human engineers focus on architecture, integration, edge cases, and review
+- Blended rate: $85–120/hr for EliteA teams (AI + human combined)
+- Team: 2 senior engineers + AI agent cluster per workstream
+- Parallel workstreams: backend + mobile + QA run concurrently
+
+| Phase | Duration | Est. Investment |
+|-------|----------|----------------|
+| AI Requirements + Architecture | 1–2 weeks | $60K–90K |
+| Agentic Backend Development | 3–4 weeks | $150K–250K |
+| Agentic Mobile Development | 3–4 weeks | $120K–200K |
+| AI-Assisted QA & Security | 1–2 weeks | $60K–100K |
+| Launch & Monitoring | 1–2 weeks | $80K–120K |
+| **Total (EliteA)** | **8–13 weeks** | **$470K–760K** |
+
+**Savings vs. traditional:** ~$1M cost reduction (~60%) and 4+ months faster (~50% timeline reduction).
+
+### 6.4 ROI Analysis (Moderate Scenario — EliteA Build)
 
 | Metric | Value |
 |--------|-------|
 | Year 1 incremental revenue | $189.5M |
 | Assumed gross margin (blended) | ~35% |
 | Year 1 incremental gross profit | ~$66.3M |
-| Production build investment | ~$1.8M |
-| **Payback period** | **< 2 weeks after launch** |
-| **Year 1 ROI** | **~3,580%** |
+| EliteA build investment | ~$615K |
+| **Payback period** | **< 1 week after launch** |
+| **Year 1 ROI** | **~10,680%** |
 
 ---
 
