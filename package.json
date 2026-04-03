@@ -1,0 +1,16 @@
+{
+  "name": "ctc-mobile-wishlist",
+  "version": "1.0.0",
+  "description": "CTC Mobile Wishlist",
+  "private": true,
+  "scripts": {
+    "plan:test": "jest --watchAll=false",
+    "plan:test:coverage": "jest --watchAll=false --coverage",
+    "plan:generate": "node tools/generate-plan.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.0.3",
+    "jest": "^30.3.0"
+  }
+}
