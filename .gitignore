@@ -12,3 +12,9 @@ coverage/
 *.swp
 *.swo
 .history/
+
+# Expo / React Native
+.expo/
+web-build/
+*.jsbundle
+.metro-health-check*

@@ -11,7 +11,10 @@
     "plan:generate": "node tools/generate-plan.js",
     "dashboard": "node tools/generate-dashboard.js",
     "dashboard:watch": "node tools/generate-dashboard.js --watch",
-    "build": "npm run plan:generate && npm run dashboard"
+    "build": "npm run plan:generate && npm run dashboard",
+    "start": "npx expo start",
+    "android": "npx expo start --android",
+    "ios": "npx expo start --ios"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

@@ -224,13 +224,13 @@
           <button onclick="openAbout()" class="topbar-btn">About</button>
           <button onclick="toggleTheme()" id="theme-toggle" class="topbar-btn" aria-label="Toggle dark/light mode"><span id="theme-icon">&#9788;</span></button>
         </div>
-        <p class="topbar-tagline">CTC Mobile Wishlist application.&nbsp;·&nbsp;Updated <span id="gen-time" data-iso="2026-04-04T03:13:22.140Z"></span>&nbsp;·&nbsp;<code class="font-mono" style="font-size:10px">ed97148</code></p>
+        <p class="topbar-tagline">CTC Mobile Wishlist application.&nbsp;·&nbsp;Updated <span id="gen-time" data-iso="2026-04-04T03:58:33.534Z"></span>&nbsp;·&nbsp;<code class="font-mono" style="font-size:10px">214e597</code></p>
       </div>
       <div class="topbar-tiles">
         
         <div class="topbar-tile" style="min-width:90px">
           <span class="tile-value font-mono"> 1%</span>
-          <span class="tile-label">$68.84 / $7,669</span>
+          <span class="tile-label">$89.57 / $7,690</span>
           <div style="width:100%;height:3px;background:#334155;margin-top:4px;border-radius:2px;overflow:hidden">
             <div style="width:1%;height:100%;background:#22c55e;transition:width 0.3s"></div>
           </div>
@@ -252,7 +252,7 @@
           <span class="tile-label">Coverage</span>
         </div>
         <div class="topbar-tile tile-ai-cost">
-          <span class="tile-value font-mono">$68.84</span>
+          <span class="tile-value font-mono">$89.57</span>
           <span class="tile-label">AI Cost</span>
         </div>
         <div class="topbar-tile tile-projected">
@@ -1638,7 +1638,7 @@
     });
     _charts.aiTimeline = new Chart(document.getElementById('chart-ai-timeline'), {
       type: 'line',
-      data: { labels: ["2026-04-03","2026-04-03","2026-04-03","2026-04-04","2026-04-04","2026-04-04","2026-04-04"], datasets: [{ label: 'Cumulative AI Cost ($)', data: ["1.14","2.88","10.00","17.97","29.46","55.29","68.84"], borderColor: '#0d9488', tension: 0.3, fill: true, backgroundColor: 'rgba(13,148,136,0.1)' }] },
+      data: { labels: ["2026-04-03","2026-04-03","2026-04-03","2026-04-04","2026-04-04","2026-04-04","2026-04-04","2026-04-04","2026-04-04"], datasets: [{ label: 'Cumulative AI Cost ($)', data: ["1.14","2.88","10.00","17.97","29.46","55.29","68.84","76.86","89.57"], borderColor: '#0d9488', tension: 0.3, fill: true, backgroundColor: 'rgba(13,148,136,0.1)' }] },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tc } } }, scales: { x: { ticks: { color: tc } }, y: { ticks: { color: tc } } } }
     });
     _charts.burndown = new Chart(document.getElementById('chart-burndown'), {
@@ -1648,7 +1648,7 @@
     });
     _charts.burnRate = new Chart(document.getElementById('chart-burn-rate'), {
       type: 'bar',
-      data: { labels: ["2026-04-03","2026-04-03","2026-04-03","2026-04-04","2026-04-04","2026-04-04","2026-04-04"], datasets: [{ label: 'Session AI Spend ($)', data: ["1.14","1.73","7.12","7.97","11.49","25.83","13.55"], backgroundColor: '#6366f1' }] },
+      data: { labels: ["2026-04-03","2026-04-03","2026-04-03","2026-04-04","2026-04-04","2026-04-04","2026-04-04","2026-04-04","2026-04-04"], datasets: [{ label: 'Session AI Spend ($)', data: ["1.14","1.73","7.12","7.97","11.49","25.83","13.55","8.01","12.71"], backgroundColor: '#6366f1' }] },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tc } } }, scales: { x: { ticks: { color: tc } }, y: { ticks: { color: tc } } } }
     });
   }
@@ -1714,15 +1714,15 @@
   <script>
   function initTrendsCharts() {
     var tc = chartTextColor();
-    var labels = ["2026-04-03 21:47","2026-04-03 22:15","2026-04-04 02:39","2026-04-04 03:13"];
+    var labels = ["2026-04-03 21:47","2026-04-03 22:15","2026-04-04 02:39","2026-04-04 03:13","2026-04-04 03:58"];
     var hasEnough = labels.length >= 2;
 
     if (hasEnough && document.getElementById('chart-trends-progress')) {
       _charts.trendsProgress = new Chart(document.getElementById('chart-trends-progress'), {
         type: 'line',
         data: { labels: labels, datasets: [
-          { label: 'Done', data: [0,0,0,0], borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)', fill: true, tension: 0.3 },
-          { label: 'Total', data: [0,13,13,13], borderColor: '#64748b', backgroundColor: 'transparent', borderDash: [5,5], tension: 0.3 }
+          { label: 'Done', data: [0,0,0,0,0], borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)', fill: true, tension: 0.3 },
+          { label: 'Total', data: [0,13,13,13,13], borderColor: '#64748b', backgroundColor: 'transparent', borderDash: [5,5], tension: 0.3 }
         ]},
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tc }}}, scales: { x: { ticks: { color: tc }, grid: { color: '#e2e8f0' }}, y: { ticks: { color: tc }, grid: { color: '#e2e8f0' }, beginAtZero: true }}}
       });
@@ -1732,7 +1732,7 @@
       _charts.trendsCost = new Chart(document.getElementById('chart-trends-cost'), {
         type: 'line',
         data: { labels: labels, datasets: [
-          { label: 'Total Cost ($)', data: ["0.00","5.23","68.28","68.84"], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true, tension: 0.3 }
+          { label: 'Total Cost ($)', data: ["0.00","5.23","68.28","68.84","89.57"], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true, tension: 0.3 }
         ]},
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tc }}}, scales: { x: { ticks: { color: tc }, grid: { color: '#e2e8f0' }}, y: { ticks: { color: tc }, grid: { color: '#e2e8f0' }, beginAtZero: true }}}
       });
@@ -1742,7 +1742,7 @@
       _charts.trendsCoverage = new Chart(document.getElementById('chart-trends-coverage'), {
         type: 'line',
         data: { labels: labels, datasets: [
-          { label: 'Coverage %', data: [null,null,null,null], borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.1)', fill: true, tension: 0.3 }
+          { label: 'Coverage %', data: [null,null,null,null,null], borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.1)', fill: true, tension: 0.3 }
         ]},
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tc }}}, scales: { x: { ticks: { color: tc }, grid: { color: '#e2e8f0' }}, y: { min: 0, max: 100, ticks: { color: tc }, grid: { color: '#e2e8f0' }}}}
       });
@@ -1752,7 +1752,7 @@
       _charts.trendsVelocity = new Chart(document.getElementById('chart-trends-velocity'), {
         type: 'bar',
         data: { labels: labels, datasets: [
-          { label: 'Story Points', data: ["0.0","0.0","0.0","0.0"], backgroundColor: '#3b82f6' }
+          { label: 'Story Points', data: ["0.0","0.0","0.0","0.0","0.0"], backgroundColor: '#3b82f6' }
         ]},
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tc }}}, scales: { x: { ticks: { color: tc }, grid: { color: '#e2e8f0' }}, y: { ticks: { color: tc }, grid: { color: '#e2e8f0' }, beginAtZero: true }}}
       });
@@ -1762,7 +1762,7 @@
       _charts.trendsBugs = new Chart(document.getElementById('chart-trends-bugs'), {
         type: 'line',
         data: { labels: labels, datasets: [
-          { label: 'Open Bugs', data: [0,0,0,0], borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', fill: true, tension: 0.3 }
+          { label: 'Open Bugs', data: [0,0,0,0,0], borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', fill: true, tension: 0.3 }
         ]},
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tc }}}, scales: { x: { ticks: { color: tc }, grid: { color: '#e2e8f0' }}, y: { ticks: { color: tc }, grid: { color: '#e2e8f0' }, beginAtZero: true }}}
       });
@@ -1772,7 +1772,7 @@
       _charts.trendsRisk = new Chart(document.getElementById('chart-trends-risk'), {
         type: 'line',
         data: { labels: labels, datasets: [
-          { label: 'At-Risk Stories', data: [0,0,0,0], borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.1)', fill: true, tension: 0.3 }
+          { label: 'At-Risk Stories', data: [0,0,0,0,0], borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.1)', fill: true, tension: 0.3 }
         ]},
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tc }}}, scales: { x: { ticks: { color: tc }, grid: { color: '#e2e8f0' }}, y: { ticks: { color: tc }, grid: { color: '#e2e8f0' }, beginAtZero: true }}}
       });
@@ -1782,8 +1782,8 @@
       _charts.trendsTokens = new Chart(document.getElementById('chart-trends-tokens'), {
         type: 'line',
         data: { labels: labels, datasets: [
-          { label: 'Input', data: [0,672207,5397483,5469040], borderColor: '#06b6d4', backgroundColor: 'rgba(6,182,212,0.2)', fill: true },
-          { label: 'Output', data: [0,14646,589740,591862], borderColor: '#ec4899', backgroundColor: 'rgba(236,72,153,0.2)', fill: true }
+          { label: 'Input', data: [0,672207,5397483,5469040,6737344], borderColor: '#06b6d4', backgroundColor: 'rgba(6,182,212,0.2)', fill: true },
+          { label: 'Output', data: [0,14646,589740,591862,643508], borderColor: '#ec4899', backgroundColor: 'rgba(236,72,153,0.2)', fill: true }
         ]},
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: tc }}}, scales: { x: { ticks: { color: tc }, grid: { color: '#e2e8f0' }}, y: { ticks: { color: tc }, grid: { color: '#e2e8f0' }, beginAtZero: true }}}
       });
@@ -1796,16 +1796,16 @@
     <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 mb-4">
       <div class="flex flex-wrap items-center gap-6 mb-4">
         <div>
-          <span class="text-xs text-slate-500 uppercase">Burn Rate: $68.84/day</span>
+          <span class="text-xs text-slate-500 uppercase">Burn Rate: $89.57/day</span>
         </div>
         <div>
-          <span class="text-xs text-slate-500 uppercase">Exhaustion: 110 days remaining</span>
+          <span class="text-xs text-slate-500 uppercase">Exhaustion: 84 days remaining</span>
         </div>
         <div>
-          <span class="text-xs text-slate-500 uppercase">Total Budget: $7,669</span>
+          <span class="text-xs text-slate-500 uppercase">Total Budget: $7,690</span>
         </div>
         <div>
-          <span class="text-xs text-slate-500 uppercase">Spent: $68.84</span>
+          <span class="text-xs text-slate-500 uppercase">Spent: $89.57</span>
         </div>
       </div>
       <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">Per-Epic Budget</h3>
@@ -2078,8 +2078,8 @@
           <tr>
             <td colspan="4" class="px-3 py-2 text-right text-sm dark:text-slate-200">Totals</td>
             <td class="px-3 py-2 text-right text-sm dark:text-slate-200">$7,600</td>
-            <td class="px-3 py-2 text-right text-sm text-teal-700 dark:text-teal-400">$68.84</td>
-            <td class="px-3 py-2 text-right text-xs text-slate-500 tokens-col">5,469,040 / 591,862</td>
+            <td class="px-3 py-2 text-right text-sm text-teal-700 dark:text-teal-400">$89.57</td>
+            <td class="px-3 py-2 text-right text-xs text-slate-500 tokens-col">6,737,344 / 643,508</td>
           </tr>
         </tfoot>
       </table>
@@ -2485,7 +2485,7 @@
   const VALID_TABS = ['hierarchy','kanban','traceability','charts','trends','costs','bugs','lessons'];
 
   function downloadBudgetCSV() {
-    const csv = "Date,Epic ID,Epic Title,Budget,Spent,Remaining,% Used,Burn Rate,Projected Exhaustion\n2026-04-04,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,68.84,110 days\n2026-04-04,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,68.84,110 days\n2026-04-04,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,68.84,110 days\n2026-04-04,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,68.84,110 days\n2026-04-04,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,68.84,110 days\n2026-04-04,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,68.84,110 days\n2026-04-03,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,,\n2026-04-03,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,,\n2026-04-03,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,,\n2026-04-03,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,,\n2026-04-03,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,,\n2026-04-03,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,,\n2026-04-03,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,,\n2026-04-03,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,,\n2026-04-03,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,,\n2026-04-03,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,,\n2026-04-03,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,,\n2026-04-03,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,,\n2026-04-04,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,,\n2026-04-04,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,,\n2026-04-04,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,,\n2026-04-04,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,,\n2026-04-04,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,,\n2026-04-04,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,,\n2026-04-04,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,,\n2026-04-04,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,,\n2026-04-04,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,,\n2026-04-04,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,,\n2026-04-04,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,,\n2026-04-04,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,,";
+    const csv = "Date,Epic ID,Epic Title,Budget,Spent,Remaining,% Used,Burn Rate,Projected Exhaustion\n2026-04-04,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,89.57,84 days\n2026-04-04,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,89.57,84 days\n2026-04-04,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,89.57,84 days\n2026-04-04,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,89.57,84 days\n2026-04-04,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,89.57,84 days\n2026-04-04,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,89.57,84 days\n2026-04-03,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,,\n2026-04-03,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,,\n2026-04-03,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,,\n2026-04-03,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,,\n2026-04-03,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,,\n2026-04-03,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,,\n2026-04-03,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,,\n2026-04-03,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,,\n2026-04-03,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,,\n2026-04-03,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,,\n2026-04-03,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,,\n2026-04-03,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,,\n2026-04-04,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,,\n2026-04-04,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,,\n2026-04-04,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,,\n2026-04-04,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,,\n2026-04-04,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,,\n2026-04-04,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,,\n2026-04-04,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,,\n2026-04-04,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,,\n2026-04-04,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,,\n2026-04-04,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,,\n2026-04-04,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,,\n2026-04-04,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,,\n2026-04-04,EPIC-0001,\"Project Scaffolding & Mock Data Layer\",1600.00,0.00,1600.00,0%,,\n2026-04-04,EPIC-0002,\"Product Catalog Browsing\",1600.00,0.00,1600.00,0%,,\n2026-04-04,EPIC-0003,\"Barcode Scanning\",800.00,0.00,800.00,0%,,\n2026-04-04,EPIC-0004,\"Wishlist Management\",1200.00,0.00,1200.00,0%,,\n2026-04-04,EPIC-0005,\"Wishlist Sharing & Fulfillment\",2000.00,0.00,2000.00,0%,,\n2026-04-04,EPIC-0006,\"Mock Authentication\",400.00,0.00,400.00,0%,,";
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -2763,8 +2763,8 @@
       </a>
       <div class="border-t border-slate-200 dark:border-slate-700 pt-4 text-slate-500 text-xs space-y-1.5">
         <p>Version <span class="text-slate-700 dark:text-slate-300 font-mono">v1.0.0</span></p>
-        <p>Build <span class="text-slate-700 dark:text-slate-300 font-mono">#28</span>&nbsp;<code class="text-slate-500 dark:text-slate-600">ed97148</code></p>
-        <p>Updated <span id="about-gen-time" data-iso="2026-04-04T03:13:22.140Z" class="text-slate-700 dark:text-slate-300"></span></p>
+        <p>Build <span class="text-slate-700 dark:text-slate-300 font-mono">#36</span>&nbsp;<code class="text-slate-500 dark:text-slate-600">214e597</code></p>
+        <p>Updated <span id="about-gen-time" data-iso="2026-04-04T03:58:33.534Z" class="text-slate-700 dark:text-slate-300"></span></p>
       </div>
       <p class="mt-5 text-slate-500 text-xs">Implemented by Kamal Syed, 2026</p>
     </div>

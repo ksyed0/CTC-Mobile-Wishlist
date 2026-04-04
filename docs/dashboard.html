@@ -281,7 +281,7 @@
     <button class="btn-header" onclick="document.getElementById('about-modal').classList.add('open')">ℹ️ About</button>
     <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
     <div class="clock">
-      <div class="time">03:37:39 AM</div>
+      <div class="time">03:58:33 AM</div>
       <div class="label">Last Updated</div>
     </div>
   </div>
@@ -599,6 +599,7 @@
 <div id="about-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal">
     <button class="modal-close" onclick="document.getElementById('about-modal').classList.remove('open')">&times;</button>
+    <img src="agents/images/team.png" style="width:100%; border-radius:8px; margin-bottom:12px;" onerror="this.style.display='none'">
     <h3>AI-SDLC Orchestrator Visualizer</h3>
     <p>Real-time dashboard for agentic AI software development lifecycle orchestration</p>
     <div class="author">by Kamal Syed</div>

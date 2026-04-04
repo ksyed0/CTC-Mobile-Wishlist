@@ -548,6 +548,7 @@ ${log.length > 0 ? log.slice(-20).reverse().map(entry => {
 <div id="about-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal">
     <button class="modal-close" onclick="document.getElementById('about-modal').classList.remove('open')">&times;</button>
+    <img src="agents/images/team.png" style="width:100%; border-radius:8px; margin-bottom:12px;" onerror="this.style.display='none'">
     <h3>AI-SDLC Orchestrator Visualizer</h3>
     <p>Real-time dashboard for agentic AI software development lifecycle orchestration</p>
     <div class="author">by Kamal Syed</div>
