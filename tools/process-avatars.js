@@ -28,8 +28,24 @@ const BOTTOM_ROW_COUNT = 4;
 const OUTPUT_SIZE = 200; // px — square headshot output
 
 const IMAGES_DIR = path.resolve(__dirname, '..', 'docs', 'agents', 'images');
-const GRID_FILE = path.join(IMAGES_DIR, 'team-grid.png');
 const HEADSHOTS_DIR = path.join(IMAGES_DIR, 'headshots');
+
+// Find team-grid file with case-insensitive match (Windows may save as Team-Grid.PNG)
+function findGridFile() {
+  if (!fs.existsSync(IMAGES_DIR)) return null;
+  const files = fs.readdirSync(IMAGES_DIR);
+  const match = files.find(f => f.toLowerCase() === 'team-grid.png');
+  if (!match) return null;
+  // Rename to lowercase if needed (normalize for Linux)
+  const fullPath = path.join(IMAGES_DIR, match);
+  const normalizedPath = path.join(IMAGES_DIR, 'team-grid.png');
+  if (match !== 'team-grid.png') {
+    fs.renameSync(fullPath, normalizedPath);
+    console.log(`[avatars] Normalized filename: ${match} → team-grid.png`);
+  }
+  return normalizedPath;
+}
+const GRID_FILE = findGridFile();
 
 // Parse --padding flag (default 1.5x around detected face)
 const paddingArg = process.argv.indexOf('--padding');
@@ -224,8 +240,8 @@ function cropAndSave(sourceCanvas, face, outputPath, padding) {
 
 async function main() {
   // Check input exists
-  if (!fs.existsSync(GRID_FILE)) {
-    console.log(`[avatars] No team-grid.png found at ${GRID_FILE} — skipping avatar extraction`);
+  if (!GRID_FILE) {
+    console.log(`[avatars] No team-grid.png found in ${IMAGES_DIR} — skipping avatar extraction`);
     process.exit(0);
   }
 

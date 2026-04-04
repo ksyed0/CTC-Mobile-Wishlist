@@ -1,0 +1,19 @@
+# Cross-platform consistency
+# Normalize line endings to LF on commit, native on checkout
+* text=auto eol=lf
+
+# Binary files — do not modify
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pptx binary
+*.pdf binary
+
+# Force LF for shell scripts (even on Windows)
+*.sh text eol=lf
+
+# Force CRLF for Windows batch files
+*.bat text eol=crlf
+*.cmd text eol=crlf
