@@ -175,3 +175,47 @@
 - **Found in:** `tools/generate-dashboard.js`
 - **Description:** No way for viewers to learn what the dashboard is, who built it, or find the source repo. Missing attribution and context for hackathon demo audience.
 - **Fix:** Add "About" button in header with modal popup: title "AI-SDLC Orchestrator Visualizer", author "by Kamal Syed", GitHub repo link, and close button. Modal has backdrop blur and closes on overlay click or close button.
+
+## P0 — Critical (Orchestration Loop Failures)
+
+### BUG-0025: No retry state tracking for Conductor
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `docs/agents/DM_AGENT.md`
+- **Description:** Conductor has no mechanism to persist retry counts across agent spawns. If Conductor loses context or is re-spawned, it could re-invoke the same failing agent indefinitely, creating an infinite loop.
+- **Fix:** Add retry tracking section — Conductor logs retry counts in `progress.md` with structured format per task.
+
+### BUG-0026: "Escalate to human" workflow undefined
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `docs/agents/DM_AGENT.md` line 280
+- **Description:** Error Handling SOP says "Escalate to human. Do not proceed." but never defines the mechanism — no instructions for how orchestration pauses, how the human is notified, or how orchestration resumes after human intervention.
+- **Fix:** Add concrete escalation workflow: Conductor prints blocking issue summary, writes BLOCKED status to sdlc-status.json, pauses orchestration, and documents resume instructions.
+
+### BUG-0027: No BLOCK recovery protocol
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `docs/agents/DM_AGENT.md`, `docs/agents/CODE_REVIEWER_AGENT.md`
+- **Description:** After Lens issues a BLOCK verdict and human fixes the issue, there is no documented protocol for how Conductor knows to resume, which step to resume from, or whether the blocked branch should be rolled back first.
+- **Fix:** Add BLOCK recovery protocol to DM_AGENT.md and post-BLOCK guidance to CODE_REVIEWER_AGENT.md.
+
+### BUG-0028: No parallel agent failure coordination rules
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `docs/agents/DM_AGENT.md`
+- **Description:** Phase 3 spawns Forge + Pixel in parallel. If one agent BLOCKs or fails, there are no rules for what happens to the other parallel agent — does it continue, pause, or get cancelled?
+- **Fix:** Add parallel agent failure coordination rules to DM_AGENT.md.
+
+### BUG-0029: No hard phase timeout
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `docs/agents/DM_AGENT.md` line 283
+- **Description:** Only a 50% overrun guideline exists for timeboxing. No absolute hard timeout per phase. A phase could theoretically run indefinitely if scope keeps being renegotiated.
+- **Fix:** Add hard phase timeout (90 min max per phase) with force-cut-scope action at DM_AGENT.md.
+
+### BUG-0030: No BLOCK vs REQUEST CHANGES threshold criteria for Lens
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `docs/agents/CODE_REVIEWER_AGENT.md` line 100
+- **Description:** Lens has three verdict options (APPROVE / REQUEST CHANGES / BLOCK) but no criteria for when to issue BLOCK vs REQUEST CHANGES. Left entirely to Lens discretion, which could produce inconsistent behavior across review cycles.
+- **Fix:** Add explicit BLOCK threshold criteria to CODE_REVIEWER_AGENT.md — security vulnerabilities, type-safety violations, and test failures = BLOCK; all other issues = REQUEST CHANGES.

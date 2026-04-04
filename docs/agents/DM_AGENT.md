@@ -277,11 +277,92 @@ After each phase, append to `progress.md`:
 | Agent produces incorrect output | Re-read instruction file, pass corrected context, re-spawn | 2 |
 | Agent fails to start or crashes | Verify instruction file path, simplify task scope, re-spawn | 2 |
 | Lens returns REQUEST CHANGES | Re-spawn original agent with Lens findings as context | 1 |
-| Lens returns BLOCK | **Escalate to human.** Do not proceed. | 0 |
+| Lens returns BLOCK | **Escalate to human** per Escalation Workflow below. Do not proceed. | 0 |
 | Merge conflict between parallel agents | Resolve manually before spawning next phase | N/A |
 | Critical bug blocks testing | Spawn Forge or Pixel to fix before continuing Phase 5 | 1 |
 | Phase runs over timebox by >50% | Consult Compass's priority list, cut lowest-priority stories | N/A |
+| Phase hits hard timeout (90 min) | Force-cut scope: drop all remaining stories except highest-priority. Log in progress.md. Advance phase. | N/A |
 | After max retries exhausted | Log the failure in progress.md, skip the task, continue with remaining work | N/A |
+
+### Retry State Tracking
+
+You MUST track retry counts in `progress.md` to prevent infinite loops. Before re-spawning any agent, check the retry log. If the count already equals the max for that scenario, do NOT re-spawn — follow the exhaustion fallback instead.
+
+Add this block to `progress.md` after each retry:
+
+```
+### Retry Log
+| Task | Agent | Attempt | Max | Outcome | Timestamp |
+|------|-------|---------|-----|---------|-----------|
+| Implement services | Forge | 1 | 2 | Lens REQUEST CHANGES: missing error handling | 10:45 |
+| Implement services | Forge | 2 | 2 | Lens APPROVE | 11:15 |
+```
+
+**Rules:**
+- Read the retry log before every re-spawn to check the current count
+- If `Attempt >= Max`, stop retrying — log failure, skip task, continue
+- Never reset retry counts for the same task — if a task was retried twice and failed, it stays failed
+
+### Escalation Workflow
+
+When escalation to human is required (BLOCK verdict, unrecoverable failure):
+
+1. **Pause orchestration** — do not spawn any more agents
+2. **Update sdlc-status.json** — set the current phase status to `"blocked"` and the blocking agent's status to `"blocked"`
+3. **Write a BLOCKED entry in progress.md** with:
+   ```
+   ### ⛔ BLOCKED — [Phase Name]
+   **Blocking issue:** [1-2 sentence description]
+   **Lens verdict:** BLOCK
+   **Affected branch:** [branch name]
+   **Affected stories:** [US-XXXX list]
+   **What the human needs to do:** [specific action — e.g., "Fix the security vulnerability in src/services/wishlistService.ts, then tell Conductor to resume"]
+   **Resume from:** [exact step — e.g., "Phase 3, step 3: re-run Lens review on the fixed branch"]
+   ```
+4. **Print to terminal:** "⛔ ORCHESTRATION BLOCKED — see progress.md for details and resume instructions."
+5. **Stop.** Do not continue until the human resolves the issue and explicitly says "resume".
+
+**Resuming after human fix:**
+- Human fixes the issue on the affected branch and tells Conductor to resume
+- Conductor re-spawns Lens to review the fixed branch
+- If Lens returns APPROVE, continue from the step after the review
+- If Lens returns BLOCK again, re-escalate (do NOT retry — the human fix was insufficient)
+
+### BLOCK Recovery Protocol
+
+When Lens issues BLOCK and the human resolves it:
+
+1. Verify the human committed fixes to the affected branch
+2. Re-spawn Lens with context: "Human fixed the BLOCK issue on [branch]. Re-review for merge readiness."
+3. If APPROVE → merge and continue to next phase
+4. If REQUEST CHANGES → one retry of the original agent with Lens findings
+5. If BLOCK again → re-escalate to human with updated details. Do not loop.
+
+### Parallel Agent Failure Coordination
+
+When running agents in parallel (e.g., Forge + Pixel in Phase 3):
+
+| Scenario | Action |
+|----------|--------|
+| One agent completes, other still running | Wait for both to finish before proceeding to Lens review |
+| One agent fails (crash/bad output) | Let the other agent finish. Retry the failed agent per Error Handling SOP. Review both when ready. |
+| One agent's work is BLOCKed by Lens | The other agent's work can still be reviewed and merged independently. Escalate only the blocked work. |
+| Both agents fail | Retry each independently per their max retry counts. If both exhaust retries, escalate the phase. |
+| Merge conflict between parallel branches | Resolve the conflict before spawning Lens. Prefer the branch that was merged first; rebase the second. |
+
+**Key rule:** A failure in one parallel agent does NOT automatically block the other. Each agent's work is reviewed and merged independently.
+
+### Hard Phase Timeout
+
+Each phase has a **90-minute hard timeout** measured from when the first agent in that phase is spawned.
+
+| Time Elapsed | Action |
+|-------------|--------|
+| 0–50% of timebox | Normal execution |
+| 50–90 min | Warning zone — consult Compass's priority list, cut lowest-priority stories if behind |
+| 90 min (hard limit) | **Force-cut scope:** Drop all remaining unfinished stories in this phase except the single highest-priority story. Log dropped stories in progress.md. Advance to the next phase with whatever is complete. |
+
+**Exception:** Phase 6 (Polish) has no hard timeout — it runs until the hackathon end time or until all critical bugs are fixed, whichever comes first.
 
 ## Rules
 
