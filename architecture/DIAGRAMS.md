@@ -386,3 +386,145 @@ graph TD
     style TabLayout fill:#333,color:#fff
     style StackScreens fill:#F5F5F5,color:#333
 ```
+
+---
+
+## 9. PR Creation & Review Workflow
+
+How code moves from a dev agent's feature branch through Conductor's PR lifecycle, Lens code review, and CI verification before merging to `develop`.
+
+```mermaid
+sequenceDiagram
+    actor DevAgent as Dev Agent<br/>(Forge / Pixel / Keystone)
+    participant Branch as Feature Branch<br/>(e.g., feature/US-0001)
+    actor Conductor as Conductor<br/>(Delivery Manager)
+    actor Lens as Lens<br/>(Code Reviewer)
+    participant CI as GitHub Actions CI<br/>(6 jobs)
+    participant Develop as develop branch
+
+    DevAgent->>Branch: Commit code changes
+    DevAgent->>Branch: git push origin feature/US-0001
+    DevAgent->>Conductor: Report: "Code complete on feature/US-0001"
+
+    Conductor->>Develop: Create PR (feature/US-0001 → develop)
+    Conductor->>Lens: Spawn Lens to review PR
+
+    Lens->>Branch: Review code, architecture, tests, design system
+
+    alt APPROVE
+        Lens->>Conductor: Verdict: APPROVE
+        Conductor->>CI: Wait for CI pipeline
+        CI->>CI: Lint + Test + Build + Format + Audit + Orchestrator
+        alt All checks green
+            Conductor->>Develop: Squash and merge
+            Conductor->>Branch: Delete feature branch
+        else CI failure
+            Conductor->>DevAgent: Re-spawn with CI error details
+            DevAgent->>Branch: Fix and push
+            Conductor->>CI: Re-run CI
+        end
+    else REQUEST CHANGES
+        Lens->>Conductor: Verdict: REQUEST CHANGES (with feedback)
+        Conductor->>DevAgent: Re-spawn with Lens feedback
+        DevAgent->>Branch: Fix issues and push
+        Conductor->>Lens: Re-spawn Lens for re-review
+        Note over Lens: Max 1 retry before escalation
+    else BLOCK
+        Lens->>Conductor: Verdict: BLOCK (security/critical issue)
+        Conductor->>Conductor: Halt orchestration
+        Conductor->>Conductor: Set phase to "blocked"
+        Note over Conductor: Human must intervene
+    end
+```
+
+---
+
+## 10. CI Pipeline Flow
+
+The 6-job GitHub Actions CI pipeline that runs on every PR to `main` and `develop`. All jobs run in parallel; all must pass before merge.
+
+```mermaid
+flowchart LR
+    PR["Pull Request<br/>opened / updated"] --> Lint
+    PR --> Test
+    PR --> Build
+    PR --> Orch
+    PR --> Format
+    PR --> Audit
+
+    subgraph CI["GitHub Actions CI (parallel jobs)"]
+        Lint["🔍 Lint<br/>npx eslint ."]
+        Test["🧪 Test & Coverage<br/>npm run test:coverage<br/>(80% threshold)"]
+        Build["🏗️ Build<br/>npm run build<br/>(avatars → plan → dashboard)"]
+        Orch["⚙️ Orchestrator<br/>spawn.js --list-platforms<br/>spawn.js --list-agents"]
+        Format["✨ Format<br/>npm run format:check<br/>(Prettier)"]
+        Audit["🔒 Audit<br/>npm audit --audit-level=high"]
+    end
+
+    Lint --> Gate{All Green?}
+    Test --> Gate
+    Build --> Gate
+    Orch --> Gate
+    Format --> Gate
+    Audit --> Gate
+
+    Gate -->|Yes| Merge["✅ Ready to Merge"]
+    Gate -->|No| Fix["❌ Conductor spawns<br/>agent to fix"]
+    Fix --> PR
+
+    style PR fill:#D52B1E,color:#fff
+    style Merge fill:#2E7D32,color:#fff
+    style Fix fill:#C62828,color:#fff
+```
+
+---
+
+## 11. Agent Orchestration & Branch Strategy
+
+How Conductor orchestrates agents across BLAST phases, showing branch creation, parallel work, Lens review gates, and merge points.
+
+```mermaid
+gitgraph
+    commit id: "Initial setup"
+    branch develop
+    checkout develop
+    commit id: "Project scaffold"
+
+    branch feature/US-0001-expo-scaffold
+    checkout feature/US-0001-expo-scaffold
+    commit id: "Keystone: scaffold"
+    commit id: "Keystone: types + services"
+    checkout develop
+    merge feature/US-0001-expo-scaffold id: "Lens APPROVE → merge" tag: "Phase 2 ✓"
+
+    branch feature/US-0002-mock-data
+    checkout feature/US-0002-mock-data
+    commit id: "Forge: mock data + services"
+
+    checkout develop
+    branch feature/US-0003-catalog
+    checkout feature/US-0003-catalog
+    commit id: "Pixel: catalog + nav"
+
+    checkout develop
+    merge feature/US-0002-mock-data id: "Lens APPROVE → merge"
+    merge feature/US-0003-catalog id: "Lens APPROVE → merge" tag: "Phase 3 ✓"
+
+    branch feature/integration
+    checkout feature/integration
+    commit id: "Pixel: wire services to screens"
+    checkout develop
+    merge feature/integration id: "Lens APPROVE → merge" tag: "Phase 4 ✓"
+
+    branch feature/tests
+    checkout feature/tests
+    commit id: "Circuit: Jest suites"
+    commit id: "Sentinel: bug fixes"
+    checkout develop
+    merge feature/tests id: "Lens APPROVE → merge" tag: "Phase 5 ✓"
+
+    commit id: "Phase 6: polish + demo prep"
+
+    checkout main
+    merge develop id: "Release v1.0.0" tag: "v1.0.0"
+```
