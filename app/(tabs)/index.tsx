@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import { router } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -14,10 +15,20 @@ import { useWishlists } from '../../contexts/WishlistContext';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
+import { StorageKeys, getItem } from '../../utils/storage';
+import { Product } from '../../types/product';
 
 export default function HomeScreen() {
   const { currentUser, isGuest, isLoading: authLoading } = useAuth();
   const { wishlists, isLoading: wishlistsLoading } = useWishlists();
+  const [recentScans, setRecentScans] = useState<Product[]>([]);
+
+  // Load recent scans from AsyncStorage whenever user changes
+  useEffect(() => {
+    getItem<Product[]>(StorageKeys.RECENT_SCANS).then((scans) => {
+      setRecentScans(scans ?? []);
+    });
+  }, [currentUser]);
 
   const handleBrowseCatalog = useCallback(() => {
     router.push('/(tabs)/catalog');
@@ -86,15 +97,25 @@ export default function HomeScreen() {
       {/* Quick Stats */}
       {!isGuest ? (
         <View style={styles.statsRow}>
-          <View style={styles.statCard}>
+          <TouchableOpacity
+            style={styles.statCard}
+            onPress={handleMyWishlists}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+          >
             {wishlistsLoading ? (
               <ActivityIndicator size="small" color={colors.primary} />
             ) : (
               <Text style={styles.statValue}>{wishlists.length}</Text>
             )}
             <Text style={styles.statLabel}>Wishlists</Text>
-          </View>
-          <View style={styles.statCard}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.statCard}
+            onPress={handleMyWishlists}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+          >
             {wishlistsLoading ? (
               <ActivityIndicator size="small" color={colors.primary} />
             ) : (
@@ -103,8 +124,13 @@ export default function HomeScreen() {
               </Text>
             )}
             <Text style={styles.statLabel}>Items Saved</Text>
-          </View>
-          <View style={styles.statCard}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.statCard}
+            onPress={handleMyWishlists}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+          >
             {wishlistsLoading ? (
               <ActivityIndicator size="small" color={colors.primary} />
             ) : (
@@ -113,7 +139,7 @@ export default function HomeScreen() {
               </Text>
             )}
             <Text style={styles.statLabel}>Shared</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       ) : null}
 
@@ -175,6 +201,37 @@ export default function HomeScreen() {
         </View>
         <MaterialIcons name="chevron-right" size={22} color={colors.textLight} />
       </TouchableOpacity>
+
+      {/* Recent Scans */}
+      {recentScans.length > 0 ? (
+        <View style={styles.recentSection}>
+          <Text style={styles.sectionTitle}>Recent Scans</Text>
+          <FlatList
+            data={recentScans}
+            keyExtractor={(item) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.recentList}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.recentCard}
+                onPress={() => router.push(`/product/${item.id}`)}
+                activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel={item.name}
+              >
+                <View style={styles.recentImagePlaceholder}>
+                  <MaterialIcons name="image" size={28} color={colors.textLight} />
+                </View>
+                <Text style={styles.recentName} numberOfLines={2}>
+                  {item.name}
+                </Text>
+                <Text style={styles.recentPrice}>${item.price.toFixed(2)}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      ) : null}
     </ScrollView>
   );
 }
@@ -334,5 +391,44 @@ const styles = StyleSheet.create({
   ctaSubtitle: {
     fontSize: typography.fontSize.xs,
     color: colors.textSecondary,
+  },
+  recentSection: {
+    marginTop: spacing.sm,
+  },
+  recentList: {
+    paddingBottom: spacing.sm,
+  },
+  recentCard: {
+    width: 120,
+    backgroundColor: colors.white,
+    borderRadius: spacing.borderRadius.md,
+    padding: spacing.sm,
+    marginRight: spacing.sm,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  recentImagePlaceholder: {
+    width: '100%',
+    height: 80,
+    backgroundColor: colors.background,
+    borderRadius: spacing.borderRadius.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.xs,
+  },
+  recentName: {
+    fontSize: typography.fontSize.xs,
+    fontWeight: typography.fontWeight.semiBold,
+    color: colors.dark,
+    marginBottom: 2,
+    lineHeight: 16,
+  },
+  recentPrice: {
+    fontSize: typography.fontSize.xs,
+    color: colors.primary,
+    fontWeight: typography.fontWeight.bold,
   },
 });

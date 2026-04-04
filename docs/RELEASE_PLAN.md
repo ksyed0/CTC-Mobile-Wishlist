@@ -112,7 +112,7 @@ Dependencies: EPIC-0001
 US-0003 (EPIC-0002): As a shopper, I want to browse products by category, so that I can discover items I want to add to my wishlist.
 Priority: High
 Estimate: M
-Status: Planned
+Status: Done
 Branch: feature/US-0003-catalog-browse
 Dependencies: US-0002
 Acceptance Criteria:
@@ -134,7 +134,7 @@ Notes: Search bar, category chips, FlatList 2-col grid, EmptyState — all imple
 US-0004 (EPIC-0002): As a shopper, I want to view product details and add the product to a wishlist, so that I can save items I'm interested in.
 Priority: High
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0004-product-detail
 Dependencies: US-0003
 Acceptance Criteria:
@@ -189,7 +189,7 @@ Dependencies: EPIC-0001
 US-0006 (EPIC-0003): As an in-store shopper, I want to scan a product barcode with my phone camera, so that I can quickly identify and add the product to my wishlist.
 Priority: High
 Estimate: M
-Status: Planned
+Status: Done
 Branch: feature/US-0006-barcode-scan
 Dependencies: US-0002
 Acceptance Criteria:
@@ -212,9 +212,9 @@ Notes: Camera permission flow, BarcodeOverlay, manual entry fallback (AC-0043), 
 TASK-0011 (US-0006): Add barcode-to-product lookup logic against mock catalog
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0006-barcode-scan
-Notes:
+Status: Done
+Branch: feature/pixel-integration
+Notes: productService.getByBarcode() wired in scan.tsx; recent scans saved to AsyncStorage
 ```
 
 ---
@@ -233,7 +233,7 @@ Dependencies: EPIC-0001, EPIC-0002
 US-0007 (EPIC-0004): As a shopper, I want to create and name multiple wishlists, so that I can organize items for different occasions.
 Priority: High
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0007-create-wishlist
 Dependencies: US-0002
 Acceptance Criteria:
@@ -255,16 +255,16 @@ Notes: SectionList for My/Shared sections, FAB, create modal, guest prompt
 TASK-0013 (US-0007): Implement wishlist CRUD operations in data access layer
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0007-create-wishlist
-Notes:
+Status: Done
+Branch: feature/pixel-integration
+Notes: wishlistService fully wired (create/delete/addItem/removeItem/share/claim) via WishlistContext
 ```
 
 ```
 US-0008 (EPIC-0004): As a shopper, I want to view a wishlist's items and remove items I no longer want, so that I can keep my wishlist up to date.
 Priority: High
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0008-wishlist-detail
 Dependencies: US-0007
 Acceptance Criteria:
@@ -286,7 +286,7 @@ Notes: FlatList of WishlistItemRow, remove confirm dialog, EmptyState, price tot
 US-0009 (EPIC-0004): As a shopper, I want to see the total value of items in my wishlist, so that I can gauge my spending.
 Priority: Low
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0009-wishlist-total
 Dependencies: US-0008
 Acceptance Criteria:
@@ -297,9 +297,9 @@ Acceptance Criteria:
 TASK-0015 (US-0009): Add price total to wishlist detail footer
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0009-wishlist-total
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: getTotalPrice() from wishlistUtils.ts wired in wishlist/[id].tsx footer
 ```
 
 ---
@@ -318,7 +318,7 @@ Dependencies: EPIC-0004
 US-0010 (EPIC-0005): As a shopper, I want to share my wishlist with contacts from my phone, so that friends and family can see what I want.
 Priority: High
 Estimate: M
-Status: Planned
+Status: Done
 Branch: feature/US-0010-share-wishlist
 Dependencies: US-0007
 Acceptance Criteria:
@@ -340,16 +340,16 @@ Notes: Mock contact list used (AC-0044); share modal in wishlist detail with tog
 TASK-0017 (US-0010): Add share flow — select contacts, update wishlist, show confirmation
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0010-share-wishlist
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: Share modal in wishlist/[id].tsx; uses mockUsers as contacts; confirms with Alert
 ```
 
 ```
 US-0011 (EPIC-0005): As a gift buyer (recipient), I want to view a shared wishlist, so that I can see what the person wants.
 Priority: High
 Estimate: M
-Status: Planned
+Status: Done
 Branch: feature/US-0011-shared-view
 Dependencies: US-0010
 Acceptance Criteria:
@@ -371,7 +371,7 @@ Notes: Claimed items greyed out with badge; owner view hides claimer names (AC-0
 US-0012 (EPIC-0005): As a gift buyer, I want to claim an item on a shared wishlist, so that others know I intend to buy it and duplicates are avoided.
 Priority: High
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0012-claim-item
 Dependencies: US-0011
 Acceptance Criteria:
@@ -405,7 +405,7 @@ Dependencies: EPIC-0001
 US-0013 (EPIC-0006): As a user, I want to simulate logging in or browsing anonymously, so that the POC can demonstrate both authenticated and guest experiences.
 Priority: Medium
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0013-mock-auth
 Dependencies: US-0002
 Acceptance Criteria:
