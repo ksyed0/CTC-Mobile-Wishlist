@@ -38,7 +38,7 @@ You operate by spawning each agent as a **sub-agent** using Claude Code's Agent 
 
 ## How to Spawn Sub-Agents
 
-Use Claude Code's **Agent tool** to launch each agent. Always include:
+Launch each agent using the agentic platform's spawning mechanism. Always include:
 
 1. The agent's full instruction file content (read it first, then include in the prompt)
 2. The specific task or user story to work on
@@ -46,20 +46,31 @@ Use Claude Code's **Agent tool** to launch each agent. Always include:
 4. The branch to work on
 5. What to commit and push when done
 
+> **Platform-agnostic:** This orchestration works on any agentic platform.
+> See `orchestrator/spawn.js` for spawn commands per platform.
+> Set `ORCHESTRATOR_PLATFORM` env var: `claude-code` (default), `codex`, `gemini`, `aider`.
+
 ### Spawn Pattern
 
 ```
-Agent tool call:
-  prompt: "Read docs/agents/[AGENT].md for your full instructions. 
-           [Specific task context from previous agents].
-           Your task: [specific deliverable].
-           Work on branch: [branch name].
-           When done: commit with format from AGENTS.md, push, and report what you completed."
+Prompt to agent:
+  "Read docs/agents/[AGENT].md for your full instructions. 
+   [Specific task context from previous agents].
+   Your task: [specific deliverable].
+   Work on branch: [branch name].
+   When done: commit with format from AGENTS.md, push, and report what you completed."
 ```
+
+**Platform-specific spawning:**
+- **Claude Code:** Use the Agent tool to spawn sub-agents within a session
+- **Codex / Gemini / Aider:** Open a new terminal session per agent with the prompt above
 
 ### Parallel Spawning
 
-For phases with parallel work, launch multiple agents in a **single message** with multiple Agent tool calls:
+For phases with parallel work, launch multiple agents simultaneously:
+
+- **Claude Code:** Include multiple Agent tool calls in a single message
+- **Codex / Gemini / Aider:** Open separate terminal sessions and run agents concurrently
 
 ```
 Phase 3 example — launch Forge and Pixel simultaneously:
@@ -96,7 +107,14 @@ Phase 3 example — launch Forge and Pixel simultaneously:
 
 ### Phase 3: Link + Stylize (150 min) — PARALLEL
 ```
-1. Spawn Forge AND Pixel simultaneously:
+0. Spawn Palette (UI Designer Agent)
+   Task: "Keystone created the scaffold. Theme stub is at src/theme/index.ts.
+          Your task: Define all design tokens, component style specs, and
+          wireframe mockups per architecture/DESIGN_SYSTEM.md. Commit to branch:
+          feature/US-0001-expo-scaffold. Report your theme file path and
+          component specs when done."
+
+1. Spawn Forge AND Pixel simultaneously (after Palette completes):
    
    Forge: "Keystone created the scaffold on feature/US-0001-expo-scaffold.
            Types are in src/types/index.ts. Service interfaces are in src/services/.
@@ -104,10 +122,10 @@ Phase 3 example — launch Forge and Pixel simultaneously:
            Work on branch: feature/US-0002-mock-data-layer"
    
    Pixel: "Keystone created the scaffold with tab navigation.
-           Theme is in src/theme/index.ts. Types in src/types/index.ts.
+           Palette completed the theme at src/theme/index.ts — read it for all
+           design tokens. Types in src/types/index.ts.
            Your task: Build all screens and components per DESIGN_SYSTEM.md.
-           Work on branch: feature/US-0003-catalog-browsing
-           (Palette's guidance: use CT_RED #D52B1E, 8px radius, 4px grid)"
+           Work on branch: feature/US-0003-catalog-browsing"
 
 2. Monitor both agents — check for merge conflicts
 3. Spawn Lens to review both branches:
@@ -154,19 +172,45 @@ Phase 3 example — launch Forge and Pixel simultaneously:
 1. If critical bugs exist, spawn Forge or Pixel to fix them
 2. Final merge to develop branch
 3. Update all documentation: RELEASE_PLAN.md, progress.md, AI_COST_LOG.md
-4. Prepare demo talking points
+4. Start Expo dev server: npx expo start
+5. Verify app loads in Expo Go on demo device (scan QR code)
+6. Prepare demo talking points
 ```
+
+## Phase Exit Criteria
+
+Do NOT advance to the next phase until the current phase's exit criteria are met.
+
+| Phase | Exit Criteria |
+|-------|--------------|
+| 1 Blueprint | Compass has updated RELEASE_PLAN.md with refined ACs and priority order. progress.md updated. |
+| 2 Architect | Keystone's scaffold compiles (no TS errors). Lens verdict: APPROVE. Branches pushed. |
+| 3 Build | Forge's services have passing unit tests. Pixel's screens render without crash. Lens verdict: APPROVE for both. |
+| 4 Integration | End-to-end flow (browse → detail → add to wishlist) works. Lens verdict: APPROVE. |
+| 5 Test | Sentinel's test execution report is in progress.md. Circuit's Jest suites pass. Coverage report generated at docs/coverage/coverage-summary.json. |
+| 6 Polish | All critical bugs fixed. develop branch has final merge. Demo talking points documented. |
+
+**Pre-phase check:** Before spawning an agent, verify the files it needs exist (`ls` the instruction file path, the branch, and key input files from prior phases).
 
 ## Context Passing Rules
 
-Each agent operates in a fresh Claude Code context. They do NOT see what other agents did unless you tell them. Always pass:
+Each agent operates in a fresh Claude Code context. They do NOT see what other agents did unless you tell them.
 
-| What to Pass | Why |
-|-------------|-----|
-| Branch name where previous work lives | So they can check it out |
-| File paths of key artifacts created | So they know where to find types, services, etc. |
-| Any blockers or decisions from previous phases | So they don't redo or contradict earlier work |
-| Specific story/task IDs to work on | So they update the right items in RELEASE_PLAN.md |
+**When spawning any agent, structure your prompt as follows:**
+
+```
+AGENT: [Name]
+INSTRUCTION FILE: docs/agents/[FILE].md
+TASK: [Specific deliverable in one sentence]
+STORIES: [US-XXXX, US-XXXX]
+BRANCH: [branch name to work on]
+PRIOR CONTEXT:
+  - [Agent] completed [what] on branch [name]
+  - Key files: [path1], [path2]
+  - Decisions: [any relevant decisions from prior phases]
+EXIT CRITERIA: [What "done" looks like for this task]
+COMMIT WHEN DONE: yes, format per AGENTS.md
+```
 
 **Never assume an agent knows what another agent did. Be explicit.**
 
@@ -237,12 +281,99 @@ After each phase, append to `progress.md`:
 **Notes:** [Any issues, decisions, or blockers]
 ```
 
-## Escalation Rules
+## Error Handling SOP
 
-- If an agent fails or produces incorrect output → re-read its instruction file, provide corrected context, re-spawn
-- If two agents create merge conflicts → resolve manually before spawning the next phase
-- If a critical bug blocks Phase 5 → spawn Forge or Pixel to fix before continuing testing
-- If time runs short → consult Compass's priority list and cut lowest-priority stories
+| Scenario | Action | Max Retries |
+|----------|--------|-------------|
+| Agent produces incorrect output | Re-read instruction file, pass corrected context, re-spawn | 2 |
+| Agent fails to start or crashes | Verify instruction file path, simplify task scope, re-spawn | 2 |
+| Lens returns REQUEST CHANGES | Re-spawn original agent with Lens findings as context | 1 |
+| Lens returns BLOCK | **Escalate to human** per Escalation Workflow below. Do not proceed. | 0 |
+| Merge conflict between parallel agents | Resolve manually before spawning next phase | N/A |
+| Critical bug blocks testing | Spawn Forge or Pixel to fix before continuing Phase 5 | 1 |
+| Phase runs over timebox by >50% | Consult Compass's priority list, cut lowest-priority stories | N/A |
+| Phase hits hard timeout (90 min) | Force-cut scope: drop all remaining stories except highest-priority. Log in progress.md. Advance phase. | N/A |
+| After max retries exhausted | Log the failure in progress.md, skip the task, continue with remaining work | N/A |
+
+### Retry State Tracking
+
+You MUST track retry counts in `progress.md` to prevent infinite loops. Before re-spawning any agent, check the retry log. If the count already equals the max for that scenario, do NOT re-spawn — follow the exhaustion fallback instead.
+
+Add this block to `progress.md` after each retry:
+
+```
+### Retry Log
+| Task | Agent | Attempt | Max | Outcome | Timestamp |
+|------|-------|---------|-----|---------|-----------|
+| Implement services | Forge | 1 | 2 | Lens REQUEST CHANGES: missing error handling | 10:45 |
+| Implement services | Forge | 2 | 2 | Lens APPROVE | 11:15 |
+```
+
+**Rules:**
+- Read the retry log before every re-spawn to check the current count
+- If `Attempt >= Max`, stop retrying — log failure, skip task, continue
+- Never reset retry counts for the same task — if a task was retried twice and failed, it stays failed
+
+### Escalation Workflow
+
+When escalation to human is required (BLOCK verdict, unrecoverable failure):
+
+1. **Pause orchestration** — do not spawn any more agents
+2. **Update sdlc-status.json** — set the current phase status to `"blocked"` and the blocking agent's status to `"blocked"`
+3. **Write a BLOCKED entry in progress.md** with:
+   ```
+   ### ⛔ BLOCKED — [Phase Name]
+   **Blocking issue:** [1-2 sentence description]
+   **Lens verdict:** BLOCK
+   **Affected branch:** [branch name]
+   **Affected stories:** [US-XXXX list]
+   **What the human needs to do:** [specific action — e.g., "Fix the security vulnerability in src/services/wishlistService.ts, then tell Conductor to resume"]
+   **Resume from:** [exact step — e.g., "Phase 3, step 3: re-run Lens review on the fixed branch"]
+   ```
+4. **Print to terminal:** "⛔ ORCHESTRATION BLOCKED — see progress.md for details and resume instructions."
+5. **Stop.** Do not continue until the human resolves the issue and explicitly says "resume".
+
+**Resuming after human fix:**
+- Human fixes the issue on the affected branch and tells Conductor to resume
+- Conductor re-spawns Lens to review the fixed branch
+- If Lens returns APPROVE, continue from the step after the review
+- If Lens returns BLOCK again, re-escalate (do NOT retry — the human fix was insufficient)
+
+### BLOCK Recovery Protocol
+
+When Lens issues BLOCK and the human resolves it:
+
+1. Verify the human committed fixes to the affected branch
+2. Re-spawn Lens with context: "Human fixed the BLOCK issue on [branch]. Re-review for merge readiness."
+3. If APPROVE → merge and continue to next phase
+4. If REQUEST CHANGES → one retry of the original agent with Lens findings
+5. If BLOCK again → re-escalate to human with updated details. Do not loop.
+
+### Parallel Agent Failure Coordination
+
+When running agents in parallel (e.g., Forge + Pixel in Phase 3):
+
+| Scenario | Action |
+|----------|--------|
+| One agent completes, other still running | Wait for both to finish before proceeding to Lens review |
+| One agent fails (crash/bad output) | Let the other agent finish. Retry the failed agent per Error Handling SOP. Review both when ready. |
+| One agent's work is BLOCKed by Lens | The other agent's work can still be reviewed and merged independently. Escalate only the blocked work. |
+| Both agents fail | Retry each independently per their max retry counts. If both exhaust retries, escalate the phase. |
+| Merge conflict between parallel branches | Resolve the conflict before spawning Lens. Prefer the branch that was merged first; rebase the second. |
+
+**Key rule:** A failure in one parallel agent does NOT automatically block the other. Each agent's work is reviewed and merged independently.
+
+### Hard Phase Timeout
+
+Each phase has a **90-minute hard timeout** measured from when the first agent in that phase is spawned.
+
+| Time Elapsed | Action |
+|-------------|--------|
+| 0–50% of timebox | Normal execution |
+| 50–90 min | Warning zone — consult Compass's priority list, cut lowest-priority stories if behind |
+| 90 min (hard limit) | **Force-cut scope:** Drop all remaining unfinished stories in this phase except the single highest-priority story. Log dropped stories in progress.md. Advance to the next phase with whatever is complete. |
+
+**Exception:** Phase 6 (Polish) has no hard timeout — it runs until the hackathon end time or until all critical bugs are fixed, whichever comes first.
 
 ## Rules
 

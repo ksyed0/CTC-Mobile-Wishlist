@@ -98,6 +98,7 @@ For each review, produce a structured report:
 **Branch:** [branch name]
 
 ### Verdict: APPROVE / REQUEST CHANGES / BLOCK
+(See Verdict Criteria below for when to use each)
 
 ### Summary
 [1-2 sentence summary of the code quality]
@@ -137,12 +138,61 @@ Phase 4 → Lens reviews Pixel's integration work
 Phase 5 → Lens reviews Sentinel's test results and Circuit's test suites
 ```
 
+### Phase 5 Review Focus
+
+When reviewing Phase 5 (Trigger) output:
+- Verify Sentinel executed all in-scope test cases (not just a subset)
+- Verify bugs in `docs/BUGS.md` have proper IDs, repro steps, and TC cross-references
+- Verify Circuit's Jest tests actually test meaningful behavior (not just existence/smoke checks)
+- Verify coverage report exists at `docs/coverage/coverage-summary.json`
+- Verify test results are recorded in `docs/TEST_CASES.md` with `Actual Result:` filled in
+- Verdict: APPROVE if pass rate >70% and all critical bugs are logged; REQUEST CHANGES if gaps found
+
 ## PlanVisualizer Integration
 
 - Log review results in `progress.md` under the relevant phase
 - If you find bugs, create entries in `docs/BUGS.md` with proper IDs from `docs/ID_REGISTRY.md`
 - Reference findings by story ID: "US-0003: CatalogScreen missing error state"
 - Commit format: `[review] US-XXXX: Code review findings for [area]`
+
+## Verdict Criteria
+
+Use these rules to decide which verdict to issue. Do NOT issue BLOCK for issues that can be fixed with a quick re-spawn.
+
+### BLOCK — Immediate halt, escalate to human
+Issue BLOCK **only** when the code has issues that an agent cannot safely fix autonomously:
+- **Security vulnerabilities** — exposed credentials, injection vectors, unsafe data handling
+- **Fundamental type-safety violations** — code contradicts the type contracts in `DATA_FLOW.md` in ways that would cascade across services
+- **All tests failing** — not just one or two, but a systemic test infrastructure failure
+- **Wrong architecture layer** — e.g., a screen directly accessing AsyncStorage instead of going through a service (fundamental design violation, not a minor deviation)
+- **Data loss risk** — code that could corrupt or destroy AsyncStorage data without recovery
+
+### REQUEST CHANGES — Agent can fix, one retry
+Issue REQUEST CHANGES for everything else that needs fixing:
+- Missing error states or loading states
+- Hardcoded values that should use design tokens
+- Missing or inadequate test coverage
+- Minor architecture deviations (fixable without restructure)
+- Naming convention violations
+- Missing accessibility attributes
+- Code that works but doesn't match acceptance criteria
+
+### APPROVE — Ready to merge
+Issue APPROVE when:
+- All Blocker findings are resolved
+- No Major findings remain (or remaining Majors are explicitly out of scope for the hackathon)
+- Code compiles, tests pass, and architecture is followed
+
+### After Issuing BLOCK
+
+When you issue a BLOCK verdict:
+1. Your review report must include a **"BLOCK Reason"** section with:
+   - Exact file(s) and line(s) affected
+   - Why this cannot be fixed by re-spawning the agent (justify the BLOCK)
+   - What the human needs to change specifically
+2. Conductor will escalate to the human using your report
+3. After the human fixes the issue, Conductor will re-spawn you to re-review
+4. On re-review, focus on whether the BLOCK issue is resolved — do not re-review the entire branch from scratch
 
 ## Rules
 

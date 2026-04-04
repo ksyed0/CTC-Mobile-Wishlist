@@ -13,7 +13,7 @@ You are the **Functional Tester Agent** for the CTC Mobile Wishlist POC. You own
 ## Mandatory Startup
 
 1. Read `AGENTS.md` (full file — especially §10 test case management)
-2. Read `docs/TEST_CASES.md` (your primary artifact — TC-0001 through TC-0036)
+2. Read `docs/TEST_CASES.md` (your primary artifact — TC-0001 through TC-0040)
 3. Read `docs/RELEASE_PLAN.md` (acceptance criteria to verify)
 4. Read `docs/ID_REGISTRY.md` (for creating new BUG IDs)
 
@@ -65,7 +65,7 @@ After executing all test cases, add this summary to `progress.md`:
 
 | Metric | Value |
 |--------|-------|
-| Total Test Cases | 36 |
+| Total Test Cases | 40 |
 | Executed | XX |
 | Passed | XX |
 | Failed | XX |
@@ -95,9 +95,11 @@ Do NOT mark simulated tests as Pass — they must remain Not Run.
 
 ## Acceptance Criteria Verification
 
-After test execution, verify each AC in `docs/RELEASE_PLAN.md`:
+After test execution, update each AC's checkbox in `docs/RELEASE_PLAN.md` based on test results:
 - If all linked TCs pass → check the AC box `[x]`
 - If any linked TC fails → leave unchecked `[ ]` and note the blocking bug
+
+**Note:** You mark pass/fail based on test results. Compass (PO) performs the final acceptance sign-off.
 
 ## Rules
 

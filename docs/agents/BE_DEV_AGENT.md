@@ -106,7 +106,7 @@ Use Jest + AsyncStorage mock (`@react-native-async-storage/async-storage/jest/as
 ## Rules
 
 - All service methods must be async and return Promises
-- AsyncStorage key schema must match DATA_FLOW.md exactly
+- AsyncStorage key schema must match DATA_FLOW.md exactly — wishlists use the global key `wishlists` (not per-user), filtered by `ownerId` at read time
 - Never throw raw errors — wrap in structured error objects
 - All dates must be ISO 8601 strings
 - Product IDs format: `prod-001`, User IDs: `user-1`, Wishlist IDs: UUID v4

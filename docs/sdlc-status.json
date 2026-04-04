@@ -1,6 +1,6 @@
 {
   "hackathon": {
-    "name": "CTC Mobile Wishlist — EPAM EliteA Agentic AI SDLC",
+    "name": "CTC Mobile Wishlist — Claude Code Agentic AI SDLC",
     "date": "2026-04-07",
     "startTime": "09:00",
     "endTime": "17:00"
@@ -73,20 +73,28 @@
     "Sentinel": { "status": "idle", "currentTask": null, "tasksCompleted": 0, "testsPassed": 0, "testsFailed": 0 },
     "Circuit": { "status": "idle", "currentTask": null, "tasksCompleted": 0, "coveragePercent": 0 }
   },
+  "epics": {
+    "EPIC-0001": "Scaffolding & Mock Data",
+    "EPIC-0002": "Product Catalog",
+    "EPIC-0003": "Barcode Scanning",
+    "EPIC-0004": "Wishlist Management",
+    "EPIC-0005": "Sharing & Fulfillment",
+    "EPIC-0006": "Mock Authentication"
+  },
   "stories": {
-    "US-0001": { "status": "Planned", "title": "Expo scaffold with tab navigation" },
-    "US-0002": { "status": "Planned", "title": "Local mock data layer" },
-    "US-0003": { "status": "Planned", "title": "Catalog browsing with search" },
-    "US-0004": { "status": "Planned", "title": "Product detail screen" },
-    "US-0005": { "status": "Planned", "title": "Barcode scanner" },
-    "US-0006": { "status": "Planned", "title": "Barcode to product lookup" },
-    "US-0007": { "status": "Planned", "title": "Wishlist management" },
-    "US-0008": { "status": "Planned", "title": "Wishlist CRUD operations" },
-    "US-0009": { "status": "Planned", "title": "Wishlist detail view" },
-    "US-0010": { "status": "Planned", "title": "Share wishlist" },
-    "US-0011": { "status": "Planned", "title": "Share flow UI" },
-    "US-0012": { "status": "Planned", "title": "Claim items" },
-    "US-0013": { "status": "Planned", "title": "User switcher" }
+    "US-0001": { "status": "Planned", "title": "Expo scaffold with tab navigation", "epic": "EPIC-0001" },
+    "US-0002": { "status": "Planned", "title": "Local mock data layer", "epic": "EPIC-0001" },
+    "US-0003": { "status": "Planned", "title": "Catalog browsing with search", "epic": "EPIC-0002" },
+    "US-0004": { "status": "Planned", "title": "Product detail screen", "epic": "EPIC-0002" },
+    "US-0005": { "status": "Planned", "title": "Barcode scanner", "epic": "EPIC-0002" },
+    "US-0006": { "status": "Planned", "title": "Barcode to product lookup", "epic": "EPIC-0003" },
+    "US-0007": { "status": "Planned", "title": "Wishlist management", "epic": "EPIC-0004" },
+    "US-0008": { "status": "Planned", "title": "Wishlist CRUD operations", "epic": "EPIC-0004" },
+    "US-0009": { "status": "Planned", "title": "Wishlist detail view", "epic": "EPIC-0004" },
+    "US-0010": { "status": "Planned", "title": "Share wishlist", "epic": "EPIC-0005" },
+    "US-0011": { "status": "Planned", "title": "Share flow UI", "epic": "EPIC-0005" },
+    "US-0012": { "status": "Planned", "title": "Claim items", "epic": "EPIC-0005" },
+    "US-0013": { "status": "Planned", "title": "User switcher", "epic": "EPIC-0006" }
   },
   "metrics": {
     "storiesCompleted": 0,
