@@ -9,7 +9,43 @@
 
 ## 1. Agent Roster
 
-### 1.1 Compass — Product Owner (PO) Agent
+### 1.0 Conductor — Delivery Manager Agent
+
+| Attribute | Detail |
+|-----------|--------|
+| **Role** | Orchestrates all agents, manages context flow, tracks progress, enforces timelines |
+| **BLAST Phase** | All phases — spans the entire BLAST framework |
+| **Input Artifacts** | All project files — `AGENTS.md`, `PROJECT.md`, `docs/AGENT_PLAN.md`, `docs/RELEASE_PLAN.md` |
+| **Output Artifacts** | Updated `progress.md`, orchestration decisions, phase handoff context |
+| **Instruction File** | `docs/agents/DM_AGENT.md` |
+
+**How it works:** Conductor runs as the primary Claude Code session. It spawns each specialized agent as a sub-agent using the Agent tool, passing explicit context (branch names, file paths, decisions from prior phases). Agents run in fresh contexts with no shared memory — Conductor is the connective tissue.
+
+**Prompt to start the hackathon:**
+```
+Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the 
+Delivery Manager orchestrating 7 specialized agents for today's hackathon. Follow 
+the orchestration playbook in your instruction file. Begin with Phase 1: spawn 
+Compass to prioritize the backlog.
+```
+
+---
+
+### 1.1 Lens — Code Reviewer Agent
+
+| Attribute | Detail |
+|-----------|--------|
+| **Role** | Reviews every PR/branch for architecture, design system, security, testing, and story compliance |
+| **BLAST Phase** | All phases — quality gate between every phase transition |
+| **Input Artifacts** | All architecture docs, `AGENTS.md`, source code under review |
+| **Output Artifacts** | Structured review reports, bug entries in `docs/BUGS.md` |
+| **Instruction File** | `docs/agents/CODE_REVIEWER_AGENT.md` |
+
+**When spawned:** Conductor spawns Lens after each agent completes its work, before merging to the next phase. Lens produces APPROVE / REQUEST CHANGES / BLOCK verdicts with a structured checklist.
+
+---
+
+### 1.2 Compass — Product Owner (PO) Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -32,7 +68,7 @@ Focus on MVP scope: browsing, barcode scan, wishlist CRUD, and sharing.
 
 ---
 
-### 1.2 Keystone — Architect Agent
+### 1.3 Keystone — Architect Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -55,7 +91,7 @@ architecture/. Your job is to:
 
 ---
 
-### 1.3 Palette — UI Designer Agent
+### 1.4 Palette — UI Designer Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -80,7 +116,7 @@ Use system fonts, maintain WCAG AA contrast ratios, and follow the 4px spacing g
 
 ---
 
-### 1.4 Forge — Backend Developer Agent
+### 1.5 Forge — Backend Developer Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -104,7 +140,7 @@ architecture/DATA_FLOW.md. Your job is to:
 
 ---
 
-### 1.5 Pixel — Frontend Developer Agent
+### 1.6 Pixel — Frontend Developer Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -128,7 +164,7 @@ architecture/DESIGN_SYSTEM.md and architecture/SYSTEM_ARCHITECTURE.md. Your job 
 
 ---
 
-### 1.6 Sentinel — Functional Tester Agent
+### 1.7 Sentinel — Functional Tester Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -153,7 +189,7 @@ docs/TEST_CASES.md. Your job is to:
 
 ---
 
-### 1.7 Circuit — Automation Tester Agent
+### 1.8 Circuit — Automation Tester Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -179,26 +215,42 @@ Structure: __tests__/services/, __tests__/components/, __tests__/screens/
 ## 2. Agent Orchestration
 
 ```
+Conductor (DM) orchestrates the full pipeline — spawning agents as sub-agents:
+
 Phase 1: Blueprint (30 min)
-  PO Agent → Validates requirements, prioritizes backlog for hackathon scope
+  Conductor spawns → Compass
+  Compass → Validates requirements, prioritizes backlog for hackathon scope
+  Conductor reviews output, updates progress.md
        ↓
 Phase 2: Architect (60 min)
+  Conductor spawns → Keystone (passes Compass's priority list)
   Keystone → Scaffolds project, creates types, service interfaces
+  Conductor spawns → Lens (reviews scaffold, types, service interfaces)
+  Lens gate: APPROVE → proceed / REQUEST CHANGES → Keystone fixes
        ↓
 Phase 3: Link + Stylize (150 min, PARALLEL)
+  Conductor spawns → Forge + Pixel simultaneously (passes Keystone's scaffold context)
   ┌─ Forge → Implements services, mock data, Context providers
   └─ Pixel → Builds screens, components, navigation
-  (Palette provides guidance to Pixel as needed)
+  (Conductor passes Palette's design guidance to Pixel)
+  Conductor spawns → Lens (reviews Forge's services + Pixel's screens)
+  Lens gate: APPROVE → proceed / REQUEST CHANGES → agents fix
        ↓
 Phase 4: Integration (60 min)
+  Conductor spawns → Pixel (passes Forge's completed service paths)
   Pixel → Wires services to screens, end-to-end flows
+  Conductor spawns → Lens (reviews integration code)
+  Lens gate: APPROVE → proceed to testing
        ↓
 Phase 5: Trigger (60 min, PARALLEL)
+  Conductor spawns → Sentinel + Circuit simultaneously
   ┌─ Sentinel → Executes test cases, reports bugs
   └─ Circuit → Creates Jest test suites
+  Conductor spawns → Lens (reviews test quality and coverage)
+  Conductor routes critical bugs back to Forge/Pixel if needed
        ↓
 Phase 6: Polish (30 min)
-  All Agents → Bug fixes, demo preparation, documentation cleanup
+  Conductor spawns fixers as needed → Final merge, demo prep
 ```
 
 ---
@@ -207,9 +259,9 @@ Phase 6: Polish (30 min)
 
 | Time | Duration | Phase | Agent(s) Active | Deliverable |
 |------|----------|-------|-----------------|-------------|
-| 9:00–9:30 | 30 min | Blueprint | Compass | Prioritized backlog, refined ACs |
-| 9:30–10:30 | 60 min | Architect | Keystone | Project scaffold, types, service stubs |
-| 10:30–1:00 | 150 min | Link + Stylize | Forge + Pixel (parallel) | Services + screens implemented |
+| 9:00–9:30 | 30 min | Blueprint | Conductor → Compass | Prioritized backlog, refined ACs |
+| 9:30–10:30 | 60 min | Architect | Conductor → Keystone | Project scaffold, types, service stubs |
+| 10:30–1:00 | 150 min | Link + Stylize | Conductor → Forge + Pixel (parallel) | Services + screens implemented |
 | 1:00–1:30 | 30 min | Break | — | — |
 | 1:30–2:30 | 60 min | Integration | Pixel | End-to-end flows working |
 | 2:30–3:30 | 60 min | Trigger | Sentinel + Circuit (parallel) | Test results, Jest suites |
@@ -222,6 +274,8 @@ Phase 6: Polish (30 min)
 
 | Agent | Real Work (POC) | Simulated Work |
 |-------|----------------|----------------|
+| **Conductor** (DM) | Phase orchestration, context passing, progress tracking | Stakeholder comms, risk management |
+| **Lens** (Reviewer) | PR reviews, architecture/design compliance checks | Security audits, performance reviews |
 | **Compass** (PO) | Backlog prioritization, AC refinement | Stakeholder interviews, market research |
 | **Keystone** (Architect) | Project scaffold, types, service interfaces | Infrastructure design, CI/CD pipeline |
 | **Palette** (UI Designer) | Theme file, component styles | Full Figma mockups, accessibility audit |
@@ -259,6 +313,8 @@ Use Claude Code's built-in Agent tool to spawn sub-agents for independent tasks.
 
 | Agent | Must Read | May Reference |
 |-------|-----------|---------------|
+| Conductor (DM) | All files — `AGENTS.md`, `PROJECT.md`, `docs/AGENT_PLAN.md`, `docs/RELEASE_PLAN.md` | `progress.md` |
+| Lens (Reviewer) | All architecture docs, `AGENTS.md`, source code under review | `docs/BUGS.md` |
 | Compass (PO) | `PROJECT.md`, `docs/RELEASE_PLAN.md` | `docs/TEST_CASES.md` |
 | Keystone (Architect) | `architecture/SYSTEM_ARCHITECTURE.md`, `architecture/DATA_FLOW.md` | `architecture/DIAGRAMS.md` |
 | Palette (UI Designer) | `architecture/DESIGN_SYSTEM.md` | `PROJECT.md` |
