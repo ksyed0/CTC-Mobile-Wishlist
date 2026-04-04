@@ -269,8 +269,39 @@ function main() {
   );
 }
 
+function watch(config) {
+  const watchFiles = [
+    config.docs.releasePlan,
+    config.docs.testCases,
+    config.docs.bugs,
+    config.docs.costLog,
+    config.docs.lessons,
+    config.progress.path,
+  ].map((f) => path.join(ROOT, f));
+
+  console.log('[generate-plan] Watching for changes...');
+  let debounce = null;
+  for (const file of watchFiles) {
+    if (!fs.existsSync(file)) continue;
+    fs.watch(file, () => {
+      if (debounce) clearTimeout(debounce);
+      debounce = setTimeout(() => {
+        console.log(`[generate-plan] Change detected, regenerating...`);
+        try {
+          main();
+        } catch (e) {
+          console.error('[generate-plan] Error:', e.message);
+        }
+      }, 1000);
+    });
+  }
+}
+
 try {
   main();
+  if (process.argv.includes('--watch')) {
+    watch(loadConfig());
+  }
 } catch (e) {
   console.error('[generate-plan] Fatal:', e.message);
   process.exit(1);

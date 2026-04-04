@@ -299,3 +299,13 @@
 - 7 new symlinks for multi-platform support
 - 2 new CI jobs: CodeQL SAST, TruffleHog secret scanning
 - 246 tests still passing
+
+**Documentation & Release**
+
+- Updated README.md: added project.md + platform symlinks to project structure, tools/lib/render-html.js, CI Pipeline table with 8 jobs
+- Updated sdlc-status.json: bugsFixed count to 66
+- Consolidated Session 7 stats in progress.md
+- Created PR #9 (feature branch → develop): security fixes, agent framework, CI hardening
+- Created PR #10 (develop → main): merged as release
+- Tagged v0.2.0 on main (pending GitHub release creation)
+- Repo made public for GitHub Advanced Security features
