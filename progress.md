@@ -277,14 +277,6 @@
 - Replaced 11 hardcoded `#D52B1E` CSS references with `var(--brand-primary)` CSS variable
 - Defaults to repo name from `package.json` when config not set
 
-### Stats
-
-- 4 bugs logged (BUG-0051 – BUG-0054), all fixed
-- 9 agent files refactored (686 lines removed, 446 lines added)
-- 1 new file: project.md
-- 7 new symlinks for multi-platform support
-- 246 tests still passing
-
 **Security Fixes — Code Review Findings (BUG-0055 – BUG-0066)**
 
 - Fixed XSS vulnerabilities in render-html.js: 9 locations with unescaped data attributes and onclick handlers (BUG-0055)
@@ -298,5 +290,12 @@
 - Made process-avatars.js face count dynamic from agents.config.json (BUG-0064)
 - Replaced project-specific branch examples with generic placeholders in AGENTS.md and AGENT_PLAN.md (BUG-0065)
 - Added CodeQL SAST and TruffleHog secret scanning to CI pipeline (BUG-0066)
-- 12 bugs logged (BUG-0055 – BUG-0066), all fixed
+
+### Stats
+
+- 16 bugs logged (BUG-0051 – BUG-0066), all fixed
+- 9 agent files refactored to project-agnostic role templates
+- 1 new file: project.md
+- 7 new symlinks for multi-platform support
+- 2 new CI jobs: CodeQL SAST, TruffleHog secret scanning
 - 246 tests still passing

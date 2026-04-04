@@ -111,7 +111,7 @@ Conductor will automatically:
 | Code Reviewer     | **Lens**      | Reviews every PR for quality gates          | `docs/agents/CODE_REVIEWER_AGENT.md`     |
 | Product Owner     | **Compass**   | Requirements, ACs, backlog prioritization   | `docs/agents/PO_AGENT.md`                |
 | Architect         | **Keystone**  | Project scaffold, types, service interfaces | `docs/agents/ARCHITECT_AGENT.md`         |
-| UI Designer       | **Palette**   | Theme, component styles, CTC brand          | `docs/agents/UI_DESIGNER_AGENT.md`       |
+| UI Designer       | **Palette**   | Theme, component styles, brand compliance   | `docs/agents/UI_DESIGNER_AGENT.md`       |
 | Backend Dev       | **Forge**     | Services, mock data, AsyncStorage           | `docs/agents/BE_DEV_AGENT.md`            |
 | Frontend Dev      | **Pixel**     | Screens, components, navigation             | `docs/agents/FE_DEV_AGENT.md`            |
 | Functional Tester | **Sentinel**  | Manual test execution, bug reporting        | `docs/agents/FUNCTIONAL_TESTER_AGENT.md` |
@@ -158,6 +158,14 @@ claude "Read docs/agents/FUNCTIONAL_TESTER_AGENT.md. Execute all test cases."
 
 ```
 CTC-Mobile-Wishlist/
+├── project.md                         # Single project entry point (all agents start here)
+├── CLAUDE.md → project.md             # Platform symlink (Claude Code auto-read)
+├── Gemini.md → project.md             # Platform symlink (Gemini auto-read)
+├── Codex.md → project.md              # Platform symlink (Codex auto-read)
+├── EliteA.md → project.md             # Platform symlink (EliteA auto-read)
+├── CodeMie.md → project.md            # Platform symlink (CodeMie auto-read)
+├── Qwen.md → project.md               # Platform symlink (Qwen auto-read)
+├── MiniMax.md → project.md            # Platform symlink (MiniMax auto-read)
 ├── AGENTS.md                          # AI agent operating standards (BLAST framework)
 ├── PROJECT.md                         # Project constitution
 ├── agents.config.json                 # Agent registry — names, roles, icons, colors, files
@@ -218,7 +226,9 @@ CTC-Mobile-Wishlist/
 │   ├── generate-dashboard.js          # SDLC dashboard generator
 │   ├── process-avatars.js             # Face detection avatar extraction
 │   ├── init-sdlc-status.js            # Generate sdlc-status.json from agents.config.json
-│   └── capture-cost.js                # AI cost capture hook
+│   ├── capture-cost.js                # AI cost capture hook
+│   └── lib/
+│       └── render-html.js             # Shared HTML rendering (XSS-safe output escaping)
 ├── tests/
 │   ├── unit/                          # 246 unit tests (Jest)
 │   └── fixtures/                      # Test fixture data
@@ -289,6 +299,21 @@ When agents run in parallel (e.g., Forge + Pixel in Phase 3), shared state files
 | `orchestrator/git-safe.js`     | Retry-safe push, conflict detection, overlap checking       | Exponential backoff (4 retries), dry-run merge |
 
 Protected shared files: `sdlc-status.json`, `progress.md`, `BUGS.md`, `ID_REGISTRY.md`, `AI_COST_LOG.md`.
+
+### CI Pipeline
+
+GitHub Actions runs on every push/PR to `main` or `develop`:
+
+| Job                         | Purpose                                      |
+| --------------------------- | -------------------------------------------- |
+| **Lint**                    | ESLint on all JS files                       |
+| **Test & Coverage**         | Jest (246 tests) with coverage report upload |
+| **Build**                   | Full pipeline build                          |
+| **Orchestrator Validation** | Validates spawn.js agent/platform listing    |
+| **Prettier Format Check**   | Enforces consistent formatting               |
+| **Dependency Audit**        | `npm audit --audit-level=high`               |
+| **CodeQL SAST**             | Static analysis security testing (JS/TS)     |
+| **Secret Scanning**         | TruffleHog verified secret detection         |
 
 ### Pre-Commit Hooks
 
