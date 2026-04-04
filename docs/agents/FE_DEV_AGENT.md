@@ -21,16 +21,16 @@ You are the **Frontend Developer Agent** for the CTC Mobile Wishlist POC. You ow
 
 ## Assigned User Stories
 
-| Story | Description | Screen(s) |
-|-------|-------------|-----------|
-| US-0001 | Scaffold + tab navigation | Tab layout, all tab screens |
-| US-0003 | Catalog browsing | CatalogScreen, CategoryChips |
-| US-0004 | Product detail | ProductDetailScreen |
-| US-0005 | Barcode scanner | ScannerScreen, BarcodeOverlay |
-| US-0007 | Wishlist management | WishlistsScreen, create modal |
-| US-0009 | Wishlist detail | WishlistDetailScreen, WishlistItemRow |
-| US-0011 | Share flow | ShareScreen, ShareContactRow |
-| US-0013 | User switcher | ProfileScreen or settings modal |
+| Story   | Description               | Screen(s)                             |
+| ------- | ------------------------- | ------------------------------------- |
+| US-0001 | Scaffold + tab navigation | Tab layout, all tab screens           |
+| US-0003 | Catalog browsing          | CatalogScreen, CategoryChips          |
+| US-0004 | Product detail            | ProductDetailScreen                   |
+| US-0005 | Barcode scanner           | ScannerScreen, BarcodeOverlay         |
+| US-0007 | Wishlist management       | WishlistsScreen, create modal         |
+| US-0009 | Wishlist detail           | WishlistDetailScreen, WishlistItemRow |
+| US-0011 | Share flow                | ShareScreen, ShareContactRow          |
+| US-0013 | User switcher             | ProfileScreen or settings modal       |
 
 ## Screen Implementation Order
 
@@ -47,16 +47,16 @@ You are the **Frontend Developer Agent** for the CTC Mobile Wishlist POC. You ow
 
 Build these reusable components in `src/components/`:
 
-| Component | File | Used In |
-|-----------|------|---------|
-| ProductCard | `ProductCard.tsx` | CatalogScreen, HomeScreen |
-| WishlistCard | `WishlistCard.tsx` | WishlistsScreen, HomeScreen |
-| WishlistItemRow | `WishlistItemRow.tsx` | WishlistDetailScreen |
-| CategoryChip | `CategoryChip.tsx` | CatalogScreen |
-| BarcodeOverlay | `BarcodeOverlay.tsx` | ScannerScreen |
-| ShareContactRow | `ShareContactRow.tsx` | ShareScreen |
-| EmptyState | `EmptyState.tsx` | Any screen with no data |
-| LoadingSpinner | `LoadingSpinner.tsx` | Any loading state |
+| Component       | File                  | Used In                     |
+| --------------- | --------------------- | --------------------------- |
+| ProductCard     | `ProductCard.tsx`     | CatalogScreen, HomeScreen   |
+| WishlistCard    | `WishlistCard.tsx`    | WishlistsScreen, HomeScreen |
+| WishlistItemRow | `WishlistItemRow.tsx` | WishlistDetailScreen        |
+| CategoryChip    | `CategoryChip.tsx`    | CatalogScreen               |
+| BarcodeOverlay  | `BarcodeOverlay.tsx`  | ScannerScreen               |
+| ShareContactRow | `ShareContactRow.tsx` | ShareScreen                 |
+| EmptyState      | `EmptyState.tsx`      | Any screen with no data     |
+| LoadingSpinner  | `LoadingSpinner.tsx`  | Any loading state           |
 
 ## Context Hook Usage
 

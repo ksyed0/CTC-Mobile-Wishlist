@@ -12,8 +12,8 @@
  */
 
 module.exports = {
-  name: 'Claude Code',
-  cli: 'claude',
+  name: "Claude Code",
+  cli: "claude",
 
   /**
    * How to spawn a single agent from the terminal.
@@ -32,7 +32,7 @@ module.exports = {
       `Use the Agent tool to spawn a new agent:`,
       `  Prompt: "Read ${agent.instructionFile} for your full instructions.`,
       `           ${agent.task}"`,
-    ].join('\n');
+    ].join("\n");
   },
 
   /**
@@ -42,30 +42,35 @@ module.exports = {
   parallelSpawnPattern(agents) {
     return [
       `Use the Agent tool to spawn ${agents.length} agents in a single message:`,
-      ...agents.map((a, i) => [
-        `  Agent ${i + 1}:`,
-        `    Prompt: "Read ${a.instructionFile} for your full instructions.`,
-        `             ${a.task}"`,
-      ].join('\n')),
-    ].join('\n');
+      ...agents.map((a, i) =>
+        [
+          `  Agent ${i + 1}:`,
+          `    Prompt: "Read ${a.instructionFile} for your full instructions.`,
+          `             ${a.task}"`,
+        ].join("\n"),
+      ),
+    ].join("\n");
   },
 
   /**
    * How to run parallel terminal sessions for maximum velocity.
    */
   parallelTerminals(agents) {
-    return agents.map((a, i) =>
-      `# Terminal ${i + 1}: ${a.name}\nclaude "Read ${a.instructionFile} for your full instructions. ${a.task}"`
-    ).join('\n\n');
+    return agents
+      .map(
+        (a, i) =>
+          `# Terminal ${i + 1}: ${a.name}\nclaude "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
+      )
+      .join("\n\n");
   },
 
   /**
    * Platform-specific notes for the orchestration docs.
    */
   notes: [
-    'Claude Code supports sub-agent spawning natively via the Agent tool.',
-    'Parallel agents: include multiple Agent tool calls in a single response.',
-    'Context window is managed automatically — prior messages compress as needed.',
-    'File read/write/edit tools are built in.',
+    "Claude Code supports sub-agent spawning natively via the Agent tool.",
+    "Parallel agents: include multiple Agent tool calls in a single response.",
+    "Context window is managed automatically — prior messages compress as needed.",
+    "File read/write/edit tools are built in.",
   ],
 };

@@ -126,22 +126,27 @@ CTC-Mobile-Wishlist/
 ## Key Design Decisions
 
 ### 1. Expo Router (file-based routing)
+
 - **Why:** Zero-config routing, deep linking support, familiar Next.js-like patterns.
 - **Trade-off:** Less flexibility than React Navigation for complex nested navigators, but sufficient for POC scope.
 
 ### 2. React Context for State (not Redux/Zustand)
+
 - **Why:** POC has simple state needs (current user, wishlists, products). Context avoids dependency bloat.
 - **Trade-off:** Would not scale to production with many re-renders. Production should evaluate Zustand or Redux Toolkit.
 
 ### 3. AsyncStorage for Persistence
+
 - **Why:** Simplest local KV store for React Native. No native module linking needed with Expo.
 - **Trade-off:** Not suitable for large datasets or complex queries. Production would use a real backend or SQLite.
 
 ### 4. Service Layer Abstraction
+
 - **Why:** All data access goes through typed service interfaces. When the POC transitions to production, only the service implementations need to change — screens and components remain untouched.
 - **Pattern:** Each service exports async functions that return typed data. No direct AsyncStorage calls outside services.
 
 ### 5. Mock Auth via Context
+
 - **Why:** A user context provider simulates login state and user identity. Screens conditionally render based on `isGuest` flag.
 - **Trade-off:** No token management, no session expiry. Production would integrate with CTC's identity platform.
 
@@ -207,11 +212,11 @@ Confirmation toast shown
 
 ## Platform-Specific Considerations
 
-| Concern | iOS | Android |
-|---------|-----|---------|
-| Camera permissions | `NSCameraUsageDescription` in Info.plist | `CAMERA` permission in AndroidManifest |
-| Contacts permissions | `NSContactsUsageDescription` in Info.plist | `READ_CONTACTS` in AndroidManifest |
-| Barcode formats | All standard (EAN-13, UPC-A, QR) via expo-camera | Same |
-| Status bar | Dark content, light background | Same |
-| Navigation | Native iOS back gesture supported by expo-router | Android hardware back button handled |
-| Safe areas | `SafeAreaProvider` wraps all screens | Same |
+| Concern              | iOS                                              | Android                                |
+| -------------------- | ------------------------------------------------ | -------------------------------------- |
+| Camera permissions   | `NSCameraUsageDescription` in Info.plist         | `CAMERA` permission in AndroidManifest |
+| Contacts permissions | `NSContactsUsageDescription` in Info.plist       | `READ_CONTACTS` in AndroidManifest     |
+| Barcode formats      | All standard (EAN-13, UPC-A, QR) via expo-camera | Same                                   |
+| Status bar           | Dark content, light background                   | Same                                   |
+| Navigation           | Native iOS back gesture supported by expo-router | Android hardware back button handled   |
+| Safe areas           | `SafeAreaProvider` wraps all screens             | Same                                   |

@@ -1,11 +1,15 @@
 ## Session 1 — 2026-04-03
+
 ### What Was Done
+
 - Installed PlanVisualizer tool from ksyed0/PlanVisualizer
 - Initialized project docs (RELEASE_PLAN, TEST_CASES, BUGS, AI_COST_LOG, LESSONS, ID_REGISTRY)
 - Configured plan-visualizer.config.json for CTC-Mobile-Wishlist
 
 ## Session 2 — 2026-04-03
+
 ### What Was Done
+
 - Created full release plan: 6 epics, 13 user stories, 21 tasks, 40 ACs, 36 test cases
 - Created architecture docs: SYSTEM_ARCHITECTURE.md, DESIGN_SYSTEM.md, DATA_FLOW.md
 - Created business plan with CTC revenue analysis and 4-channel uplift model
@@ -15,35 +19,43 @@
 - Converted all amounts to CAD with onshore rates ($200/$160/$190 CAD/h)
 
 ## Session 3 — 2026-04-04
+
 ### What Was Done
 
 **Offshore Rate Standardization**
+
 - All offshore rates updated to flat $72 CAD/h
 - Traditional SDLC: $663K-890K | EliteA: $344K | ROI: 19,270%
 - Updated generate-pptx.py, BUSINESS_PLAN.md, regenerated PPTX
 
 **Mermaid Architecture Diagrams**
+
 - 8 diagrams in architecture/DIAGRAMS.md (system, data flow, navigation, services, contexts, user journeys, components)
 
 **Specialized Agent Framework (9 Agents)**
+
 - Conductor (DM), Lens (Code Reviewer), Compass (PO), Keystone (Architect), Palette (UI Designer), Forge (BE Dev), Pixel (FE Dev), Sentinel (Functional Tester), Circuit (Automation Tester)
 - Per-role instruction files in docs/agents/ with PlanVisualizer integration
 - Agent orchestration plan with 6-phase hackathon timeline
 
 **Live SDLC Dashboard**
+
 - sdlc-status.json + generate-dashboard.js → CTC-branded HTML dashboard
 - Auto-refreshing visualization: agent pipeline, phase progress, metrics, stories, activity log
 - npm run dashboard / dashboard:watch commands
 
 **README, CI Fix, PR**
+
 - Full README with project description and agentic SDLC instructions
 - Added test/test:coverage npm script aliases for CI
 - Merged PR #2 to develop
 
 ## Session 4 — 2026-04-04
+
 ### What Was Done
 
 **Documentation & Agent Optimization (BUG-0001 – BUG-0024)**
+
 - Reviewed all agent docs, architecture, and tooling — logged 24 bugs
 - Fixed AsyncStorage key conflict (global `wishlists` key, filter by ownerId)
 - Added Palette agent spawn point in Phase 3
@@ -56,6 +68,7 @@
 - Added device compatibility matrix (iPhone 17 Pro Max, Pixel 10 Pro XL)
 
 **SDLC Dashboard Enhancements**
+
 - Light/dark mode toggle with localStorage persistence across 5s auto-refresh
 - WCAG contrast fixes for both themes
 - Responsive layout: 5 CSS breakpoints (phone portrait/landscape, tablet portrait/landscape, small phone)
@@ -67,12 +80,14 @@
 - Cross-link to Plan Visualizer in footer
 
 **File Restructuring**
+
 - Created `src/` directory structure (app, components, services, types, theme, assets, hooks, contexts)
 - Added Expo/React Native entries to .gitignore
 - Added testPathIgnorePatterns to jest.config.js
 - Added Expo convenience scripts to package.json (start, android, ios)
 
 **Face Detection Avatar System (tracking.js)**
+
 - Built `tools/process-avatars.js` — extracts 9 agent headshots from composite team-grid.png
 - Viola-Jones face detection via tracking.js with Node.js shim
 - Configurable padding multiplier, grid fallback, NMS merge
@@ -80,6 +95,7 @@
 - Dashboard fallback chain: headshot → full image → emoji
 
 **Orchestration Loop Safety (BUG-0025 – BUG-0030)**
+
 - Retry state tracking with progress.md log format
 - Concrete escalation workflow (pause, BLOCKED status, resume protocol)
 - BLOCK recovery protocol (Conductor + Lens coordination)
@@ -88,6 +104,7 @@
 - Explicit BLOCK vs REQUEST CHANGES threshold criteria for Lens
 
 **Platform-Agnostic Orchestration (BUG-0031)**
+
 - Created `orchestrator/` adapter layer
 - Adapters: Claude Code, OpenAI Codex, Google Gemini, Aider (open-source)
 - `spawn.js` CLI: --agent, --list-platforms, --print-all
@@ -95,16 +112,19 @@
 - Updated DM_AGENT.md and README.md with multi-platform instructions
 
 **Cross-Platform Compatibility**
+
 - Added `.gitattributes` for consistent line endings and binary markers
 - Case-insensitive file lookup in process-avatars.js (handles Windows)
 - All image references enforce lowercase filenames
 
 ### Stats
+
 - 31 bugs logged (BUG-0001 – BUG-0031), all fixed
 - 215 tests passing, 90.5% coverage
 - 39 files changed, ~2,800 lines added
 
 ### Next Steps (Monday Hackathon)
+
 1. Drop agent images into `docs/agents/images/` (see README for naming convention)
 2. Run `npm run build` to extract headshots and generate dashboards
 3. Run `npm run dashboard:watch` and open `docs/dashboard.html`

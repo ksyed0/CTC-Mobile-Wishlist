@@ -1,5 +1,5 @@
-'use strict';
-const { parseLessons } = require('../../tools/lib/parse-lessons');
+"use strict";
+const { parseLessons } = require("../../tools/lib/parse-lessons");
 
 const sample = `
 # LESSONS.md — Hard-Won Lessons
@@ -26,21 +26,27 @@ const sample = `
 **Date:** 2026-03-10
 `;
 
-describe('parseLessons', () => {
+describe("parseLessons", () => {
   let lessons;
-  beforeAll(() => { lessons = parseLessons(sample); });
-
-  it('returns an array', () => expect(Array.isArray(lessons)).toBe(true));
-  it('parses all lesson entries', () => expect(lessons).toHaveLength(3));
-  it('parses L-0001 id correctly', () => expect(lessons[0].id).toBe('L-0001'));
-  it('parses L-0007 id correctly', () => expect(lessons[1].id).toBe('L-0007'));
-  it('parses title correctly', () => expect(lessons[0].title).toMatch(/Jest upgrade/));
-  it('parses rule text', () => expect(lessons[0].rule).toMatch(/Always upgrade Jest/));
-  it('parses context text', () => expect(lessons[0].context).toMatch(/inflight/));
-  it('parses date', () => expect(lessons[0].date).toBe('2026-03-10'));
-  it('preserves document order (non-sequential IDs)', () => {
-    expect(lessons.map(l => l.id)).toEqual(['L-0001', 'L-0007', 'L-0011']);
+  beforeAll(() => {
+    lessons = parseLessons(sample);
   });
-  it('handles empty markdown', () => expect(parseLessons('')).toEqual([]));
-  it('handles markdown with no lessons', () => expect(parseLessons('# Title\nSome text\n')).toEqual([]));
+
+  it("returns an array", () => expect(Array.isArray(lessons)).toBe(true));
+  it("parses all lesson entries", () => expect(lessons).toHaveLength(3));
+  it("parses L-0001 id correctly", () => expect(lessons[0].id).toBe("L-0001"));
+  it("parses L-0007 id correctly", () => expect(lessons[1].id).toBe("L-0007"));
+  it("parses title correctly", () =>
+    expect(lessons[0].title).toMatch(/Jest upgrade/));
+  it("parses rule text", () =>
+    expect(lessons[0].rule).toMatch(/Always upgrade Jest/));
+  it("parses context text", () =>
+    expect(lessons[0].context).toMatch(/inflight/));
+  it("parses date", () => expect(lessons[0].date).toBe("2026-03-10"));
+  it("preserves document order (non-sequential IDs)", () => {
+    expect(lessons.map((l) => l.id)).toEqual(["L-0001", "L-0007", "L-0011"]);
+  });
+  it("handles empty markdown", () => expect(parseLessons("")).toEqual([]));
+  it("handles markdown with no lessons", () =>
+    expect(parseLessons("# Title\nSome text\n")).toEqual([]));
 });

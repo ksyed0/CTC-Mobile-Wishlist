@@ -13,6 +13,7 @@ Before any code is written or tools are built:
 1. **Verify all project files exist** — Create any that are missing. The full file list and purpose of each is defined in the 📂 File & Deliverable Structure table at the end of this document.
 2. **Initialize `PROJECT.md`** — Ensure the Project Constitution is populated with data schemas, behavioral rules, architectural invariants, user profile (§5), and design system (§6).
 3. **Halt Execution** — No code or scripts may be written until:
+
 - All Discovery Questions in `PROJECT.md` are answered (see Phase 1)
 - The Data Schema in `PROJECT.md` is confirmed
 - `task_plan.md` has an approved Blueprint
@@ -187,7 +188,7 @@ Every new view must match existing ones automatically. Use the design system as 
 
 When a bug is resolved after significant debugging, encode the fix as a permanent rule here or in `docs/LESSONS.md`. Format:
 
-> **”[Never/Always] [specific behaviour].** *Learned when [brief description of failure].*”
+> **”[Never/Always] [specific behaviour].** _Learned when [brief description of failure]._”
 
 At the end of every session, record new learnings. Apply the Self-Annealing loop for all tool failures:
 
@@ -465,7 +466,7 @@ All APIs exposed or consumed by this project must follow consistent design and v
 ```json
 {
   "success": true,
-  "data": { },
+  "data": {},
   "error": null,
   "meta": { "version": "1.0", "timestamp": "ISO8601" }
 }
@@ -594,7 +595,7 @@ Steps:
 Post-rollback:
 
 - Log incident in progress.md with timeline, root cause, and resolution.
-- Open a bugfix/* branch to address the root cause before re-attempting deployment.
+- Open a bugfix/\* branch to address the root cause before re-attempting deployment.
 
 ```other
 

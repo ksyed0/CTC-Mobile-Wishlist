@@ -12,8 +12,8 @@
  */
 
 module.exports = {
-  name: 'Google Gemini CLI',
-  cli: 'gemini',
+  name: "Google Gemini CLI",
+  cli: "gemini",
 
   /**
    * How to spawn a single agent from the terminal.
@@ -33,7 +33,7 @@ module.exports = {
       `  gemini "Read ${agent.instructionFile} for your full instructions. ${agent.task}"`,
       ``,
       `Note: Use separate terminal sessions for parallel agents.`,
-    ].join('\n');
+    ].join("\n");
   },
 
   /**
@@ -42,31 +42,36 @@ module.exports = {
   parallelSpawnPattern(agents) {
     return [
       `Open ${agents.length} separate terminals and run each:`,
-      ...agents.map((a, i) => [
-        `  Terminal ${i + 1} (${a.name}):`,
-        `    gemini "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
-      ].join('\n')),
+      ...agents.map((a, i) =>
+        [
+          `  Terminal ${i + 1} (${a.name}):`,
+          `    gemini "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
+        ].join("\n"),
+      ),
       ``,
       `Wait for all terminals to complete before proceeding.`,
-    ].join('\n');
+    ].join("\n");
   },
 
   /**
    * How to run parallel terminal sessions for maximum velocity.
    */
   parallelTerminals(agents) {
-    return agents.map((a, i) =>
-      `# Terminal ${i + 1}: ${a.name}\ngemini "Read ${a.instructionFile} for your full instructions. ${a.task}"`
-    ).join('\n\n');
+    return agents
+      .map(
+        (a, i) =>
+          `# Terminal ${i + 1}: ${a.name}\ngemini "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
+      )
+      .join("\n\n");
   },
 
   /**
    * Platform-specific notes for the orchestration docs.
    */
   notes: [
-    'Gemini CLI supports file operations and shell commands natively.',
-    'For parallel agents, use separate terminal sessions.',
-    'Gemini supports function calling — agent instruction files work as system prompts.',
-    'Use Gemini 2.5 Pro for best code generation results.',
+    "Gemini CLI supports file operations and shell commands natively.",
+    "For parallel agents, use separate terminal sessions.",
+    "Gemini supports function calling — agent instruction files work as system prompts.",
+    "Use Gemini 2.5 Pro for best code generation results.",
   ],
 };

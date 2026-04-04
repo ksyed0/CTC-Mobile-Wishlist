@@ -13,8 +13,8 @@
  */
 
 module.exports = {
-  name: 'Aider (Open-Source)',
-  cli: 'aider',
+  name: "Aider (Open-Source)",
+  cli: "aider",
 
   /**
    * How to spawn a single agent from the terminal.
@@ -36,7 +36,7 @@ module.exports = {
       ``,
       `Note: Aider runs as independent sessions. Use --yes-always for autonomous mode.`,
       `For specific model: aider --model ollama/llama3 --message "..."`,
-    ].join('\n');
+    ].join("\n");
   },
 
   /**
@@ -45,32 +45,37 @@ module.exports = {
   parallelSpawnPattern(agents) {
     return [
       `Open ${agents.length} separate terminals and run each:`,
-      ...agents.map((a, i) => [
-        `  Terminal ${i + 1} (${a.name}):`,
-        `    aider --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
-      ].join('\n')),
+      ...agents.map((a, i) =>
+        [
+          `  Terminal ${i + 1} (${a.name}):`,
+          `    aider --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
+        ].join("\n"),
+      ),
       ``,
       `Use --yes-always for autonomous mode. Wait for all to complete.`,
-    ].join('\n');
+    ].join("\n");
   },
 
   /**
    * How to run parallel terminal sessions for maximum velocity.
    */
   parallelTerminals(agents) {
-    return agents.map((a, i) =>
-      `# Terminal ${i + 1}: ${a.name}\naider --yes-always --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`
-    ).join('\n\n');
+    return agents
+      .map(
+        (a, i) =>
+          `# Terminal ${i + 1}: ${a.name}\naider --yes-always --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
+      )
+      .join("\n\n");
   },
 
   /**
    * Platform-specific notes for the orchestration docs.
    */
   notes: [
-    'Aider works with any LLM: OpenAI, Anthropic, Ollama (local), Azure, etc.',
-    'Use --model to specify: --model ollama/llama3, --model claude-3-5-sonnet, --model gpt-4o',
-    'Use --yes-always for fully autonomous operation (no confirmation prompts).',
-    'Aider auto-commits changes to git — configure with --no-auto-commits if needed.',
-    'For local models: install Ollama, pull a model, then use --model ollama/<model-name>.',
+    "Aider works with any LLM: OpenAI, Anthropic, Ollama (local), Azure, etc.",
+    "Use --model to specify: --model ollama/llama3, --model claude-3-5-sonnet, --model gpt-4o",
+    "Use --yes-always for fully autonomous operation (no confirmation prompts).",
+    "Aider auto-commits changes to git — configure with --no-auto-commits if needed.",
+    "For local models: install Ollama, pull a model, then use --model ollama/<model-name>.",
   ],
 };

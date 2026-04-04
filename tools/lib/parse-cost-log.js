@@ -1,10 +1,11 @@
-'use strict';
+"use strict";
 
-const COST_LOG_REGEX = /^\|\s*(\d{4}-\d{2}-\d{2})\s*\|\s*(\S+)\s*\|\s*([^|]+?)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*([\d.]+)\s*\|/;
+const COST_LOG_REGEX =
+  /^\|\s*(\d{4}-\d{2}-\d{2})\s*\|\s*(\S+)\s*\|\s*([^|]+?)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*([\d.]+)\s*\|/;
 
 function parseCostLog(markdown) {
   const rows = [];
-  const lines = markdown.split('\n');
+  const lines = markdown.split("\n");
   for (const line of lines) {
     const m = line.match(COST_LOG_REGEX);
     if (!m) continue;
@@ -36,7 +37,13 @@ function aggregateCostByBranch(rows) {
   const agg = {};
   for (const row of deduped) {
     if (!agg[row.branch]) {
-      agg[row.branch] = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, costUsd: 0, sessions: 0 };
+      agg[row.branch] = {
+        inputTokens: 0,
+        outputTokens: 0,
+        cacheReadTokens: 0,
+        costUsd: 0,
+        sessions: 0,
+      };
     }
     agg[row.branch].inputTokens += row.inputTokens;
     agg[row.branch].outputTokens += row.outputTokens;

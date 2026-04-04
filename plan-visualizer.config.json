@@ -1,5 +1,8 @@
 {
-  "project": { "name": "CTC-Mobile-Wishlist", "tagline": "CTC Mobile Wishlist application." },
+  "project": {
+    "name": "CTC-Mobile-Wishlist",
+    "tagline": "CTC Mobile Wishlist application."
+  },
   "docs": {
     "releasePlan": "docs/RELEASE_PLAN.md",
     "testCases": "docs/TEST_CASES.md",
@@ -10,5 +13,8 @@
   },
   "coverage": { "summaryPath": "docs/coverage/coverage-summary.json" },
   "progress": { "path": "progress.md" },
-  "costs": { "hourlyRate": 100, "tshirtHours": { "S": 4, "M": 8, "L": 16, "XL": 32 } }
+  "costs": {
+    "hourlyRate": 100,
+    "tshirtHours": { "S": 4, "M": 8, "L": 16, "XL": 32 }
+  }
 }

@@ -72,6 +72,7 @@ app/
 ## Type Definitions (from DATA_FLOW.md)
 
 Implement these exactly:
+
 - `Product` — id, barcode, name, description, price, image, category, inStock
 - `Category` — id, name, icon
 - `Wishlist` — id, name, ownerId, createdAt, items, sharedWith
@@ -81,11 +82,11 @@ Implement these exactly:
 
 ## AsyncStorage Key Schema
 
-| Key | Value Type | Description |
-|-----|-----------|-------------|
-| `currentUser` | `string` (userId) | Currently logged-in user |
-| `wishlists` | `Wishlist[]` | All wishlists (filtered by ownerId at read) |
-| `recentScans` | `string[]` | Last 10 scanned product IDs |
+| Key           | Value Type        | Description                                 |
+| ------------- | ----------------- | ------------------------------------------- |
+| `currentUser` | `string` (userId) | Currently logged-in user                    |
+| `wishlists`   | `Wishlist[]`      | All wishlists (filtered by ownerId at read) |
+| `recentScans` | `string[]`        | Last 10 scanned product IDs                 |
 
 ## Rules
 

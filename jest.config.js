@@ -1,10 +1,10 @@
 // jest.config.js
 module.exports = {
-  testEnvironment: 'node',
-  testMatch: ['**/tests/unit/**/*.test.js'],
-  testPathIgnorePatterns: ['/node_modules/', '/src/'],
-  collectCoverageFrom: ['tools/lib/**/*.js'],
-  coverageReporters: ['text', 'lcov', 'json-summary'],
+  testEnvironment: "node",
+  testMatch: ["**/tests/unit/**/*.test.js"],
+  testPathIgnorePatterns: ["/node_modules/", "/src/"],
+  collectCoverageFrom: ["tools/lib/**/*.js"],
+  coverageReporters: ["text", "lcov", "json-summary"],
   coverageThreshold: {
     global: {
       lines: 80,

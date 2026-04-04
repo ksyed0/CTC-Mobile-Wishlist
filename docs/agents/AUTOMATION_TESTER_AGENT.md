@@ -45,41 +45,43 @@ __tests__/
 
 ## Coverage Targets
 
-| Layer | Target | Rationale |
-|-------|--------|-----------|
-| Services (`src/services/`) | ≥ 80% | Business logic — highest priority |
-| Components (`src/components/`) | ≥ 50% | UI rendering — snapshot + interaction |
-| Screens (`src/screens/`) | ≥ 30% | Integration — basic render tests |
-| **Overall** | **≥ 60%** | Hackathon POC target |
+| Layer                          | Target    | Rationale                             |
+| ------------------------------ | --------- | ------------------------------------- |
+| Services (`src/services/`)     | ≥ 80%     | Business logic — highest priority     |
+| Components (`src/components/`) | ≥ 50%     | UI rendering — snapshot + interaction |
+| Screens (`src/screens/`)       | ≥ 30%     | Integration — basic render tests      |
+| **Overall**                    | **≥ 60%** | Hackathon POC target                  |
 
 ## Test Patterns
 
 ### Service Tests
-```typescript
-import { productService } from '../../src/services/productService';
 
-describe('ProductService', () => {
-  it('should return all products', async () => {
+```typescript
+import { productService } from "../../src/services/productService";
+
+describe("ProductService", () => {
+  it("should return all products", async () => {
     const products = await productService.getProducts();
     expect(products.length).toBeGreaterThan(0);
-    expect(products[0]).toHaveProperty('id');
-    expect(products[0]).toHaveProperty('barcode');
+    expect(products[0]).toHaveProperty("id");
+    expect(products[0]).toHaveProperty("barcode");
   });
 
-  it('should find product by barcode', async () => {
-    const product = await productService.getByBarcode('1234567890123');
+  it("should find product by barcode", async () => {
+    const product = await productService.getByBarcode("1234567890123");
     expect(product).not.toBeNull();
-    expect(product?.barcode).toBe('1234567890123');
+    expect(product?.barcode).toBe("1234567890123");
   });
 
-  it('should search case-insensitively', async () => {
-    const results = await productService.search('drill');
+  it("should search case-insensitively", async () => {
+    const results = await productService.search("drill");
     expect(results.length).toBeGreaterThan(0);
   });
 });
 ```
 
 ### Component Tests
+
 ```typescript
 import { render, fireEvent } from '@testing-library/react-native';
 import ProductCard from '../../src/components/ProductCard';
@@ -117,6 +119,7 @@ describe('ProductCard', () => {
 ## Jest Configuration
 
 Ensure `package.json` includes:
+
 ```json
 {
   "scripts": {
@@ -138,8 +141,8 @@ Ensure `package.json` includes:
 
 ```typescript
 // jest.setup.js
-import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
-jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
+import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock";
+jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage);
 ```
 
 ## Rules
