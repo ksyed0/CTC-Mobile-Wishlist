@@ -537,3 +537,175 @@
 - **Found in:** `.github/workflows/ci.yml`
 - **Description:** CI pipeline had lint, test, build, format check, and dependency audit but no static analysis security testing (SAST) or secret scanning. Code vulnerabilities and accidentally committed secrets would go undetected.
 - **Fix:** Added CodeQL SAST job (javascript-typescript) and TruffleHog secret scanning job to CI pipeline.
+
+---
+
+## P1 — Major (feature/pixel-screens review — found by Lens 2026-04-04)
+
+### BUG-0067: AC-0034/AC-0035 — No "I'll Get This" claim button in shared/[id].tsx
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `app/wishlist/shared/[id].tsx` — entire screen
+- **Story:** US-0012
+- **AC:** AC-0034, AC-0035
+- **Description:** The shared wishlist screen renders a read-only list showing "Available to claim" or "Already claimed" text but provides no interactive claim button. AC-0034 requires an "I'll Get This" `TouchableOpacity` per unclaimed item. AC-0035 requires that claiming persists the claimer name and disables the button for other users. Neither UI element exists; the `claimItem` context action is unused from this screen.
+- **Fix:** Add a `TouchableOpacity` "I'll Get This" button to each unclaimed item row in `shared/[id].tsx`. Wire it to `claimItem(wishlistId, item.productId)` from `useWishlists()`. For claimed items, show the claimer's name (or "Someone" to preserve surprise for non-owners per AC-0036) and hide/disable the button. Check if `currentUser.id === wishlist.ownerId` to suppress claimer name for the owner.
+
+### BUG-0068: AC-0036 — Owner can infer claimed status but owner/recipient distinction not implemented
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `app/wishlist/shared/[id].tsx` lines 53-57
+- **Story:** US-0012
+- **AC:** AC-0036
+- **Description:** The screen renders `item.claimedBy ? "Already claimed" : "Available to claim"` for all viewers with no distinction between the wishlist owner and a recipient. AC-0036 requires that the owner cannot see who claimed which item. Currently there is no `currentUser` check against `wishlist.ownerId`; if the owner navigates to the shared view they will see claimed status the same as any recipient. Additionally, the wording "Already claimed" — though it hides the name — was not intentionally designed; it's the absence of an unimplemented feature. The fix for BUG-0067 must also implement this check explicitly.
+- **Fix:** In `shared/[id].tsx`, call `useAuth()` to get `currentUser`. Where `item.claimedBy !== null`, show the claimer name only if `currentUser.id !== wishlist.ownerId`. Owners see "Claimed" (no name); recipients see the claimer's name (or their own name if they claimed it). This satisfies AC-0036 by design, not by accident.
+
+### BUG-0069: AC-0024/AC-0025 — wishlist/[id].tsx shows raw productIds, not names/prices; no remove action
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `app/wishlist/[id].tsx` lines 48-49, 65
+- **Story:** US-0008
+- **AC:** AC-0024, AC-0025
+- **Description:** The wishlist detail screen renders `Product: {item.productId}` (raw ID string) instead of resolving product name and price. AC-0024 requires items show image, name, and price. The `WishlistItemRow` component exists and accepts `productName` and `productPrice` props but is never used here. Additionally, AC-0025 requires a swipe-to-delete or remove button; no such control exists in the screen.
+- **Fix:** (1) Import `useProducts()` and look up each `item.productId` to resolve name and price, then render `WishlistItemRow` with those props. (2) Add a remove button or swipe-to-delete gesture calling `removeItem(wishlist.id, item.productId)` from `useWishlists()`.
+
+### BUG-0070: AC-0013/AC-0014 — No "Add to Wishlist" button on product detail screen
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `app/product/[id].tsx` — entire screen
+- **Story:** US-0004
+- **AC:** AC-0013, AC-0014
+- **Description:** The product detail screen shows product info (name, price, description, stock status) but has no "Add to Wishlist" button. AC-0013 requires the button to be visible and functional. AC-0014 requires a wishlist picker when multiple wishlists exist, or add-to-default. The `addItem` action is available in `WishlistContext` but is not wired to this screen.
+- **Fix:** Add a primary CTA button "Add to Wishlist" at the bottom of `product/[id].tsx`. If the user has multiple wishlists, show an `Alert.prompt` or modal picker. Call `addItem(selectedWishlistId, product.id)` from `useWishlists()`. Guard against guest users (show login prompt instead).
+
+### BUG-0071: US-0006 scan screen is a placeholder stub — AC-0017 through AC-0020 not delivered
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `app/(tabs)/scan.tsx` — entire screen
+- **Story:** US-0006
+- **AC:** AC-0017, AC-0018, AC-0019, AC-0020
+- **Description:** The scan screen renders a static message "Camera integration coming in next phase." No expo-camera integration, no barcode overlay, no permission handling, and no barcode-to-product lookup are present. Prior context indicated Pixel used expo-camera with a simulator fallback (TextInput for manual barcode entry, AC-0043), but this code was not committed. All four US-0006 acceptance criteria are unmet.
+- **Fix:** Replace the stub with an expo-camera `CameraView` that scans barcodes. On a real device, use camera scanning. On simulator, show `BarcodeOverlay` and a manual TextInput fallback (AC-0043). On scan, call `getByBarcode(code)` from `useProducts()`. Navigate to `product/[barcode-product-id]` on success; show "Product not found" on failure. Request camera permission gracefully (AC-0020).
+
+### BUG-0072: shared/[id].tsx shows raw productIds — product names and prices not resolved
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `app/wishlist/shared/[id].tsx` line 52
+- **Story:** US-0011
+- **AC:** AC-0032
+- **Description:** Like `wishlist/[id].tsx`, the shared view renders `Product: {item.productId}` raw IDs. AC-0032 requires shared wishlist items to show image, name, price, and claimed status. Product context is not imported and `useProducts()` is not called.
+- **Fix:** Import `useProducts()`, resolve `item.productId` to product name and price for each item. Use or extend `WishlistItemRow` for a consistent display.
+
+### BUG-0073: No component tests for any screen or UI component
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `tests/` — no component or screen test files
+- **Story:** All UI stories
+- **Description:** There are service unit tests for `wishlistService`, `productService`, `userService`, and `wishlistUtils` but zero component/screen tests exist. The agent instruction file requires component tests for all new UI components. 8 screens and 7 components were built with no corresponding test coverage.
+- **Fix:** Add React Native Testing Library tests for at minimum: `ProductCard`, `WishlistCard`, `WishlistItemRow`, `EmptyState`, `CategoryChip`, `LoginScreen`, and `CatalogScreen`. Test render output, prop handling, and key interactions (press handlers).
+
+## P2 — Minor (feature/pixel-screens review — found by Lens 2026-04-04)
+
+### BUG-0074: No accessibility attributes on any interactive elements
+
+- **Severity:** Minor
+- **Status:** Open
+- **Found in:** All components and screens — `components/`, `app/`
+- **Story:** US-0001 (design system compliance)
+- **Description:** Zero `accessibilityRole`, `accessibilityLabel`, or `accessibilityHint` attributes are present on any `TouchableOpacity` or `Image` element across all 7 components and 8 screens. The design system (DESIGN_SYSTEM.md §8) requires all images to have `accessibilityLabel` and all buttons to have `accessibilityRole`.
+- **Fix:** Add `accessibilityRole="button"` to all `TouchableOpacity` elements. Add descriptive `accessibilityLabel` to image placeholders. Add `accessibilityLabel` to icon-only buttons (chevron, heart icons in `WishlistCard`).
+
+### BUG-0075: catalog.tsx does not use ProductCard component; wishlists.tsx does not use WishlistCard
+
+- **Severity:** Minor
+- **Status:** Open
+- **Found in:** `app/(tabs)/catalog.tsx` lines 23-33; `app/(tabs)/wishlists.tsx` lines 36-50
+- **Story:** US-0003, US-0007
+- **Description:** Both screens render inline ad-hoc card `View` elements instead of using the dedicated `ProductCard` and `WishlistCard` components that Pixel built. This creates duplicate rendering logic and means the components are never exercised by the running app. The catalog also lacks the category chip filter row (AC-0009) and the product grid is single-column with no `onPress` navigation to product detail (AC-0011).
+- **Fix:** Replace inline card rendering in `catalog.tsx` with `<ProductCard product={item} onPress={() => router.push(\`/product/${item.id}\`)} />`. Replace inline rendering in `wishlists.tsx` with `<WishlistCard wishlist={item} onPress={() => router.push(\`/wishlist/${item.id}\`)} />`. Add a horizontal `FlatList`of`CategoryChip` components above the product list.
+
+### BUG-0076: wishlistUtils.ts duplicated — exists in both main branch and Forge's pending branch
+
+- **Severity:** Minor
+- **Status:** Open
+- **Found in:** `utils/wishlistUtils.ts`
+- **Story:** US-0009
+- **Description:** Per prior context, Forge has `wishlistUtils.ts` on a separate unmerged branch. Pixel independently created an identical copy here. When Forge's branch is merged there will be a duplicate file conflict. Both implementations compute `getTotalPrice` identically.
+- **Fix:** When merging Forge's branch, verify both files are identical, keep one copy, and delete the duplicate. Pixel's version in `utils/wishlistUtils.ts` is well-written and should be retained. Coordinate merge order to resolve without conflict.
+
+### BUG-0079: Dashboard spotlight always shows Conductor because Conductor is always active
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `tools/generate-dashboard.js`, `docs/dashboard.html`
+- **Story:** N/A — dashboard tooling
+- **Found by:** Kamal (user observation during Phase 3 build)
+- **Description:** The "Active Agent Spotlight" banner always highlights Conductor because Conductor's status is permanently set to "active" throughout the entire pipeline. This means the spotlight never rotates to show the agent actually doing work (Forge, Pixel, etc.), making it misleading. Need an alternative approach — e.g., spotlight the most recently active non-Conductor agent, or show the agent that changed status most recently, or display Conductor only when no other agent is active.
+- **Fix:** In `generate-dashboard.js`, update spotlight selection logic: pick the non-Conductor agent with `status === "active"` first; fall back to Conductor only if no other agent is active.
+
+### BUG-0080: Dashboard needs more dynamic visualizations for agentic activity
+
+- **Severity:** Minor
+- **Status:** Open
+- **Found in:** `docs/dashboard.html`, `tools/generate-dashboard.js`
+- **Story:** N/A — dashboard tooling
+- **Found by:** Kamal (user observation during Phase 3 build)
+- **Description:** The current dashboard is largely static — agent cards show status badges but don't communicate the dynamism of parallel agent execution. Missing: animated progress bars during active phases, a visual pipeline/flow diagram showing agent handoffs, real-time token/tool-use counters per agent, and a timeline view of agent activity.
+- **Fix:** Add at minimum: (1) CSS pulse animation on active agent cards, (2) phase progress bar showing % of stories complete, (3) per-agent task counter that increments visibly. Longer term: Mermaid or SVG pipeline diagram in the dashboard.
+
+### BUG-0081: PlanVisualizer not in sync with actual pipeline status
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** PlanVisualizer integration, `plan-visualizer.config.json`, `docs/RELEASE_PLAN.md`
+- **Story:** N/A — tooling
+- **Found by:** Kamal (user observation during Phase 3 build)
+- **Description:** The PlanVisualizer dashboard reads from `docs/RELEASE_PLAN.md` task statuses, but agents are updating statuses inconsistently — some tasks marked Done by Keystone, others not updated by Pixel/Forge. As a result the PlanVisualizer shows stale planned status for tasks that are actually complete. Needs investigation after all Phase 3/4 merges are done.
+- **Fix:** After Phase 3 merges, audit `docs/RELEASE_PLAN.md` — ensure every TASK that was completed has `Status: Done` and every US has the correct status. Then re-run `npm run dashboard` to sync.
+
+### BUG-0082: Quality metrics (code coverage, tests passed) not updating during Build phase
+
+- **Severity:** Minor
+- **Status:** Open
+- **Found in:** `docs/sdlc-status.json`, `tools/generate-dashboard.js`
+- **Story:** N/A — dashboard tooling
+- **Found by:** Kamal (user observation during Phase 3 build)
+- **Description:** The dashboard metrics panel shows `coveragePercent: 0`, `testsPassed: 0`, `testsFailed: 0` throughout the Build phase even though Forge added 94 tests (all passing) and the service layer has coverage. Conductor is not updating `docs/sdlc-status.json` metrics after each agent completes. The dashboard auto-refresh picks up the JSON but the values are stale.
+- **Fix:** After each agent merge, Conductor should update the relevant metrics in `sdlc-status.json` — specifically `tasksCompleted`, `testsPassed`, and `storiesCompleted` based on RELEASE_PLAN.md status. In Phase 5 Circuit will produce the coverage report to populate `coveragePercent`.
+
+### BUG-0083: Activity log timestamps use UTC offset instead of local time (EDT)
+
+- **Severity:** Minor
+- **Status:** Open
+- **Found in:** `docs/sdlc-status.json` log entries, `tools/generate-dashboard.js`
+- **Story:** N/A — dashboard tooling
+- **Found by:** Kamal (user observation — log shows 16:20 when local time is 18:20)
+- **Description:** Activity log timestamps are hardcoded as strings in HH:MM format without timezone awareness. The pipeline started at ~16:00 UTC but the user's local time is EDT (UTC-4 → actual 20:xx, or possibly the session shows UTC-4 as 16:xx when local is 18:xx indicating a 2-hour offset — likely UTC vs EDT). The dashboard displays these raw strings without conversion.
+- **Fix:** In `generate-dashboard.js` or in the dashboard HTML, convert log timestamps to the user's local timezone using `new Date().toLocaleTimeString()`. Alternatively, store timestamps as full ISO-8601 in the log entries and format them at render time.
+
+### BUG-0077: AC-0041 and AC-0042 used in code but not registered in RELEASE_PLAN or ID_REGISTRY
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `tests/services/productService.test.ts`, `tests/services/wishlistService.test.ts`, `services/wishlistService.ts`, `services/productService.ts`
+- **Story:** US-0006 (AC-0041 — unique barcode lookup), US-0008 (AC-0042 — duplicate item guard)
+- **Found by:** Lens (code review — feature/forge-services)
+- **Description:** Forge references AC-0041 (unique barcode lookup) and AC-0042 (duplicate item guard) in service code comments and test annotations. However, neither AC is formally defined in `docs/RELEASE_PLAN.md` under its user story. The ID_REGISTRY still shows `AC | AC-0041 | AC-0040`, meaning AC-0041 is "next available" — not assigned. AC-0042 is entirely untracked. Any reader of the release plan cannot trace these acceptance criteria.
+- **Fix:** Add AC-0041 under US-0006 in RELEASE_PLAN.md ("getByBarcode returns the matching product for a known barcode"), add AC-0042 under US-0008 ("addItem does not add a duplicate product to the wishlist"), and update ID_REGISTRY to `AC | AC-0043 | AC-0042`.
+
+### BUG-0078: wishlistService.removeItem missing test for empty productId guard
+
+- **Severity:** Minor
+- **Status:** Open
+- **Found in:** `tests/services/wishlistService.test.ts` (removeItem describe block, lines 268–304)
+- **Story:** US-0008
+- **Found by:** Lens (code review — feature/forge-services)
+- **Description:** `wishlistService.removeItem` validates both `wishlistId` and `productId` as non-empty strings and throws if either is falsy. The test suite covers the `wishlistId` empty guard (line 299) but has no test for `productId` empty string throwing `productId must be a non-empty string`. This leaves a validation branch untested.
+- **Fix:** Add a test case to the `removeItem` describe block: `it('throws when productId is empty')` asserting `wishlistService.removeItem('wl-001', '')` rejects with `/productId must be a non-empty string/`.

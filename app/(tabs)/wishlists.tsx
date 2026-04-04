@@ -1,10 +1,14 @@
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, FlatList, ActivityIndicator, Text } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useWishlists } from '../../contexts/WishlistContext';
 import { useAuth } from '../../contexts/AuthContext';
+import { WishlistCard } from '../../components/WishlistCard';
+import { EmptyState } from '../../components/EmptyState';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 
 export default function WishlistsScreen() {
+  const router = useRouter();
   const { wishlists, isLoading } = useWishlists();
   const { isGuest } = useAuth();
 
@@ -32,20 +36,21 @@ export default function WishlistsScreen() {
       <FlatList
         data={wishlists}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
+        contentContainerStyle={
+          wishlists.length === 0 ? styles.listEmpty : styles.list
+        }
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.meta}>{item.items.length} items</Text>
-          </View>
+          <WishlistCard
+            wishlist={item}
+            onPress={() => router.push(`/wishlist/${item.id}`)}
+          />
         )}
         ListEmptyComponent={
-          <View style={styles.centered}>
-            <Text style={styles.emptyTitle}>No wishlists yet</Text>
-            <Text style={styles.emptySubtitle}>
-              Create your first wishlist to get started.
-            </Text>
-          </View>
+          <EmptyState
+            icon="favorite-border"
+            title="No wishlists yet"
+            subtitle="Create your first wishlist to get started."
+          />
         }
       />
     </View>
@@ -65,24 +70,10 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: spacing.md,
+    paddingBottom: spacing.xl,
   },
-  card: {
-    backgroundColor: colors.white,
-    borderRadius: spacing.borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.sm,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  name: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: colors.dark,
-    marginBottom: spacing.xs,
-  },
-  meta: {
-    fontSize: 13,
-    color: colors.textSecondary,
+  listEmpty: {
+    flexGrow: 1,
   },
   guestTitle: {
     fontSize: 18,
@@ -91,17 +82,6 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   guestSubtitle: {
-    fontSize: 15,
-    color: colors.textSecondary,
-    textAlign: 'center',
-  },
-  emptyTitle: {
-    fontSize: 17,
-    fontWeight: '600',
-    color: colors.dark,
-    marginBottom: spacing.sm,
-  },
-  emptySubtitle: {
     fontSize: 15,
     color: colors.textSecondary,
     textAlign: 'center',

@@ -1,31 +1,38 @@
+import { memo } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { colors } from '../theme/colors';
+import { typography } from '../theme/typography';
 
 interface PriceTagProps {
   price: number;
   size?: 'sm' | 'md' | 'lg';
+  style?: object;
 }
 
-export function PriceTag({ price, size = 'md' }: PriceTagProps) {
+export const PriceTag = memo(function PriceTag({
+  price,
+  size = 'md',
+  style,
+}: PriceTagProps) {
   return (
-    <Text style={[styles.price, styles[size]]}>
+    <Text style={[styles.price, styles[size], style]} accessibilityLabel={`$${price.toFixed(2)}`}>
       ${price.toFixed(2)}
     </Text>
   );
-}
+});
 
 const styles = StyleSheet.create({
   price: {
     color: colors.primary,
-    fontWeight: '700',
+    fontWeight: typography.fontWeight.bold,
   },
   sm: {
-    fontSize: 13,
+    fontSize: typography.fontSize.sm,
   },
   md: {
-    fontSize: 16,
+    fontSize: typography.fontSize.md,
   },
   lg: {
-    fontSize: 22,
+    fontSize: typography.fontSize.xl,
   },
 });

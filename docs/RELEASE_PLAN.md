@@ -125,9 +125,9 @@ Acceptance Criteria:
 TASK-0007 (US-0003): Build catalog screen with category filter chips and product grid
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0003-catalog-browse
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: Search bar, category chips, FlatList 2-col grid, EmptyState — all implemented
 ```
 
 ```
@@ -147,9 +147,9 @@ Acceptance Criteria:
 TASK-0008 (US-0004): Build product detail screen with Add to Wishlist action
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0004-product-detail
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: Image placeholder, price, stock badge, wishlist picker modal, duplicate guard (AC-0042)
 ```
 
 ```
@@ -203,9 +203,9 @@ Acceptance Criteria:
 TASK-0010 (US-0006): Implement barcode scanner screen using expo-camera
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0006-barcode-scan
-Notes: Handle camera permissions, barcode lookup against mock data
+Status: Done
+Branch: feature/pixel-screens
+Notes: Camera permission flow, BarcodeOverlay, manual entry fallback (AC-0043), product lookup
 ```
 
 ```
@@ -246,9 +246,9 @@ Acceptance Criteria:
 TASK-0012 (US-0007): Build wishlists list screen with create dialog
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0007-create-wishlist
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: SectionList for My/Shared sections, FAB, create modal, guest prompt
 ```
 
 ```
@@ -277,9 +277,9 @@ Acceptance Criteria:
 TASK-0014 (US-0008): Build wishlist detail screen with item list and remove action
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0008-wishlist-detail
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: FlatList of WishlistItemRow, remove confirm dialog, EmptyState, price total footer, share modal
 ```
 
 ```
@@ -331,9 +331,9 @@ Acceptance Criteria:
 TASK-0016 (US-0010): Implement contact picker using expo-contacts
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0010-share-wishlist
-Notes: Request contacts permission gracefully
+Status: Done
+Branch: feature/pixel-screens
+Notes: Mock contact list used (AC-0044); share modal in wishlist detail with toggle selection
 ```
 
 ```
@@ -362,9 +362,9 @@ Acceptance Criteria:
 TASK-0018 (US-0011): Build shared wishlist view with claimed-status indicators
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0011-shared-view
-Notes: Simulated — use mock recipient identity from user switcher
+Status: Done
+Branch: feature/pixel-screens
+Notes: Claimed items greyed out with badge; owner view hides claimer names (AC-0036)
 ```
 
 ```
@@ -384,9 +384,9 @@ Acceptance Criteria:
 TASK-0019 (US-0012): Implement claim/unclaim logic and UI for shared wishlist items
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0012-claim-item
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: claimItem/unclaimItem via useWishlists(); "I'll Get This" button; unclaim on re-tap
 ```
 
 ---

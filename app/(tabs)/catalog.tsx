@@ -1,10 +1,27 @@
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
+import { useRouter } from 'expo-router';
 import { useProducts } from '../../contexts/ProductContext';
+import { ProductCard } from '../../components/ProductCard';
+import { CategoryChip } from '../../components/CategoryChip';
+import { EmptyState } from '../../components/EmptyState';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 
 export default function CatalogScreen() {
-  const { products, isLoading } = useProducts();
+  const router = useRouter();
+  const {
+    filteredProducts,
+    categories,
+    isLoading,
+    selectedCategory,
+    setSelectedCategory,
+  } = useProducts();
 
   if (isLoading) {
     return (
@@ -16,21 +33,49 @@ export default function CatalogScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Category chip row */}
+      <View style={styles.chipBar}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.chipScroll}
+        >
+          {/* "All" pseudo-chip */}
+          <CategoryChip
+            category={{ id: '__all__', name: 'All', icon: '' }}
+            isSelected={selectedCategory === null}
+            onPress={() => setSelectedCategory(null)}
+          />
+          {categories.map((cat) => (
+            <CategoryChip
+              key={cat.id}
+              category={cat}
+              isSelected={selectedCategory === cat.id}
+              onPress={() => setSelectedCategory(cat.id)}
+            />
+          ))}
+        </ScrollView>
+      </View>
+
+      {/* Product list — ProductCard with onPress → /product/[id] (AC-0011) */}
       <FlatList
-        data={products}
+        data={filteredProducts}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
+        contentContainerStyle={
+          filteredProducts.length === 0 ? styles.listEmpty : styles.list
+        }
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-            <Text style={styles.category}>{item.category}</Text>
-          </View>
+          <ProductCard
+            product={item}
+            onPress={() => router.push(`/product/${item.id}`)}
+          />
         )}
         ListEmptyComponent={
-          <View style={styles.centered}>
-            <Text style={styles.emptyText}>No products found</Text>
-          </View>
+          <EmptyState
+            icon="search-off"
+            title="No products found"
+            subtitle="Try selecting a different category."
+          />
         }
       />
     </View>
@@ -47,35 +92,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  chipBar: {
+    backgroundColor: colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    paddingVertical: spacing.sm,
+  },
+  chipScroll: {
+    paddingHorizontal: spacing.md,
+    alignItems: 'center',
+  },
   list: {
     padding: spacing.md,
+    paddingBottom: spacing.xl,
   },
-  card: {
-    backgroundColor: colors.white,
-    borderRadius: spacing.borderRadius.md,
-    padding: spacing.md,
-    marginBottom: spacing.sm,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  name: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: colors.dark,
-    marginBottom: spacing.xs,
-  },
-  price: {
-    fontSize: 15,
-    color: colors.primary,
-    fontWeight: '700',
-    marginBottom: spacing.xs,
-  },
-  category: {
-    fontSize: 13,
-    color: colors.textSecondary,
-  },
-  emptyText: {
-    fontSize: 15,
-    color: colors.textSecondary,
+  listEmpty: {
+    flexGrow: 1,
   },
 });

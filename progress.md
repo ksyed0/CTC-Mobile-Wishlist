@@ -134,6 +134,23 @@
 5. Conductor orchestrates all 9 agents through 6 BLAST phases
 6. Demo app + live dashboard + business case deck
 
+## Lens Code Review — feature/forge-services — 2026-04-04
+
+### Review: Forge — Service Tests and Enhancements
+
+**Branch:** `feature/forge-services`
+**Stories in scope:** US-0002, US-0006, US-0007, US-0008, US-0009, US-0010, US-0012
+**Verdict: APPROVE**
+
+All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service contracts match DATA_FLOW.md. AC-0042 duplicate guard correctly implemented and tested. AC-0041/AC-0019 barcode tests are meaningful. getTotalPrice() covers all edge cases including float rounding.
+
+**Bugs filed:**
+
+- BUG-0077 (Major): AC-0041 and AC-0042 referenced in code/tests but not formally defined in RELEASE_PLAN.md or updated in ID_REGISTRY
+- BUG-0078 (Minor): `wishlistService.removeItem` missing test for empty `productId` validation guard
+
+**Retry tracking:** None — APPROVE issued, no retry needed.
+
 ## Session 5 — 2026-04-04
 
 ### What Was Done
@@ -392,3 +409,84 @@ Branch: `feature/US-0001-expo-scaffold`
 - 547 npm packages installed (Expo + React Native ecosystem)
 - 0 TypeScript errors
 - All 8 tasks for US-0001, US-0002, US-0013 scaffold work marked Done
+
+## Session 9 — 2026-04-04
+
+### Agent: Lens (Code Reviewer)
+
+### What Was Done
+
+**Code Review: feature/pixel-screens (Pixel — UI Agent)**
+
+Branch reviewed: `feature/pixel-screens`
+Stories in scope: US-0001, US-0003, US-0004, US-0006, US-0007, US-0008, US-0010, US-0011, US-0012, US-0013
+Commit reviewed: `be92720`
+
+**Verdict: REQUEST CHANGES**
+
+**Positives**
+
+- All colors use theme tokens — zero hardcoded hex values across all 15 files
+- All list rendering uses FlatList — no ScrollView+map anti-pattern
+- No `any` types — TypeScript is clean
+- Context hooks only in screens — zero direct service imports in presentation layer
+- Loading states present on every screen that fetches async data
+- Empty states present on all list screens
+- Service layer (wishlistService, productService) is well-structured with thorough unit tests
+- `wishlistUtils.ts` is clean and well-tested
+- Provider nesting in `_layout.tsx` matches DATA_FLOW.md spec exactly
+
+**Findings filed as bugs**
+
+- BUG-0067: AC-0034/AC-0035 — No "I'll Get This" claim button (Major)
+- BUG-0068: AC-0036 — Owner/recipient distinction not implemented (Major)
+- BUG-0069: AC-0024/AC-0025 — wishlist/[id].tsx shows raw IDs; no remove action (Major)
+- BUG-0070: AC-0013/AC-0014 — No "Add to Wishlist" on product detail (Major)
+- BUG-0071: US-0006 scan screen is a stub — AC-0017–AC-0020 not delivered (Major)
+- BUG-0072: shared/[id].tsx shows raw productIds (Major)
+- BUG-0073: No component tests for any screen or component (Major)
+- BUG-0074: No accessibility attributes on any interactive element (Minor)
+- BUG-0075: ProductCard and WishlistCard not used in catalog/wishlists screens (Minor)
+- BUG-0076: wishlistUtils.ts duplicated — coordinate merge with Forge (Minor)
+
+### Stats
+
+- 10 bugs logged (BUG-0067 – BUG-0076): 7 Major, 3 Minor
+- ID_REGISTRY.md updated: BUG next → BUG-0077
+
+## Session 10 — 2026-04-04
+
+### Agent: Lens (Code Reviewer — Re-Review)
+
+### What Was Done
+
+**Targeted Re-Review: feature/pixel-screens (commit b1e7fd3)**
+
+Purpose: Verify all 6 Major bugs fixed by Pixel (BUG-0067 through BUG-0073). Minors BUG-0074/BUG-0076 remain acceptable for POC.
+
+**Fix Verification Results**
+
+| Bug         | File                                       | Requirement                                                                                                                                                                                                               | Status |
+| ----------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| BUG-0071    | `app/(tabs)/scan.tsx`                      | Real camera via `CameraView` + `useCameraPermissions`, `onBarcodeScanned` handler, debounce via `lastScanned` ref, manual barcode fallback in both permission-denied and camera-active states, `BarcodeOverlay` component | FIXED  |
+| BUG-0070    | `app/product/[id].tsx`                     | "Add to Wishlist" button present; duplicate guard `wishlist.items.some(i => i.productId === product.id)` with Alert; multi-wishlist picker modal                                                                          | FIXED  |
+| BUG-0069    | `app/wishlist/[id].tsx`                    | `WishlistItemRow` used with `product?.name` resolved; remove action with confirm alert (`Alert.alert`); `getTotalPrice` footer; share modal with `mockUsers`                                                              | FIXED  |
+| BUG-0072    | `app/wishlist/shared/[id].tsx`             | Product names resolved via `products.find`; `WishlistItemRow` used with resolved `productName`/`productPrice`                                                                                                             | FIXED  |
+| BUG-0067/68 | `app/wishlist/shared/[id].tsx`             | "I'll Get This" button for guests/claimers; claimed items greyed (`itemWrapperClaimed` opacity 0.55); `!isOwner` guard hides claim UI from owner; claimer name NOT shown (only "Claimed" badge — AC-0033 respected)       | FIXED  |
+| BUG-0075    | `app/(tabs)/catalog.tsx` + `wishlists.tsx` | `catalog.tsx` uses `ProductCard` + `CategoryChip`; `wishlists.tsx` uses `WishlistCard`                                                                                                                                    | FIXED  |
+| BUG-0073    | `tests/components/`                        | 3 component test files: `EmptyState.test.ts`, `ProductCard.test.ts`, `WishlistCard.test.ts`                                                                                                                               | FIXED  |
+
+**Remaining Acceptable Minors**
+
+- BUG-0074: No accessibility attributes — Minor, acceptable for POC
+- BUG-0076: `wishlistUtils.ts` duplication — Minor, acceptable for POC
+
+**Verdict: APPROVE**
+
+All 7 Major bugs are resolved. Implementation quality is solid: no stubs, real camera integration, correct duplicate/claim guards, product name resolution, and component test coverage established.
+
+### Stats
+
+- 7/7 Major bugs verified fixed
+- 2 Minor bugs remain (BUG-0074, BUG-0076) — acceptable for POC
+- Verdict: APPROVE — feature/pixel-screens cleared to merge
