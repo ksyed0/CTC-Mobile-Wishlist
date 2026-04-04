@@ -102,17 +102,30 @@
   .progress-fill.green { background: linear-gradient(90deg, #2E7D32, #4CAF50); }
   .progress-fill.blue { background: linear-gradient(90deg, #1565C0, #42A5F5); }
 
-  /* Agent grid */
+  /* Agent spotlight banner (Option 2) */
+  .agent-spotlight { position: relative; border-radius: 10px; overflow: hidden; margin-bottom: 14px; height: 120px; background: var(--bg-card-inner); display: flex; align-items: flex-end; }
+  .agent-spotlight.no-active { display: flex; align-items: center; justify-content: center; height: 80px; }
+  .agent-spotlight.no-active .spotlight-waiting { color: var(--text-muted); font-size: 13px; font-style: italic; }
+  .spotlight-img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+  .spotlight-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 60%, transparent 100%); }
+  .spotlight-info { position: relative; z-index: 1; padding: 12px 16px; width: 100%; }
+  .spotlight-name { font-size: 18px; font-weight: 700; color: white; }
+  .spotlight-role { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 2px; }
+  .spotlight-task { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Agent grid (Option 1: avatar images) */
   .agent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .agent-card { background: var(--bg-card-inner); border-radius: 8px; padding: 12px; border-left: 4px solid; transition: all 0.3s; }
+  .agent-card { background: var(--bg-card-inner); border-radius: 8px; padding: 10px; border-left: 4px solid; transition: all 0.3s; display: flex; gap: 10px; align-items: flex-start; }
   .agent-card:hover { filter: brightness(1.1); }
   .agent-card.active { animation: pulse-agent 1.5s infinite; }
-  @keyframes pulse-agent { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
-  .agent-icon { font-size: 20px; margin-bottom: 4px; }
+  @keyframes pulse-agent { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
+  .agent-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid; flex-shrink: 0; }
+  .agent-avatar-fallback { width: 40px; height: 40px; border-radius: 50%; border: 2px solid; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; background: var(--bg-phase-pending); }
+  .agent-info { min-width: 0; flex: 1; }
   .agent-name { font-size: 13px; font-weight: 700; }
-  .agent-role { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; }
+  .agent-role { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
   .agent-status { font-size: 11px; padding: 2px 8px; border-radius: 10px; display: inline-block; }
-  .agent-task { font-size: 10px; color: var(--text-secondary); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .agent-task { font-size: 10px; color: var(--text-secondary); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Story table */
   .story-list { display: flex; flex-direction: column; gap: 10px; }
@@ -194,9 +207,11 @@
     .grid-2 { grid-template-columns: 1fr 1fr; gap: 10px; }
     .card { padding: 12px; }
     .card h2 { font-size: 12px; margin-bottom: 10px; }
+    .agent-spotlight { height: 90px; }
+    .spotlight-name { font-size: 15px; }
     .agent-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-    .agent-card { padding: 8px; }
-    .agent-icon { font-size: 16px; }
+    .agent-card { padding: 8px; gap: 8px; }
+    .agent-avatar, .agent-avatar-fallback { width: 32px; height: 32px; }
     .agent-name { font-size: 11px; }
     .epic-stories { grid-template-columns: 1fr; }
     .log-scroll { max-height: 150px; }
@@ -222,9 +237,12 @@
     .grid-2 { grid-template-columns: 1fr; gap: 12px; }
     .card { padding: 14px; border-radius: 10px; }
     .card h2 { font-size: 13px; margin-bottom: 12px; }
+    .agent-spotlight { height: 100px; }
+    .spotlight-name { font-size: 15px; }
+    .spotlight-task { display: none; }
     .agent-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-    .agent-card { padding: 8px; }
-    .agent-icon { font-size: 18px; margin-bottom: 2px; }
+    .agent-card { padding: 8px; gap: 6px; }
+    .agent-avatar, .agent-avatar-fallback { width: 32px; height: 32px; font-size: 16px; }
     .agent-name { font-size: 11px; }
     .agent-role { font-size: 9px; }
     .agent-status { font-size: 9px; padding: 1px 6px; }
@@ -243,7 +261,10 @@
   /* ===== RESPONSIVE: Small phone (up to 375px) ===== */
   @media (max-width: 375px) {
     .header h1 { font-size: 13px; }
+    .agent-spotlight { height: 80px; }
+    .spotlight-name { font-size: 14px; }
     .agent-grid { grid-template-columns: repeat(2, 1fr); }
+    .agent-avatar, .agent-avatar-fallback { width: 28px; height: 28px; font-size: 14px; }
     .header .clock .time { font-size: 18px; }
     #theme-toggle, .btn-header { font-size: 11px; padding: 4px 10px; }
   }
@@ -260,7 +281,7 @@
     <button class="btn-header" onclick="document.getElementById('about-modal').classList.add('open')">ℹ️ About</button>
     <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
     <div class="clock">
-      <div class="time">03:35:50 AM</div>
+      <div class="time">03:37:39 AM</div>
       <div class="label">Last Updated</div>
     </div>
   </div>
@@ -374,69 +395,90 @@
 <div class="grid-2">
   <div class="card">
     <h2>Agent Status</h2>
+    <div class="agent-spotlight no-active">
+      <div class="spotlight-waiting">Waiting for Conductor to activate agents...</div>
+    </div>
     <div class="agent-grid">
       <div class="agent-card " style="border-left-color: #D52B1E">
-        <div class="agent-icon">🎯</div>
-        <div class="agent-name" style="color: #D52B1E">Conductor</div>
-        <div class="agent-role">Delivery Manager</div>
-        <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
-        
+        <img class="agent-avatar" src="agents/images/conductor.png" alt="Conductor" style="border-color: #D52B1E" onerror="this.outerHTML='<div class=\'agent-avatar-fallback\' style=\'border-color: #D52B1E\'>🎯</div>'">
+        <div class="agent-info">
+          <div class="agent-name" style="color: #D52B1E">Conductor</div>
+          <div class="agent-role">Delivery Manager</div>
+          <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
+          
+        </div>
       </div>
       <div class="agent-card " style="border-left-color: #1565C0">
-        <div class="agent-icon">🧭</div>
-        <div class="agent-name" style="color: #1565C0">Compass</div>
-        <div class="agent-role">Product Owner</div>
-        <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
-        
+        <img class="agent-avatar" src="agents/images/compass.png" alt="Compass" style="border-color: #1565C0" onerror="this.outerHTML='<div class=\'agent-avatar-fallback\' style=\'border-color: #1565C0\'>🧭</div>'">
+        <div class="agent-info">
+          <div class="agent-name" style="color: #1565C0">Compass</div>
+          <div class="agent-role">Product Owner</div>
+          <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
+          
+        </div>
       </div>
       <div class="agent-card " style="border-left-color: #6A1B9A">
-        <div class="agent-icon">🏛️</div>
-        <div class="agent-name" style="color: #6A1B9A">Keystone</div>
-        <div class="agent-role">Architect</div>
-        <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
-        
+        <img class="agent-avatar" src="agents/images/keystone.png" alt="Keystone" style="border-color: #6A1B9A" onerror="this.outerHTML='<div class=\'agent-avatar-fallback\' style=\'border-color: #6A1B9A\'>🏛️</div>'">
+        <div class="agent-info">
+          <div class="agent-name" style="color: #6A1B9A">Keystone</div>
+          <div class="agent-role">Architect</div>
+          <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
+          
+        </div>
       </div>
       <div class="agent-card " style="border-left-color: #F57C00">
-        <div class="agent-icon">🔍</div>
-        <div class="agent-name" style="color: #F57C00">Lens</div>
-        <div class="agent-role">Code Reviewer</div>
-        <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
-        
+        <img class="agent-avatar" src="agents/images/lens.png" alt="Lens" style="border-color: #F57C00" onerror="this.outerHTML='<div class=\'agent-avatar-fallback\' style=\'border-color: #F57C00\'>🔍</div>'">
+        <div class="agent-info">
+          <div class="agent-name" style="color: #F57C00">Lens</div>
+          <div class="agent-role">Code Reviewer</div>
+          <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
+          
+        </div>
       </div>
       <div class="agent-card " style="border-left-color: #00897B">
-        <div class="agent-icon">🎨</div>
-        <div class="agent-name" style="color: #00897B">Palette</div>
-        <div class="agent-role">UI Designer</div>
-        <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
-        
+        <img class="agent-avatar" src="agents/images/palette.png" alt="Palette" style="border-color: #00897B" onerror="this.outerHTML='<div class=\'agent-avatar-fallback\' style=\'border-color: #00897B\'>🎨</div>'">
+        <div class="agent-info">
+          <div class="agent-name" style="color: #00897B">Palette</div>
+          <div class="agent-role">UI Designer</div>
+          <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
+          
+        </div>
       </div>
       <div class="agent-card " style="border-left-color: #C62828">
-        <div class="agent-icon">⚒️</div>
-        <div class="agent-name" style="color: #C62828">Forge</div>
-        <div class="agent-role">Backend Dev</div>
-        <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
-        
+        <img class="agent-avatar" src="agents/images/forge.png" alt="Forge" style="border-color: #C62828" onerror="this.outerHTML='<div class=\'agent-avatar-fallback\' style=\'border-color: #C62828\'>⚒️</div>'">
+        <div class="agent-info">
+          <div class="agent-name" style="color: #C62828">Forge</div>
+          <div class="agent-role">Backend Dev</div>
+          <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
+          
+        </div>
       </div>
       <div class="agent-card " style="border-left-color: #283593">
-        <div class="agent-icon">✨</div>
-        <div class="agent-name" style="color: #283593">Pixel</div>
-        <div class="agent-role">Frontend Dev</div>
-        <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
-        
+        <img class="agent-avatar" src="agents/images/pixel.png" alt="Pixel" style="border-color: #283593" onerror="this.outerHTML='<div class=\'agent-avatar-fallback\' style=\'border-color: #283593\'>✨</div>'">
+        <div class="agent-info">
+          <div class="agent-name" style="color: #283593">Pixel</div>
+          <div class="agent-role">Frontend Dev</div>
+          <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
+          
+        </div>
       </div>
       <div class="agent-card " style="border-left-color: #2E7D32">
-        <div class="agent-icon">🛡️</div>
-        <div class="agent-name" style="color: #2E7D32">Sentinel</div>
-        <div class="agent-role">Functional Tester</div>
-        <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
-        
+        <img class="agent-avatar" src="agents/images/sentinel.png" alt="Sentinel" style="border-color: #2E7D32" onerror="this.outerHTML='<div class=\'agent-avatar-fallback\' style=\'border-color: #2E7D32\'>🛡️</div>'">
+        <div class="agent-info">
+          <div class="agent-name" style="color: #2E7D32">Sentinel</div>
+          <div class="agent-role">Functional Tester</div>
+          <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
+          
+        </div>
       </div>
       <div class="agent-card " style="border-left-color: #4527A0">
-        <div class="agent-icon">⚡</div>
-        <div class="agent-name" style="color: #4527A0">Circuit</div>
-        <div class="agent-role">Automation Tester</div>
-        <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
-        
+        <img class="agent-avatar" src="agents/images/circuit.png" alt="Circuit" style="border-color: #4527A0" onerror="this.outerHTML='<div class=\'agent-avatar-fallback\' style=\'border-color: #4527A0\'>⚡</div>'">
+        <div class="agent-info">
+          <div class="agent-name" style="color: #4527A0">Circuit</div>
+          <div class="agent-role">Automation Tester</div>
+          <div class="agent-status" style="background: rgba(136,136,136,0.15); color: #888">idle</div>
+          
+        </div>
       </div>
     </div>
   </div>

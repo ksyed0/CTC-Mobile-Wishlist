@@ -180,17 +180,30 @@ function generateHTML(status) {
   .progress-fill.green { background: linear-gradient(90deg, #2E7D32, #4CAF50); }
   .progress-fill.blue { background: linear-gradient(90deg, #1565C0, #42A5F5); }
 
-  /* Agent grid */
+  /* Agent spotlight banner (Option 2) */
+  .agent-spotlight { position: relative; border-radius: 10px; overflow: hidden; margin-bottom: 14px; height: 120px; background: var(--bg-card-inner); display: flex; align-items: flex-end; }
+  .agent-spotlight.no-active { display: flex; align-items: center; justify-content: center; height: 80px; }
+  .agent-spotlight.no-active .spotlight-waiting { color: var(--text-muted); font-size: 13px; font-style: italic; }
+  .spotlight-img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+  .spotlight-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 60%, transparent 100%); }
+  .spotlight-info { position: relative; z-index: 1; padding: 12px 16px; width: 100%; }
+  .spotlight-name { font-size: 18px; font-weight: 700; color: white; }
+  .spotlight-role { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 2px; }
+  .spotlight-task { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Agent grid (Option 1: avatar images) */
   .agent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .agent-card { background: var(--bg-card-inner); border-radius: 8px; padding: 12px; border-left: 4px solid; transition: all 0.3s; }
+  .agent-card { background: var(--bg-card-inner); border-radius: 8px; padding: 10px; border-left: 4px solid; transition: all 0.3s; display: flex; gap: 10px; align-items: flex-start; }
   .agent-card:hover { filter: brightness(1.1); }
   .agent-card.active { animation: pulse-agent 1.5s infinite; }
-  @keyframes pulse-agent { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
-  .agent-icon { font-size: 20px; margin-bottom: 4px; }
+  @keyframes pulse-agent { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
+  .agent-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid; flex-shrink: 0; }
+  .agent-avatar-fallback { width: 40px; height: 40px; border-radius: 50%; border: 2px solid; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; background: var(--bg-phase-pending); }
+  .agent-info { min-width: 0; flex: 1; }
   .agent-name { font-size: 13px; font-weight: 700; }
-  .agent-role { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; }
+  .agent-role { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
   .agent-status { font-size: 11px; padding: 2px 8px; border-radius: 10px; display: inline-block; }
-  .agent-task { font-size: 10px; color: var(--text-secondary); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .agent-task { font-size: 10px; color: var(--text-secondary); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Story table */
   .story-list { display: flex; flex-direction: column; gap: 10px; }
@@ -272,9 +285,11 @@ function generateHTML(status) {
     .grid-2 { grid-template-columns: 1fr 1fr; gap: 10px; }
     .card { padding: 12px; }
     .card h2 { font-size: 12px; margin-bottom: 10px; }
+    .agent-spotlight { height: 90px; }
+    .spotlight-name { font-size: 15px; }
     .agent-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-    .agent-card { padding: 8px; }
-    .agent-icon { font-size: 16px; }
+    .agent-card { padding: 8px; gap: 8px; }
+    .agent-avatar, .agent-avatar-fallback { width: 32px; height: 32px; }
     .agent-name { font-size: 11px; }
     .epic-stories { grid-template-columns: 1fr; }
     .log-scroll { max-height: 150px; }
@@ -300,9 +315,12 @@ function generateHTML(status) {
     .grid-2 { grid-template-columns: 1fr; gap: 12px; }
     .card { padding: 14px; border-radius: 10px; }
     .card h2 { font-size: 13px; margin-bottom: 12px; }
+    .agent-spotlight { height: 100px; }
+    .spotlight-name { font-size: 15px; }
+    .spotlight-task { display: none; }
     .agent-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
-    .agent-card { padding: 8px; }
-    .agent-icon { font-size: 18px; margin-bottom: 2px; }
+    .agent-card { padding: 8px; gap: 6px; }
+    .agent-avatar, .agent-avatar-fallback { width: 32px; height: 32px; font-size: 16px; }
     .agent-name { font-size: 11px; }
     .agent-role { font-size: 9px; }
     .agent-status { font-size: 9px; padding: 1px 6px; }
@@ -321,7 +339,10 @@ function generateHTML(status) {
   /* ===== RESPONSIVE: Small phone (up to 375px) ===== */
   @media (max-width: 375px) {
     .header h1 { font-size: 13px; }
+    .agent-spotlight { height: 80px; }
+    .spotlight-name { font-size: 14px; }
     .agent-grid { grid-template-columns: repeat(2, 1fr); }
+    .agent-avatar, .agent-avatar-fallback { width: 28px; height: 28px; font-size: 14px; }
     .header .clock .time { font-size: 18px; }
     #theme-toggle, .btn-header { font-size: 11px; padding: 4px 10px; }
   }
@@ -425,19 +446,48 @@ ${phases.map(p => {
 <div class="grid-2">
   <div class="card">
     <h2>Agent Status</h2>
+${(() => {
+  const roles = { Conductor: 'Delivery Manager', Compass: 'Product Owner', Keystone: 'Architect', Lens: 'Code Reviewer', Palette: 'UI Designer', Forge: 'Backend Dev', Pixel: 'Frontend Dev', Sentinel: 'Functional Tester', Circuit: 'Automation Tester' };
+  const imgBase = 'agents/images';
+  // Option 2: Spotlight banner for active agent
+  const activeAgent = Object.entries(agents).find(([, a]) => a.status === 'active');
+  let spotlight = '';
+  if (activeAgent) {
+    const [aName, aData] = activeAgent;
+    const aColor = agentColors[aName] || '#888';
+    spotlight = `    <div class="agent-spotlight">
+      <img class="spotlight-img" src="${imgBase}/${aName.toLowerCase()}.png" alt="${aName}" onerror="this.style.display='none'">
+      <div class="spotlight-overlay"></div>
+      <div class="spotlight-info">
+        <div class="spotlight-name" style="color: ${aColor}">${agentIcons[aName] || ''} ${aName} — ${roles[aName] || aName}</div>
+        ${aData.currentTask ? `<div class="spotlight-task">${aData.currentTask}</div>` : ''}
+      </div>
+    </div>`;
+  } else {
+    spotlight = `    <div class="agent-spotlight no-active">
+      <div class="spotlight-waiting">Waiting for Conductor to activate agents...</div>
+    </div>`;
+  }
+  return spotlight;
+})()}
     <div class="agent-grid">
 ${Object.entries(agents).map(([name, agent]) => {
   const color = agentColors[name] || '#888';
   const icon = agentIcons[name] || '🤖';
+  const imgBase = 'agents/images';
   const statusBg = agent.status === 'active' ? 'rgba(52,168,83,0.2)' : 'rgba(136,136,136,0.15)';
   const statusColor = agent.status === 'active' ? '#34A853' : agent.status === 'complete' ? '#1565C0' : '#888';
   const roles = { Conductor: 'Delivery Manager', Compass: 'Product Owner', Keystone: 'Architect', Lens: 'Code Reviewer', Palette: 'UI Designer', Forge: 'Backend Dev', Pixel: 'Frontend Dev', Sentinel: 'Functional Tester', Circuit: 'Automation Tester' };
+  // Option 1: Avatar with fallback to emoji
+  const avatarImg = `<img class="agent-avatar" src="${imgBase}/${name.toLowerCase()}.png" alt="${name}" style="border-color: ${color}" onerror="this.outerHTML='<div class=\\'agent-avatar-fallback\\' style=\\'border-color: ${color}\\'>${icon}</div>'">`;
   return `      <div class="agent-card ${agent.status === 'active' ? 'active' : ''}" style="border-left-color: ${color}">
-        <div class="agent-icon">${icon}</div>
-        <div class="agent-name" style="color: ${color}">${name}</div>
-        <div class="agent-role">${roles[name] || name}</div>
-        <div class="agent-status" style="background: ${statusBg}; color: ${statusColor}">${agent.status}</div>
-        ${agent.currentTask ? `<div class="agent-task">${agent.currentTask}</div>` : ''}
+        ${avatarImg}
+        <div class="agent-info">
+          <div class="agent-name" style="color: ${color}">${name}</div>
+          <div class="agent-role">${roles[name] || name}</div>
+          <div class="agent-status" style="background: ${statusBg}; color: ${statusColor}">${agent.status}</div>
+          ${agent.currentTask ? `<div class="agent-task">${agent.currentTask}</div>` : ''}
+        </div>
       </div>`;
 }).join('\n')}
     </div>
