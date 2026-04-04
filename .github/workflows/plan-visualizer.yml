@@ -10,26 +10,19 @@ on:
       - 'docs/BUGS.md'
       - 'docs/AI_COST_LOG.md'
       - 'progress.md'
+      - '.github/workflows/plan-visualizer.yml'
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
-  generate-and-deploy:
+  generate:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout (full history for burndown)
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,10 +33,7 @@ jobs:
         run: npm ci
 
       - name: Run tests with coverage
-        run: npm run test:coverage
-        continue-on-error: true
-        env:
-          CI: true
+        run: npm run test:coverage || true
 
       - name: Generate plan-status.html
         run: node tools/generate-plan.js
@@ -51,11 +41,10 @@ jobs:
       - name: Generate SDLC dashboard
         run: node tools/generate-dashboard.js
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: ./docs
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/plan-status.html docs/dashboard.html || true
+          git diff --cached --quiet || git commit -m "chore: regenerate plan visualizer dashboard"
+          git push || true
