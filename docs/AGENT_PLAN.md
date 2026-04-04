@@ -310,13 +310,21 @@ Any red → Conductor reads error, spawns appropriate agent to fix
 - REQUEST CHANGES gets exactly 1 retry before escalation
 - Squash and merge keeps `develop` history clean
 
+**Concurrency safety during parallel phases:**
+
+- When Forge + Pixel push simultaneously, use `safePush(branch)` (auto-retry with backoff)
+- Before merging parallel branches, Conductor runs `checkOverlap(branchA, branchB)` to detect conflicting edits
+- All `sdlc-status.json` updates use `atomicReadModifyWriteJson()` to prevent lost-update races
+- All `progress.md` entries use `atomicAppend()` to prevent interleaved writes
+- New bug/task IDs use `reserveId('BUG')` to prevent duplicate allocation
+
 ### 2.2 BLOCK Recovery Protocol
 
 When Lens issues a BLOCK verdict:
 
 1. Conductor pauses orchestration — no more agents spawned
-2. Conductor sets phase status to `blocked` in `sdlc-status.json`
-3. Conductor writes BLOCKED entry in `progress.md`
+2. Conductor sets phase status to `blocked` in `sdlc-status.json` (via `atomicReadModifyWriteJson()`)
+3. Conductor writes BLOCKED entry in `progress.md` (via `atomicAppend()`)
 4. **Human resolves the issue** and commits to the affected branch
 5. Conductor re-spawns Lens to re-review
 6. If APPROVE → resume. If BLOCK again → re-escalate. No looping.
@@ -340,17 +348,17 @@ When Lens issues a BLOCK verdict:
 
 ## 4. Simulated vs. Real Work
 
-| Agent                      | Real Work (POC)                                         | Simulated Work                          |
-| -------------------------- | ------------------------------------------------------- | --------------------------------------- |
-| **Conductor** (DM)         | Phase orchestration, context passing, progress tracking | Stakeholder comms, risk management      |
-| **Lens** (Reviewer)        | PR reviews, architecture/design compliance checks       | Security audits, performance reviews    |
-| **Compass** (PO)           | Backlog prioritization, AC refinement                   | Stakeholder interviews, market research |
-| **Keystone** (Architect)   | Project scaffold, types, service interfaces             | Infrastructure design, CI/CD pipeline   |
-| **Palette** (UI Designer)  | Theme file, component styles                            | Full Figma mockups, accessibility audit |
-| **Forge** (BE Dev)         | AsyncStorage services, mock data                        | Real API integration, database design   |
-| **Pixel** (FE Dev)         | All screens, navigation, components                     | Performance optimization, animations    |
-| **Sentinel** (Func Tester) | Test cases on working screens                           | Cross-device testing, load testing      |
-| **Circuit** (Auto Tester)  | Jest unit tests for services + components               | E2E tests (Detox), CI integration       |
+| Agent                      | Real Work (POC)                                                                                                                | Simulated Work                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------- |
+| **Conductor** (DM)         | Phase orchestration, context passing, progress tracking, concurrency-safe state management (file-lock, atomic-write, git-safe) | Stakeholder comms, risk management      |
+| **Lens** (Reviewer)        | PR reviews, architecture/design compliance checks                                                                              | Security audits, performance reviews    |
+| **Compass** (PO)           | Backlog prioritization, AC refinement                                                                                          | Stakeholder interviews, market research |
+| **Keystone** (Architect)   | Project scaffold, types, service interfaces                                                                                    | Infrastructure design, CI/CD pipeline   |
+| **Palette** (UI Designer)  | Theme file, component styles                                                                                                   | Full Figma mockups, accessibility audit |
+| **Forge** (BE Dev)         | AsyncStorage services, mock data                                                                                               | Real API integration, database design   |
+| **Pixel** (FE Dev)         | All screens, navigation, components                                                                                            | Performance optimization, animations    |
+| **Sentinel** (Func Tester) | Test cases on working screens                                                                                                  | Cross-device testing, load testing      |
+| **Circuit** (Auto Tester)  | Jest unit tests for services + components                                                                                      | E2E tests (Detox), CI integration       |
 
 ### Feature-Level Scope
 

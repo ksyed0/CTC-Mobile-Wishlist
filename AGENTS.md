@@ -407,11 +407,43 @@ All PRs to `main` and `develop` must pass these checks before merge:
 | Lint            | `npx eslint .`                                | Code quality (tools/, orchestrator/, tests/) |
 | Test & Coverage | `npm run test:coverage`                       | Unit tests + 80% coverage threshold          |
 | Build           | `npm run build`                               | Full pipeline (avatars → plan → dashboard)   |
-| Orchestrator    | `node orchestrator/spawn.js --list-platforms` | Smoke test spawn abstraction                 |
+| Orchestrator    | `node orchestrator/spawn.js --list-platforms` | Smoke test spawn abstraction + adapters      |
 | Format          | `npm run format:check`                        | Prettier formatting consistency              |
 | Audit           | `npm audit --audit-level=high`                | Dependency vulnerability scan                |
 
 > **Rule:** If it isn’t in version control, it doesn’t exist. If it isn’t on a branch, it isn’t safe.
+
+---
+
+### Concurrency Safety
+
+When agents run in parallel (Phase 3: Forge + Pixel), shared state files must be accessed through concurrency-safe utilities to prevent race conditions, data corruption, and lost writes.
+
+**Concurrency utilities** (in `orchestrator/`):
+
+| Module            | Purpose                                                      | Key Functions                                                  |
+| ----------------- | ------------------------------------------------------------ | -------------------------------------------------------------- |
+| `file-lock.js`    | mkdir-based file locking with stale detection                | `withLock()`, `withLockSync()`                                 |
+| `atomic-write.js` | Atomic JSON read-modify-write, locked append, ID reservation | `atomicReadModifyWriteJson()`, `atomicAppend()`, `reserveId()` |
+| `git-safe.js`     | Retry-safe push, conflict detection, overlap checking        | `safePush()`, `detectConflicts()`, `checkOverlap()`            |
+
+**Protected shared files:** `docs/sdlc-status.json`, `progress.md`, `docs/BUGS.md`, `docs/ID_REGISTRY.md`, `docs/AI_COST_LOG.md`
+
+**Rules:**
+
+- Never write directly to shared files during parallel execution — always use the concurrency utilities
+- Never manually increment IDs in `ID_REGISTRY.md` — use `reserveId(sequence)` to atomically allocate
+- Always use `safePush()` instead of raw `git push` — it retries on network errors and auto-pulls on rejection
+- Before merging parallel branches, run `checkOverlap()` to identify conflicting file edits
+
+### Pre-Commit Hooks
+
+A husky pre-commit hook runs lint-staged on every `git commit`:
+
+- `*.{js,json,md,yml,yaml}` — auto-formatted with Prettier
+- `*.js` — auto-fixed with ESLint
+
+This prevents unformatted code from reaching CI. The hook activates automatically via `npm install` (`"prepare": "husky"` in `package.json`).
 
 ---
 
