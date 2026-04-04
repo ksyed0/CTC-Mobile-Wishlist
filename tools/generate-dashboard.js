@@ -193,7 +193,11 @@ function generateHTML(status) {
   .agent-task { font-size: 10px; color: var(--text-secondary); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Story table */
-  .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .story-list { display: flex; flex-direction: column; gap: 10px; }
+  .epic-group { }
+  .epic-header { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 0 4px 4px; border-bottom: 1px solid var(--divider); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .epic-id { color: #D52B1E; font-size: 10px; font-weight: 600; }
+  .epic-stories { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
   .story-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--bg-card-inner); border-radius: 6px; font-size: 12px; transition: all 0.2s; }
   .story-row:hover { filter: brightness(1.1); }
   .story-id { font-weight: 700; color: #D52B1E; width: 65px; }
@@ -242,7 +246,7 @@ function generateHTML(status) {
     .grid { grid-template-columns: 1fr 1fr; gap: 16px; }
     .grid-2 { grid-template-columns: 1fr; gap: 16px; }
     .agent-grid { grid-template-columns: repeat(3, 1fr); }
-    .story-grid { grid-template-columns: 1fr 1fr; }
+    .epic-stories { grid-template-columns: 1fr 1fr; }
   }
 
   /* ===== RESPONSIVE: Tablet landscape adjustments ===== */
@@ -272,7 +276,7 @@ function generateHTML(status) {
     .agent-card { padding: 8px; }
     .agent-icon { font-size: 16px; }
     .agent-name { font-size: 11px; }
-    .story-grid { grid-template-columns: 1fr; }
+    .epic-stories { grid-template-columns: 1fr; }
     .log-scroll { max-height: 150px; }
     .metric-value { font-size: 16px; }
   }
@@ -441,15 +445,34 @@ ${Object.entries(agents).map(([name, agent]) => {
 
   <div class="card">
     <h2>User Stories</h2>
-    <div class="story-grid">
-${Object.entries(stories).map(([id, story]) => {
-  const statusClass = story.status === 'In Progress' ? 'InProgress' : story.status;
-  return `      <div class="story-row">
-        <span class="story-id">${id}</span>
-        <span class="story-title">${story.title}</span>
-        <span class="story-status ${statusClass}">${story.status}</span>
+    <div class="story-list">
+${(() => {
+  const epics = status.epics || {};
+  // Group stories by epic
+  const groups = {};
+  Object.entries(stories).forEach(([id, story]) => {
+    const epicId = story.epic || 'OTHER';
+    if (!groups[epicId]) groups[epicId] = [];
+    groups[epicId].push({ id, ...story });
+  });
+  return Object.entries(groups).map(([epicId, epicStories]) => {
+    const epicName = epics[epicId] || epicId;
+    const storyRows = epicStories.map(s => {
+      const statusClass = s.status === 'In Progress' ? 'InProgress' : s.status;
+      return `        <div class="story-row">
+          <span class="story-id">${s.id}</span>
+          <span class="story-title">${s.title}</span>
+          <span class="story-status ${statusClass}">${s.status}</span>
+        </div>`;
+    }).join('\n');
+    return `      <div class="epic-group">
+        <div class="epic-header"><span class="epic-id">${epicId}</span> ${epicName}</div>
+        <div class="epic-stories">
+${storyRows}
+        </div>
       </div>`;
-}).join('\n')}
+  }).join('\n');
+})()}
     </div>
   </div>
 </div>

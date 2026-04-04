@@ -115,7 +115,11 @@
   .agent-task { font-size: 10px; color: var(--text-secondary); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Story table */
-  .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .story-list { display: flex; flex-direction: column; gap: 10px; }
+  .epic-group { }
+  .epic-header { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 0 4px 4px; border-bottom: 1px solid var(--divider); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .epic-id { color: #D52B1E; font-size: 10px; font-weight: 600; }
+  .epic-stories { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
   .story-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--bg-card-inner); border-radius: 6px; font-size: 12px; transition: all 0.2s; }
   .story-row:hover { filter: brightness(1.1); }
   .story-id { font-weight: 700; color: #D52B1E; width: 65px; }
@@ -164,7 +168,7 @@
     .grid { grid-template-columns: 1fr 1fr; gap: 16px; }
     .grid-2 { grid-template-columns: 1fr; gap: 16px; }
     .agent-grid { grid-template-columns: repeat(3, 1fr); }
-    .story-grid { grid-template-columns: 1fr 1fr; }
+    .epic-stories { grid-template-columns: 1fr 1fr; }
   }
 
   /* ===== RESPONSIVE: Tablet landscape adjustments ===== */
@@ -194,7 +198,7 @@
     .agent-card { padding: 8px; }
     .agent-icon { font-size: 16px; }
     .agent-name { font-size: 11px; }
-    .story-grid { grid-template-columns: 1fr; }
+    .epic-stories { grid-template-columns: 1fr; }
     .log-scroll { max-height: 150px; }
     .metric-value { font-size: 16px; }
   }
@@ -256,7 +260,7 @@
     <button class="btn-header" onclick="document.getElementById('about-modal').classList.add('open')">ℹ️ About</button>
     <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
     <div class="clock">
-      <div class="time">03:16:37 AM</div>
+      <div class="time">03:35:50 AM</div>
       <div class="label">Last Updated</div>
     </div>
   </div>
@@ -439,71 +443,101 @@
 
   <div class="card">
     <h2>User Stories</h2>
-    <div class="story-grid">
-      <div class="story-row">
-        <span class="story-id">US-0001</span>
-        <span class="story-title">Expo scaffold with tab navigation</span>
-        <span class="story-status Planned">Planned</span>
+    <div class="story-list">
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-id">EPIC-0001</span> Scaffolding & Mock Data</div>
+        <div class="epic-stories">
+        <div class="story-row">
+          <span class="story-id">US-0001</span>
+          <span class="story-title">Expo scaffold with tab navigation</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        <div class="story-row">
+          <span class="story-id">US-0002</span>
+          <span class="story-title">Local mock data layer</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        </div>
       </div>
-      <div class="story-row">
-        <span class="story-id">US-0002</span>
-        <span class="story-title">Local mock data layer</span>
-        <span class="story-status Planned">Planned</span>
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-id">EPIC-0002</span> Product Catalog</div>
+        <div class="epic-stories">
+        <div class="story-row">
+          <span class="story-id">US-0003</span>
+          <span class="story-title">Catalog browsing with search</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        <div class="story-row">
+          <span class="story-id">US-0004</span>
+          <span class="story-title">Product detail screen</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        <div class="story-row">
+          <span class="story-id">US-0005</span>
+          <span class="story-title">Barcode scanner</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        </div>
       </div>
-      <div class="story-row">
-        <span class="story-id">US-0003</span>
-        <span class="story-title">Catalog browsing with search</span>
-        <span class="story-status Planned">Planned</span>
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-id">EPIC-0003</span> Barcode Scanning</div>
+        <div class="epic-stories">
+        <div class="story-row">
+          <span class="story-id">US-0006</span>
+          <span class="story-title">Barcode to product lookup</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        </div>
       </div>
-      <div class="story-row">
-        <span class="story-id">US-0004</span>
-        <span class="story-title">Product detail screen</span>
-        <span class="story-status Planned">Planned</span>
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-id">EPIC-0004</span> Wishlist Management</div>
+        <div class="epic-stories">
+        <div class="story-row">
+          <span class="story-id">US-0007</span>
+          <span class="story-title">Wishlist management</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        <div class="story-row">
+          <span class="story-id">US-0008</span>
+          <span class="story-title">Wishlist CRUD operations</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        <div class="story-row">
+          <span class="story-id">US-0009</span>
+          <span class="story-title">Wishlist detail view</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        </div>
       </div>
-      <div class="story-row">
-        <span class="story-id">US-0005</span>
-        <span class="story-title">Barcode scanner</span>
-        <span class="story-status Planned">Planned</span>
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-id">EPIC-0005</span> Sharing & Fulfillment</div>
+        <div class="epic-stories">
+        <div class="story-row">
+          <span class="story-id">US-0010</span>
+          <span class="story-title">Share wishlist</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        <div class="story-row">
+          <span class="story-id">US-0011</span>
+          <span class="story-title">Share flow UI</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        <div class="story-row">
+          <span class="story-id">US-0012</span>
+          <span class="story-title">Claim items</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        </div>
       </div>
-      <div class="story-row">
-        <span class="story-id">US-0006</span>
-        <span class="story-title">Barcode to product lookup</span>
-        <span class="story-status Planned">Planned</span>
-      </div>
-      <div class="story-row">
-        <span class="story-id">US-0007</span>
-        <span class="story-title">Wishlist management</span>
-        <span class="story-status Planned">Planned</span>
-      </div>
-      <div class="story-row">
-        <span class="story-id">US-0008</span>
-        <span class="story-title">Wishlist CRUD operations</span>
-        <span class="story-status Planned">Planned</span>
-      </div>
-      <div class="story-row">
-        <span class="story-id">US-0009</span>
-        <span class="story-title">Wishlist detail view</span>
-        <span class="story-status Planned">Planned</span>
-      </div>
-      <div class="story-row">
-        <span class="story-id">US-0010</span>
-        <span class="story-title">Share wishlist</span>
-        <span class="story-status Planned">Planned</span>
-      </div>
-      <div class="story-row">
-        <span class="story-id">US-0011</span>
-        <span class="story-title">Share flow UI</span>
-        <span class="story-status Planned">Planned</span>
-      </div>
-      <div class="story-row">
-        <span class="story-id">US-0012</span>
-        <span class="story-title">Claim items</span>
-        <span class="story-status Planned">Planned</span>
-      </div>
-      <div class="story-row">
-        <span class="story-id">US-0013</span>
-        <span class="story-title">User switcher</span>
-        <span class="story-status Planned">Planned</span>
+      <div class="epic-group">
+        <div class="epic-header"><span class="epic-id">EPIC-0006</span> Mock Authentication</div>
+        <div class="epic-stories">
+        <div class="story-row">
+          <span class="story-id">US-0013</span>
+          <span class="story-title">User switcher</span>
+          <span class="story-status Planned">Planned</span>
+        </div>
+        </div>
       </div>
     </div>
   </div>
