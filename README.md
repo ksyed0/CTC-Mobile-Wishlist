@@ -160,6 +160,7 @@ claude "Read docs/agents/FUNCTIONAL_TESTER_AGENT.md. Execute all test cases."
 CTC-Mobile-Wishlist/
 ├── AGENTS.md                          # AI agent operating standards (BLAST framework)
 ├── PROJECT.md                         # Project constitution
+├── agents.config.json                 # Agent registry — names, roles, icons, colors, files
 ├── plan-visualizer.config.json        # PlanVisualizer dashboard config
 ├── src/                               # POC app source (React Native + Expo)
 │   ├── app/                           # Expo Router file-based routes
@@ -215,9 +216,10 @@ CTC-Mobile-Wishlist/
 │   ├── generate-plan.js               # PlanVisualizer generator
 │   ├── generate-dashboard.js          # SDLC dashboard generator
 │   ├── process-avatars.js             # Face detection avatar extraction
+│   ├── init-sdlc-status.js            # Generate sdlc-status.json from agents.config.json
 │   └── capture-cost.js                # AI cost capture hook
 ├── tests/
-│   ├── unit/                          # 237 unit tests (Jest)
+│   ├── unit/                          # 246 unit tests (Jest)
 │   └── fixtures/                      # Test fixture data
 ├── .husky/
 │   └── pre-commit                     # Husky pre-commit hook (lint-staged)
@@ -237,11 +239,12 @@ Two dashboards track project health in real time:
 
 ```bash
 npm run build            # Full pipeline: avatars → plan → dashboard
+npm run init:status      # Generate sdlc-status.json from agents.config.json
 npm run avatars          # Extract agent headshots from team-grid.png
 npm run plan:generate    # Generate Plan Visualizer
 npm run dashboard        # Generate SDLC Dashboard
 npm run dashboard:watch  # Watch mode (auto-regenerate on status changes)
-npm test                 # Run 215 unit tests
+npm test                 # Run 246 unit tests
 npm run test:coverage    # Run tests with coverage report
 ```
 
@@ -263,6 +266,16 @@ Drop images into `docs/agents/images/` (all lowercase filenames):
 - `team.png` — Full team image for About popup
 
 Run `npm run avatars` to extract headshots via tracking.js face detection (Viola-Jones). Configurable padding: `npm run avatars -- --padding 2.0`
+
+### Config-Driven Agent Registry
+
+All agent definitions live in `agents.config.json` — the single source of truth consumed by the dashboard, orchestrator, and avatar system. To customize agents for a different project:
+
+1. Edit `agents.config.json` — add/remove/rename agents, set roles, icons, colors, instruction file paths
+2. Run `npm run init:status` — generates `docs/sdlc-status.json` with your agents
+3. Run `npm run build` — dashboard and avatars auto-adapt to the new config
+
+No code changes needed. The orchestrator, dashboard, and avatar extractor all read from `agents.config.json`.
 
 ### Concurrency Safety
 

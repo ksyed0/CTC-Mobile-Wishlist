@@ -2,7 +2,8 @@
 
 > **Date:** Monday, April 7, 2026
 > **Duration:** 8 hours (9:00 AM – 5:00 PM ET)
-> **Platform:** Platform-agnostic (Claude Code, OpenAI Codex, Google Gemini, Aider) — see `orchestrator/spawn.js`
+> **Platform:** Platform-agnostic (Claude Code, Codex, Gemini, Aider, CodeMie, OpenCode, EliteA) — see `orchestrator/spawn.js`
+> **Agent Config:** `agents.config.json` — single source of truth for agent definitions
 > **Branch:** `claude/install-plan-visualizer-09PFc`
 
 ---
@@ -19,7 +20,7 @@
 | **Output Artifacts** | Updated `progress.md`, orchestration decisions, phase handoff context                       |
 | **Instruction File** | `docs/agents/DM_AGENT.md`                                                                   |
 
-**How it works:** Conductor runs as the primary Claude Code session. It spawns each specialized agent as a sub-agent using the Agent tool, passing explicit context (branch names, file paths, decisions from prior phases). Agents run in fresh contexts with no shared memory — Conductor is the connective tissue.
+**How it works:** Conductor runs as the primary Claude Code session. It spawns each specialized agent as a sub-agent using the Agent tool, passing explicit context (branch names, file paths, decisions from prior phases). Agents run in fresh contexts with no shared memory — Conductor is the connective tissue. All agent metadata (names, roles, instruction files) is loaded from `agents.config.json`.
 
 **Prompt to start the hackathon:**
 

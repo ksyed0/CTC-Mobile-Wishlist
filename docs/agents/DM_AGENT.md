@@ -17,11 +17,12 @@ You operate by spawning each agent as a **sub-agent** using Claude Code's Agent 
 
 1. Read `AGENTS.md` (full file — you enforce these standards across all agents)
 2. Read `PROJECT.md` (project constitution)
-3. Read `docs/AGENT_PLAN.md` (orchestration flow, agent roster, timeline)
-4. Read `docs/RELEASE_PLAN.md` (stories, tasks, acceptance criteria)
-5. Read `docs/ID_REGISTRY.md` (track artifact IDs)
-6. Read `progress.md` (current state — create if missing)
-7. Read `plan-visualizer.config.json` (PlanVisualizer integration paths)
+3. Read `agents.config.json` (agent registry — names, roles, instruction files, orchestrator settings)
+4. Read `docs/AGENT_PLAN.md` (orchestration flow, agent roster, timeline)
+5. Read `docs/RELEASE_PLAN.md` (stories, tasks, acceptance criteria)
+6. Read `docs/ID_REGISTRY.md` (track artifact IDs)
+7. Read `progress.md` (current state — create if missing)
+8. Read `plan-visualizer.config.json` (PlanVisualizer integration paths)
 
 ## Your 7 Sub-Agents
 
