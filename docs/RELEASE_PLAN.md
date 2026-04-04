@@ -32,7 +32,7 @@ Acceptance Criteria:
 TASK-0001 (US-0001): Initialize Expo project with TypeScript template and expo-router
 Type: Dev
 Assignee: Agent
-Status: To Do
+Status: Done
 Branch: feature/US-0001-expo-scaffold
 Notes: Use expo-router for file-based navigation
 ```
@@ -41,7 +41,7 @@ Notes: Use expo-router for file-based navigation
 TASK-0002 (US-0001): Create tab layout with Home, Catalog, Scan, Wishlists screens
 Type: Dev
 Assignee: Agent
-Status: To Do
+Status: Done
 Branch: feature/US-0001-expo-scaffold
 Notes: Use Material Design Icons via @expo/vector-icons
 ```
@@ -50,7 +50,7 @@ Notes: Use Material Design Icons via @expo/vector-icons
 TASK-0003 (US-0001): Define global theme (colours, spacing, typography) and apply to app
 Type: Dev
 Assignee: Agent
-Status: To Do
+Status: Done
 Branch: feature/US-0001-expo-scaffold
 Notes: Canadian Tire red #D52B1E as primary, system fonts
 ```
@@ -73,8 +73,8 @@ Acceptance Criteria:
 TASK-0004 (US-0002): Create mock product catalog JSON with 20+ products across 4+ categories
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0002-mock-data
+Status: Done
+Branch: feature/US-0001-expo-scaffold
 Notes: Include realistic Canadian Tire product names, prices, barcodes
 ```
 
@@ -82,17 +82,17 @@ Notes: Include realistic Canadian Tire product names, prices, barcodes
 TASK-0005 (US-0002): Bundle placeholder product images as local assets
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0002-mock-data
-Notes: Use placeholder images sized for mobile (300x300)
+Status: Done
+Branch: feature/US-0001-expo-scaffold
+Notes: Use placeholder images sized for mobile (300x300). Using "placeholder" string — real images in Phase 3.
 ```
 
 ```
 TASK-0006 (US-0002): Implement data access layer using AsyncStorage with typed interfaces
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0002-mock-data
+Status: Done
+Branch: feature/US-0001-expo-scaffold
 Notes: Abstract behind service interface for future swapability
 ```
 
@@ -112,7 +112,7 @@ Dependencies: EPIC-0001
 US-0003 (EPIC-0002): As a shopper, I want to browse products by category, so that I can discover items I want to add to my wishlist.
 Priority: High
 Estimate: M
-Status: Planned
+Status: Done
 Branch: feature/US-0003-catalog-browse
 Dependencies: US-0002
 Acceptance Criteria:
@@ -125,16 +125,16 @@ Acceptance Criteria:
 TASK-0007 (US-0003): Build catalog screen with category filter chips and product grid
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0003-catalog-browse
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: Search bar, category chips, FlatList 2-col grid, EmptyState — all implemented
 ```
 
 ```
 US-0004 (EPIC-0002): As a shopper, I want to view product details and add the product to a wishlist, so that I can save items I'm interested in.
 Priority: High
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0004-product-detail
 Dependencies: US-0003
 Acceptance Criteria:
@@ -147,9 +147,9 @@ Acceptance Criteria:
 TASK-0008 (US-0004): Build product detail screen with Add to Wishlist action
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0004-product-detail
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: Image placeholder, price, stock badge, wishlist picker modal, duplicate guard (AC-0042)
 ```
 
 ```
@@ -168,9 +168,9 @@ Acceptance Criteria:
 TASK-0009 (US-0005): Add search bar to catalog screen with real-time filtering
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0005-product-search
-Notes:
+Status: Done
+Branch: feature/polish-fixes
+Notes: BUG-0086 fix — TextInput search bar above category chips; filters filteredProducts locally via useMemo for real-time response; clear (×) button; theme-token styles.
 ```
 
 ---
@@ -189,7 +189,7 @@ Dependencies: EPIC-0001
 US-0006 (EPIC-0003): As an in-store shopper, I want to scan a product barcode with my phone camera, so that I can quickly identify and add the product to my wishlist.
 Priority: High
 Estimate: M
-Status: Planned
+Status: Done
 Branch: feature/US-0006-barcode-scan
 Dependencies: US-0002
 Acceptance Criteria:
@@ -203,18 +203,18 @@ Acceptance Criteria:
 TASK-0010 (US-0006): Implement barcode scanner screen using expo-camera
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0006-barcode-scan
-Notes: Handle camera permissions, barcode lookup against mock data
+Status: Done
+Branch: feature/pixel-screens
+Notes: Camera permission flow, BarcodeOverlay, manual entry fallback (AC-0043), product lookup
 ```
 
 ```
 TASK-0011 (US-0006): Add barcode-to-product lookup logic against mock catalog
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0006-barcode-scan
-Notes:
+Status: Done
+Branch: feature/pixel-integration
+Notes: productService.getByBarcode() wired in scan.tsx; recent scans saved to AsyncStorage
 ```
 
 ---
@@ -233,7 +233,7 @@ Dependencies: EPIC-0001, EPIC-0002
 US-0007 (EPIC-0004): As a shopper, I want to create and name multiple wishlists, so that I can organize items for different occasions.
 Priority: High
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0007-create-wishlist
 Dependencies: US-0002
 Acceptance Criteria:
@@ -246,25 +246,25 @@ Acceptance Criteria:
 TASK-0012 (US-0007): Build wishlists list screen with create dialog
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0007-create-wishlist
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: SectionList for My/Shared sections, FAB, create modal, guest prompt
 ```
 
 ```
 TASK-0013 (US-0007): Implement wishlist CRUD operations in data access layer
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0007-create-wishlist
-Notes:
+Status: Done
+Branch: feature/pixel-integration
+Notes: wishlistService fully wired (create/delete/addItem/removeItem/share/claim) via WishlistContext
 ```
 
 ```
 US-0008 (EPIC-0004): As a shopper, I want to view a wishlist's items and remove items I no longer want, so that I can keep my wishlist up to date.
 Priority: High
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0008-wishlist-detail
 Dependencies: US-0007
 Acceptance Criteria:
@@ -277,16 +277,16 @@ Acceptance Criteria:
 TASK-0014 (US-0008): Build wishlist detail screen with item list and remove action
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0008-wishlist-detail
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: FlatList of WishlistItemRow, remove confirm dialog, EmptyState, price total footer, share modal
 ```
 
 ```
 US-0009 (EPIC-0004): As a shopper, I want to see the total value of items in my wishlist, so that I can gauge my spending.
 Priority: Low
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0009-wishlist-total
 Dependencies: US-0008
 Acceptance Criteria:
@@ -297,9 +297,9 @@ Acceptance Criteria:
 TASK-0015 (US-0009): Add price total to wishlist detail footer
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0009-wishlist-total
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: getTotalPrice() from wishlistUtils.ts wired in wishlist/[id].tsx footer
 ```
 
 ---
@@ -318,7 +318,7 @@ Dependencies: EPIC-0004
 US-0010 (EPIC-0005): As a shopper, I want to share my wishlist with contacts from my phone, so that friends and family can see what I want.
 Priority: High
 Estimate: M
-Status: Planned
+Status: Done
 Branch: feature/US-0010-share-wishlist
 Dependencies: US-0007
 Acceptance Criteria:
@@ -331,25 +331,25 @@ Acceptance Criteria:
 TASK-0016 (US-0010): Implement contact picker using expo-contacts
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0010-share-wishlist
-Notes: Request contacts permission gracefully
+Status: Done
+Branch: feature/pixel-screens
+Notes: Mock contact list used (AC-0044); share modal in wishlist detail with toggle selection
 ```
 
 ```
 TASK-0017 (US-0010): Add share flow — select contacts, update wishlist, show confirmation
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0010-share-wishlist
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: Share modal in wishlist/[id].tsx; uses mockUsers as contacts; confirms with Alert
 ```
 
 ```
 US-0011 (EPIC-0005): As a gift buyer (recipient), I want to view a shared wishlist, so that I can see what the person wants.
 Priority: High
 Estimate: M
-Status: Planned
+Status: Done
 Branch: feature/US-0011-shared-view
 Dependencies: US-0010
 Acceptance Criteria:
@@ -362,16 +362,16 @@ Acceptance Criteria:
 TASK-0018 (US-0011): Build shared wishlist view with claimed-status indicators
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0011-shared-view
-Notes: Simulated — use mock recipient identity from user switcher
+Status: Done
+Branch: feature/pixel-screens
+Notes: Claimed items greyed out with badge; owner view hides claimer names (AC-0036)
 ```
 
 ```
 US-0012 (EPIC-0005): As a gift buyer, I want to claim an item on a shared wishlist, so that others know I intend to buy it and duplicates are avoided.
 Priority: High
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0012-claim-item
 Dependencies: US-0011
 Acceptance Criteria:
@@ -384,9 +384,9 @@ Acceptance Criteria:
 TASK-0019 (US-0012): Implement claim/unclaim logic and UI for shared wishlist items
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0012-claim-item
-Notes:
+Status: Done
+Branch: feature/pixel-screens
+Notes: claimItem/unclaimItem via useWishlists(); "I'll Get This" button; unclaim on re-tap
 ```
 
 ---
@@ -405,7 +405,7 @@ Dependencies: EPIC-0001
 US-0013 (EPIC-0006): As a user, I want to simulate logging in or browsing anonymously, so that the POC can demonstrate both authenticated and guest experiences.
 Priority: Medium
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0013-mock-auth
 Dependencies: US-0002
 Acceptance Criteria:
@@ -419,8 +419,8 @@ Acceptance Criteria:
 TASK-0020 (US-0013): Build mock login screen with user profile selector and guest mode
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0013-mock-auth
+Status: Done
+Branch: feature/US-0001-expo-scaffold
 Notes: Pre-define 2-3 mock users for demo switching
 ```
 
@@ -428,7 +428,7 @@ Notes: Pre-define 2-3 mock users for demo switching
 TASK-0021 (US-0013): Implement user context provider to propagate identity throughout the app
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0013-mock-auth
+Status: Done
+Branch: feature/US-0001-expo-scaffold
 Notes:
 ```

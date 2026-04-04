@@ -477,8 +477,11 @@ ${phases
 ${(() => {
   const roles = agentRoles;
   const imgBase = 'agents/images';
-  // Option 2: Spotlight banner for active agent
-  const activeAgent = Object.entries(agents).find(([, a]) => a.status === 'active');
+  // Option 2: Spotlight banner — prefer non-Conductor active agent (BUG-0079)
+  const dmAgentName = (AGENT_CONFIG.orchestrator || {}).dmAgent || 'Conductor';
+  const activeAgent =
+    Object.entries(agents).find(([name, a]) => a.status === 'active' && name !== dmAgentName) ||
+    Object.entries(agents).find(([, a]) => a.status === 'active');
   let spotlight;
   if (activeAgent) {
     const [aName, aData] = activeAgent;
@@ -573,7 +576,7 @@ ${
         .map((entry) => {
           const agentColor = agentColors[entry.agent] || '#888';
           return `    <div class="log-entry">
-      <span class="log-time">${entry.time || ''}</span>
+      <span class="log-time" data-utc-time="${entry.time || ''}">${entry.time || ''}</span>
       <span class="log-agent" style="color: ${agentColor}">${entry.agent || 'System'}</span>
       ${entry.message || ''}
     </div>`;
@@ -621,6 +624,22 @@ function updateToggleButton(theme) {
   var saved = localStorage.getItem('dashboard-theme') || 'dark';
   if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
   updateToggleButton(saved);
+})();
+// BUG-0083: Convert stored HH:MM log times (written as local clock) to browser local time display
+(function() {
+  document.querySelectorAll('[data-utc-time]').forEach(function(el) {
+    var t = el.getAttribute('data-utc-time');
+    if (!t || !t.includes(':')) return;
+    var parts = t.split(':');
+    var h = parseInt(parts[0], 10);
+    var m = parseInt(parts[1], 10);
+    if (isNaN(h) || isNaN(m)) return;
+    // Timestamps are stored as local wall-clock time at time of writing.
+    // Re-display using the browser's locale for consistent formatting.
+    var d = new Date();
+    d.setHours(h, m, 0, 0);
+    el.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  });
 })();
 </script>
 

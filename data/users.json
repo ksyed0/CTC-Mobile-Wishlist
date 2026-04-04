@@ -1,0 +1,20 @@
+[
+  {
+    "id": "user-001",
+    "name": "Alice",
+    "phone": "416-555-0101",
+    "avatar": "placeholder"
+  },
+  {
+    "id": "user-002",
+    "name": "Bob",
+    "phone": "416-555-0102",
+    "avatar": "placeholder"
+  },
+  {
+    "id": "user-003",
+    "name": "Carol",
+    "phone": "416-555-0103",
+    "avatar": "placeholder"
+  }
+]
