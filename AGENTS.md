@@ -445,6 +445,22 @@ A husky pre-commit hook runs lint-staged on every `git commit`:
 
 This prevents unformatted code from reaching CI. The hook activates automatically via `npm install` (`"prepare": "husky"` in `package.json`).
 
+### Config-Driven Agent Registry
+
+All agent definitions (names, roles, icons, colors, instruction files) are centralized in `agents.config.json`. This file is the single source of truth consumed by:
+
+- `orchestrator/spawn.js` — agent spawning and CLI help
+- `tools/generate-dashboard.js` — agent colors, icons, and roles on the dashboard
+- `tools/process-avatars.js` — avatar grid layout and extraction order
+- `tools/init-sdlc-status.js` — generates `docs/sdlc-status.json` with correct agent entries
+
+**Rules:**
+
+- Never hardcode agent names, roles, or colors in code — always read from `agents.config.json`
+- When adding a new agent, add it to `agents.config.json` first, then create the instruction file
+- Run `npm run init:status -- --force` to regenerate `sdlc-status.json` after config changes
+- The `orchestrator.dmAgent` and `orchestrator.reviewer` fields identify the DM and reviewer agents
+
 ---
 
 ### 12. Security & Secrets Standards
