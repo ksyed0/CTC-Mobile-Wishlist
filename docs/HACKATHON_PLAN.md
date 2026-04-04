@@ -23,7 +23,7 @@
 
 ```
 Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the
-Delivery Manager orchestrating 7 specialized agents for today's hackathon. Follow
+Delivery Manager orchestrating 8 specialized agents for today's hackathon. Follow
 the orchestration playbook in your instruction file. Begin with Phase 1: spawn
 Compass to prioritize the backlog.
 ```

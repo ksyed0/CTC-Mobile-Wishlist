@@ -253,3 +253,49 @@
 - 1 new config file: agents.config.json
 - 1 new tool: init-sdlc-status.js
 - 31 new tests, 246 total passing
+
+## Session 7 — 2026-04-04
+
+### What Was Done
+
+**Project-Agnostic Agent Framework (BUG-0051 – BUG-0053)**
+
+- Refactored all 9 agent instruction files to remove project-specific content (story IDs, screen names, service names, branch names, design tokens, mock data specs)
+- Agent files are now generic role templates defining HOW each role operates (patterns, rules, quality standards)
+- The DM agent builds project-specific context dynamically at spawn time from `project.md` and architecture docs
+- Fixed "7 sub-agents" → "8 sub-agents" in DM_AGENT.md and HACKATHON_PLAN.md
+
+**Project Entry Point + Platform Symlinks (BUG-0053)**
+
+- Created `project.md` as single project entry point referencing all docs (architecture, release plan, test cases, tracking)
+- Created 7 platform symlinks in repo root: `CLAUDE.md`, `Gemini.md`, `Codex.md`, `EliteA.md`, `CodeMie.md`, `Qwen.md`, `MiniMax.md` → all point to `project.md`
+- Each AI platform auto-discovers project context via its convention file
+
+**Config-Driven Dashboard (BUG-0054)**
+
+- Made dashboard title, subtitle, footer, repo URL, and brand accent color configurable via `agents.config.json` `dashboard` section
+- Replaced 11 hardcoded `#D52B1E` CSS references with `var(--brand-primary)` CSS variable
+- Defaults to repo name from `package.json` when config not set
+
+**Security Fixes — Code Review Findings (BUG-0055 – BUG-0066)**
+
+- Fixed XSS vulnerabilities in render-html.js: 9 locations with unescaped data attributes and onclick handlers (BUG-0055)
+- Fixed command injection via unquoted branch names in git-safe.js: 6 shell commands (BUG-0056)
+- Fixed infinite recursion risk in file-lock.js stale lock recovery (BUG-0057)
+- Fixed race condition on temp file names in atomic-write.js (BUG-0058)
+- Added JSON parse error handling in atomic-write.js and spawn.js (BUG-0059, BUG-0060)
+- Added CLI argument bounds checking in spawn.js (BUG-0061)
+- Improved lock directory cleanup logging in file-lock.js (BUG-0062)
+- Made dashboard author info config-driven via agents.config.json (BUG-0063)
+- Made process-avatars.js face count dynamic from agents.config.json (BUG-0064)
+- Replaced project-specific branch examples with generic placeholders in AGENTS.md and AGENT_PLAN.md (BUG-0065)
+- Added CodeQL SAST and TruffleHog secret scanning to CI pipeline (BUG-0066)
+
+### Stats
+
+- 16 bugs logged (BUG-0051 – BUG-0066), all fixed
+- 9 agent files refactored to project-agnostic role templates
+- 1 new file: project.md
+- 7 new symlinks for multi-platform support
+- 2 new CI jobs: CodeQL SAST, TruffleHog secret scanning
+- 246 tests still passing

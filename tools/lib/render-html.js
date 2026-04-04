@@ -222,7 +222,7 @@ function renderSidebar() {
       ${items
         .map(
           (item, i) => `
-      <button onclick="showTab('${item.id}')" id="tab-btn-${item.id}"
+      <button onclick="showTab('${jsEsc(item.id)}')" id="tab-btn-${esc(item.id)}"
         class="nav-item${i === 0 ? ' nav-active' : ''}"
         ${i === 0 ? 'aria-current="page"' : ''}>
         ${svgIcon(item.path)}
@@ -281,7 +281,7 @@ function renderHierarchyTab(data) {
           .join('');
         return `
       <div class="story-row ml-6 border-l-2 border-slate-200 dark:border-slate-600 pl-4 py-2"
-           data-epic="${story.epicId}" data-status="${story.status}" data-priority="${story.priority}">
+           data-epic="${esc(story.epicId)}" data-status="${esc(story.status)}" data-priority="${esc(story.priority)}">
         <div class="flex flex-wrap items-center gap-2 cursor-pointer" onclick="toggleACs('${jsEsc(story.id)}')">
           <span class="font-mono text-xs text-slate-500 whitespace-nowrap">${story.id}</span>
           ${badge(story.status)} ${badge(story.priority)}
@@ -316,7 +316,7 @@ function renderHierarchyTab(data) {
           .join('');
         return `
       <div class="story-row story-card-hover bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg p-3 flex flex-col gap-1"
-           data-epic="${story.epicId}" data-status="${story.status}" data-priority="${story.priority}">
+           data-epic="${esc(story.epicId)}" data-status="${esc(story.status)}" data-priority="${esc(story.priority)}">
         <div class="flex flex-wrap items-center gap-1 cursor-pointer" onclick="toggleCardACs('${jsEsc(story.id)}')">
           ${badge(story.status)} ${badge(story.priority)}
           <span class="font-mono text-xs text-slate-500 ml-1">${story.id}</span>
@@ -546,7 +546,7 @@ function renderTraceabilityTab(data) {
               return `<td class="p-2 border border-slate-200 dark:border-slate-600 text-center text-xs font-medium ${cls}">${linked ? tc.status.slice(0, 1) : ''}</td>`;
             })
             .join('');
-          return `<tr class="hidden" data-trace-epic="${epic.id}">
+          return `<tr class="hidden" data-trace-epic="${esc(epic.id)}">
         <td class="text-xs font-mono px-2 py-1 border border-slate-200 dark:border-slate-600 whitespace-nowrap pl-6 dark:text-slate-200">${story.id}</td>
         ${cells}
       </tr>`;
@@ -1093,7 +1093,7 @@ function renderCostsTab(data, options = {}) {
         })
         .join('');
       return `<tbody>
-    <tr class="border-t-2 border-slate-300 dark:border-slate-600 cursor-pointer select-none bug-epic-header" data-epic="${epicId}" style="background:${accent.bg}" onclick="toggleSection('${bceid}','${bceid}-arrow')">
+    <tr class="border-t-2 border-slate-300 dark:border-slate-600 cursor-pointer select-none bug-epic-header" data-epic="${esc(epicId)}" style="background:${accent.bg}" onclick="toggleSection('${jsEsc(bceid)}','${jsEsc(bceid)}-arrow')">
       <td colspan="6" class="px-3 py-2">
         <span id="${bceid}-arrow" class="text-slate-400 text-xs mr-2">&#9654;</span>
         <span class="font-mono text-xs font-bold" style="color:${accent.border}">${label}</span>
@@ -1202,8 +1202,8 @@ function renderCostsTab(data, options = {}) {
       </div>`;
         })
         .join('');
-      return `<div class="mb-6 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden bug-epic-card" data-epic="${epicId}" style="border-left:4px solid ${accent.border}">
-      <div class="flex items-center gap-2 px-4 py-3 flex-wrap cursor-pointer select-none bug-epic-header" data-epic="${epicId}" style="background:${accent.bg}" onclick="toggleSection('${bcceid}','${bcceid}-arrow')">
+      return `<div class="mb-6 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden bug-epic-card" data-epic="${esc(epicId)}" style="border-left:4px solid ${accent.border}">
+      <div class="flex items-center gap-2 px-4 py-3 flex-wrap cursor-pointer select-none bug-epic-header" data-epic="${esc(epicId)}" style="background:${accent.bg}" onclick="toggleSection('${jsEsc(bcceid)}','${jsEsc(bcceid)}-arrow')">
         <span id="${bcceid}-arrow" class="text-slate-400 text-xs w-3 flex-shrink-0">&#9654;</span>
         <span class="font-mono text-xs font-bold" style="color:${accent.border}">${label}</span>
         <span class="ml-2 text-xs text-slate-500 bug-count">(${bugs.length})</span>
@@ -1352,7 +1352,7 @@ function renderBugsTab(data) {
   const renderBugRow = (bug) => {
     const epicId = storyEpicMap[bug.relatedStory] || '_ungrouped';
     return `
-    <tr id="bug-row-${bug.id}" class="bug-row border-t border-slate-100 dark:border-slate-700" data-status="${bug.status}" data-epic="${epicId}">
+    <tr id="bug-row-${esc(bug.id)}" class="bug-row border-t border-slate-100 dark:border-slate-700" data-status="${esc(bug.status)}" data-epic="${esc(epicId)}">
       <td class="px-3 py-2 font-mono text-xs whitespace-nowrap dark:text-slate-200">${bug.id}</td>
       <td class="px-3 py-2 text-sm dark:text-slate-200">${esc(bug.title)}</td>
       <td class="px-3 py-2 text-center">${badge(bug.severity)}</td>
@@ -1366,7 +1366,7 @@ function renderBugsTab(data) {
   const renderBugCard = (bug) => {
     const epicId = storyEpicMap[bug.relatedStory] || '_ungrouped';
     return `
-    <div id="bug-card-${bug.id}" class="bug-row bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 flex flex-col gap-2" data-status="${bug.status}" data-epic="${epicId}">
+    <div id="bug-card-${esc(bug.id)}" class="bug-row bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 flex flex-col gap-2" data-status="${esc(bug.status)}" data-epic="${esc(epicId)}">
       <div class="flex items-center gap-2 flex-wrap">
         <span class="font-mono text-xs text-slate-500 whitespace-nowrap">${bug.id}</span>
         ${badge(bug.severity)} ${badge(bug.status)}
