@@ -284,3 +284,19 @@
 - 1 new file: project.md
 - 7 new symlinks for multi-platform support
 - 246 tests still passing
+
+**Security Fixes — Code Review Findings (BUG-0055 – BUG-0066)**
+
+- Fixed XSS vulnerabilities in render-html.js: 9 locations with unescaped data attributes and onclick handlers (BUG-0055)
+- Fixed command injection via unquoted branch names in git-safe.js: 6 shell commands (BUG-0056)
+- Fixed infinite recursion risk in file-lock.js stale lock recovery (BUG-0057)
+- Fixed race condition on temp file names in atomic-write.js (BUG-0058)
+- Added JSON parse error handling in atomic-write.js and spawn.js (BUG-0059, BUG-0060)
+- Added CLI argument bounds checking in spawn.js (BUG-0061)
+- Improved lock directory cleanup logging in file-lock.js (BUG-0062)
+- Made dashboard author info config-driven via agents.config.json (BUG-0063)
+- Made process-avatars.js face count dynamic from agents.config.json (BUG-0064)
+- Replaced project-specific branch examples with generic placeholders in AGENTS.md and AGENT_PLAN.md (BUG-0065)
+- Added CodeQL SAST and TruffleHog secret scanning to CI pipeline (BUG-0066)
+- 12 bugs logged (BUG-0055 – BUG-0066), all fixed
+- 246 tests still passing

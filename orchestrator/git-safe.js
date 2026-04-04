@@ -69,7 +69,7 @@ async function safePush(branch, opts = {}) {
   const flag = setUpstream ? '-u' : '';
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    const result = git(`push ${flag} origin ${branch}`);
+    const result = git(`push ${flag} origin "${branch}"`);
 
     if (result.ok) {
       return { ok: true, attempts: attempt };
@@ -94,7 +94,7 @@ async function safePush(branch, opts = {}) {
 
     // Rejection — pull first, then retry
     console.warn(`[git-safe] Push rejected (remote has new commits), pulling...`);
-    const pullResult = git(`pull --no-rebase origin ${branch}`);
+    const pullResult = git(`pull --no-rebase origin "${branch}"`);
 
     if (!pullResult.ok) {
       if (pullResult.stderr.includes('CONFLICT') || pullResult.stdout.includes('CONFLICT')) {
@@ -124,7 +124,7 @@ async function safePush(branch, opts = {}) {
  */
 async function safePull(branch) {
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    const result = git(`pull --no-rebase origin ${branch}`);
+    const result = git(`pull --no-rebase origin "${branch}"`);
 
     if (result.ok) {
       return { ok: true, conflicts: false };
@@ -155,14 +155,14 @@ async function safePull(branch) {
  */
 function detectConflicts(branchA, branchB) {
   // Find merge base
-  const baseResult = git(`merge-base ${branchA} ${branchB}`);
+  const baseResult = git(`merge-base "${branchA}" "${branchB}"`);
   if (!baseResult.ok) {
     return { hasConflicts: false, conflictFiles: [], error: 'Could not find merge base' };
   }
   const base = baseResult.stdout;
 
   // Dry-run merge
-  const mergeResult = git(`merge-tree ${base} ${branchA} ${branchB}`);
+  const mergeResult = git(`merge-tree "${base}" "${branchA}" "${branchB}"`);
   const output = mergeResult.stdout;
 
   // Look for conflict markers
@@ -189,7 +189,7 @@ function detectConflicts(branchA, branchB) {
  * @returns {string[]} List of modified file paths
  */
 function branchFiles(branch, base = 'develop') {
-  const result = git(`diff --name-only ${base}...${branch}`);
+  const result = git(`diff --name-only "${base}...${branch}"`);
   return result.ok ? result.stdout.split('\n').filter(Boolean) : [];
 }
 

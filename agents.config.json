@@ -61,7 +61,9 @@
     "footer": "Claude Code Agentic AI SDLC | Canadian Tire Corporation",
     "repoUrl": "https://github.com/ksyed0/ctc-mobile-wishlist",
     "primaryColor": "#D52B1E",
-    "platform": "Claude Code"
+    "platform": "Claude Code",
+    "author": "Kamal Syed",
+    "authorTitle": "Director of Program Management, EPAM Systems"
   },
   "orchestrator": {
     "dmAgent": "Conductor",

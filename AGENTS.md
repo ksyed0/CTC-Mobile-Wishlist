@@ -335,10 +335,10 @@ All code must be managed under Git version control, either locally or via GitHub
 ```other
 main          → Production-ready code only. Never commit directly.
 develop       → Integration branch. All feature branches merge here first.
-feature/*     → One branch per user story. e.g., feature/US-0003-user-login
-bugfix/*      → One branch per bug fix. e.g., bugfix/BUG-0007-auth-token-null
+feature/*     → One branch per user story. e.g., feature/US-XXXX-feature-name
+bugfix/*      → One branch per bug fix. e.g., bugfix/BUG-XXXX-fix-description
 release/*     → Staging branch cut from develop before production deploy. e.g., release/1.0.0
-hotfix/*      → Emergency fixes branched from main. e.g., hotfix/BUG-0012-critical-auth-fix
+hotfix/*      → Emergency fixes branched from main. e.g., hotfix/BUG-XXXX-critical-fix
 ```
 
 **Commit Message Format:**

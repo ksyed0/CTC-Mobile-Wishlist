@@ -46,6 +46,8 @@ function getDashboardMeta() {
     primaryColor: dashCfg.primaryColor || '#D52B1E',
     platform: dashCfg.platform || 'Agentic AI',
     agentCount: Object.keys(AGENT_CONFIG.agents || {}).length,
+    author: dashCfg.author || '',
+    authorTitle: dashCfg.authorTitle || '',
   };
 }
 
@@ -591,8 +593,8 @@ ${
     <img src="agents/images/team.png" style="width:100%; border-radius:8px; margin-bottom:12px;" onerror="this.style.display='none'">
     <h3>AI-SDLC Orchestrator Visualizer</h3>
     <p>Real-time dashboard for agentic AI software development lifecycle orchestration</p>
-    <div class="author">by Kamal Syed</div>
-    <p style="font-size:12px; color: var(--text-muted)">Director of Program Management, EPAM Systems</p>
+    ${DASH_META.author ? `<div class="author">by ${DASH_META.author}</div>` : ''}
+    ${DASH_META.authorTitle ? `<p style="font-size:12px; color: var(--text-muted)">${DASH_META.authorTitle}</p>` : ''}
     ${DASH_META.repoUrl ? `<a class="repo-link" href="${DASH_META.repoUrl}" target="_blank" rel="noopener">View on GitHub</a>` : ''}
   </div>
 </div>
