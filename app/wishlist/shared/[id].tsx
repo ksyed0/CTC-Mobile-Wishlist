@@ -1,132 +1,61 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
   ActivityIndicator,
+  TouchableOpacity,
   Alert,
 } from 'react-native';
-import { useLocalSearchParams, router, useNavigation } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Wishlist } from '../../../types/wishlist';
-import { Product } from '../../../types/product';
-import { useProducts } from '../../../contexts/ProductContext';
 import { useWishlists } from '../../../contexts/WishlistContext';
+import { useProducts } from '../../../contexts/ProductContext';
 import { useAuth } from '../../../contexts/AuthContext';
 import { WishlistItemRow } from '../../../components/WishlistItemRow';
 import { EmptyState } from '../../../components/EmptyState';
 import { colors } from '../../../theme/colors';
 import { spacing } from '../../../theme/spacing';
-import { typography } from '../../../theme/typography';
 
 export default function SharedWishlistScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const navigation = useNavigation();
-  const { getProductById } = useProducts();
-  const { getWishlistById, claimItem, unclaimItem, sharedWishlists } = useWishlists();
+  const { getWishlistById, claimItem } = useWishlists();
+  const { products } = useProducts();
   const { currentUser } = useAuth();
-
   const [wishlist, setWishlist] = useState<Wishlist | null>(null);
-  const [productMap, setProductMap] = useState<Record<string, Product>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [claimingId, setClaimingId] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    if (!id) return;
-    setIsLoading(true);
+  useEffect(() => {
+    if (id) {
+      getWishlistById(id).then((w) => {
+        setWishlist(w);
+        setIsLoading(false);
+      });
+    }
+  }, [id]);
+
+  function getProductData(productId: string) {
+    return products.find((p) => p.id === productId);
+  }
+
+  // AC-0034/35: claim an item
+  async function handleClaim(productId: string, productName: string) {
+    if (!wishlist || !currentUser) return;
+    setClaimingId(productId);
     try {
-      const w = await getWishlistById(id);
-      setWishlist(w);
-      if (w && w.items.length > 0) {
-        const entries = await Promise.all(
-          w.items.map(async (item) => {
-            const p = await getProductById(item.productId);
-            return p ? ([item.productId, p] as [string, Product]) : null;
-          })
-        );
-        const map: Record<string, Product> = {};
-        entries.forEach((e) => {
-          if (e) map[e[0]] = e[1];
-        });
-        setProductMap(map);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  }, [id, getWishlistById, getProductById]);
-
-  useEffect(() => {
-    load();
-  }, [load]);
-
-  // Keep wishlist in sync with context after claim/unclaim
-  useEffect(() => {
-    if (!id) return;
-    const updated = sharedWishlists.find((w) => w.id === id);
-    if (updated) {
+      await claimItem(wishlist.id, productId);
+      const updated = await getWishlistById(wishlist.id);
       setWishlist(updated);
+      Alert.alert('Reserved!', `You reserved "${productName}" as a gift.`);
+    } catch {
+      Alert.alert('Error', 'Could not claim item. Please try again.');
+    } finally {
+      setClaimingId(null);
     }
-  }, [sharedWishlists, id]);
-
-  // Set nav title once wishlist is loaded
-  useEffect(() => {
-    if (wishlist) {
-      navigation.setOptions({ title: wishlist.name });
-    }
-  }, [wishlist, navigation]);
-
-  // AC-0034/35: claim an item as the current user
-  const handleClaim = useCallback(
-    async (productId: string) => {
-      if (!wishlist || !currentUser) return;
-      const productName = productMap[productId]?.name ?? productId;
-      setClaimingId(productId);
-      try {
-        await claimItem(wishlist.id, productId);
-        Alert.alert(
-          "You're getting it!",
-          `You claimed "${productName}". The owner won't see who claimed it.`
-        );
-      } catch {
-        Alert.alert('Error', 'Could not claim item. Please try again.');
-      } finally {
-        setClaimingId(null);
-      }
-    },
-    [wishlist, currentUser, productMap, claimItem]
-  );
-
-  // Allow unclaiming your own claim
-  const handleUnclaim = useCallback(
-    async (productId: string) => {
-      if (!wishlist) return;
-      const productName = productMap[productId]?.name ?? productId;
-      Alert.alert(
-        'Unclaim Item',
-        `Remove your claim on "${productName}"?`,
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Unclaim',
-            style: 'destructive',
-            onPress: async () => {
-              setClaimingId(productId);
-              try {
-                await unclaimItem(wishlist.id, productId);
-              } catch {
-                Alert.alert('Error', 'Could not unclaim item. Please try again.');
-              } finally {
-                setClaimingId(null);
-              }
-            },
-          },
-        ]
-      );
-    },
-    [wishlist, productMap, unclaimItem]
-  );
+  }
 
   if (isLoading) {
     return (
@@ -139,101 +68,76 @@ export default function SharedWishlistScreen() {
   if (!wishlist) {
     return (
       <View style={styles.centered}>
-        <MaterialIcons name="error-outline" size={48} color={colors.textLight} />
         <Text style={styles.notFound}>Shared wishlist not found</Text>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.back()}
-          activeOpacity={0.8}
-          accessibilityRole="button"
-        >
-          <Text style={styles.backButtonText}>Go Back</Text>
-        </TouchableOpacity>
       </View>
     );
   }
 
-  // AC-0036: determine whether current user is the owner (hides claimer names)
+  // AC-0036: owner cannot claim their own items
   const isOwner = currentUser?.id === wishlist.ownerId;
 
   return (
     <View style={styles.container}>
-      {/* Shared-by header */}
-      <View style={styles.headerBanner}>
-        <MaterialIcons name="people" size={20} color={colors.primary} />
-        <Text style={styles.headerText}>
-          {isOwner
-            ? `Your wishlist · ${wishlist.items.length} item${wishlist.items.length !== 1 ? 's' : ''}`
-            : `Shared wishlist · ${wishlist.items.length} item${wishlist.items.length !== 1 ? 's' : ''}`}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>{wishlist.name}</Text>
+        <Text style={styles.headerMeta}>
+          {wishlist.items.length} item{wishlist.items.length !== 1 ? 's' : ''}
         </Text>
       </View>
-
-      {/* Recipient notice — AC-0036: claimer names hidden from owner */}
-      {!isOwner && (
-        <View style={styles.noticeBanner}>
-          <MaterialIcons name="info-outline" size={16} color={colors.textSecondary} />
-          <Text style={styles.noticeText}>
-            Claimed items are hidden from the wishlist owner. Your selections stay secret!
-          </Text>
-        </View>
-      )}
 
       <FlatList
         data={wishlist.items}
         keyExtractor={(item) => item.productId}
-        contentContainerStyle={[
-          styles.list,
-          wishlist.items.length === 0 && styles.listEmpty,
-        ]}
-        showsVerticalScrollIndicator={false}
+        contentContainerStyle={
+          wishlist.items.length === 0 ? styles.listEmpty : styles.list
+        }
         renderItem={({ item }) => {
-          const isMyClaim =
-            item.claimedBy !== null && item.claimedBy === currentUser?.id;
-          const isClaimed = item.claimedBy !== null;
-
-          // AC-0035: if this user claimed the item, let them tap to unclaim
-          const onClaim = isMyClaim
-            ? () => handleUnclaim(item.productId)
-            : () => handleClaim(item.productId);
-
-          // Resolve claimer display name (never shown to owner — AC-0036)
-          const claimerName = isOwner
-            ? undefined
-            : isMyClaim
-              ? 'You'
-              : isClaimed
-                ? 'Someone'
-                : undefined;
+          const product = getProductData(item.productId);
+          const productName = product?.name ?? item.productId;
+          const isClaimed = !!item.claimedBy;
+          const isClaiming = claimingId === item.productId;
 
           return (
-            <View style={claimingId === item.productId ? styles.rowLoading : undefined}>
-              {claimingId === item.productId && (
-                <ActivityIndicator
-                  size="small"
-                  color={colors.primary}
-                  style={styles.rowSpinner}
-                />
-              )}
+            <View style={[styles.itemWrapper, isClaimed && styles.itemWrapperClaimed]}>
+              {/* Resolved product name, image placeholder, price (AC-0067/68/72) */}
               <WishlistItemRow
                 item={item}
-                productName={productMap[item.productId]?.name}
-                productPrice={productMap[item.productId]?.price}
-                productImage={productMap[item.productId]?.image}
-                claimerName={claimerName}
-                // AC-0034: show claim button only to non-owners on unclaimed items,
-                //          OR to the user who already claimed (to let them unclaim)
-                showClaimButton={!isOwner && (!isClaimed || isMyClaim)}
-                onClaim={onClaim}
-                isOwner={isOwner}
+                productName={productName}
+                productPrice={product?.price}
               />
+
+              {/* AC-0033: show "Claimed" badge — NOT who claimed it */}
+              {/* AC-0036: owner sees no claim buttons; guests see "I'll Get This" */}
+              {!isOwner && (
+                <View style={styles.claimRow}>
+                  {isClaimed ? (
+                    <View style={styles.claimedBadge}>
+                      <MaterialIcons name="check-circle" size={14} color={colors.white} />
+                      <Text style={styles.claimedBadgeText}>Claimed</Text>
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      style={[styles.claimButton, isClaiming && styles.claimButtonDisabled]}
+                      onPress={() => handleClaim(item.productId, productName)}
+                      disabled={isClaiming}
+                    >
+                      {isClaiming ? (
+                        <ActivityIndicator size="small" color={colors.white} />
+                      ) : (
+                        <Text style={styles.claimButtonText}>I'll Get This</Text>
+                      )}
+                    </TouchableOpacity>
+                  )}
+                </View>
+              )}
             </View>
           );
         }}
         ListEmptyComponent={
           <EmptyState
             icon="card-giftcard"
-            title="No items in this wishlist"
-            subtitle="The owner hasn't added anything yet. Check back soon!"
+            title="Nothing here yet"
+            subtitle="This wishlist has no items yet."
           />
         }
       />
@@ -250,71 +154,77 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.md,
     padding: spacing.lg,
   },
-  notFound: {
-    fontSize: typography.fontSize.lg,
-    color: colors.textSecondary,
-    fontWeight: typography.fontWeight.semiBold,
-  },
-  backButton: {
-    backgroundColor: colors.primary,
-    borderRadius: spacing.borderRadius.md,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.lg,
-    minHeight: 44,
-    justifyContent: 'center',
-  },
-  backButtonText: {
-    color: colors.white,
-    fontWeight: typography.fontWeight.semiBold,
-  },
-  headerBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+  header: {
     backgroundColor: colors.white,
+    padding: spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
-  headerText: {
-    fontSize: typography.fontSize.sm,
-    color: colors.textSecondary,
-    fontWeight: typography.fontWeight.medium,
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: colors.dark,
+    marginBottom: spacing.xs,
   },
-  noticeBanner: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: spacing.sm,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    backgroundColor: colors.background,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  noticeText: {
-    flex: 1,
-    fontSize: typography.fontSize.xs,
+  headerMeta: {
+    fontSize: 13,
     color: colors.textSecondary,
-    lineHeight: 18,
   },
   list: {
     padding: spacing.md,
-    paddingBottom: spacing.xxl,
+    paddingBottom: spacing.xl,
   },
   listEmpty: {
-    flex: 1,
+    flexGrow: 1,
   },
-  rowLoading: {
-    position: 'relative',
+  itemWrapper: {
+    marginBottom: spacing.sm,
   },
-  rowSpinner: {
-    position: 'absolute',
-    top: spacing.sm,
-    right: spacing.sm,
-    zIndex: 1,
+  itemWrapperClaimed: {
+    opacity: 0.55,
+  },
+  claimRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: spacing.xs,
+    marginTop: 2,
+  },
+  claimButton: {
+    backgroundColor: colors.primary,
+    borderRadius: spacing.borderRadius.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs + 2,
+    minHeight: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  claimButtonDisabled: {
+    opacity: 0.6,
+  },
+  claimButtonText: {
+    color: colors.white,
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  claimedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.textLight,
+    borderRadius: spacing.borderRadius.md,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs + 2,
+    gap: 4,
+    minHeight: 36,
+  },
+  claimedBadgeText: {
+    color: colors.white,
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  notFound: {
+    fontSize: 17,
+    color: colors.textSecondary,
   },
 });
