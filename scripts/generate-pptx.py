@@ -265,7 +265,7 @@ add_text(s, Inches(8.5), ty + Inches(0.1), Inches(1.8), Inches(0.5), "$189.5M", 
 add_text(s, Inches(10.5), ty + Inches(0.1), Inches(1.8), Inches(0.5), "$548.0M", 16, WHITE, True, PP_ALIGN.CENTER)
 
 add_text(s, Inches(0.8), Inches(6.85), Inches(11), Inches(0.4),
-    "Moderate scenario = ~1.3% lift on $14.5B retail revenue. Conservative assumptions: 25% adoption, $12 AOV lift, 8 transactions/year.",
+    "All amounts in CAD. Moderate scenario = ~1.3% lift on $14.5B retail revenue. Assumptions: 25% adoption, +$12 AOV, 8 txn/year.",
     12, CT_GREY, alignment=PP_ALIGN.LEFT)
 
 print("Slides 5-6 done")
@@ -421,156 +421,182 @@ print("Slides 9-10 done")
 # ═══════════════════════════════════════════════════════════════════
 s = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(s, WHITE)
-slide_header(s, "Resource Plan Comparison", "Traditional SDLC vs. EPAM EliteA Agentic AI SDLC")
+slide_header(s, "Resource Plan Comparison", "All amounts in CAD  |  Onshore: DM $200/h, BA $160/h, SA $190/h  |  160h/month")
 
 # ── LEFT: Traditional ──
 add_box(s, Inches(0.5), Inches(1.3), Inches(6.0), Inches(0.5), CT_DARK)
 add_text(s, Inches(0.7), Inches(1.32), Inches(5.5), Inches(0.45), "Traditional Development Model", 16, WHITE, True)
 
+# Header row
+add_box(s, Inches(0.5), Inches(1.85), Inches(6.0), Inches(0.32), LIGHT_GREY)
+for label, lx, lw in [("Role", 0.6, 2.0), ("HC", 2.65, 0.35), ("Shore", 3.05, 0.55), ("Rate/h", 3.65, 0.6), ("Duration", 4.35, 0.8), ("Cost CAD", 5.2, 1.2)]:
+    add_text(s, Inches(lx), Inches(1.85), Inches(lw), Inches(0.3), label, 8, CT_GREY, True)
+
 trad_roles = [
-    ("Project Manager", "1", "6-9 months", "$180K-250K"),
-    ("Solution Architect", "1", "3 months", "$90K-120K"),
-    ("UX/UI Designer", "1", "3 months", "$60K-80K"),
-    ("Senior Backend Developer", "2", "5-6 months", "$300K-400K"),
-    ("Senior Mobile Developer", "2", "5-6 months", "$280K-380K"),
-    ("QA Engineer", "2", "4 months", "$160K-200K"),
-    ("DevOps Engineer", "1", "3 months", "$80K-110K"),
-    ("Business Analyst", "1", "2 months", "$40K-55K"),
+    ("Delivery Manager",     "1", "On", "$200", "6-9 mo",  "$192K-288K"),
+    ("Business Analyst",     "1", "On", "$160", "2-3 mo",  "$51K-77K"),
+    ("Solution Architect",   "1", "On", "$190", "3-4 mo",  "$91K-122K"),
+    ("Sr Backend Developer", "2", "Off", "$130", "5-6 mo", "$208K-250K"),
+    ("Sr Mobile Developer",  "2", "Off", "$130", "5-6 mo", "$208K-250K"),
+    ("Functional Tester",    "1", "Off", "$95",  "3-4 mo", "$46K-61K"),
+    ("Automation Tester",    "1", "Off", "$110", "3-4 mo", "$53K-70K"),
+    ("DevOps / SRE",         "1", "Off", "$140", "2.5-3 mo", "$56K-67K"),
 ]
 
-# Header
-add_box(s, Inches(0.5), Inches(1.85), Inches(6.0), Inches(0.35), LIGHT_GREY)
-for label, lx, lw in [("Role", 0.6, 2.0), ("HC", 2.7, 0.5), ("Duration", 3.3, 1.3), ("Cost", 4.8, 1.5)]:
-    add_text(s, Inches(lx), Inches(1.86), Inches(lw), Inches(0.3), label, 10, CT_GREY, True)
-
-for ri, (role, hc, dur, cost) in enumerate(trad_roles):
-    y = Inches(2.25 + ri * 0.35)
-    for val, vx, vw in zip([role, hc, dur, cost], [0.6, 2.7, 3.3, 4.8], [2.0, 0.5, 1.3, 1.5]):
-        add_text(s, Inches(vx), y, Inches(vw), Inches(0.3), val, 10, CT_DARK)
+for ri, (role, hc, shore, rate, dur, cost) in enumerate(trad_roles):
+    y = Inches(2.2 + ri * 0.3)
+    bg_c = LIGHT_GREY if ri % 2 == 0 else WHITE
+    add_box(s, Inches(0.5), y, Inches(6.0), Inches(0.3), bg_c)
+    shore_c = CT_RED if shore == "On" else RGBColor(0x15, 0x65, 0xC0)
+    for val, vx, vw, vc in zip(
+        [role, hc, shore, rate, dur, cost],
+        [0.6, 2.65, 3.05, 3.65, 4.35, 5.2],
+        [2.0, 0.35, 0.55, 0.6, 0.8, 1.2],
+        [CT_DARK, CT_DARK, shore_c, CT_DARK, CT_DARK, CT_DARK]):
+        add_text(s, Inches(vx), y, Inches(vw), Inches(0.28), val, 9, vc, val == shore and shore == "On")
 
 # Totals
-add_box(s, Inches(0.5), Inches(5.1), Inches(6.0), Inches(0.45), CT_DARK)
-add_text(s, Inches(0.6), Inches(5.12), Inches(2.0), Inches(0.4), "Total: 11 FTEs", 12, WHITE, True)
-add_text(s, Inches(3.3), Inches(5.12), Inches(1.3), Inches(0.4), "6-9 months", 12, WHITE, True)
-add_text(s, Inches(4.8), Inches(5.12), Inches(1.5), Inches(0.4), "$1.4M-2.2M", 12, WHITE, True)
+add_box(s, Inches(0.5), Inches(4.65), Inches(6.0), Inches(0.4), CT_DARK)
+add_text(s, Inches(0.6), Inches(4.67), Inches(1.8), Inches(0.35), "Total: 10 FTEs", 11, WHITE, True)
+add_text(s, Inches(2.7), Inches(4.67), Inches(1.5), Inches(0.35), "3 onshore + 7 offshore", 9, RGBColor(0xCC,0xCC,0xCC))
+add_text(s, Inches(4.35), Inches(4.67), Inches(0.8), Inches(0.35), "6-9 months", 11, WHITE, True)
+add_text(s, Inches(5.2), Inches(4.67), Inches(1.2), Inches(0.35), "$905K-1.18M", 11, WHITE, True)
 
 # Timeline visual
-add_text(s, Inches(0.6), Inches(5.7), Inches(5.5), Inches(0.3), "Sequential timeline — each phase waits for the previous:", 10, CT_GREY)
-trad_phases = [("Arch", 1.0), ("Backend", 2.2), ("Mobile", 2.2), ("QA", 1.2), ("Launch", 0.7)]
+add_text(s, Inches(0.6), Inches(5.2), Inches(5.5), Inches(0.25), "Sequential — each phase waits for the previous:", 9, CT_GREY)
+trad_phases = [("Arch", 1.0), ("Backend", 2.0), ("Mobile", 2.0), ("QA", 1.1), ("Launch", 0.65)]
 px = Inches(0.6)
-colors_t = [CT_RED, RGBColor(0x1565,0xC0,0x00)[:3] if False else RGBColor(0x15,0x65,0xC0), RGBColor(0xF5,0x7C,0x00), SUCCESS_GREEN, CT_DARK]
 for i, (label, w) in enumerate(trad_phases):
-    add_box(s, px, Inches(6.05), Inches(w), Inches(0.35), [CT_RED, RGBColor(0x15,0x65,0xC0), RGBColor(0xF5,0x7C,0x00), SUCCESS_GREEN, CT_DARK][i])
-    add_text(s, px, Inches(6.06), Inches(w), Inches(0.33), label, 9, WHITE, True, PP_ALIGN.CENTER)
-    px = px + Inches(w + 0.05)
+    add_box(s, px, Inches(5.5), Inches(w), Inches(0.3), [CT_RED, RGBColor(0x15,0x65,0xC0), RGBColor(0xF5,0x7C,0x00), SUCCESS_GREEN, CT_DARK][i])
+    add_text(s, px, Inches(5.5), Inches(w), Inches(0.3), label, 8, WHITE, True, PP_ALIGN.CENTER)
+    px = px + Inches(w + 0.04)
 
 # ── RIGHT: EliteA ──
 add_box(s, Inches(6.8), Inches(1.3), Inches(6.0), Inches(0.5), CT_RED)
 add_text(s, Inches(7.0), Inches(1.32), Inches(5.5), Inches(0.45), "EPAM EliteA Agentic AI Model", 16, WHITE, True)
 
+# Header row
+add_box(s, Inches(6.8), Inches(1.85), Inches(6.0), Inches(0.32), LIGHT_GREY)
+for label, lx, lw in [("Role", 6.9, 2.0), ("HC", 8.95, 0.8), ("Shore", 9.8, 0.5), ("Rate/h", 10.35, 0.55), ("Duration", 10.95, 0.75), ("Cost CAD", 11.75, 1.0)]:
+    add_text(s, Inches(lx), Inches(1.85), Inches(lw), Inches(0.3), label, 8, CT_GREY, True)
+
 elite_roles = [
-    ("Tech Lead / Architect", "1", "8-13 weeks", "$100K-150K"),
-    ("Senior Full-Stack Engineer", "1", "8-13 weeks", "$90K-130K"),
-    ("AI Agent Cluster (Backend)", "3-5 agents", "3-4 weeks", "$60K-100K"),
-    ("AI Agent Cluster (Mobile)", "3-5 agents", "3-4 weeks", "$50K-80K"),
-    ("AI Agent Cluster (QA/Test)", "2-3 agents", "1-2 weeks", "$30K-50K"),
-    ("AI Agent (Docs/Arch)", "1 agent", "Continuous", "Included"),
-    ("Human QA Reviewer", "1 (part-time)", "4 weeks", "$40K-60K"),
-    ("DevOps / CI-CD", "1 agent + human", "2 weeks", "$30K-50K"),
+    ("Delivery Manager",       "1",          "On",  "$200",  "15 wks",  "$120K"),
+    ("Business Analyst",       "1 (PT)",     "On",  "$160",  "4 wks",   "$26K"),
+    ("Solution Architect",     "1",          "On",  "$190",  "6 wks",   "$46K"),
+    ("Sr Full-Stack Engineer", "1",          "Off", "$130",  "12 wks",  "$62K"),
+    ("Sr Mobile Engineer",     "1",          "Off", "$130",  "10 wks",  "$52K"),
+    ("AI Agent Cluster (Dev)", "5-8 agents", "AI",  "—",     "4-6 wks", "$45K"),
+    ("AI Agent Cluster (QA)",  "2-3 agents", "AI",  "—",     "2-3 wks", "$20K"),
+    ("Human QA Reviewer",      "1 (PT)",     "Off", "$100",  "5 wks",   "$20K"),
+    ("DevOps (human + AI)",    "0.5 + AI",   "Off", "$140",  "3 wks",   "$17K"),
 ]
 
-# Header
-add_box(s, Inches(6.8), Inches(1.85), Inches(6.0), Inches(0.35), LIGHT_GREY)
-for label, lx, lw in [("Role", 6.9, 2.2), ("HC", 9.2, 1.0), ("Duration", 10.3, 1.1), ("Cost", 11.5, 1.2)]:
-    add_text(s, Inches(lx), Inches(1.86), Inches(lw), Inches(0.3), label, 10, CT_GREY, True)
-
-for ri, (role, hc, dur, cost) in enumerate(elite_roles):
-    y = Inches(2.25 + ri * 0.35)
-    for val, vx, vw in zip([role, hc, dur, cost], [6.9, 9.2, 10.3, 11.5], [2.2, 1.0, 1.1, 1.2]):
-        c = CT_RED if "agent" in hc.lower() else CT_DARK
-        add_text(s, Inches(vx), y, Inches(vw), Inches(0.3), val, 10, c)
+for ri, (role, hc, shore, rate, dur, cost) in enumerate(elite_roles):
+    y = Inches(2.2 + ri * 0.27)
+    bg_c = LIGHT_GREY if ri % 2 == 0 else WHITE
+    add_box(s, Inches(6.8), y, Inches(6.0), Inches(0.27), bg_c)
+    if shore == "AI":
+        shore_c = CT_RED
+    elif shore == "On":
+        shore_c = CT_RED
+    else:
+        shore_c = RGBColor(0x15, 0x65, 0xC0)
+    is_ai = shore == "AI"
+    for val, vx, vw, vc in zip(
+        [role, hc, shore, rate, dur, cost],
+        [6.9, 8.95, 9.8, 10.35, 10.95, 11.75],
+        [2.0, 0.8, 0.5, 0.55, 0.75, 1.0],
+        [CT_RED if is_ai else CT_DARK, CT_RED if is_ai else CT_DARK, shore_c, CT_DARK, CT_DARK, CT_DARK]):
+        add_text(s, Inches(vx), y, Inches(vw), Inches(0.26), val, 8, vc, is_ai)
 
 # Totals
-add_box(s, Inches(6.8), Inches(5.1), Inches(6.0), Inches(0.45), CT_RED)
-add_text(s, Inches(6.9), Inches(5.12), Inches(2.2), Inches(0.4), "2 humans + AI cluster", 12, WHITE, True)
-add_text(s, Inches(10.3), Inches(5.12), Inches(1.1), Inches(0.4), "8-13 weeks", 12, WHITE, True)
-add_text(s, Inches(11.5), Inches(5.12), Inches(1.2), Inches(0.4), "$470K-760K", 12, WHITE, True)
+add_box(s, Inches(6.8), Inches(4.65), Inches(6.0), Inches(0.4), CT_RED)
+add_text(s, Inches(6.9), Inches(4.67), Inches(1.8), Inches(0.35), "5 humans + AI", 11, WHITE, True)
+add_text(s, Inches(8.7), Inches(4.67), Inches(1.5), Inches(0.35), "3 onshore + 2 offshore", 9, RGBColor(0xFF,0xCC,0xCC))
+add_text(s, Inches(10.95), Inches(4.67), Inches(0.75), Inches(0.35), "8-15 wks", 11, WHITE, True)
+add_text(s, Inches(11.75), Inches(4.67), Inches(1.0), Inches(0.35), "$408K", 11, WHITE, True)
 
 # Timeline visual
-add_text(s, Inches(6.9), Inches(5.7), Inches(5.5), Inches(0.3), "Parallel execution — AI agents run concurrently:", 10, CT_GREY)
-elite_phases = [("Arch", 0.7), ("Backend + Mobile + QA (parallel)", 3.2), ("Integrate", 1.0), ("Launch", 0.6)]
+add_text(s, Inches(6.9), Inches(5.2), Inches(5.5), Inches(0.25), "Parallel — AI agents run concurrently with human supervision:", 9, CT_GREY)
+elite_phases = [("Arch", 0.65), ("Backend + Mobile + QA (parallel)", 3.0), ("Integrate", 0.9), ("Launch", 0.55)]
 px = Inches(6.9)
 for i, (label, w) in enumerate(elite_phases):
-    add_box(s, px, Inches(6.05), Inches(w), Inches(0.35), [CT_RED, RGBColor(0x15,0x65,0xC0), RGBColor(0xF5,0x7C,0x00), CT_DARK][i])
-    add_text(s, px, Inches(6.06), Inches(w), Inches(0.33), label, 9, WHITE, True, PP_ALIGN.CENTER)
-    px = px + Inches(w + 0.05)
+    add_box(s, px, Inches(5.5), Inches(w), Inches(0.3), [CT_RED, RGBColor(0x15,0x65,0xC0), RGBColor(0xF5,0x7C,0x00), CT_DARK][i])
+    add_text(s, px, Inches(5.5), Inches(w), Inches(0.3), label, 8, WHITE, True, PP_ALIGN.CENTER)
+    px = px + Inches(w + 0.04)
 
 # Bottom comparison callout
-add_box(s, Inches(0.5), Inches(6.6), Inches(12.3), Inches(0.5), LIGHT_GREY)
-add_text(s, Inches(0.7), Inches(6.62), Inches(11.8), Inches(0.45),
-    "EliteA: 82% fewer human FTEs (2 vs 11)  |  60% lower cost  |  50% faster  |  AI handles ~70% of code, tests, and docs",
-    13, CT_RED, True, PP_ALIGN.CENTER)
+add_box(s, Inches(0.5), Inches(6.0), Inches(12.3), Inches(0.35), LIGHT_GREY)
+add_text(s, Inches(0.7), Inches(6.0), Inches(11.8), Inches(0.33),
+    "EliteA saves $500K-770K CAD (55-65%)  |  50% fewer human FTEs (5 vs 10)  |  4-6 months faster  |  AI handles ~70% of code, tests, and docs",
+    11, CT_RED, True, PP_ALIGN.CENTER)
+
+# Role legend
+add_text(s, Inches(0.7), Inches(6.45), Inches(11.8), Inches(0.35),
+    "On = Onshore (Canada)  |  Off = Offshore/Nearshore  |  AI = EPAM EliteA agent compute  |  PT = Part-time  |  All rates in CAD/hour",
+    9, CT_GREY, False, PP_ALIGN.CENTER)
 
 # ═══════════════════════════════════════════════════════════════════
 # SLIDE 12: Investment & ROI
 # ═══════════════════════════════════════════════════════════════════
 s = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(s, WHITE)
-slide_header(s, "Investment & ROI", "Agentic AI SDLC reduces cost by ~60% and timeline by ~50% vs. traditional")
+slide_header(s, "Investment & ROI", "All amounts in CAD  |  Agentic AI SDLC reduces cost by ~60% and timeline by ~50%")
 
 # Left: Cost comparison
-add_text(s, Inches(0.8), Inches(1.3), Inches(5.5), Inches(0.5), "Implementation Cost Comparison", 18, CT_DARK, True)
+add_text(s, Inches(0.8), Inches(1.3), Inches(5.5), Inches(0.5), "Implementation Cost Comparison (CAD)", 18, CT_DARK, True)
 
 # Traditional
 add_text(s, Inches(0.8), Inches(1.9), Inches(5.5), Inches(0.35), "Traditional SDLC", 14, CT_GREY, True)
 trad_items = [
-    ("Design & Architecture", "$200K-300K", "4-6 weeks"),
-    ("Backend Development", "$500K-800K", "8-12 weeks"),
-    ("Mobile Development", "$400K-600K", "8-12 weeks"),
-    ("QA & Security", "$200K-300K", "4-6 weeks"),
-    ("Launch & Monitoring", "$100K-150K", "2-4 weeks"),
+    ("Design & Architecture", "$142K-199K", "4-6 weeks"),
+    ("Backend Development", "$264K-317K", "8-12 weeks"),
+    ("Mobile Development", "$264K-317K", "8-12 weeks"),
+    ("QA (Functional + Automation)", "$99K-131K", "4-6 weeks"),
+    ("DevOps / Launch", "$56K-67K", "2-4 weeks"),
+    ("DM + BA Oversight", "$243K-365K", "Full duration"),
 ]
 for i, (phase, cost, dur) in enumerate(trad_items):
-    y = Inches(2.3 + i * 0.38)
-    add_text(s, Inches(0.8), y, Inches(2.5), Inches(0.35), phase, 11, CT_DARK)
-    add_text(s, Inches(3.3), y, Inches(1.2), Inches(0.35), cost, 11, CT_GREY, alignment=PP_ALIGN.RIGHT)
-    add_text(s, Inches(4.6), y, Inches(1.2), Inches(0.35), dur, 11, CT_GREY)
+    y = Inches(2.3 + i * 0.35)
+    add_text(s, Inches(0.8), y, Inches(2.5), Inches(0.32), phase, 11, CT_DARK)
+    add_text(s, Inches(3.3), y, Inches(1.2), Inches(0.32), cost, 11, CT_GREY, alignment=PP_ALIGN.RIGHT)
+    add_text(s, Inches(4.6), y, Inches(1.2), Inches(0.32), dur, 11, CT_GREY)
 
-add_box(s, Inches(0.8), Inches(4.3), Inches(5.0), Inches(0.4), LIGHT_GREY)
-add_text(s, Inches(0.8), Inches(4.32), Inches(2.5), Inches(0.35), "Traditional Total:", 13, CT_DARK, True)
-add_text(s, Inches(3.3), Inches(4.32), Inches(1.2), Inches(0.35), "$1.4M-2.2M", 13, CT_DARK, True, PP_ALIGN.RIGHT)
-add_text(s, Inches(4.6), Inches(4.32), Inches(1.2), Inches(0.35), "6-9 months", 13, CT_DARK, True)
+add_box(s, Inches(0.8), Inches(4.45), Inches(5.0), Inches(0.4), LIGHT_GREY)
+add_text(s, Inches(0.8), Inches(4.47), Inches(2.5), Inches(0.35), "Traditional Total:", 13, CT_DARK, True)
+add_text(s, Inches(3.3), Inches(4.47), Inches(1.2), Inches(0.35), "$905K-1.18M", 13, CT_DARK, True, PP_ALIGN.RIGHT)
+add_text(s, Inches(4.6), Inches(4.47), Inches(1.2), Inches(0.35), "6-9 months", 13, CT_DARK, True)
 
 # EliteA
-add_text(s, Inches(0.8), Inches(5.0), Inches(5.5), Inches(0.35), "EPAM EliteA Agentic AI SDLC", 14, CT_RED, True)
+add_text(s, Inches(0.8), Inches(5.1), Inches(5.5), Inches(0.35), "EPAM EliteA Agentic AI SDLC", 14, CT_RED, True)
 elite_items = [
-    ("AI Requirements + Architecture", "$60K-90K", "1-2 weeks"),
-    ("Agentic Backend Dev", "$150K-250K", "3-4 weeks"),
-    ("Agentic Mobile Dev", "$120K-200K", "3-4 weeks"),
-    ("AI-Assisted QA", "$60K-100K", "1-2 weeks"),
-    ("Launch & Monitoring", "$80K-120K", "1-2 weeks"),
+    ("Onshore (DM + BA + SA)", "$192K", "Full / partial"),
+    ("Offshore Engineers (2)", "$114K", "10-12 weeks"),
+    ("AI Agent Compute", "$65K", "4-6 weeks"),
+    ("Human QA + DevOps", "$37K", "3-5 weeks"),
 ]
 for i, (phase, cost, dur) in enumerate(elite_items):
-    y = Inches(5.4 + i * 0.32)
+    y = Inches(5.5 + i * 0.32)
     add_text(s, Inches(0.8), y, Inches(2.5), Inches(0.3), phase, 11, CT_DARK)
     add_text(s, Inches(3.3), y, Inches(1.2), Inches(0.3), cost, 11, SUCCESS_GREEN, alignment=PP_ALIGN.RIGHT)
     add_text(s, Inches(4.6), y, Inches(1.2), Inches(0.3), dur, 11, SUCCESS_GREEN)
 
-add_box(s, Inches(0.8), Inches(7.0) - Inches(0.4), Inches(5.0), Inches(0.4), CT_RED)
-add_text(s, Inches(0.8), Inches(7.0) - Inches(0.38), Inches(2.5), Inches(0.35), "EliteA Total:", 13, WHITE, True)
-add_text(s, Inches(3.3), Inches(7.0) - Inches(0.38), Inches(1.2), Inches(0.35), "$470K-760K", 13, WHITE, True, PP_ALIGN.RIGHT)
-add_text(s, Inches(4.6), Inches(7.0) - Inches(0.38), Inches(1.2), Inches(0.35), "8-13 weeks", 13, WHITE, True)
+add_box(s, Inches(0.8), Inches(6.8), Inches(5.0), Inches(0.4), CT_RED)
+add_text(s, Inches(0.8), Inches(6.82), Inches(2.5), Inches(0.35), "EliteA Total:", 13, WHITE, True)
+add_text(s, Inches(3.3), Inches(6.82), Inches(1.2), Inches(0.35), "$408K", 13, WHITE, True, PP_ALIGN.RIGHT)
+add_text(s, Inches(4.6), Inches(6.82), Inches(1.2), Inches(0.35), "8-15 weeks", 13, WHITE, True)
 
 # Right: ROI metrics
-add_text(s, Inches(7.0), Inches(1.3), Inches(5.5), Inches(0.5), "ROI Analysis (Moderate Scenario)", 18, CT_DARK, True)
+add_text(s, Inches(7.0), Inches(1.3), Inches(5.5), Inches(0.5), "ROI Analysis — Moderate Scenario (CAD)", 18, CT_DARK, True)
 
 roi_metrics = [
-    ("Year 1 Incremental Revenue", "$189.5M"),
+    ("Year 1 Incremental Revenue", "$189.5M CAD"),
     ("Blended Gross Margin", "~35%"),
-    ("Year 1 Gross Profit", "$66.3M"),
-    ("EliteA Build Investment", "$615K"),
-    ("Payback Period", "< 1 week"),
-    ("Year 1 ROI", "10,680%"),
+    ("Year 1 Gross Profit", "$66.3M CAD"),
+    ("EliteA Build Investment", "$408K CAD"),
+    ("Payback Period", "< 1 day"),
+    ("Year 1 ROI", "16,150%"),
 ]
 for i, (label, val) in enumerate(roi_metrics):
     y = Inches(2.0 + i * 0.7)
@@ -582,14 +608,14 @@ for i, (label, val) in enumerate(roi_metrics):
 # Savings callout
 add_box(s, Inches(7.0), Inches(6.2), Inches(5.5), Inches(0.7), LIGHT_GREY)
 tf = add_text(s, Inches(7.2), Inches(6.25), Inches(5.1), Inches(0.6),
-    "EliteA saves ~$1M and 4+ months vs. traditional development", 14, CT_RED, True, PP_ALIGN.CENTER)
+    "EliteA saves $500K-770K CAD and 4+ months vs. traditional", 14, CT_RED, True, PP_ALIGN.CENTER)
 
 # ═══════════════════════════════════════════════════════════════════
 # SLIDE 12: Assumptions
 # ═══════════════════════════════════════════════════════════════════
 s = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(s, WHITE)
-slide_header(s, "Key Assumptions", "EliteA agentic AI SDLC cost and timeline estimates")
+slide_header(s, "Key Assumptions", "All amounts in CAD  |  EliteA agentic AI SDLC cost and timeline estimates")
 
 add_text(s, Inches(0.8), Inches(1.3), Inches(5.5), Inches(0.5), "EliteA Delivery Assumptions", 18, CT_RED, True)
 
@@ -598,9 +624,10 @@ assumptions_left = [
     "Senior EPAM engineers supervise all AI-generated output (human-in-the-loop)",
     "AI agents handle ~70% of boilerplate code, tests, and documentation",
     "Human engineers focus on architecture, integration, edge cases, and review",
-    "Blended rate: $85-120/hr for EliteA teams (AI + human combined)",
-    "Team composition: 2 senior engineers + AI agent cluster per workstream",
-    "Parallel workstreams: backend + mobile + QA run concurrently, not sequentially",
+    "Onshore rates (CAD/h): DM $200, BA $160, SA $190",
+    "Offshore rates (CAD/h): Sr Dev $130, QA $95-110, DevOps $140",
+    "Team: 3 onshore (DM, BA, SA) + 2 offshore engineers + AI agent cluster",
+    "Parallel workstreams: backend + mobile + QA run concurrently",
     "CTC provides API access, design assets, and Triangle sandbox within 2 weeks",
 ]
 
@@ -613,10 +640,10 @@ add_text(s, Inches(7.0), Inches(1.3), Inches(5.5), Inches(0.5), "Revenue Model A
 assumptions_right = [
     "Mobile MAU baseline: 4M across all CTC banners",
     "Wishlist adoption: 25% of MAU (1M users) within Year 1",
-    "Incremental AOV lift: +$12 per transaction for wishlist users",
+    "Incremental AOV lift: +$12 CAD per transaction for wishlist users",
     "Average 8 transactions/year for engaged wishlist users",
     "Gift sharing: 30% of wishlist users share at least one list",
-    "Average fulfilled gift value: $150 per shared wishlist",
+    "Average fulfilled gift value: $150 CAD per shared wishlist",
     "Abandonment recovery: 350K transactions saved at $60 avg",
     "Re-engagement CTR: 5-8x higher than generic promotional pushes",
     "Blended gross margin: 35% (mix of owned brands + national brands)",
@@ -730,10 +757,10 @@ for i, (num, title, desc, timeline, is_gate) in enumerate(steps):
 # Big numbers at bottom
 add_box(s, Inches(0.8), Inches(6.7) - Inches(0.2), Inches(11.5), Inches(0.8), CT_DARK)
 stats = [
-    ("$189.5M", "revenue uplift/yr"),
-    ("$615K", "EliteA investment"),
+    ("$189.5M", "CAD revenue uplift/yr"),
+    ("$408K", "CAD EliteA investment"),
     ("15 weeks", "to pilot launch"),
-    ("10,680%", "Year 1 ROI"),
+    ("16,150%", "Year 1 ROI"),
 ]
 for i, (val, label) in enumerate(stats):
     x = Inches(1.2 + i * 2.9)
