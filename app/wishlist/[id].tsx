@@ -25,7 +25,7 @@ export default function WishlistDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { getWishlistById, removeItem, shareWishlist } = useWishlists();
   const { products } = useProducts();
-  const { mockUsers } = useAuth();
+  const { mockUsers, currentUser } = useAuth();
   const [wishlist, setWishlist] = useState<Wishlist | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -98,6 +98,8 @@ export default function WishlistDetailScreen() {
   }
 
   const total = getTotalPrice(wishlist, products);
+  // AC-0033/AC-0036: owner sees "Claimed" without claimer identity
+  const isOwner = currentUser?.id === wishlist.ownerId;
 
   return (
     <>
@@ -135,6 +137,7 @@ export default function WishlistDetailScreen() {
                   item={item}
                   productName={productName}
                   productPrice={product?.price}
+                  isOwner={isOwner}
                 />
                 {/* Remove button (AC-0025) */}
                 <TouchableOpacity

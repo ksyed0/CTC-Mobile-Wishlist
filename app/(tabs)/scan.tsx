@@ -18,6 +18,20 @@ import { useProducts } from '../../contexts/ProductContext';
 import { BarcodeOverlay } from '../../components/BarcodeOverlay';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
+import { StorageKeys, getItem, setItem } from '../../utils/storage';
+import { Product } from '../../types/product';
+
+async function saveRecentScan(product: Product): Promise<void> {
+  try {
+    const existing = (await getItem<Product[]>(StorageKeys.RECENT_SCANS)) ?? [];
+    // Keep unique by id, most-recent first, cap at 10
+    const filtered = existing.filter((p) => p.id !== product.id);
+    const updated = [product, ...filtered].slice(0, 10);
+    await setItem(StorageKeys.RECENT_SCANS, updated);
+  } catch {
+    // non-critical — ignore
+  }
+}
 
 export default function ScanScreen() {
   const router = useRouter();
@@ -38,6 +52,7 @@ export default function ScanScreen() {
     try {
       const product = await getByBarcode(data);
       if (product) {
+        await saveRecentScan(product);
         router.push(`/product/${product.id}`);
       } else {
         Alert.alert('Product Not Found', `No product found for barcode: ${data}`, [
@@ -62,6 +77,7 @@ export default function ScanScreen() {
     try {
       const product = await getByBarcode(barcode);
       if (product) {
+        await saveRecentScan(product);
         setManualBarcode('');
         router.push(`/product/${product.id}`);
       } else {

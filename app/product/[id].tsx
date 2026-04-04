@@ -10,7 +10,7 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Product } from '../../types/product';
 import { Wishlist } from '../../types/wishlist';
@@ -21,6 +21,7 @@ import { spacing } from '../../theme/spacing';
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
   const { getProductById } = useProducts();
   const { wishlists, addItem } = useWishlists();
   const [product, setProduct] = useState<Product | null>(null);
@@ -64,9 +65,19 @@ export default function ProductDetailScreen() {
   }
 
   function handleAddToWishlist() {
-    // AC-0013: no wishlists → prompt to create one first
+    // AC-0013: no wishlists → prompt to create one first, offer navigation
     if (wishlists.length === 0) {
-      Alert.alert('No Wishlists', 'Create a wishlist first before adding products.');
+      Alert.alert(
+        'No Wishlists',
+        'Create a wishlist first, then come back to add this product.',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Create Wishlist',
+            onPress: () => router.push('/(tabs)/wishlists'),
+          },
+        ],
+      );
       return;
     }
     // AC-0014: one wishlist → add directly; multiple → show picker

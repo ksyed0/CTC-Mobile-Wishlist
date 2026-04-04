@@ -490,3 +490,66 @@ All 7 Major bugs are resolved. Implementation quality is solid: no stubs, real c
 - 7/7 Major bugs verified fixed
 - 2 Minor bugs remain (BUG-0074, BUG-0076) — acceptable for POC
 - Verdict: APPROVE — feature/pixel-screens cleared to merge
+
+## Session 11 — 2026-04-04
+
+### Agent: Pixel (Frontend Developer — Phase 4 Integration)
+
+### Branch: `feature/pixel-integration`
+
+### What Was Done
+
+**Integration smoke-through — 9-step demo flow traced and fixed**
+
+All 9 demo steps now wire end-to-end:
+
+1. login.tsx → Alice login → `router.replace('/(tabs)')` — works
+2. scan.tsx → barcode/manual → `router.push('/product/${id}')` — works; recent scans saved to AsyncStorage
+3. product/[id].tsx → "Add to Wishlist" → picker or direct add — works; no-wishlist path now navigates to Wishlists tab to create one
+4. wishlist/[id].tsx → items, total price, remove — works
+5. wishlist/[id].tsx → Share → mock user picker → Bob selected — works
+6. login.tsx → switch to Bob — WishlistContext reloads via `useEffect([load])` which depends on `currentUser`
+7. wishlists.tsx → "Shared With Me" section — FIXED (was missing entirely)
+8. wishlist/shared/[id].tsx → "I'll Get This" — works
+9. Switch back to Alice → wishlist/[id].tsx shows "Claimed" badge with `isOwner=true` — FIXED
+
+**Integration bugs found and fixed**
+
+| Bug | File | Fix |
+|-----|------|-----|
+| INT-01 (Critical) | `wishlists.tsx` | Missing "Shared With Me" section — Bob could never see Alice's list. Added `SectionList` with "My Wishlists" + "Shared With Me" sections. Shared items navigate to `/wishlist/shared/[id]`. |
+| INT-02 (Critical) | `wishlists.tsx` | No "Create Wishlist" button. Added FAB + create modal with TextInput. Without this, user had no path to create a wishlist from the UI. |
+| INT-03 (Major) | `product/[id].tsx` | "No Wishlists" Alert dead-ended the user. Now offers "Create Wishlist" action that navigates to Wishlists tab. |
+| INT-04 (Major) | `app/_layout.tsx` | First launch (no stored user) stayed at `(tabs)` as guest. Now redirects to `/login` via `useSegments` guard in `RootNavigator`. |
+| INT-05 (Major) | `wishlist/[id].tsx` | `isOwner` not computed or passed to `WishlistItemRow`. Alice would see claimer UI instead of owner "Claimed" badge. Fixed: `currentUser?.id === wishlist.ownerId` computed and passed as `isOwner` prop. |
+| INT-06 (Minor) | `scan.tsx` | Recent scans never persisted. Added `saveRecentScan()` writing to `StorageKeys.RECENT_SCANS` after each successful barcode lookup. |
+| INT-07 (Minor) | `app/(tabs)/index.tsx` | Home screen stat cards were not tappable. Made them link to Wishlists tab. Added "Recent Scans" horizontal FlatList that loads from AsyncStorage. |
+| INT-08 (Minor) | `tsconfig.json` | Missing `types: ["jest"]` + `@types/jest` not installed. TypeScript reported 200+ errors in test files. Fixed: added `types` field and ran `npm install --save-dev @types/jest`. |
+
+**WishlistContext user-switch verification**
+
+`WishlistContext.load` is wrapped in `useCallback([currentUser])`. The `useEffect([load])` re-fires whenever `currentUser` changes. When Alice logs in → Bob logs in → Alice again, each switch correctly reloads owned + shared lists. No additional fix needed — architecture is correct.
+
+**AsyncStorage shared state verification**
+
+All wishlists (including `sharedWith`) are stored under a single `wishlists` key. Every user on the same device reads from the same storage. When Alice creates a wishlist and shares it with Bob, Bob's `getSharedWishlists(bob.id)` filters by `sharedWith[].contactId === bob.id` — purely local, no server needed.
+
+**Duplicate wishlistUtils.ts**
+
+One copy lives at `utils/wishlistUtils.ts` (root, in develop). The duplicate is in `.claude/worktrees/agent-a28dd5a7/utils/wishlistUtils.ts` — this is a worktree artifact in `.claude/worktrees/`, not in the app source tree. All app imports already point to `utils/wishlistUtils.ts`. No change needed.
+
+### Stats
+
+- 8 integration bugs found and fixed (INT-01 – INT-08)
+- 0 TypeScript errors (all app source files)
+- 2096 tests passing (all 146 suites green)
+- All 13 user stories across Epic 1–6 marked Done in RELEASE_PLAN.md
+- Branch: `feature/pixel-integration`, pushed to origin
+
+### Remaining for Phase 5/6
+
+- BUG-0074: Accessibility attributes (Minor — acceptable for POC, Sentinel should verify)
+- US-0005 search bar on catalog screen (TASK-0009 still To Do)
+- Real product images (placeholder icons only currently)
+- Expo-splash-screen and app icon configuration
+- End-to-end automation tests (Circuit agent, Phase 5)
