@@ -1,4 +1,4 @@
-# Automation Tester Agent — Session Instructions
+# Circuit — Automation Tester Agent
 
 > **Read this file in full before starting any work.**
 

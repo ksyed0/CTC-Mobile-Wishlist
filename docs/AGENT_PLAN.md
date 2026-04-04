@@ -9,7 +9,7 @@
 
 ## 1. Agent Roster
 
-### 1.1 Product Owner (PO) Agent
+### 1.1 Compass — Product Owner (PO) Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -21,7 +21,7 @@
 
 **Prompt Template:**
 ```
-You are the Product Owner Agent for the CTC Mobile Wishlist POC. Read PROJECT.md and 
+You are Compass, the Product Owner Agent for the CTC Mobile Wishlist POC. Read PROJECT.md and 
 docs/RELEASE_PLAN.md. Your job is to:
 1. Validate and refine acceptance criteria for each user story
 2. Prioritize the backlog for an 8-hour hackathon (what to build vs. simulate)
@@ -32,7 +32,7 @@ Focus on MVP scope: browsing, barcode scan, wishlist CRUD, and sharing.
 
 ---
 
-### 1.2 Architect Agent
+### 1.2 Keystone — Architect Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -44,7 +44,7 @@ Focus on MVP scope: browsing, barcode scan, wishlist CRUD, and sharing.
 
 **Prompt Template:**
 ```
-You are the Architect Agent for the CTC Mobile Wishlist POC. Read all files in 
+You are Keystone, the Architect Agent for the CTC Mobile Wishlist POC. Read all files in 
 architecture/. Your job is to:
 1. Scaffold the Expo project with TypeScript and expo-router
 2. Create type definitions from architecture/DATA_FLOW.md (Product, Wishlist, User, etc.)
@@ -55,7 +55,7 @@ architecture/. Your job is to:
 
 ---
 
-### 1.3 UI Designer Agent
+### 1.3 Palette — UI Designer Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -67,7 +67,7 @@ architecture/. Your job is to:
 
 **Prompt Template:**
 ```
-You are the UI Designer Agent for the CTC Mobile Wishlist POC. Read 
+You are Palette, the UI Designer Agent for the CTC Mobile Wishlist POC. Read 
 architecture/DESIGN_SYSTEM.md. Your job is to:
 1. Define the theme file (CT Red #D52B1E, spacing grid 4px, card radius 8px)
 2. Create reusable component styles: ProductCard, WishlistCard, CategoryChip, etc.
@@ -80,7 +80,7 @@ Use system fonts, maintain WCAG AA contrast ratios, and follow the 4px spacing g
 
 ---
 
-### 1.4 Backend Developer Agent
+### 1.4 Forge — Backend Developer Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -92,7 +92,7 @@ Use system fonts, maintain WCAG AA contrast ratios, and follow the 4px spacing g
 
 **Prompt Template:**
 ```
-You are the Backend Developer Agent for the CTC Mobile Wishlist POC. Read 
+You are Forge, the Backend Developer Agent for the CTC Mobile Wishlist POC. Read 
 architecture/DATA_FLOW.md. Your job is to:
 1. Create data/products.json with 20+ mock CTC products across categories
 2. Create data/users.json with 3-4 mock user profiles
@@ -104,7 +104,7 @@ architecture/DATA_FLOW.md. Your job is to:
 
 ---
 
-### 1.5 Frontend Developer Agent
+### 1.5 Pixel — Frontend Developer Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -116,7 +116,7 @@ architecture/DATA_FLOW.md. Your job is to:
 
 **Prompt Template:**
 ```
-You are the Frontend Developer Agent for the CTC Mobile Wishlist POC. Read 
+You are Pixel, the Frontend Developer Agent for the CTC Mobile Wishlist POC. Read 
 architecture/DESIGN_SYSTEM.md and architecture/SYSTEM_ARCHITECTURE.md. Your job is to:
 1. Build tab navigation: Home, Catalog, Scan, Wishlists
 2. Implement screens: HomeScreen, CatalogScreen, ScannerScreen, WishlistsScreen
@@ -128,7 +128,7 @@ architecture/DESIGN_SYSTEM.md and architecture/SYSTEM_ARCHITECTURE.md. Your job 
 
 ---
 
-### 1.6 Functional Tester Agent
+### 1.6 Sentinel — Functional Tester Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -140,7 +140,7 @@ architecture/DESIGN_SYSTEM.md and architecture/SYSTEM_ARCHITECTURE.md. Your job 
 
 **Prompt Template:**
 ```
-You are the Functional Tester Agent for the CTC Mobile Wishlist POC. Read 
+You are Sentinel, the Functional Tester Agent for the CTC Mobile Wishlist POC. Read 
 docs/TEST_CASES.md. Your job is to:
 1. Execute test cases TC-0001 through TC-0036 against the running app
 2. Record PASS/FAIL for each test case with evidence
@@ -153,7 +153,7 @@ docs/TEST_CASES.md. Your job is to:
 
 ---
 
-### 1.7 Automation Tester Agent
+### 1.7 Circuit — Automation Tester Agent
 
 | Attribute | Detail |
 |-----------|--------|
@@ -165,7 +165,7 @@ docs/TEST_CASES.md. Your job is to:
 
 **Prompt Template:**
 ```
-You are the Automation Tester Agent for the CTC Mobile Wishlist POC. Your job is to:
+You are Circuit, the Automation Tester Agent for the CTC Mobile Wishlist POC. Your job is to:
 1. Create Jest + React Native Testing Library test suites
 2. Test service layer: ProductService, WishlistService, UserService
 3. Test components: ProductCard, WishlistCard renders, user interactions
@@ -183,19 +183,19 @@ Phase 1: Blueprint (30 min)
   PO Agent → Validates requirements, prioritizes backlog for hackathon scope
        ↓
 Phase 2: Architect (60 min)
-  Architect Agent → Scaffolds project, creates types, service interfaces
+  Keystone → Scaffolds project, creates types, service interfaces
        ↓
 Phase 3: Link + Stylize (150 min, PARALLEL)
-  ┌─ Backend Dev Agent → Implements services, mock data, Context providers
-  └─ Frontend Dev Agent → Builds screens, components, navigation
-  (UI Designer Agent provides guidance to Frontend Dev as needed)
+  ┌─ Forge → Implements services, mock data, Context providers
+  └─ Pixel → Builds screens, components, navigation
+  (Palette provides guidance to Pixel as needed)
        ↓
 Phase 4: Integration (60 min)
-  Frontend Dev Agent → Wires services to screens, end-to-end flows
+  Pixel → Wires services to screens, end-to-end flows
        ↓
 Phase 5: Trigger (60 min, PARALLEL)
-  ┌─ Functional Tester Agent → Executes test cases, reports bugs
-  └─ Automation Tester Agent → Creates Jest test suites
+  ┌─ Sentinel → Executes test cases, reports bugs
+  └─ Circuit → Creates Jest test suites
        ↓
 Phase 6: Polish (30 min)
   All Agents → Bug fixes, demo preparation, documentation cleanup
@@ -207,12 +207,12 @@ Phase 6: Polish (30 min)
 
 | Time | Duration | Phase | Agent(s) Active | Deliverable |
 |------|----------|-------|-----------------|-------------|
-| 9:00–9:30 | 30 min | Blueprint | PO Agent | Prioritized backlog, refined ACs |
-| 9:30–10:30 | 60 min | Architect | Architect Agent | Project scaffold, types, service stubs |
-| 10:30–1:00 | 150 min | Link + Stylize | BE Dev + FE Dev (parallel) | Services + screens implemented |
+| 9:00–9:30 | 30 min | Blueprint | Compass | Prioritized backlog, refined ACs |
+| 9:30–10:30 | 60 min | Architect | Keystone | Project scaffold, types, service stubs |
+| 10:30–1:00 | 150 min | Link + Stylize | Forge + Pixel (parallel) | Services + screens implemented |
 | 1:00–1:30 | 30 min | Break | — | — |
-| 1:30–2:30 | 60 min | Integration | FE Dev Agent | End-to-end flows working |
-| 2:30–3:30 | 60 min | Trigger | Functional + Automation Testers (parallel) | Test results, Jest suites |
+| 1:30–2:30 | 60 min | Integration | Pixel | End-to-end flows working |
+| 2:30–3:30 | 60 min | Trigger | Sentinel + Circuit (parallel) | Test results, Jest suites |
 | 3:30–4:00 | 30 min | Polish | All | Bug fixes, demo prep |
 | 4:00–5:00 | 60 min | Demo | Human presenter | Live demo + business case deck |
 
@@ -222,13 +222,13 @@ Phase 6: Polish (30 min)
 
 | Agent | Real Work (POC) | Simulated Work |
 |-------|----------------|----------------|
-| **PO Agent** | Backlog prioritization, AC refinement | Stakeholder interviews, market research |
-| **Architect Agent** | Project scaffold, types, service interfaces | Infrastructure design, CI/CD pipeline |
-| **UI Designer Agent** | Theme file, component styles | Full Figma mockups, accessibility audit |
-| **Backend Dev Agent** | AsyncStorage services, mock data | Real API integration, database design |
-| **Frontend Dev Agent** | All screens, navigation, components | Performance optimization, animations |
-| **Functional Tester Agent** | Test cases on working screens | Cross-device testing, load testing |
-| **Automation Tester Agent** | Jest unit tests for services + components | E2E tests (Detox), CI integration |
+| **Compass** (PO) | Backlog prioritization, AC refinement | Stakeholder interviews, market research |
+| **Keystone** (Architect) | Project scaffold, types, service interfaces | Infrastructure design, CI/CD pipeline |
+| **Palette** (UI Designer) | Theme file, component styles | Full Figma mockups, accessibility audit |
+| **Forge** (BE Dev) | AsyncStorage services, mock data | Real API integration, database design |
+| **Pixel** (FE Dev) | All screens, navigation, components | Performance optimization, animations |
+| **Sentinel** (Func Tester) | Test cases on working screens | Cross-device testing, load testing |
+| **Circuit** (Auto Tester) | Jest unit tests for services + components | E2E tests (Detox), CI integration |
 
 ---
 
@@ -242,9 +242,9 @@ Run one agent at a time in a single Claude Code session, switching roles via pro
 ### Option B: Parallel Sessions (Multiple Terminals)
 Run 2-3 Claude Code sessions simultaneously with different agent roles.
 - **Best for:** Maximizing hackathon velocity
-- **Terminal 1:** Architect → Backend Dev Agent
-- **Terminal 2:** UI Designer → Frontend Dev Agent
-- **Terminal 3:** Tester Agents (after code is ready)
+- **Terminal 1:** Keystone → Forge
+- **Terminal 2:** Palette → Pixel
+- **Terminal 3:** Sentinel + Circuit (after code is ready)
 
 ### Option C: Agent Tool Delegation
 Use Claude Code's built-in Agent tool to spawn sub-agents for independent tasks.
@@ -259,13 +259,13 @@ Use Claude Code's built-in Agent tool to spawn sub-agents for independent tasks.
 
 | Agent | Must Read | May Reference |
 |-------|-----------|---------------|
-| PO Agent | `PROJECT.md`, `docs/RELEASE_PLAN.md` | `docs/TEST_CASES.md` |
-| Architect Agent | `architecture/SYSTEM_ARCHITECTURE.md`, `architecture/DATA_FLOW.md` | `architecture/DIAGRAMS.md` |
-| UI Designer Agent | `architecture/DESIGN_SYSTEM.md` | `PROJECT.md` |
-| BE Dev Agent | `architecture/DATA_FLOW.md` | `architecture/SYSTEM_ARCHITECTURE.md` |
-| FE Dev Agent | `architecture/DESIGN_SYSTEM.md`, `architecture/SYSTEM_ARCHITECTURE.md` | `docs/RELEASE_PLAN.md` |
-| Functional Tester | `docs/TEST_CASES.md` | `docs/RELEASE_PLAN.md` |
-| Automation Tester | `docs/TEST_CASES.md`, source code | `architecture/DATA_FLOW.md` |
+| Compass (PO) | `PROJECT.md`, `docs/RELEASE_PLAN.md` | `docs/TEST_CASES.md` |
+| Keystone (Architect) | `architecture/SYSTEM_ARCHITECTURE.md`, `architecture/DATA_FLOW.md` | `architecture/DIAGRAMS.md` |
+| Palette (UI Designer) | `architecture/DESIGN_SYSTEM.md` | `PROJECT.md` |
+| Forge (BE Dev) | `architecture/DATA_FLOW.md` | `architecture/SYSTEM_ARCHITECTURE.md` |
+| Pixel (FE Dev) | `architecture/DESIGN_SYSTEM.md`, `architecture/SYSTEM_ARCHITECTURE.md` | `docs/RELEASE_PLAN.md` |
+| Sentinel (Func Tester) | `docs/TEST_CASES.md` | `docs/RELEASE_PLAN.md` |
+| Circuit (Auto Tester) | `docs/TEST_CASES.md`, source code | `architecture/DATA_FLOW.md` |
 
 ---
 

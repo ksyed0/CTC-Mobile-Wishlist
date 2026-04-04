@@ -1,4 +1,4 @@
-# UI Designer Agent — Session Instructions
+# Palette — UI Designer Agent
 
 > **Read this file in full before starting any work.**
 

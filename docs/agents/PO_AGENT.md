@@ -1,4 +1,4 @@
-# Product Owner Agent — Session Instructions
+# Compass — Product Owner Agent
 
 > **Read this file in full before starting any work.**
 

@@ -1,4 +1,4 @@
-# Backend Developer Agent — Session Instructions
+# Forge — Backend Developer Agent
 
 > **Read this file in full before starting any work.**
 

@@ -1,4 +1,4 @@
-# Frontend Developer Agent — Session Instructions
+# Pixel — Frontend Developer Agent
 
 > **Read this file in full before starting any work.**
 

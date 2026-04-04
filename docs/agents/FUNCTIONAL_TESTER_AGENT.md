@@ -1,4 +1,4 @@
-# Functional Tester Agent — Session Instructions
+# Sentinel — Functional Tester Agent
 
 > **Read this file in full before starting any work.**
 

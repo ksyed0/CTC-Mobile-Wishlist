@@ -1,4 +1,4 @@
-# Architect Agent — Session Instructions
+# Keystone — Architect Agent
 
 > **Read this file in full before starting any work.**
 
