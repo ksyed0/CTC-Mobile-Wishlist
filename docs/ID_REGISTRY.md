@@ -7,5 +7,5 @@
 | TASK     | TASK-0022         | TASK-0021     |
 | AC       | AC-0041           | AC-0040       |
 | TC       | TC-0041           | TC-0040       |
-| BUG      | BUG-0023          | BUG-0022      |
+| BUG      | BUG-0025          | BUG-0024      |
 | L        | L-0001            | —             |

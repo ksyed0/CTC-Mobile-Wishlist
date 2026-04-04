@@ -217,6 +217,110 @@ function generateHTML(status) {
   .footer span { color: #D52B1E; }
   .footer a { color: #D52B1E; text-decoration: none; }
   .footer a:hover { text-decoration: underline; }
+
+  /* About button */
+  .btn-header { background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
+  .btn-header:hover { background: rgba(255,255,255,0.35); }
+
+  /* About modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: 16px; padding: 32px; max-width: 420px; width: 90%; text-align: center; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+  .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #D52B1E; }
+  .modal p { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; }
+  .modal .author { font-size: 15px; font-weight: 600; color: var(--text-primary); margin: 16px 0 8px; }
+  .modal .repo-link { display: inline-block; margin-top: 12px; background: #D52B1E; color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; transition: background 0.2s; }
+  .modal .repo-link:hover { background: #B01E14; text-decoration: none; }
+  .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; line-height: 1; padding: 4px 8px; border-radius: 6px; transition: background 0.2s; }
+  .modal-close:hover { background: var(--bg-card-inner); color: var(--text-primary); }
+
+  /* ===== RESPONSIVE: Tablet portrait (768-1024px) ===== */
+  @media (max-width: 1024px) {
+    .header { padding: 16px 20px; }
+    .header h1 { font-size: 18px; }
+    .container { padding: 16px; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-2 { grid-template-columns: 1fr; gap: 16px; }
+    .agent-grid { grid-template-columns: repeat(3, 1fr); }
+    .story-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ===== RESPONSIVE: Tablet landscape adjustments ===== */
+  @media (max-width: 1024px) and (orientation: landscape) {
+    .pipeline { flex-wrap: wrap; }
+    .phase-block { flex: 1 1 calc(33.33% - 4px); min-width: 150px; }
+    .grid { grid-template-columns: 1fr 1fr 1fr; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ===== RESPONSIVE: Phone landscape (up to 767px landscape) ===== */
+  @media (max-width: 767px) and (orientation: landscape) {
+    .header { padding: 10px 16px; }
+    .header h1 { font-size: 16px; }
+    .header .subtitle { font-size: 11px; }
+    .header .clock .time { font-size: 20px; }
+    .container { padding: 10px; }
+    .pipeline { flex-wrap: wrap; gap: 4px; }
+    .phase-block { flex: 1 1 calc(33.33% - 4px); min-width: 120px; padding: 10px; }
+    .phase-name { font-size: 12px; }
+    .phase-deliverables { display: none; }
+    .grid { grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .grid-2 { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .card { padding: 12px; }
+    .card h2 { font-size: 12px; margin-bottom: 10px; }
+    .agent-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .agent-card { padding: 8px; }
+    .agent-icon { font-size: 16px; }
+    .agent-name { font-size: 11px; }
+    .story-grid { grid-template-columns: 1fr; }
+    .log-scroll { max-height: 150px; }
+    .metric-value { font-size: 16px; }
+  }
+
+  /* ===== RESPONSIVE: Phone portrait (up to 480px) ===== */
+  @media (max-width: 480px) {
+    .header { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
+    .header h1 { font-size: 15px; }
+    .header .subtitle { font-size: 10px; }
+    .header .controls { gap: 8px; }
+    .header .clock .time { font-size: 20px; }
+    .header .clock .label { font-size: 9px; }
+    .container { padding: 10px; }
+    .pipeline { flex-direction: column; gap: 6px; }
+    .phase-block { padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
+    .phase-block .phase-status { position: static; font-size: 16px; }
+    .phase-block .phase-name { margin-bottom: 0; font-size: 13px; flex: 1; }
+    .phase-block .phase-agents { display: none; }
+    .phase-block .phase-deliverables { display: none; }
+    .grid { grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }
+    .grid-2 { grid-template-columns: 1fr; gap: 12px; }
+    .card { padding: 14px; border-radius: 10px; }
+    .card h2 { font-size: 13px; margin-bottom: 12px; }
+    .agent-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .agent-card { padding: 8px; }
+    .agent-icon { font-size: 18px; margin-bottom: 2px; }
+    .agent-name { font-size: 11px; }
+    .agent-role { font-size: 9px; }
+    .agent-status { font-size: 9px; padding: 1px 6px; }
+    .agent-task { display: none; }
+    .story-grid { grid-template-columns: 1fr; gap: 4px; }
+    .story-row { padding: 8px 10px; }
+    .story-title { font-size: 11px; }
+    .metric-value { font-size: 18px; }
+    .metric-label { font-size: 12px; }
+    .log-scroll { max-height: 180px; }
+    .log-entry { font-size: 11px; }
+    .footer { font-size: 10px; padding: 12px; }
+    .modal { padding: 24px 20px; }
+  }
+
+  /* ===== RESPONSIVE: Small phone (up to 375px) ===== */
+  @media (max-width: 375px) {
+    .header h1 { font-size: 13px; }
+    .agent-grid { grid-template-columns: repeat(2, 1fr); }
+    .header .clock .time { font-size: 18px; }
+    #theme-toggle, .btn-header { font-size: 11px; padding: 4px 10px; }
+  }
 </style>
 </head>
 <body>
@@ -227,6 +331,7 @@ function generateHTML(status) {
     <div class="subtitle">Claude Code | 9 Specialized Agents | Hackathon Live Dashboard</div>
   </div>
   <div class="controls">
+    <button class="btn-header" onclick="document.getElementById('about-modal').classList.add('open')">ℹ️ About</button>
     <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
     <div class="clock">
       <div class="time">${now}</div>
@@ -364,6 +469,18 @@ ${log.length > 0 ? log.slice(-20).reverse().map(entry => {
   </div>
 </div>
 
+</div>
+
+<!-- About Modal -->
+<div id="about-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('about-modal').classList.remove('open')">&times;</button>
+    <h3>AI-SDLC Orchestrator Visualizer</h3>
+    <p>Real-time dashboard for agentic AI software development lifecycle orchestration</p>
+    <div class="author">by Kamal Syed</div>
+    <p style="font-size:12px; color: var(--text-muted)">Director of Program Management, EPAM Systems</p>
+    <a class="repo-link" href="https://github.com/ksyed0/ctc-mobile-wishlist" target="_blank" rel="noopener">View on GitHub</a>
+  </div>
 </div>
 
 <div class="footer">

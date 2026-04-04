@@ -161,3 +161,17 @@
 - **Found in:** `tools/generate-dashboard.js`
 - **Description:** Agent cards and story rows have no hover feedback. Dashboard feels static when interacting.
 - **Fix:** P1.9 — Add hover brightness filter to agent cards and story rows.
+
+### BUG-0023: Dashboard has no responsive layout for phones/tablets
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `tools/generate-dashboard.js`
+- **Description:** Dashboard uses fixed desktop grid layouts (3-column metrics, 2-column story grid, 6-phase horizontal pipeline). On phones and tablets in portrait or landscape, UI elements overflow, get cut off, or become unreadable. No media queries exist.
+- **Fix:** Add responsive CSS media queries for tablet portrait (768-1024px), tablet landscape, phone landscape (up to 767px), phone portrait (up to 480px), and small phone (up to 375px). Pipeline stacks vertically on phones, grids collapse to fewer columns, deliverables/agent tasks hide on small screens.
+
+### BUG-0024: Dashboard has no About section or attribution
+- **Severity:** Minor
+- **Status:** Open
+- **Found in:** `tools/generate-dashboard.js`
+- **Description:** No way for viewers to learn what the dashboard is, who built it, or find the source repo. Missing attribution and context for hackathon demo audience.
+- **Fix:** Add "About" button in header with modal popup: title "AI-SDLC Orchestrator Visualizer", author "by Kamal Syed", GitHub repo link, and close button. Modal has backdrop blur and closes on overlay click or close button.
