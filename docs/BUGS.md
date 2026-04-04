@@ -233,3 +233,31 @@
 - **Found in:** `.github/workflows/`
 - **Description:** Only 1 GitHub Actions workflow exists (`plan-visualizer.yml`) which auto-generates dashboards. No CI checks run on pull requests — PRs can be merged with broken code, failing tests, or lint errors. Conductor has no awareness of CI status after pushing code.
 - **Fix:** Add `.github/workflows/ci.yml` with 4 jobs (lint, test+coverage, build, orchestrator validation) on all PRs to main/develop. Add CI verification step to Conductor Phase 6. Expand ESLint targets to include orchestrator/ files.
+
+### BUG-0033: ESLint not covering orchestrator/ or tests/ files
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `eslint.config.js`
+- **Description:** ESLint only targeted `tools/**/*.js`. The `orchestrator/` adapter code and `tests/` unit tests were never linted. Test files failed lint with hundreds of `no-undef` errors for Jest globals (`describe`, `it`, `expect`). Orchestrator files had unused imports.
+- **Fix:** Expand ESLint config to cover `orchestrator/**/*.js` and `tests/**/*.js`. Add Jest globals to test config block. Add Node.js timer globals (`setTimeout`, `clearTimeout`).
+
+### BUG-0034: Unused imports in orchestrator/spawn.js
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `orchestrator/spawn.js` lines 19-20
+- **Description:** `path` and `fs` modules were imported but never used, causing ESLint `no-unused-vars` warnings.
+- **Fix:** Remove unused `path` and `fs` require statements.
+
+### BUG-0035: Useless assignment in generate-dashboard.js
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `tools/generate-dashboard.js` line 454
+- **Description:** `let spotlight = ''` was immediately overwritten in both branches of the following `if/else`, triggering ESLint `no-useless-assignment` error.
+- **Fix:** Change to `let spotlight;` (uninitialized declaration).
+
+### BUG-0036: Error cause not preserved in generate-plan.js
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `tools/generate-plan.js` line 159
+- **Description:** When rethrowing a caught error for failed `package.json` read, the original error cause was not attached. ESLint `preserve-caught-error` rule flagged this as losing the error chain.
+- **Fix:** Add `{ cause: err }` to the rethrown `new Error(msg, { cause: err })`.
