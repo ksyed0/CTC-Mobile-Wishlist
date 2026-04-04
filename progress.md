@@ -309,3 +309,86 @@
 - Created PR #10 (develop → main): merged as release
 - Tagged v0.2.0 on main (pending GitHub release creation)
 - Repo made public for GitHub Advanced Security features
+
+## Session 8 — 2026-04-04
+
+### Agent: Keystone (Architect)
+
+### What Was Done
+
+**Expo Project Scaffold (US-0001, US-0002, US-0013)**
+
+Branch: `feature/US-0001-expo-scaffold`
+
+- Installed all Expo/React Native dependencies: expo, react, react-native, expo-router, @expo/vector-icons, @react-native-async-storage/async-storage, expo-status-bar, expo-splash-screen, react-native-safe-area-context, react-native-screens, typescript, @types/react, @types/react-native
+- Created `app.json` (Expo config with splash, iOS bundle ID, Android package, expo-router plugin)
+- Created `tsconfig.json` (extends expo/tsconfig.base, strict mode, path aliases)
+
+**Type Definitions**
+
+- `types/product.ts` — Product, Category
+- `types/wishlist.ts` — Wishlist, WishlistItem, SharedContact
+- `types/user.ts` — User
+- All types match DATA_FLOW.md spec exactly (no added/removed fields)
+
+**Mock Data**
+
+- `data/products.json` — 23 products across 5 categories (Tools, Automotive, Outdoor, Sports, Home)
+- All 23 barcodes are unique 12-digit EAN format (AC-0041 satisfied)
+- `data/users.json` — Alice (user-001), Bob (user-002), Carol (user-003)
+- `data/categories.json` — 5 categories with id, name, icon
+
+**Theme**
+
+- `theme/colors.ts` — CTC brand palette (#D52B1E primary, #333333 dark, #FFFFFF, #F5F5F5 background, #E0E0E0 border)
+- `theme/spacing.ts` — xs/sm/md/lg/xl/xxl + borderRadius
+- `theme/typography.ts` — system fonts, size/weight/lineHeight scales
+- `theme/index.ts` — re-exports all theme tokens
+
+**Services (AsyncStorage-backed)**
+
+- `services/productService.ts` — getProducts, getProductById, getByBarcode, search, getCategories
+- `services/wishlistService.ts` — full CRUD + share, claim, unclaim (11 methods)
+- `services/userService.ts` — getCurrentUser, getMockUsers, setCurrentUser, logout, isGuest
+
+**Utils**
+
+- `utils/storage.ts` — AsyncStorage wrapper with typed getItem/setItem/removeItem/clearAll; StorageKeys enum (currentUser, wishlists, recentScans)
+
+**Context Providers**
+
+- `contexts/AuthContext.tsx` — AuthProvider + useAuth(); exposes currentUser, isGuest, mockUsers, login, continueAsGuest, logout
+- `contexts/ProductContext.tsx` — ProductProvider + useProducts(); exposes products, categories, filteredProducts, selectedCategory, search, getByBarcode
+- `contexts/WishlistContext.tsx` — WishlistProvider + useWishlists(); full wishlist operations, owned + shared lists
+
+**App Screens (expo-router file-based routing)**
+
+- `app/_layout.tsx` — Root layout: AuthProvider > ProductProvider > WishlistProvider nesting
+- `app/(tabs)/_layout.tsx` — Tab bar: Home, Catalog, Scan, Wishlists with MaterialIcons
+- `app/(tabs)/index.tsx` — Home screen (welcome banner, user greeting)
+- `app/(tabs)/catalog.tsx` — Catalog screen (product list)
+- `app/(tabs)/scan.tsx` — Scan screen (placeholder, camera in Phase 3)
+- `app/(tabs)/wishlists.tsx` — Wishlists screen (owned lists, guest guard)
+- `app/product/[id].tsx` — Product detail screen
+- `app/wishlist/[id].tsx` — Wishlist detail screen
+- `app/wishlist/shared/[id].tsx` — Shared wishlist view
+- `app/login.tsx` — Mock login with user picker and guest mode
+
+**Components (placeholders)**
+
+- ProductCard, WishlistCard, WishlistItemRow, CategoryChip, EmptyState, PriceTag, BarcodeOverlay
+
+**TypeScript Compile Check**
+
+- `npx tsc --noEmit` — ZERO errors
+
+**RELEASE_PLAN.md Updates**
+
+- TASK-0001, TASK-0002, TASK-0003, TASK-0004, TASK-0005, TASK-0006, TASK-0020, TASK-0021 → Status: Done
+
+### Stats
+
+- 35 new files created
+- 547 npm packages installed (Expo + React Native ecosystem)
+- 0 TypeScript errors
+- All 8 tasks for US-0001, US-0002, US-0013 scaffold work marked Done

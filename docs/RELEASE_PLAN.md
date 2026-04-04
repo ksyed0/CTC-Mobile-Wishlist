@@ -32,7 +32,7 @@ Acceptance Criteria:
 TASK-0001 (US-0001): Initialize Expo project with TypeScript template and expo-router
 Type: Dev
 Assignee: Agent
-Status: To Do
+Status: Done
 Branch: feature/US-0001-expo-scaffold
 Notes: Use expo-router for file-based navigation
 ```
@@ -41,7 +41,7 @@ Notes: Use expo-router for file-based navigation
 TASK-0002 (US-0001): Create tab layout with Home, Catalog, Scan, Wishlists screens
 Type: Dev
 Assignee: Agent
-Status: To Do
+Status: Done
 Branch: feature/US-0001-expo-scaffold
 Notes: Use Material Design Icons via @expo/vector-icons
 ```
@@ -50,7 +50,7 @@ Notes: Use Material Design Icons via @expo/vector-icons
 TASK-0003 (US-0001): Define global theme (colours, spacing, typography) and apply to app
 Type: Dev
 Assignee: Agent
-Status: To Do
+Status: Done
 Branch: feature/US-0001-expo-scaffold
 Notes: Canadian Tire red #D52B1E as primary, system fonts
 ```
@@ -73,8 +73,8 @@ Acceptance Criteria:
 TASK-0004 (US-0002): Create mock product catalog JSON with 20+ products across 4+ categories
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0002-mock-data
+Status: Done
+Branch: feature/US-0001-expo-scaffold
 Notes: Include realistic Canadian Tire product names, prices, barcodes
 ```
 
@@ -82,17 +82,17 @@ Notes: Include realistic Canadian Tire product names, prices, barcodes
 TASK-0005 (US-0002): Bundle placeholder product images as local assets
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0002-mock-data
-Notes: Use placeholder images sized for mobile (300x300)
+Status: Done
+Branch: feature/US-0001-expo-scaffold
+Notes: Use placeholder images sized for mobile (300x300). Using "placeholder" string — real images in Phase 3.
 ```
 
 ```
 TASK-0006 (US-0002): Implement data access layer using AsyncStorage with typed interfaces
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0002-mock-data
+Status: Done
+Branch: feature/US-0001-expo-scaffold
 Notes: Abstract behind service interface for future swapability
 ```
 
@@ -419,8 +419,8 @@ Acceptance Criteria:
 TASK-0020 (US-0013): Build mock login screen with user profile selector and guest mode
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0013-mock-auth
+Status: Done
+Branch: feature/US-0001-expo-scaffold
 Notes: Pre-define 2-3 mock users for demo switching
 ```
 
@@ -428,7 +428,7 @@ Notes: Pre-define 2-3 mock users for demo switching
 TASK-0021 (US-0013): Implement user context provider to propagate identity throughout the app
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0013-mock-auth
+Status: Done
+Branch: feature/US-0001-expo-scaffold
 Notes:
 ```
