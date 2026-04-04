@@ -170,6 +170,45 @@ Each agent operates in a fresh Claude Code context. They do NOT see what other a
 
 **Never assume an agent knows what another agent did. Be explicit.**
 
+## Live Dashboard Integration
+
+A live HTML dashboard visualizes the SDLC execution in real-time. It reads from `docs/sdlc-status.json` and auto-refreshes every 5 seconds.
+
+**Setup:** Before starting, run in a separate terminal:
+```bash
+npm run dashboard:watch
+# Then open docs/dashboard.html in a browser
+```
+
+**After each phase,** update `docs/sdlc-status.json`:
+
+1. Set the current phase status to `"complete"` and add `completedAt` timestamp
+2. Set the next phase status to `"in-progress"` and add `startedAt` timestamp
+3. Update agent statuses (`"active"`, `"idle"`, `"complete"`)
+4. Update agent `currentTask` with what they're working on
+5. Update `metrics` (storiesCompleted, tasksCompleted, testsPassed, etc.)
+6. Update `stories` statuses as they're completed
+7. Append to the `log` array with `{ "time": "HH:MM", "agent": "Name", "message": "What happened" }`
+8. Run `npm run dashboard` (or let --watch mode auto-regenerate)
+
+**Example status update after Phase 2:**
+```javascript
+// Read, modify, write docs/sdlc-status.json:
+status.currentPhase = 2;
+status.phases[1].status = "complete";
+status.phases[1].completedAt = "10:30";
+status.phases[2].status = "in-progress";
+status.phases[2].startedAt = "10:30";
+status.agents.Keystone.status = "complete";
+status.agents.Keystone.tasksCompleted = 3;
+status.agents.Forge.status = "active";
+status.agents.Forge.currentTask = "Implementing ProductService";
+status.metrics.storiesCompleted = 2;
+status.log.push({ time: "10:30", agent: "Conductor", message: "Phase 2 complete. Keystone scaffold approved by Lens. Starting Phase 3." });
+```
+
+---
+
 ## PlanVisualizer Integration
 
 You are the primary owner of PlanVisualizer dashboard accuracy:

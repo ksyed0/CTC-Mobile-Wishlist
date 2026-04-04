@@ -1,0 +1,106 @@
+{
+  "hackathon": {
+    "name": "CTC Mobile Wishlist — EPAM EliteA Agentic AI SDLC",
+    "date": "2026-04-07",
+    "startTime": "09:00",
+    "endTime": "17:00"
+  },
+  "currentPhase": 0,
+  "phases": [
+    {
+      "id": 1,
+      "name": "Blueprint",
+      "status": "pending",
+      "startedAt": null,
+      "completedAt": null,
+      "agents": ["Compass"],
+      "deliverables": ["Prioritized backlog", "Refined ACs"]
+    },
+    {
+      "id": 2,
+      "name": "Architect",
+      "status": "pending",
+      "startedAt": null,
+      "completedAt": null,
+      "agents": ["Keystone", "Lens"],
+      "deliverables": ["Project scaffold", "Types", "Service interfaces"]
+    },
+    {
+      "id": 3,
+      "name": "Build",
+      "status": "pending",
+      "startedAt": null,
+      "completedAt": null,
+      "agents": ["Forge", "Pixel", "Palette", "Lens"],
+      "deliverables": ["Services", "Screens", "Components", "Navigation"]
+    },
+    {
+      "id": 4,
+      "name": "Integrate",
+      "status": "pending",
+      "startedAt": null,
+      "completedAt": null,
+      "agents": ["Pixel", "Lens"],
+      "deliverables": ["End-to-end flows", "Service wiring"]
+    },
+    {
+      "id": 5,
+      "name": "Test",
+      "status": "pending",
+      "startedAt": null,
+      "completedAt": null,
+      "agents": ["Sentinel", "Circuit", "Lens"],
+      "deliverables": ["Test results", "Jest suites", "Coverage report"]
+    },
+    {
+      "id": 6,
+      "name": "Polish",
+      "status": "pending",
+      "startedAt": null,
+      "completedAt": null,
+      "agents": ["All"],
+      "deliverables": ["Bug fixes", "Demo prep", "Final merge"]
+    }
+  ],
+  "agents": {
+    "Conductor": { "status": "idle", "currentTask": null, "tasksCompleted": 0 },
+    "Compass": { "status": "idle", "currentTask": null, "tasksCompleted": 0 },
+    "Keystone": { "status": "idle", "currentTask": null, "tasksCompleted": 0 },
+    "Lens": { "status": "idle", "currentTask": null, "tasksCompleted": 0, "reviewsCompleted": 0, "blockers": 0 },
+    "Palette": { "status": "idle", "currentTask": null, "tasksCompleted": 0 },
+    "Forge": { "status": "idle", "currentTask": null, "tasksCompleted": 0 },
+    "Pixel": { "status": "idle", "currentTask": null, "tasksCompleted": 0 },
+    "Sentinel": { "status": "idle", "currentTask": null, "tasksCompleted": 0, "testsPassed": 0, "testsFailed": 0 },
+    "Circuit": { "status": "idle", "currentTask": null, "tasksCompleted": 0, "coveragePercent": 0 }
+  },
+  "stories": {
+    "US-0001": { "status": "Planned", "title": "Expo scaffold with tab navigation" },
+    "US-0002": { "status": "Planned", "title": "Local mock data layer" },
+    "US-0003": { "status": "Planned", "title": "Catalog browsing with search" },
+    "US-0004": { "status": "Planned", "title": "Product detail screen" },
+    "US-0005": { "status": "Planned", "title": "Barcode scanner" },
+    "US-0006": { "status": "Planned", "title": "Barcode to product lookup" },
+    "US-0007": { "status": "Planned", "title": "Wishlist management" },
+    "US-0008": { "status": "Planned", "title": "Wishlist CRUD operations" },
+    "US-0009": { "status": "Planned", "title": "Wishlist detail view" },
+    "US-0010": { "status": "Planned", "title": "Share wishlist" },
+    "US-0011": { "status": "Planned", "title": "Share flow UI" },
+    "US-0012": { "status": "Planned", "title": "Claim items" },
+    "US-0013": { "status": "Planned", "title": "User switcher" }
+  },
+  "metrics": {
+    "storiesCompleted": 0,
+    "storiesTotal": 13,
+    "tasksCompleted": 0,
+    "tasksTotal": 21,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "testsTotal": 36,
+    "bugsOpen": 0,
+    "bugsFixed": 0,
+    "coveragePercent": 0,
+    "reviewsApproved": 0,
+    "reviewsBlocked": 0
+  },
+  "log": []
+}
