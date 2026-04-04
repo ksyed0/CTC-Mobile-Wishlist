@@ -9,6 +9,7 @@
     "plan:test": "jest --watchAll=false",
     "plan:test:coverage": "jest --watchAll=false --coverage",
     "plan:generate": "node tools/generate-plan.js",
+    "plan:watch": "node tools/generate-plan.js --watch",
     "dashboard": "node tools/generate-dashboard.js",
     "dashboard:watch": "node tools/generate-dashboard.js --watch",
     "avatars": "node tools/process-avatars.js",
