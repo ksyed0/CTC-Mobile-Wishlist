@@ -48,7 +48,7 @@ const DEFAULT_PLATFORM = 'claude-code';
 function cliExists(cli) {
   const { execSync } = require('child_process');
   try {
-    execSync(`which ${cli} 2>/dev/null || where ${cli} 2>nul`, { stdio: 'ignore' });
+    execSync(`which ${cli} 2>/dev/null`, { stdio: 'ignore' });
     return true;
   } catch {
     return false;

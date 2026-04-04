@@ -18,3 +18,4 @@ coverage/
 web-build/
 *.jsbundle
 .metro-health-check*
+nul
