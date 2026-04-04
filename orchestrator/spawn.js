@@ -43,15 +43,42 @@ const ADAPTERS = {
 const DEFAULT_PLATFORM = 'claude-code';
 
 /**
- * Get the active adapter based on ORCHESTRATOR_PLATFORM env var.
+ * Check if a CLI tool is available on the system PATH.
  */
+function cliExists(cli) {
+  const { execSync } = require('child_process');
+  try {
+    execSync(`which ${cli} 2>/dev/null || where ${cli} 2>nul`, { stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Get the active adapter based on ORCHESTRATOR_PLATFORM env var.
+ * Falls back to Claude Code if the requested platform's CLI is not installed.
+ * Caches result to avoid duplicate fallback warnings.
+ */
+let _cachedAdapter = null;
 function getAdapter() {
-  const platform = process.env.ORCHESTRATOR_PLATFORM || DEFAULT_PLATFORM;
-  const adapter = ADAPTERS[platform];
+  if (_cachedAdapter) return _cachedAdapter;
+  const requested = process.env.ORCHESTRATOR_PLATFORM || DEFAULT_PLATFORM;
+  const adapter = ADAPTERS[requested];
   if (!adapter) {
-    console.error(`Unknown platform: "${platform}". Available: ${Object.keys(ADAPTERS).join(', ')}`);
+    console.error(`Unknown platform: "${requested}". Available: ${Object.keys(ADAPTERS).join(', ')}`);
     process.exit(1);
   }
+
+  // If the requested platform's CLI isn't installed, fall back to Claude Code
+  if (requested !== DEFAULT_PLATFORM && !cliExists(adapter.cli)) {
+    const fallback = ADAPTERS[DEFAULT_PLATFORM];
+    console.warn(`[orchestrator] "${adapter.cli}" not found on PATH — falling back to ${fallback.name}`);
+    _cachedAdapter = fallback;
+    return fallback;
+  }
+
+  _cachedAdapter = adapter;
   return adapter;
 }
 
