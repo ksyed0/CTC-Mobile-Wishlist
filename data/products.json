@@ -1,0 +1,232 @@
+[
+  {
+    "id": "prod-001",
+    "barcode": "062073000011",
+    "name": "Mastercraft 20V Cordless Drill",
+    "description": "20V MAX cordless drill/driver with 2-speed gearbox and LED light. Includes 1.5Ah battery and charger.",
+    "price": 89.99,
+    "image": "placeholder",
+    "category": "cat-tools",
+    "inStock": true
+  },
+  {
+    "id": "prod-002",
+    "barcode": "062073000022",
+    "name": "Mastercraft 10-Piece Screwdriver Set",
+    "description": "Comfort-grip screwdriver set with magnetic tip. Includes Phillips, Robertson, and flathead drivers.",
+    "price": 24.99,
+    "image": "placeholder",
+    "category": "cat-tools",
+    "inStock": true
+  },
+  {
+    "id": "prod-003",
+    "barcode": "062073000033",
+    "name": "Mastercraft Circular Saw 7-1/4\"",
+    "description": "15-amp circular saw with laser guide and carbide-tipped blade. Bevel capacity up to 56°.",
+    "price": 129.99,
+    "image": "placeholder",
+    "category": "cat-tools",
+    "inStock": true
+  },
+  {
+    "id": "prod-004",
+    "barcode": "062073000044",
+    "name": "Mastercraft 25ft Tape Measure",
+    "description": "Heavy-duty 25ft tape measure with nylon-coated blade and rubber grip handle.",
+    "price": 14.99,
+    "image": "placeholder",
+    "category": "cat-tools",
+    "inStock": true
+  },
+  {
+    "id": "prod-005",
+    "barcode": "062073000055",
+    "name": "Mastercraft Random Orbit Sander",
+    "description": "5-inch random orbit sander with dust collector. Variable speed control for fine or aggressive sanding.",
+    "price": 59.99,
+    "image": "placeholder",
+    "category": "cat-tools",
+    "inStock": false
+  },
+  {
+    "id": "prod-006",
+    "barcode": "062073000066",
+    "name": "Motomaster Eliminator 800A Jump Starter",
+    "description": "800A peak portable jump starter with USB charging ports and built-in LED flashlight.",
+    "price": 119.99,
+    "image": "placeholder",
+    "category": "cat-automotive",
+    "inStock": true
+  },
+  {
+    "id": "prod-007",
+    "barcode": "062073000077",
+    "name": "Motomaster Synthetic Motor Oil 5W-30",
+    "description": "Full synthetic 5W-30 motor oil, 5L jug. Provides superior engine protection in all temperatures.",
+    "price": 34.99,
+    "image": "placeholder",
+    "category": "cat-automotive",
+    "inStock": true
+  },
+  {
+    "id": "prod-008",
+    "barcode": "062073000088",
+    "name": "Canadian Tire Floor Jack 3-Ton",
+    "description": "3-ton hydraulic floor jack with rapid pump technology. Low-profile design for sports cars.",
+    "price": 89.99,
+    "image": "placeholder",
+    "category": "cat-automotive",
+    "inStock": true
+  },
+  {
+    "id": "prod-009",
+    "barcode": "062073000099",
+    "name": "Motomaster Tire Inflator",
+    "description": "Digital tire inflator with auto shut-off at preset pressure. 12V DC and AC power options.",
+    "price": 44.99,
+    "image": "placeholder",
+    "category": "cat-automotive",
+    "inStock": true
+  },
+  {
+    "id": "prod-010",
+    "barcode": "062073000100",
+    "name": "Motomaster Winter Windshield Washer -40°C",
+    "description": "Winter formula windshield washer fluid rated to -40°C. Removes road grime and prevents freezing.",
+    "price": 7.99,
+    "image": "placeholder",
+    "category": "cat-automotive",
+    "inStock": true
+  },
+  {
+    "id": "prod-011",
+    "barcode": "062073000111",
+    "name": "Outbound 6-Person Dome Tent",
+    "description": "6-person dome tent with full rainfly, two doors, and mesh windows for ventilation. Easy 3-pole setup.",
+    "price": 149.99,
+    "image": "placeholder",
+    "category": "cat-outdoor",
+    "inStock": true
+  },
+  {
+    "id": "prod-012",
+    "barcode": "062073000122",
+    "name": "Coleman Classic Propane Camp Stove",
+    "description": "Two-burner propane camp stove with 20,000 BTU. Adjustable burners and wind-baffled design.",
+    "price": 79.99,
+    "image": "placeholder",
+    "category": "cat-outdoor",
+    "inStock": true
+  },
+  {
+    "id": "prod-013",
+    "barcode": "062073000133",
+    "name": "Outbound Sleeping Bag -7°C",
+    "description": "3-season sleeping bag rated to -7°C. Mummy style with hood and full-length draft tube.",
+    "price": 59.99,
+    "image": "placeholder",
+    "category": "cat-outdoor",
+    "inStock": true
+  },
+  {
+    "id": "prod-014",
+    "barcode": "062073000144",
+    "name": "Yeti Tundra 45 Cooler",
+    "description": "45-quart rotomolded cooler with 3-inch insulation. Bear-resistant and holds ice up to 10 days.",
+    "price": 449.99,
+    "image": "placeholder",
+    "category": "cat-outdoor",
+    "inStock": false
+  },
+  {
+    "id": "prod-015",
+    "barcode": "062073000155",
+    "name": "Outbound Folding Camp Chair",
+    "description": "Oversized padded folding chair with cup holder and carry bag. Supports up to 300 lbs.",
+    "price": 39.99,
+    "image": "placeholder",
+    "category": "cat-outdoor",
+    "inStock": true
+  },
+  {
+    "id": "prod-016",
+    "barcode": "062073000166",
+    "name": "Ripzone Men's Hiking Boots",
+    "description": "Waterproof leather hiking boots with Vibram outsole and ankle support. Available in sizes 7–13.",
+    "price": 119.99,
+    "image": "placeholder",
+    "category": "cat-outdoor",
+    "inStock": true
+  },
+  {
+    "id": "prod-017",
+    "barcode": "062073000177",
+    "name": "Spalding NBA Street Basketball",
+    "description": "Official NBA-licensed outdoor basketball. Durable rubber cover for street play. Size 7.",
+    "price": 34.99,
+    "image": "placeholder",
+    "category": "cat-sports",
+    "inStock": true
+  },
+  {
+    "id": "prod-018",
+    "barcode": "062073000188",
+    "name": "CCM Ribcor 86K Hockey Skates",
+    "description": "Performance hockey skates with thermoformable boot and stainless steel blade. Junior and senior sizes.",
+    "price": 199.99,
+    "image": "placeholder",
+    "category": "cat-sports",
+    "inStock": true
+  },
+  {
+    "id": "prod-019",
+    "barcode": "062073000199",
+    "name": "Bauer Supreme S37 Hockey Stick",
+    "description": "Composite hockey stick with ABS blade and mid-kick flex. Available in left and right, flex 85.",
+    "price": 79.99,
+    "image": "placeholder",
+    "category": "cat-sports",
+    "inStock": true
+  },
+  {
+    "id": "prod-020",
+    "barcode": "062073000200",
+    "name": "Equinox Yoga Mat 6mm",
+    "description": "Non-slip 6mm thick yoga mat with alignment lines and carrying strap. 68 x 24 inches.",
+    "price": 29.99,
+    "image": "placeholder",
+    "category": "cat-sports",
+    "inStock": true
+  },
+  {
+    "id": "prod-021",
+    "barcode": "062073000211",
+    "name": "Crane Adjustable Dumbbell Set",
+    "description": "Adjustable dumbbell pair, 5–25 lbs per hand. Quick-select dial mechanism, replaces 9 pairs.",
+    "price": 249.99,
+    "image": "placeholder",
+    "category": "cat-sports",
+    "inStock": false
+  },
+  {
+    "id": "prod-022",
+    "barcode": "062073000222",
+    "name": "Weber Spirit II E-310 Gas BBQ",
+    "description": "3-burner propane BBQ with 529 sq in cooking area. GS4 grilling system with iGrill 3 compatibility.",
+    "price": 699.99,
+    "image": "placeholder",
+    "category": "cat-home",
+    "inStock": true
+  },
+  {
+    "id": "prod-023",
+    "barcode": "062073000233",
+    "name": "Mastercraft Garden Hose 50ft",
+    "description": "Heavy-duty 50ft garden hose with brass fittings. Kink-resistant design rated for 500 PSI.",
+    "price": 29.99,
+    "image": "placeholder",
+    "category": "cat-home",
+    "inStock": true
+  }
+]

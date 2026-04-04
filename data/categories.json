@@ -1,0 +1,27 @@
+[
+  {
+    "id": "cat-tools",
+    "name": "Tools",
+    "icon": "build"
+  },
+  {
+    "id": "cat-automotive",
+    "name": "Automotive",
+    "icon": "directions-car"
+  },
+  {
+    "id": "cat-outdoor",
+    "name": "Outdoor",
+    "icon": "park"
+  },
+  {
+    "id": "cat-sports",
+    "name": "Sports",
+    "icon": "sports-soccer"
+  },
+  {
+    "id": "cat-home",
+    "name": "Home",
+    "icon": "home"
+  }
+]
