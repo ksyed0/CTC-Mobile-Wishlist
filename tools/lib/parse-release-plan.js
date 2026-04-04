@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  * Extracts all fenced code blocks (``` ... ```) from markdown text.
@@ -16,9 +16,9 @@ function extractCodeBlocks(md) {
  * Parse "None" or comma-separated IDs into an array.
  */
 function parseDeps(val) {
-  if (!val || val.trim() === "None" || val.trim() === "") return [];
+  if (!val || val.trim() === 'None' || val.trim() === '') return [];
   return val
-    .split(",")
+    .split(',')
     .map((s) => s.trim())
     .filter(Boolean);
 }
@@ -30,16 +30,16 @@ function parseEpicBlock(text) {
   const idTitle = text.match(/^(EPIC-\d{4}):\s*(.+)/m);
   if (!idTitle) return null;
   const get = (key) => {
-    const m = text.match(new RegExp(`^${key}:[ \\t]*(.*)`, "m"));
-    return m ? m[1].trim() : "";
+    const m = text.match(new RegExp(`^${key}:[ \\t]*(.*)`, 'm'));
+    return m ? m[1].trim() : '';
   };
   return {
     id: idTitle[1],
     title: idTitle[2].trim(),
-    description: get("Description"),
-    releaseTarget: get("Release Target"),
-    status: get("Status"),
-    dependencies: parseDeps(get("Dependencies")),
+    description: get('Description'),
+    releaseTarget: get('Release Target'),
+    status: get('Status'),
+    dependencies: parseDeps(get('Dependencies')),
   };
 }
 
@@ -52,7 +52,7 @@ function parseACs(text) {
   const re = /- \[( |x)\] (AC-\d{4}|AC-TBD):\s*(.+)/g;
   let m;
   while ((m = re.exec(text)) !== null) {
-    acs.push({ id: m[2], text: m[3].trim(), done: m[1] === "x" });
+    acs.push({ id: m[2], text: m[3].trim(), done: m[1] === 'x' });
   }
   return acs;
 }
@@ -64,10 +64,10 @@ function parseStoryBlock(text) {
   const header = text.match(/^(US-\d{4})\s*\((EPIC-\d{4})\):\s*(.+)/m);
   if (!header) return null;
   const get = (key) => {
-    const m = text.match(new RegExp(`^${key}:[ \\t]*(.*)`, "m"));
-    return m ? m[1].trim() : "";
+    const m = text.match(new RegExp(`^${key}:[ \\t]*(.*)`, 'm'));
+    return m ? m[1].trim() : '';
   };
-  const priorityRaw = get("Priority");
+  const priorityRaw = get('Priority');
   const priorityMatch = priorityRaw.match(/\((P\d)\)/);
   let priority = priorityMatch ? priorityMatch[1] : priorityRaw;
   if (!priorityMatch && priorityRaw) {
@@ -79,11 +79,11 @@ function parseStoryBlock(text) {
     epicId: header[2],
     title: header[3].trim(),
     priority: priority,
-    estimate: get("Estimate"),
-    status: get("Status"),
-    branch: get("Branch"),
+    estimate: get('Estimate'),
+    status: get('Status'),
+    branch: get('Branch'),
     acs: parseACs(text),
-    dependencies: parseDeps(get("Dependencies")),
+    dependencies: parseDeps(get('Dependencies')),
   };
 }
 
@@ -94,18 +94,18 @@ function parseTaskBlock(text) {
   const header = text.match(/^(TASK-\d{4})\s*\((US-\d{4})\):\s*(.+)/m);
   if (!header) return null;
   const get = (key) => {
-    const m = text.match(new RegExp(`^${key}:[ \\t]*(.*)`, "m"));
-    return m ? m[1].trim() : "";
+    const m = text.match(new RegExp(`^${key}:[ \\t]*(.*)`, 'm'));
+    return m ? m[1].trim() : '';
   };
   return {
     id: header[1],
     storyId: header[2],
     title: header[3].trim(),
-    type: get("Type"),
-    assignee: get("Assignee"),
-    status: get("Status"),
-    branch: get("Branch"),
-    notes: get("Notes"),
+    type: get('Type'),
+    assignee: get('Assignee'),
+    status: get('Status'),
+    branch: get('Branch'),
+    notes: get('Notes'),
   };
 }
 

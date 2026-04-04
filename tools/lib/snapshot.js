@@ -1,18 +1,18 @@
-"use strict";
+'use strict';
 
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 const SNAPSHOT_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}Z\.json$/;
 
 function getSnapshotFilename() {
   const now = new Date();
   const y = now.getUTCFullYear();
-  const mo = String(now.getUTCMonth() + 1).padStart(2, "0");
-  const d = String(now.getUTCDate()).padStart(2, "0");
-  const h = String(now.getUTCHours()).padStart(2, "0");
-  const mi = String(now.getUTCMinutes()).padStart(2, "0");
-  const s = String(now.getUTCSeconds()).padStart(2, "0");
+  const mo = String(now.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(now.getUTCDate()).padStart(2, '0');
+  const h = String(now.getUTCHours()).padStart(2, '0');
+  const mi = String(now.getUTCMinutes()).padStart(2, '0');
+  const s = String(now.getUTCSeconds()).padStart(2, '0');
   return `${y}-${mo}-${d}T${h}-${mi}-${s}Z.json`;
 }
 
@@ -23,9 +23,8 @@ function ensureHistoryDir(dir) {
 }
 
 function saveSnapshot(data, options = {}) {
-  const root =
-    options.root || (typeof process !== "undefined" ? process.cwd() : ".");
-  const historyDir = options.historyDir || path.join(root, ".history");
+  const root = options.root || (typeof process !== 'undefined' ? process.cwd() : '.');
+  const historyDir = options.historyDir || path.join(root, '.history');
   const commit = options.commit || null;
 
   ensureHistoryDir(historyDir);
@@ -39,15 +38,14 @@ function saveSnapshot(data, options = {}) {
   const filename = getSnapshotFilename();
   const filepath = path.join(historyDir, filename);
 
-  fs.writeFileSync(filepath, JSON.stringify(snapshot, null, 2), "utf8");
+  fs.writeFileSync(filepath, JSON.stringify(snapshot, null, 2), 'utf8');
 
   return { filename, filepath, snapshot };
 }
 
 function loadSnapshots(options = {}) {
-  const root =
-    options.root || (typeof process !== "undefined" ? process.cwd() : ".");
-  const historyDir = options.historyDir || path.join(root, ".history");
+  const root = options.root || (typeof process !== 'undefined' ? process.cwd() : '.');
+  const historyDir = options.historyDir || path.join(root, '.history');
 
   if (!fs.existsSync(historyDir)) {
     return [];
@@ -63,7 +61,7 @@ function loadSnapshots(options = {}) {
 
     const filepath = path.join(historyDir, file);
     try {
-      const content = fs.readFileSync(filepath, "utf8");
+      const content = fs.readFileSync(filepath, 'utf8');
       const parsed = JSON.parse(content);
       if (parsed && parsed.generatedAt && parsed.data) {
         snapshots.push({
@@ -93,7 +91,7 @@ function extractTrends(snapshots) {
 
   const doneCounts = snapshots.map((s) => {
     const stories = s.data.stories || [];
-    return stories.filter((st) => st.status === "Done").length;
+    return stories.filter((st) => st.status === 'Done').length;
   });
 
   const totalStories = snapshots.map((s) => (s.data.stories || []).length);
@@ -115,7 +113,7 @@ function extractTrends(snapshots) {
   const velocity = snapshots.map((s) => {
     const stories = s.data.stories || [];
     return stories
-      .filter((st) => st.status === "Done")
+      .filter((st) => st.status === 'Done')
       .reduce((sum, st) => {
         const est = st.estimate;
         if (!est) return sum;
@@ -126,8 +124,7 @@ function extractTrends(snapshots) {
 
   const openBugs = snapshots.map((s) => {
     const bugs = s.data.bugs || [];
-    return bugs.filter((b) => b.status === "Open" || b.status === "In Progress")
-      .length;
+    return bugs.filter((b) => b.status === 'Open' || b.status === 'In Progress').length;
   });
 
   const atRisk = snapshots.map((s) => {
@@ -137,18 +134,12 @@ function extractTrends(snapshots) {
 
   const inputTokens = snapshots.map((s) => {
     const costs = s.data.costs || {};
-    return Object.values(costs).reduce(
-      (sum, c) => sum + (c.inputTokens || 0),
-      0,
-    );
+    return Object.values(costs).reduce((sum, c) => sum + (c.inputTokens || 0), 0);
   });
 
   const outputTokens = snapshots.map((s) => {
     const costs = s.data.costs || {};
-    return Object.values(costs).reduce(
-      (sum, c) => sum + (c.outputTokens || 0),
-      0,
-    );
+    return Object.values(costs).reduce((sum, c) => sum + (c.outputTokens || 0), 0);
   });
 
   return {

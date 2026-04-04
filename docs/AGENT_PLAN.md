@@ -261,6 +261,66 @@ Phase 6: Polish (30 min)
   Conductor spawns fixers as needed → Final merge, demo prep
 ```
 
+### 2.1 PR Creation & Review Flow
+
+Every phase that produces code follows this PR lifecycle, owned by **Conductor**:
+
+```
+Dev Agent (Forge/Pixel/Keystone)
+  │
+  ├─ Commits to feature branch (e.g., feature/US-0001-expo-scaffold)
+  ├─ Pushes to remote
+  └─ Reports completion to Conductor
+          │
+          ▼
+Conductor
+  │
+  ├─ Creates PR targeting `develop`
+  ├─ Assigns Lens as reviewer
+  └─ Waits for Lens verdict
+          │
+          ▼
+Lens (Code Reviewer)
+  │
+  ├─ APPROVE → Conductor verifies CI, then squash-merges
+  ├─ REQUEST CHANGES → Conductor re-spawns dev agent with feedback
+  │     └─ Agent fixes → push → Conductor re-requests Lens review
+  └─ BLOCK → Conductor halts, escalates to human
+          │
+          ▼
+CI Pipeline (automated, 6 jobs)
+  │
+  ├─ Lint (eslint)
+  ├─ Test + Coverage (jest, 80% threshold)
+  ├─ Build (avatars → plan → dashboard)
+  ├─ Orchestrator Validation (spawn.js smoke test)
+  ├─ Prettier Format Check
+  └─ Dependency Audit (npm audit)
+          │
+          ▼
+All green → Conductor merges (squash and merge) → deletes feature branch
+Any red → Conductor reads error, spawns appropriate agent to fix
+```
+
+**Key rules:**
+
+- Dev agents **never** create PRs — only Conductor does
+- Conductor **never** merges without Lens approval AND green CI
+- BLOCK requires human intervention — Conductor does not retry
+- REQUEST CHANGES gets exactly 1 retry before escalation
+- Squash and merge keeps `develop` history clean
+
+### 2.2 BLOCK Recovery Protocol
+
+When Lens issues a BLOCK verdict:
+
+1. Conductor pauses orchestration — no more agents spawned
+2. Conductor sets phase status to `blocked` in `sdlc-status.json`
+3. Conductor writes BLOCKED entry in `progress.md`
+4. **Human resolves the issue** and commits to the affected branch
+5. Conductor re-spawns Lens to re-review
+6. If APPROVE → resume. If BLOCK again → re-escalate. No looping.
+
 ---
 
 ## 3. Hackathon Timeline

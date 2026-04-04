@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function parseBugs(markdown) {
   const results = [];
@@ -11,26 +11,23 @@ function parseBugs(markdown) {
     const nextRe = /^BUG-\d{4}:/gm;
     nextRe.lastIndex = startIdx + 1;
     const nextResult = nextRe.exec(markdown);
-    const block = markdown.slice(
-      startIdx,
-      nextResult ? nextResult.index : undefined,
-    );
+    const block = markdown.slice(startIdx, nextResult ? nextResult.index : undefined);
 
     const get = (key) => {
-      const m = block.match(new RegExp(`^${key}:[ \\t]*(.+)`, "m"));
-      return m ? m[1].trim() : "";
+      const m = block.match(new RegExp(`^${key}:[ \\t]*(.+)`, 'm'));
+      return m ? m[1].trim() : '';
     };
 
     results.push({
       id,
       title,
-      severity: get("Severity"),
-      relatedStory: get("Related Story"),
-      relatedTask: get("Related Task"),
-      status: get("Status"),
-      fixBranch: get("Fix Branch"),
-      lessonEncoded: get("Lesson Encoded"),
-      estimatedCostUsd: parseFloat(get("Estimated Cost USD")) || 0,
+      severity: get('Severity'),
+      relatedStory: get('Related Story'),
+      relatedTask: get('Related Task'),
+      status: get('Status'),
+      fixBranch: get('Fix Branch'),
+      lessonEncoded: get('Lesson Encoded'),
+      estimatedCostUsd: parseFloat(get('Estimated Cost USD')) || 0,
     });
   }
   return results;

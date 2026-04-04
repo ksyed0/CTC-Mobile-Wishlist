@@ -57,24 +57,24 @@ __tests__/
 ### Service Tests
 
 ```typescript
-import { productService } from "../../src/services/productService";
+import { productService } from '../../src/services/productService';
 
-describe("ProductService", () => {
-  it("should return all products", async () => {
+describe('ProductService', () => {
+  it('should return all products', async () => {
     const products = await productService.getProducts();
     expect(products.length).toBeGreaterThan(0);
-    expect(products[0]).toHaveProperty("id");
-    expect(products[0]).toHaveProperty("barcode");
+    expect(products[0]).toHaveProperty('id');
+    expect(products[0]).toHaveProperty('barcode');
   });
 
-  it("should find product by barcode", async () => {
-    const product = await productService.getByBarcode("1234567890123");
+  it('should find product by barcode', async () => {
+    const product = await productService.getByBarcode('1234567890123');
     expect(product).not.toBeNull();
-    expect(product?.barcode).toBe("1234567890123");
+    expect(product?.barcode).toBe('1234567890123');
   });
 
-  it("should search case-insensitively", async () => {
-    const results = await productService.search("drill");
+  it('should search case-insensitively', async () => {
+    const results = await productService.search('drill');
     expect(results.length).toBeGreaterThan(0);
   });
 });
@@ -141,8 +141,8 @@ Ensure `package.json` includes:
 
 ```typescript
 // jest.setup.js
-import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock";
-jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage);
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 ```
 
 ## Rules

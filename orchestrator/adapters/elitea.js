@@ -14,8 +14,8 @@
  */
 
 module.exports = {
-  name: "EliteA (EPAM)",
-  cli: "elitea",
+  name: 'EliteA (EPAM)',
+  cli: 'elitea',
 
   /**
    * How to spawn a single agent from the terminal.
@@ -38,7 +38,7 @@ module.exports = {
       `  elitea run --prompt-name "sdlc-${agent.name.toLowerCase()}" --vars "task=${agent.task}"`,
       ``,
       `Note: EliteA routes through EPAM DIAL for model selection and governance.`,
-    ].join("\n");
+    ].join('\n');
   },
 
   /**
@@ -51,12 +51,12 @@ module.exports = {
         [
           `  Terminal ${i + 1} (${a.name}):`,
           `    elitea run --prompt "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
-        ].join("\n"),
+        ].join('\n'),
       ),
       ``,
       `EliteA supports prompt chaining — registered prompts can reference each other.`,
       `All executions are tracked in the EliteA audit log for governance.`,
-    ].join("\n");
+    ].join('\n');
   },
 
   /**
@@ -68,7 +68,7 @@ module.exports = {
         (a, i) =>
           `# Terminal ${i + 1}: ${a.name}\nelitea run --prompt "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
       )
-      .join("\n\n");
+      .join('\n\n');
   },
 
   /**
@@ -76,10 +76,10 @@ module.exports = {
    */
   notes: [
     "EliteA is EPAM's enterprise AI platform with prompt management and governance.",
-    "Supports prompt library — register reusable agent prompts by name.",
-    "Model routing via EPAM DIAL gateway (Claude, GPT, Gemini, open-source).",
-    "Built-in audit logging, cost tracking, and access controls.",
-    "Prompt chaining allows Conductor to orchestrate sub-agents via registered prompts.",
-    "Configure workspace via ELITEA_WORKSPACE and ELITEA_API_KEY env vars.",
+    'Supports prompt library — register reusable agent prompts by name.',
+    'Model routing via EPAM DIAL gateway (Claude, GPT, Gemini, open-source).',
+    'Built-in audit logging, cost tracking, and access controls.',
+    'Prompt chaining allows Conductor to orchestrate sub-agents via registered prompts.',
+    'Configure workspace via ELITEA_WORKSPACE and ELITEA_API_KEY env vars.',
   ],
 };

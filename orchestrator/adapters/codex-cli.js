@@ -12,8 +12,8 @@
  */
 
 module.exports = {
-  name: "OpenAI Codex CLI",
-  cli: "codex",
+  name: 'OpenAI Codex CLI',
+  cli: 'codex',
 
   /**
    * How to spawn a single agent from the terminal.
@@ -34,7 +34,7 @@ module.exports = {
       ``,
       `Note: Codex CLI does not support sub-agent spawning within a session.`,
       `Use separate terminal sessions for parallel agents.`,
-    ].join("\n");
+    ].join('\n');
   },
 
   /**
@@ -48,11 +48,11 @@ module.exports = {
         [
           `  Terminal ${i + 1} (${a.name}):`,
           `    codex "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
-        ].join("\n"),
+        ].join('\n'),
       ),
       ``,
       `Wait for all terminals to complete before proceeding.`,
-    ].join("\n");
+    ].join('\n');
   },
 
   /**
@@ -64,16 +64,16 @@ module.exports = {
         (a, i) =>
           `# Terminal ${i + 1}: ${a.name}\ncodex "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
       )
-      .join("\n\n");
+      .join('\n\n');
   },
 
   /**
    * Platform-specific notes for the orchestration docs.
    */
   notes: [
-    "Codex CLI does not support sub-agent spawning — use separate terminals for parallel work.",
-    "Set full_auto approval mode for autonomous execution: codex --approval-mode full-auto",
-    "Codex supports file read/write/shell natively.",
-    "For Conductor, run in a dedicated terminal and manually spawn sub-agents in other terminals.",
+    'Codex CLI does not support sub-agent spawning — use separate terminals for parallel work.',
+    'Set full_auto approval mode for autonomous execution: codex --approval-mode full-auto',
+    'Codex supports file read/write/shell natively.',
+    'For Conductor, run in a dedicated terminal and manually spawn sub-agents in other terminals.',
   ],
 };

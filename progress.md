@@ -133,3 +133,68 @@
    - Or any platform: `node orchestrator/spawn.js --agent Conductor`
 5. Conductor orchestrates all 9 agents through 6 BLAST phases
 6. Demo app + live dashboard + business case deck
+
+## Session 5 — 2026-04-04
+
+### What Was Done
+
+**CI Pipeline (6 Jobs)**
+
+- Created `.github/workflows/ci.yml` with 6 parallel jobs for all PRs to main/develop
+- Lint job: `npx eslint .` across tools/, orchestrator/, tests/
+- Test & Coverage job: `npm run test:coverage` with artifact upload
+- Build job: `npm run build` (avatars → plan → dashboard)
+- Orchestrator Validation job: smoke test spawn.js --list-platforms and --list-agents
+- Dependency Audit job: `npm audit --audit-level=high`
+- Prettier Format Check job: `npm run format:check`
+
+**ESLint Expansion (BUG-0033)**
+
+- Added orchestrator/ and tests/ to ESLint config
+- Added Jest globals (describe, it, expect, beforeEach, etc.) for test files
+- Added timer globals (setTimeout, setInterval, etc.) to Node.js globals
+- Added ignores for root config files (eslint.config.js, jest.config.js)
+
+**Code Quality Fixes (BUG-0034 – BUG-0036)**
+
+- Removed unused imports (path, fs) in orchestrator/spawn.js
+- Fixed useless assignment in generate-dashboard.js
+- Preserved error cause chain in generate-plan.js
+
+**Prettier Formatting (BUG-0037)**
+
+- Added Prettier with `.prettierrc` config (semi, singleQuote, trailingComma all, printWidth 120)
+- Created `.prettierignore` for generated outputs and binaries
+- Added `format` and `format:check` npm scripts
+- Formatted entire codebase to establish baseline
+- Added CI format check job
+
+**Conductor CI Awareness**
+
+- Updated DM_AGENT.md Phase 6 to verify CI checks pass after pushing
+- Conductor now checks PR CI status and spawns agents to fix failures
+
+**PR/CI/Review Documentation**
+
+- Documented PR creation protocol in AGENTS.md §11 (who creates PRs, review flow, CI pipeline table)
+- Added §2.1 PR Creation & Review Flow and §2.2 BLOCK Recovery Protocol to AGENT_PLAN.md
+- Added 3 Mermaid diagrams to DIAGRAMS.md: PR review workflow, CI pipeline flow, agent branch strategy
+
+**Dashboard BLOCK Alert System (BUG-0038 – BUG-0042)**
+
+- Added `.phase-block.blocked` CSS with red pulsing animation and ⛔ icon
+- Added `.agent-card.blocked` CSS with red border and status color
+- Added top-of-page alert banner when any phase/agent is blocked
+- Added Web Audio API three-tone alert on BLOCK state transitions (toggle in header)
+- Added browser Notification API push on BLOCK transitions (toggle in header)
+- Both toggles persist to localStorage; notification requests permission on enable
+
+**CI Fix (BUG-0043)**
+
+- Fixed Prettier reformatting test fixture that broke parse-bugs tests
+
+### Stats
+
+- 11 bugs logged (BUG-0033 – BUG-0043), all fixed
+- 6-job CI pipeline protecting main and develop branches
+- Dashboard now surfaces BLOCKED states with audio, visual, and push alerts

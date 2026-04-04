@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function computeProjectedCost(estimate, hoursMap, rate) {
   const hours = hoursMap[estimate];

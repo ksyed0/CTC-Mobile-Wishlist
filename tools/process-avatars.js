@@ -14,39 +14,29 @@
  * Usage: node tools/process-avatars.js [--padding 1.5]
  */
 
-const fs = require("fs");
-const path = require("path");
-const { createCanvas, loadImage } = require("canvas");
+const fs = require('fs');
+const path = require('path');
+const { createCanvas, loadImage } = require('canvas');
 
 // --- Configuration ---
-const AGENTS_ORDER = [
-  "conductor",
-  "compass",
-  "keystone",
-  "lens",
-  "palette",
-  "forge",
-  "pixel",
-  "sentinel",
-  "circuit",
-];
+const AGENTS_ORDER = ['conductor', 'compass', 'keystone', 'lens', 'palette', 'forge', 'pixel', 'sentinel', 'circuit'];
 const TOP_ROW_COUNT = 5;
 const BOTTOM_ROW_COUNT = 4;
 const OUTPUT_SIZE = 200; // px — square headshot output
 
-const IMAGES_DIR = path.resolve(__dirname, "..", "docs", "agents", "images");
-const HEADSHOTS_DIR = path.join(IMAGES_DIR, "headshots");
+const IMAGES_DIR = path.resolve(__dirname, '..', 'docs', 'agents', 'images');
+const HEADSHOTS_DIR = path.join(IMAGES_DIR, 'headshots');
 
 // Find team-grid file with case-insensitive match (Windows may save as Team-Grid.PNG)
 function findGridFile() {
   if (!fs.existsSync(IMAGES_DIR)) return null;
   const files = fs.readdirSync(IMAGES_DIR);
-  const match = files.find((f) => f.toLowerCase() === "team-grid.png");
+  const match = files.find((f) => f.toLowerCase() === 'team-grid.png');
   if (!match) return null;
   // Rename to lowercase if needed (normalize for Linux)
   const fullPath = path.join(IMAGES_DIR, match);
-  const normalizedPath = path.join(IMAGES_DIR, "team-grid.png");
-  if (match !== "team-grid.png") {
+  const normalizedPath = path.join(IMAGES_DIR, 'team-grid.png');
+  if (match !== 'team-grid.png') {
     fs.renameSync(fullPath, normalizedPath);
     console.log(`[avatars] Normalized filename: ${match} → team-grid.png`);
   }
@@ -55,16 +45,15 @@ function findGridFile() {
 const GRID_FILE = findGridFile();
 
 // Parse --padding flag (default 1.5x around detected face)
-const paddingArg = process.argv.indexOf("--padding");
-const PADDING_MULTIPLIER =
-  paddingArg !== -1 ? parseFloat(process.argv[paddingArg + 1]) : 1.5;
+const paddingArg = process.argv.indexOf('--padding');
+const PADDING_MULTIPLIER = paddingArg !== -1 ? parseFloat(process.argv[paddingArg + 1]) : 1.5;
 
 // --- Shim window/document for tracking.js in Node.js ---
 // tracking.js expects browser globals (window, document, navigator)
 // and uses bare `tracking` references that must be on the global scope
 const windowShim = {
   tracking: {},
-  navigator: { userAgent: "node" },
+  navigator: { userAgent: 'node' },
   document: { createElement: () => ({ getContext: () => ({}) }) },
   self: {},
 };
@@ -76,8 +65,8 @@ global.self = windowShim;
 global.tracking = windowShim.tracking;
 
 // Load tracking.js and face classifier
-require("tracking");
-require("tracking/build/data/face-min");
+require('tracking');
+require('tracking/build/data/face-min');
 
 const tracking = global.tracking;
 
@@ -88,7 +77,7 @@ const tracking = global.tracking;
 function detectFaces(imageData, width, height) {
   const classifier = tracking.ViolaJones.classifiers.face;
   if (!classifier) {
-    throw new Error("Face classifier not loaded");
+    throw new Error('Face classifier not loaded');
   }
 
   // Convert RGBA imageData to grayscale pixel array
@@ -101,15 +90,7 @@ function detectFaces(imageData, width, height) {
   }
 
   // Run Viola-Jones detection
-  const rects = tracking.ViolaJones.detect(
-    gray,
-    width,
-    height,
-    1.1,
-    2.0,
-    0.1,
-    classifier,
-  );
+  const rects = tracking.ViolaJones.detect(gray, width, height, 1.1, 2.0, 0.1, classifier);
 
   // rects is a flat array: [x1, y1, w1, h1, x2, y2, w2, h2, ...]
   const faces = [];
@@ -132,9 +113,7 @@ function mergeOverlapping(faces, overlapThreshold = 0.3) {
   if (faces.length === 0) return [];
 
   // Sort by area descending
-  const sorted = [...faces].sort(
-    (a, b) => b.width * b.height - a.width * a.height,
-  );
+  const sorted = [...faces].sort((a, b) => b.width * b.height - a.width * a.height);
   const merged = [];
   const used = new Set();
 
@@ -151,14 +130,8 @@ function mergeOverlapping(faces, overlapThreshold = 0.3) {
       const b = sorted[j];
 
       // Check overlap
-      const overlapX = Math.max(
-        0,
-        Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x),
-      );
-      const overlapY = Math.max(
-        0,
-        Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y),
-      );
+      const overlapX = Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x));
+      const overlapY = Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
       const overlapArea = overlapX * overlapY;
       const minArea = Math.min(a.width * a.height, b.width * b.height);
 
@@ -173,12 +146,7 @@ function mergeOverlapping(faces, overlapThreshold = 0.3) {
     const avgY = group.reduce((s, f) => s + f.y, 0) / group.length;
     const avgW = group.reduce((s, f) => s + f.width, 0) / group.length;
     const avgH = group.reduce((s, f) => s + f.height, 0) / group.length;
-    merged.push({
-      x: Math.round(avgX),
-      y: Math.round(avgY),
-      width: Math.round(avgW),
-      height: Math.round(avgH),
-    });
+    merged.push({ x: Math.round(avgX), y: Math.round(avgY), width: Math.round(avgW), height: Math.round(avgH) });
   }
 
   return merged;
@@ -190,12 +158,8 @@ function mergeOverlapping(faces, overlapThreshold = 0.3) {
 function sortFacesGridOrder(faces, imgHeight) {
   const midY = imgHeight / 2;
 
-  const topRow = faces
-    .filter((f) => f.y + f.height / 2 < midY)
-    .sort((a, b) => a.x - b.x);
-  const bottomRow = faces
-    .filter((f) => f.y + f.height / 2 >= midY)
-    .sort((a, b) => a.x - b.x);
+  const topRow = faces.filter((f) => f.y + f.height / 2 < midY).sort((a, b) => a.x - b.x);
+  const bottomRow = faces.filter((f) => f.y + f.height / 2 >= midY).sort((a, b) => a.x - b.x);
 
   return [...topRow, ...bottomRow];
 }
@@ -204,7 +168,7 @@ function sortFacesGridOrder(faces, imgHeight) {
  * Fallback: divide the composite into a grid if face detection fails.
  */
 function gridFallback(imgWidth, imgHeight) {
-  console.log("[avatars] Face detection insufficient — using grid fallback");
+  console.log('[avatars] Face detection insufficient — using grid fallback');
   const faces = [];
 
   // Top row: 5 cells
@@ -262,29 +226,17 @@ function cropAndSave(sourceCanvas, face, outputPath, padding) {
 
   // Draw cropped region to output canvas
   const outCanvas = createCanvas(OUTPUT_SIZE, OUTPUT_SIZE);
-  const ctx = outCanvas.getContext("2d");
-  ctx.drawImage(
-    sourceCanvas,
-    cropX,
-    cropY,
-    finalSize,
-    finalSize,
-    0,
-    0,
-    OUTPUT_SIZE,
-    OUTPUT_SIZE,
-  );
+  const ctx = outCanvas.getContext('2d');
+  ctx.drawImage(sourceCanvas, cropX, cropY, finalSize, finalSize, 0, 0, OUTPUT_SIZE, OUTPUT_SIZE);
 
-  const buffer = outCanvas.toBuffer("image/png");
+  const buffer = outCanvas.toBuffer('image/png');
   fs.writeFileSync(outputPath, buffer);
 }
 
 async function main() {
   // Check input exists
   if (!GRID_FILE) {
-    console.log(
-      `[avatars] No team-grid.png found in ${IMAGES_DIR} — skipping avatar extraction`,
-    );
+    console.log(`[avatars] No team-grid.png found in ${IMAGES_DIR} — skipping avatar extraction`);
     process.exit(0);
   }
 
@@ -300,12 +252,12 @@ async function main() {
 
   // Draw image to canvas for pixel access
   const canvas = createCanvas(width, height);
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
   ctx.drawImage(image, 0, 0);
   const imageData = ctx.getImageData(0, 0, width, height).data;
 
   // Detect faces
-  console.log("[avatars] Running face detection...");
+  console.log('[avatars] Running face detection...');
   let faces = detectFaces(imageData, width, height);
   console.log(`[avatars] Raw detections: ${faces.length}`);
 
@@ -326,9 +278,7 @@ async function main() {
   faces = sortFacesGridOrder(faces, height);
 
   if (faces.length !== 9) {
-    console.error(
-      `[avatars] Expected 9 faces, got ${faces.length}. Check input image.`,
-    );
+    console.error(`[avatars] Expected 9 faces, got ${faces.length}. Check input image.`);
     process.exit(1);
   }
 
@@ -339,17 +289,13 @@ async function main() {
     const outputPath = path.join(HEADSHOTS_DIR, `${agentName}.png`);
 
     cropAndSave(canvas, face, outputPath, PADDING_MULTIPLIER);
-    console.log(
-      `[avatars] ${agentName}: face at (${face.x},${face.y}) ${face.width}x${face.height} → ${outputPath}`,
-    );
+    console.log(`[avatars] ${agentName}: face at (${face.x},${face.y}) ${face.width}x${face.height} → ${outputPath}`);
   }
 
-  console.log(
-    `[avatars] Done. ${AGENTS_ORDER.length} headshots saved to ${HEADSHOTS_DIR}`,
-  );
+  console.log(`[avatars] Done. ${AGENTS_ORDER.length} headshots saved to ${HEADSHOTS_DIR}`);
 }
 
 main().catch((err) => {
-  console.error("[avatars] Error:", err.message);
+  console.error('[avatars] Error:', err.message);
   process.exit(1);
 });

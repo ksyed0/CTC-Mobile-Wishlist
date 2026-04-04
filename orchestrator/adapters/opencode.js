@@ -20,8 +20,8 @@
  */
 
 module.exports = {
-  name: "OpenCode",
-  cli: "opencode",
+  name: 'OpenCode',
+  cli: 'opencode',
 
   /**
    * How to spawn a single agent from the terminal.
@@ -42,7 +42,7 @@ module.exports = {
       `Note: OpenCode runs as independent sessions.`,
       `Set model via: OPENCODE_MODEL=qwen opencode --message "..."`,
       `Supported models: gemma, qwen, minimax, kimi, or any OpenAI-compatible endpoint.`,
-    ].join("\n");
+    ].join('\n');
   },
 
   /**
@@ -55,11 +55,11 @@ module.exports = {
         [
           `  Terminal ${i + 1} (${a.name}):`,
           `    opencode --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
-        ].join("\n"),
+        ].join('\n'),
       ),
       ``,
       `Set OPENCODE_MODEL env var to choose backend (gemma, qwen, minimax, kimi).`,
-    ].join("\n");
+    ].join('\n');
   },
 
   /**
@@ -71,17 +71,17 @@ module.exports = {
         (a, i) =>
           `# Terminal ${i + 1}: ${a.name}\nopencode --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
       )
-      .join("\n\n");
+      .join('\n\n');
   },
 
   /**
    * Platform-specific notes.
    */
   notes: [
-    "OpenCode supports multiple LLM backends via --model or OPENCODE_MODEL env var.",
-    "Supported models: gemma (Google), qwen (Alibaba), minimax (MiniMax), kimi (Moonshot).",
-    "For local models: use Ollama backend with OPENCODE_API_BASE=http://localhost:11434.",
-    "For Qwen: set DASHSCOPE_API_KEY. For Kimi: set MOONSHOT_API_KEY. For MiniMax: set MINIMAX_API_KEY.",
-    "OpenCode auto-commits changes to git — configure with --no-auto-commit if needed.",
+    'OpenCode supports multiple LLM backends via --model or OPENCODE_MODEL env var.',
+    'Supported models: gemma (Google), qwen (Alibaba), minimax (MiniMax), kimi (Moonshot).',
+    'For local models: use Ollama backend with OPENCODE_API_BASE=http://localhost:11434.',
+    'For Qwen: set DASHSCOPE_API_KEY. For Kimi: set MOONSHOT_API_KEY. For MiniMax: set MINIMAX_API_KEY.',
+    'OpenCode auto-commits changes to git — configure with --no-auto-commit if needed.',
   ],
 };

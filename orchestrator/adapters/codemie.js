@@ -13,8 +13,8 @@
  */
 
 module.exports = {
-  name: "CodeMie (EPAM)",
-  cli: "codemie",
+  name: 'CodeMie (EPAM)',
+  cli: 'codemie',
 
   /**
    * How to spawn a single agent from the terminal.
@@ -34,7 +34,7 @@ module.exports = {
       ``,
       `Note: CodeMie runs as independent sessions via EPAM DIAL gateway.`,
       `Model routing is handled by the DIAL configuration.`,
-    ].join("\n");
+    ].join('\n');
   },
 
   /**
@@ -47,11 +47,11 @@ module.exports = {
         [
           `  Terminal ${i + 1} (${a.name}):`,
           `    codemie chat --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
-        ].join("\n"),
+        ].join('\n'),
       ),
       ``,
       `All sessions route through EPAM DIAL for model selection and cost tracking.`,
-    ].join("\n");
+    ].join('\n');
   },
 
   /**
@@ -63,7 +63,7 @@ module.exports = {
         (a, i) =>
           `# Terminal ${i + 1}: ${a.name}\ncodemie chat --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
       )
-      .join("\n\n");
+      .join('\n\n');
   },
 
   /**
@@ -71,9 +71,9 @@ module.exports = {
    */
   notes: [
     "CodeMie is EPAM's AI coding assistant powered by EPAM DIAL.",
-    "Supports multiple LLM backends (Claude, GPT, Gemini) via DIAL gateway routing.",
-    "Cost tracking and usage analytics built in via DIAL.",
-    "IDE extensions available for VS Code and JetBrains.",
-    "Configure model backend via EPAM DIAL admin console or DIAL_MODEL env var.",
+    'Supports multiple LLM backends (Claude, GPT, Gemini) via DIAL gateway routing.',
+    'Cost tracking and usage analytics built in via DIAL.',
+    'IDE extensions available for VS Code and JetBrains.',
+    'Configure model backend via EPAM DIAL admin console or DIAL_MODEL env var.',
   ],
 };

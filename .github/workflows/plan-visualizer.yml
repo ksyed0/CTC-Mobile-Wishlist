@@ -5,12 +5,12 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - "docs/RELEASE_PLAN.md"
-      - "docs/TEST_CASES.md"
-      - "docs/BUGS.md"
-      - "docs/AI_COST_LOG.md"
-      - "progress.md"
-      - ".github/workflows/plan-visualizer.yml"
+      - 'docs/RELEASE_PLAN.md'
+      - 'docs/TEST_CASES.md'
+      - 'docs/BUGS.md'
+      - 'docs/AI_COST_LOG.md'
+      - 'progress.md'
+      - '.github/workflows/plan-visualizer.yml'
 
 permissions:
   contents: write
@@ -27,7 +27,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Install dependencies
         run: npm ci

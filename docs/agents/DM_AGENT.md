@@ -179,9 +179,13 @@ Phase 3 example — launch Forge and Pixel simultaneously:
 1. If critical bugs exist, spawn Forge or Pixel to fix them
 2. Final merge to develop branch
 3. Update all documentation: RELEASE_PLAN.md, progress.md, AI_COST_LOG.md
-4. Start Expo dev server: npx expo start
-5. Verify app loads in Expo Go on demo device (scan QR code)
-6. Prepare demo talking points
+4. After pushing to remote, verify CI checks pass:
+   - Check the PR's CI status (lint, test, build, orchestrator)
+   - If any check fails, read the error and spawn the appropriate agent to fix it
+   - Do not merge until all checks are green
+5. Start Expo dev server: npx expo start
+6. Verify app loads in Expo Go on demo device (scan QR code)
+7. Prepare demo talking points
 ```
 
 ## Phase Exit Criteria
@@ -248,20 +252,19 @@ npm run dashboard:watch
 ```javascript
 // Read, modify, write docs/sdlc-status.json:
 status.currentPhase = 2;
-status.phases[1].status = "complete";
-status.phases[1].completedAt = "10:30";
-status.phases[2].status = "in-progress";
-status.phases[2].startedAt = "10:30";
-status.agents.Keystone.status = "complete";
+status.phases[1].status = 'complete';
+status.phases[1].completedAt = '10:30';
+status.phases[2].status = 'in-progress';
+status.phases[2].startedAt = '10:30';
+status.agents.Keystone.status = 'complete';
 status.agents.Keystone.tasksCompleted = 3;
-status.agents.Forge.status = "active";
-status.agents.Forge.currentTask = "Implementing ProductService";
+status.agents.Forge.status = 'active';
+status.agents.Forge.currentTask = 'Implementing ProductService';
 status.metrics.storiesCompleted = 2;
 status.log.push({
-  time: "10:30",
-  agent: "Conductor",
-  message:
-    "Phase 2 complete. Keystone scaffold approved by Lens. Starting Phase 3.",
+  time: '10:30',
+  agent: 'Conductor',
+  message: 'Phase 2 complete. Keystone scaffold approved by Lens. Starting Phase 3.',
 });
 ```
 

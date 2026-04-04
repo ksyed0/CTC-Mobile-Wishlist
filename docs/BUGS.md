@@ -257,3 +257,99 @@
 - **Found in:** `docs/agents/DM_AGENT.md`, `README.md`
 - **Description:** Agent spawning instructions, CLI invocations, and parallel execution patterns are hardcoded to Claude Code. Cannot run the same orchestration on Codex, Gemini, or open-source models without rewriting DM_AGENT.md and README.md. The agent instruction files themselves are platform-agnostic markdown, but the invocation and spawning mechanism is not.
 - **Fix:** Create `orchestrator/` adapter layer with platform-specific spawn implementations. Abstract DM_AGENT.md spawning to use platform-agnostic patterns. Update README.md with multi-platform quick-start instructions.
+
+### BUG-0032: No CI checks on pull requests
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `.github/workflows/`
+- **Description:** Only 1 GitHub Actions workflow exists (`plan-visualizer.yml`) which auto-generates dashboards. No CI checks run on pull requests — PRs can be merged with broken code, failing tests, or lint errors. Conductor has no awareness of CI status after pushing code.
+- **Fix:** Add `.github/workflows/ci.yml` with 4 jobs (lint, test+coverage, build, orchestrator validation) on all PRs to main/develop. Add CI verification step to Conductor Phase 6. Expand ESLint targets to include orchestrator/ files.
+
+### BUG-0033: ESLint not covering orchestrator/ or tests/ files
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `eslint.config.js`
+- **Description:** ESLint only targeted `tools/**/*.js`. The `orchestrator/` adapter code and `tests/` unit tests were never linted. Test files failed lint with hundreds of `no-undef` errors for Jest globals (`describe`, `it`, `expect`). Orchestrator files had unused imports.
+- **Fix:** Expand ESLint config to cover `orchestrator/**/*.js` and `tests/**/*.js`. Add Jest globals to test config block. Add Node.js timer globals (`setTimeout`, `clearTimeout`).
+
+### BUG-0034: Unused imports in orchestrator/spawn.js
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `orchestrator/spawn.js` lines 19-20
+- **Description:** `path` and `fs` modules were imported but never used, causing ESLint `no-unused-vars` warnings.
+- **Fix:** Remove unused `path` and `fs` require statements.
+
+### BUG-0035: Useless assignment in generate-dashboard.js
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `tools/generate-dashboard.js` line 454
+- **Description:** `let spotlight = ''` was immediately overwritten in both branches of the following `if/else`, triggering ESLint `no-useless-assignment` error.
+- **Fix:** Change to `let spotlight;` (uninitialized declaration).
+
+### BUG-0036: Error cause not preserved in generate-plan.js
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `tools/generate-plan.js` line 159
+- **Description:** When rethrowing a caught error for failed `package.json` read, the original error cause was not attached. ESLint `preserve-caught-error` rule flagged this as losing the error chain.
+- **Fix:** Add `{ cause: err }` to the rethrown `new Error(msg, { cause: err })`.
+
+### BUG-0037: No code formatting standard enforced
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** Project-wide
+- **Description:** No code formatter configured. Inconsistent formatting across JS files, markdown, and config files. No CI check to enforce formatting consistency.
+- **Fix:** Added Prettier with `.prettierrc` config (semi, singleQuote, trailingComma all, printWidth 120), `.prettierignore`, `format` and `format:check` npm scripts, and CI job to enforce formatting on PRs.
+
+### BUG-0038: Dashboard does not render BLOCKED phase status
+
+- **Severity:** High
+- **Status:** Fixed
+- **Found in:** `tools/generate-dashboard.js` lines 151, 375
+- **Description:** Phase pipeline only renders `pending`, `in-progress`, and `complete` states. No CSS class, icon, or visual treatment for `blocked` status. A blocked phase looks identical to pending, so human operators miss escalation events.
+- **Fix:** Added `.phase-block.blocked` CSS (red background, red pulsing animation), ⛔ icon mapping, and light/dark theme support.
+
+### BUG-0039: Dashboard does not render BLOCKED agent status
+
+- **Severity:** High
+- **Status:** Fixed
+- **Found in:** `tools/generate-dashboard.js` lines 492-507
+- **Description:** Agent card status color logic only handles `active` and `complete`. Blocked agents render with gray status (#888), indistinguishable from idle. No border highlight or animation for blocked agents.
+- **Fix:** Added blocked handling to statusBg/statusColor logic, `.agent-card.blocked` CSS class with red border and pulse animation, and `cardClass` variable for dynamic class assignment.
+
+### BUG-0040: No alert banner when orchestration is BLOCKED
+
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `tools/generate-dashboard.js`
+- **Description:** When Conductor sets a phase/agent to `blocked` in sdlc-status.json, the dashboard shows no prominent notification. Humans must scroll to the phase pipeline to notice the blocked state — easy to miss.
+- **Fix:** Added top-of-page red alert banner that appears when any phase or agent is blocked. Includes dynamic summary of which phases/agents are blocked, a dismiss button, and pulsing animation.
+
+### BUG-0041: No audio alert on BLOCK events
+
+- **Severity:** High
+- **Status:** Fixed
+- **Found in:** `tools/generate-dashboard.js`
+- **Description:** When orchestration transitions to BLOCKED state, there is no audible notification. The dashboard auto-refreshes every 5 seconds but the human may not be watching the screen.
+- **Fix:** Added Web Audio API three-tone ascending alert (440Hz, 554Hz, 659Hz square wave) that plays on BLOCK state transitions. Includes toggle switch in header to enable/disable, persisted to localStorage.
+
+### BUG-0042: No browser notification on BLOCK events
+
+- **Severity:** High
+- **Status:** Fixed
+- **Found in:** `tools/generate-dashboard.js`
+- **Description:** No browser push notification when orchestration becomes BLOCKED. If the user has the dashboard in a background tab, they receive no notification that human input is required.
+- **Fix:** Added Notification API integration that sends a persistent browser notification on BLOCK transitions. Requests permission on toggle, persists preference to localStorage, uses `requireInteraction: true` so notification stays until acknowledged.
+
+### BUG-0043: Prettier reformats test fixture breaking parse-bugs tests
+
+- **Severity:** Medium
+- **Status:** Fixed
+- **Found in:** `tests/fixtures/BUGS.md`
+- **Description:** Prettier markdown formatting indented metadata fields (Status, Fix Branch, Estimated Cost USD) under a numbered list item. The `parseBugs` regex uses `^` anchors requiring column 0, causing 4 test failures in CI.
+- **Fix:** Restructured fixture to keep numbered list items and metadata fields at separate paragraph levels so Prettier does not nest them.

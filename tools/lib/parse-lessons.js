@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function parseLessons(markdown) {
   const results = [];
@@ -12,18 +12,16 @@ function parseLessons(markdown) {
     nextRe.lastIndex = startIdx + 1;
     const next = nextRe.exec(markdown);
     const block = markdown.slice(startIdx, next ? next.index : undefined);
-    const ruleM = block.match(
-      /\*\*Rule:\*\*\s*(.+?)(?=\n\*|\n\*\*Date|\n---|\n## |$)/s,
-    );
+    const ruleM = block.match(/\*\*Rule:\*\*\s*(.+?)(?=\n\*|\n\*\*Date|\n---|\n## |$)/s);
     const ctxMatches = [...block.matchAll(/\n\*([^*]+)\*/g)];
-    const context = ctxMatches.map((m) => m[1].trim()).join(" ");
+    const context = ctxMatches.map((m) => m[1].trim()).join(' ');
     const dateM = block.match(/\*\*Date:\*\*\s*(\S+)/);
     results.push({
       id,
       title,
-      rule: ruleM ? ruleM[1].trim() : "",
+      rule: ruleM ? ruleM[1].trim() : '',
       context,
-      date: dateM ? dateM[1].trim() : "",
+      date: dateM ? dateM[1].trim() : '',
     });
   }
   return results;

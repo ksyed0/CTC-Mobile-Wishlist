@@ -60,11 +60,7 @@ interface WishlistService {
   shareWishlist(wishlistId: string, contacts: SharedContact[]): Promise<void>;
 
   // Claim an item (as recipient)
-  claimItem(
-    wishlistId: string,
-    productId: string,
-    claimerId: string,
-  ): Promise<void>;
+  claimItem(wishlistId: string, productId: string, claimerId: string): Promise<void>;
 
   // Unclaim an item
   unclaimItem(wishlistId: string, productId: string): Promise<void>;

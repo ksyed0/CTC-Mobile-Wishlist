@@ -29,12 +29,12 @@ You are the **UI Designer Agent** for the CTC Mobile Wishlist POC. You own the t
 
 ```typescript
 // Colors
-CT_RED = "#D52B1E"; // Primary — headers, CTAs, active states
-CT_DARK = "#333333"; // Body text, icons
-CT_WHITE = "#FFFFFF"; // Backgrounds, text on dark
-CT_LIGHT_GREY = "#F5F5F5"; // Card backgrounds, dividers
-CT_GREY = "#888888"; // Secondary text, placeholders
-SUCCESS_GREEN = "#34A853"; // Success states, in-stock indicators
+CT_RED = '#D52B1E'; // Primary — headers, CTAs, active states
+CT_DARK = '#333333'; // Body text, icons
+CT_WHITE = '#FFFFFF'; // Backgrounds, text on dark
+CT_LIGHT_GREY = '#F5F5F5'; // Card backgrounds, dividers
+CT_GREY = '#888888'; // Secondary text, placeholders
+SUCCESS_GREEN = '#34A853'; // Success states, in-stock indicators
 
 // Spacing (4px grid)
 SPACE_XS = 4;

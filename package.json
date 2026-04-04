@@ -13,6 +13,8 @@
     "dashboard:watch": "node tools/generate-dashboard.js --watch",
     "avatars": "node tools/process-avatars.js",
     "build": "npm run avatars && npm run plan:generate && npm run dashboard",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "start": "npx expo start",
     "android": "npx expo start --android",
     "ios": "npx expo start --ios"
@@ -22,6 +24,7 @@
     "canvas": "^3.2.3",
     "eslint": "10.0.3",
     "jest": "^30.3.0",
+    "prettier": "^3.8.1",
     "tracking": "^1.1.3"
   }
 }

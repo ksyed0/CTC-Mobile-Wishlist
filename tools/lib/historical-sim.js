@@ -1,23 +1,23 @@
-"use strict";
+'use strict';
 
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 const SNAPSHOT_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}Z\.json$/;
 
 function getSnapshotFilename(date) {
   const d = date instanceof Date ? date : new Date(date);
   const y = d.getUTCFullYear();
-  const mo = String(d.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(d.getUTCDate()).padStart(2, "0");
-  const h = String(d.getUTCHours()).padStart(2, "0");
-  const mi = String(d.getUTCMinutes()).padStart(2, "0");
-  const s = String(d.getUTCSeconds()).padStart(2, "0");
+  const mo = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
+  const h = String(d.getUTCHours()).padStart(2, '0');
+  const mi = String(d.getUTCMinutes()).padStart(2, '0');
+  const s = String(d.getUTCSeconds()).padStart(2, '0');
   return `${y}-${mo}-${day}T${h}-${mi}-${s}Z.json`;
 }
 
 function calculateAvgTokensPerEstimate(data) {
-  const doneStories = (data.stories || []).filter((s) => s.status === "Done");
+  const doneStories = (data.stories || []).filter((s) => s.status === 'Done');
   const tshirtPoints = { XS: 0.5, S: 1, M: 3, L: 5, XL: 8 };
 
   const byEstimate = {};
@@ -32,33 +32,26 @@ function calculateAvgTokensPerEstimate(data) {
   });
 
   Object.entries(data.costs || {}).forEach(([storyId, cost]) => {
-    if (storyId.startsWith("_")) return;
+    if (storyId.startsWith('_')) return;
     const story = doneStories.find((s) => s.id === storyId);
     if (!story || !story.estimate) return;
     const est = story.estimate.toUpperCase();
     if (!byEstimate[est]) return;
-    byEstimate[est].totalTokens +=
-      (cost.inputTokens || 0) + (cost.outputTokens || 0);
+    byEstimate[est].totalTokens += (cost.inputTokens || 0) + (cost.outputTokens || 0);
   });
 
   const result = {};
   Object.keys(byEstimate).forEach((est) => {
     const data = byEstimate[est];
-    result[est] =
-      data.count > 0 ? Math.round(data.totalTokens / data.count) : 0;
+    result[est] = data.count > 0 ? Math.round(data.totalTokens / data.count) : 0;
   });
 
   return result;
 }
 
-function estimateStoryCost(
-  estimate,
-  avgTokens,
-  inputRate = 3,
-  outputRate = 15,
-) {
-  const est = estimate ? estimate.toUpperCase() : "M";
-  const tokens = avgTokens[est] || avgTokens["M"] || 50000;
+function estimateStoryCost(estimate, avgTokens, inputRate = 3, outputRate = 15) {
+  const est = estimate ? estimate.toUpperCase() : 'M';
+  const tokens = avgTokens[est] || avgTokens['M'] || 50000;
   const inputCost = (tokens * inputRate) / 1_000_000;
   const outputCost = (tokens * outputRate) / 1_000_000;
   return inputCost + outputCost;
@@ -68,47 +61,36 @@ function backfillHistory(options = {}) {
   const root = options.root || process.cwd();
   const days = options.days || 30;
   const estimatePlanned = options.estimatePlanned !== false;
-  const historyDir = path.join(root, ".history");
+  const historyDir = path.join(root, '.history');
 
   if (!fs.existsSync(historyDir)) {
     fs.mkdirSync(historyDir, { recursive: true });
   }
 
-  const existingFiles = fs
-    .readdirSync(historyDir)
-    .filter((f) => SNAPSHOT_REGEX.test(f));
+  const existingFiles = fs.readdirSync(historyDir).filter((f) => SNAPSHOT_REGEX.test(f));
   if (existingFiles.length >= 2) {
-    console.log("[historical-sim] Found existing snapshots, skipping backfill");
-    return { skipped: true, reason: "existing_snapshots" };
+    console.log('[historical-sim] Found existing snapshots, skipping backfill');
+    return { skipped: true, reason: 'existing_snapshots' };
   }
 
-  const currentDataPath = path.join(root, "docs", "plan-status.json");
+  const currentDataPath = path.join(root, 'docs', 'plan-status.json');
   if (!fs.existsSync(currentDataPath)) {
-    console.log(
-      "[historical-sim] No plan-status.json found, skipping backfill",
-    );
-    return { skipped: true, reason: "no_data" };
+    console.log('[historical-sim] No plan-status.json found, skipping backfill');
+    return { skipped: true, reason: 'no_data' };
   }
 
-  const currentData = JSON.parse(fs.readFileSync(currentDataPath, "utf8"));
+  const currentData = JSON.parse(fs.readFileSync(currentDataPath, 'utf8'));
 
   const avgTokens = calculateAvgTokensPerEstimate(currentData);
 
-  const totalSpent =
-    currentData.costs && currentData.costs._totals
-      ? currentData.costs._totals.costUsd || 0
-      : 0;
+  const totalSpent = currentData.costs && currentData.costs._totals ? currentData.costs._totals.costUsd || 0 : 0;
 
   const today = new Date();
   const startDate = new Date(today);
   startDate.setDate(startDate.getDate() - days);
 
-  const doneStories = (currentData.stories || []).filter(
-    (s) => s.status === "Done",
-  );
-  const plannedStories = (currentData.stories || []).filter(
-    (s) => s.status === "Planned" || s.status === "To Do",
-  );
+  const doneStories = (currentData.stories || []).filter((s) => s.status === 'Done');
+  const plannedStories = (currentData.stories || []).filter((s) => s.status === 'Planned' || s.status === 'To Do');
   const currentCoverage = currentData.coverage?.overall || 0;
   const allBugs = currentData.bugs || [];
 
@@ -129,17 +111,12 @@ function backfillHistory(options = {}) {
       const storyDoneRatio = (idx + 1) / doneStories.length;
       const storyProgress = Math.min(1, progressRatio / storyDoneRatio);
       if (idx < simulatedDoneCount) {
-        const avgCostPerStory =
-          doneStories.length > 0 ? simulatedSpent / simulatedDoneCount : 0;
+        const avgCostPerStory = doneStories.length > 0 ? simulatedSpent / simulatedDoneCount : 0;
         simulatedCosts[story.id] = {
           projectedUsd: currentData.costs[story.id]?.projectedUsd || 0,
           costUsd: avgCostPerStory || 0,
-          inputTokens: Math.round(
-            (avgTokens[story.estimate?.toUpperCase()] || 50000) * storyProgress,
-          ),
-          outputTokens: Math.round(
-            (avgTokens[story.estimate?.toUpperCase()] || 15000) * storyProgress,
-          ),
+          inputTokens: Math.round((avgTokens[story.estimate?.toUpperCase()] || 50000) * storyProgress),
+          outputTokens: Math.round((avgTokens[story.estimate?.toUpperCase()] || 15000) * storyProgress),
         };
       } else {
         simulatedCosts[story.id] = {
@@ -175,14 +152,8 @@ function backfillHistory(options = {}) {
 
     simulatedCosts._totals = {
       costUsd: simulatedSpent,
-      inputTokens: Object.values(simulatedCosts).reduce(
-        (sum, c) => sum + (c.inputTokens || 0),
-        0,
-      ),
-      outputTokens: Object.values(simulatedCosts).reduce(
-        (sum, c) => sum + (c.outputTokens || 0),
-        0,
-      ),
+      inputTokens: Object.values(simulatedCosts).reduce((sum, c) => sum + (c.inputTokens || 0), 0),
+      outputTokens: Object.values(simulatedCosts).reduce((sum, c) => sum + (c.outputTokens || 0), 0),
     };
 
     const simulatedStories = (currentData.stories || []).map((story) => {
@@ -194,13 +165,11 @@ function backfillHistory(options = {}) {
       if (isDone && doneIdx >= 0 && doneIdx < simulatedDoneCount) {
         return { ...story };
       } else if (isDone) {
-        return { ...story, status: "Planned" };
+        return { ...story, status: 'Planned' };
       } else if (isPlanned && plannedIdx >= 0) {
-        const inProgressThreshold =
-          doneStories.length +
-          Math.floor(plannedStories.length * 0.2 * progressRatio);
+        const inProgressThreshold = doneStories.length + Math.floor(plannedStories.length * 0.2 * progressRatio);
         if (doneStories.length + plannedIdx < inProgressThreshold) {
-          return { ...story, status: "In Progress" };
+          return { ...story, status: 'In Progress' };
         }
         return { ...story };
       }
@@ -210,10 +179,10 @@ function backfillHistory(options = {}) {
     const simulatedBugs = allBugs.map((bug, idx) => {
       const bugFixedRatio = idx / allBugs.length;
       const bugProgress = (bugFixedRatio + 0.2) * progressRatio;
-      if (bug.status === "Fixed" && bugProgress > 0.8) {
+      if (bug.status === 'Fixed' && bugProgress > 0.8) {
         return { ...bug };
-      } else if (bug.status === "Fixed") {
-        return { ...bug, status: "Open" };
+      } else if (bug.status === 'Fixed') {
+        return { ...bug, status: 'Open' };
       }
       return { ...bug };
     });
@@ -226,11 +195,7 @@ function backfillHistory(options = {}) {
         stories: simulatedStories,
         bugs: simulatedBugs,
         costs: simulatedCosts,
-        coverage: {
-          ...currentData.coverage,
-          overall: simulatedCoverage,
-          available: true,
-        },
+        coverage: { ...currentData.coverage, overall: simulatedCoverage, available: true },
         lessons: currentData.lessons || [],
         testCases: currentData.testCases || [],
       },
@@ -239,13 +204,11 @@ function backfillHistory(options = {}) {
     const filename = getSnapshotFilename(date);
     const filepath = path.join(historyDir, filename);
 
-    fs.writeFileSync(filepath, JSON.stringify(snapshot, null, 2), "utf8");
+    fs.writeFileSync(filepath, JSON.stringify(snapshot, null, 2), 'utf8');
     generated.push({ filename, filepath, date: date.toISOString() });
   }
 
-  console.log(
-    `[historical-sim] Generated ${generated.length} historical snapshots`,
-  );
+  console.log(`[historical-sim] Generated ${generated.length} historical snapshots`);
   return { generated, skipped: false };
 }
 
