@@ -60,7 +60,8 @@
     "subtitle": "Agentic AI SDLC",
     "footer": "Claude Code Agentic AI SDLC | Canadian Tire Corporation",
     "repoUrl": "https://github.com/ksyed0/ctc-mobile-wishlist",
-    "primaryColor": "#D52B1E"
+    "primaryColor": "#D52B1E",
+    "platform": "Claude Code"
   },
   "orchestrator": {
     "dmAgent": "Conductor",

@@ -44,6 +44,8 @@ function getDashboardMeta() {
     footer: dashCfg.footer || `Agentic AI SDLC | ${fallbackName}`,
     repoUrl: dashCfg.repoUrl || '',
     primaryColor: dashCfg.primaryColor || '#D52B1E',
+    platform: dashCfg.platform || 'Agentic AI',
+    agentCount: Object.keys(AGENT_CONFIG.agents || {}).length,
   };
 }
 
@@ -269,7 +271,7 @@ function generateHTML(status) {
   .modal p { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; }
   .modal .author { font-size: 15px; font-weight: 600; color: var(--text-primary); margin: 16px 0 8px; }
   .modal .repo-link { display: inline-block; margin-top: 12px; background: var(--brand-primary); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; transition: background 0.2s; }
-  .modal .repo-link:hover { background: #B01E14; text-decoration: none; }
+  .modal .repo-link:hover { filter: brightness(0.85); text-decoration: none; }
   .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; line-height: 1; padding: 4px 8px; border-radius: 6px; transition: background 0.2s; }
   .modal-close:hover { background: var(--bg-card-inner); color: var(--text-primary); }
 
@@ -375,7 +377,7 @@ function generateHTML(status) {
 <div class="header">
   <div>
     <h1>${DASH_META.title} — ${DASH_META.subtitle}</h1>
-    <div class="subtitle">Claude Code | 9 Specialized Agents | Hackathon Live Dashboard</div>
+    <div class="subtitle">${DASH_META.platform} | ${DASH_META.agentCount} Specialized Agents | Live Agentic Pipeline Dashboard</div>
   </div>
   <div class="controls">
     <button class="btn-header" onclick="document.getElementById('about-modal').classList.add('open')">ℹ️ About</button>
