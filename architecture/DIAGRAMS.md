@@ -528,3 +528,81 @@ gitgraph
     checkout main
     merge develop id: "Release v1.0.0" tag: "v1.0.0"
 ```
+
+---
+
+## 12. Concurrency Safety — Parallel Agent File Access
+
+Shows how file-lock, atomic-write, and git-safe protect shared state when Forge and Pixel run simultaneously in Phase 3.
+
+```mermaid
+sequenceDiagram
+    participant Forge as ⚒️ Forge (BE Dev)
+    participant Lock as 🔒 file-lock.js
+    participant State as 📄 sdlc-status.json
+    participant Pixel as 📱 Pixel (FE Dev)
+    participant GitSafe as 🔄 git-safe.js
+    participant Remote as 🌐 Remote (origin)
+
+    Note over Forge, Pixel: Phase 3 — Parallel Execution
+
+    par Forge updates status
+        Forge->>Lock: withLock("sdlc-status.json")
+        Lock->>Lock: mkdir (atomic acquire)
+        Lock-->>Forge: Lock acquired
+        Forge->>State: Read → modify → atomic write
+        Forge->>Lock: Release
+    and Pixel waits for lock
+        Pixel->>Lock: withLock("sdlc-status.json")
+        Lock-->>Pixel: Waiting (lock held by Forge)
+    end
+
+    Lock-->>Pixel: Lock acquired (Forge released)
+    Pixel->>State: Read → modify → atomic write
+    Pixel->>Lock: Release
+
+    Note over Forge, Pixel: Both push to separate branches
+
+    par Forge pushes
+        Forge->>GitSafe: safePush("feature/forge-services")
+        GitSafe->>Remote: git push -u origin feature/forge-services
+        Remote-->>GitSafe: OK
+        GitSafe-->>Forge: {ok: true, attempts: 1}
+    and Pixel pushes (rejected, retries)
+        Pixel->>GitSafe: safePush("feature/pixel-catalog")
+        GitSafe->>Remote: git push -u origin feature/pixel-catalog
+        Remote-->>GitSafe: Rejected (fetch first)
+        GitSafe->>Remote: git pull --no-rebase
+        Remote-->>GitSafe: Merged
+        GitSafe->>Remote: git push (retry)
+        Remote-->>GitSafe: OK
+        GitSafe-->>Pixel: {ok: true, attempts: 2}
+    end
+
+    Note over Forge, Pixel: Conductor checks overlap before merging
+
+    Forge->>GitSafe: checkOverlap("feature/forge-services", "feature/pixel-catalog")
+    GitSafe-->>Forge: {overlapping: false, files: []}
+    Note right of Forge: Safe to merge both branches sequentially
+```
+
+---
+
+## 13. Pre-Commit Hook Flow
+
+Shows how husky + lint-staged intercept `git commit` to auto-format and lint staged files before they reach CI.
+
+```mermaid
+flowchart LR
+    A["git commit"] --> B["Husky pre-commit hook"]
+    B --> C["npx lint-staged"]
+    C --> D{"Staged file type?"}
+    D -->|"*.js, *.json, *.md, *.yml"| E["prettier --write"]
+    D -->|"*.js"| F["eslint --fix"]
+    E --> G{"Changes?"}
+    F --> G
+    G -->|"Files modified"| H["Re-stage modified files"]
+    G -->|"No changes"| I["Proceed"]
+    H --> I
+    I --> J["Commit succeeds ✅"]
+```
