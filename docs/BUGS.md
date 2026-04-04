@@ -680,6 +680,16 @@
 - **Description:** The dashboard metrics panel shows `coveragePercent: 0`, `testsPassed: 0`, `testsFailed: 0` throughout the Build phase even though Forge added 94 tests (all passing) and the service layer has coverage. Conductor is not updating `docs/sdlc-status.json` metrics after each agent completes. The dashboard auto-refresh picks up the JSON but the values are stale.
 - **Fix:** After each agent merge, Conductor should update the relevant metrics in `sdlc-status.json` — specifically `tasksCompleted`, `testsPassed`, and `storiesCompleted` based on RELEASE_PLAN.md status. In Phase 5 Circuit will produce the coverage report to populate `coveragePercent`.
 
+### BUG-0084: Dead if/else in wishlists.tsx sections builder — both branches identical
+
+- **Severity:** Minor
+- **Status:** Open
+- **Found in:** `app/(tabs)/wishlists.tsx` lines 71–75
+- **Story:** US-0010 (Shared Wishlists), US-0011 (Create Wishlist)
+- **Found by:** Lens (code review — feature/pixel-integration)
+- **Description:** The `sections` array builder has an `if/else` where both branches execute the same `sections.push({ title: 'My Wishlists', data: wishlists, isShared: false })`. The condition `wishlists.length > 0 || sharedWishlists.length === 0` was likely intended to guard showing an empty "My Wishlists" section, but the else branch is identical so the guard has no effect. This is dead code — the `else` branch is unreachable in a meaningful way. Functionally harmless because "My Wishlists" shows correctly in both states, but the code signals unfinished intent and adds confusion for any future developer.
+- **Fix:** Remove the `if/else` entirely and replace with a single unconditional `sections.push({ title: 'My Wishlists', data: wishlists, isShared: false })`.
+
 ### BUG-0083: Activity log timestamps use UTC offset instead of local time (EDT)
 
 - **Severity:** Minor
