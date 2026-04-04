@@ -51,19 +51,19 @@ interface WishlistService {
   deleteWishlist(id: string): Promise<void>;
 
   // Add a product to a wishlist
-  addItem(wishlistId: string, productId: string): Promise<WishlistItem>;
+  addItem(wishlistId: string, productId: string): Promise<Wishlist | null>;
 
   // Remove a product from a wishlist
-  removeItem(wishlistId: string, productId: string): Promise<void>;
+  removeItem(wishlistId: string, productId: string): Promise<Wishlist | null>;
 
   // Share wishlist with contacts
-  shareWishlist(wishlistId: string, contacts: SharedContact[]): Promise<void>;
+  shareWishlist(wishlistId: string, contacts: SharedContact[]): Promise<Wishlist | null>;
 
   // Claim an item (as recipient)
-  claimItem(wishlistId: string, productId: string, claimerId: string): Promise<void>;
+  claimItem(wishlistId: string, productId: string, claimerId: string): Promise<Wishlist | null>;
 
   // Unclaim an item
-  unclaimItem(wishlistId: string, productId: string): Promise<void>;
+  unclaimItem(wishlistId: string, productId: string): Promise<Wishlist | null>;
 }
 ```
 
@@ -82,7 +82,7 @@ interface UserService {
   getMockUsers(): Promise<User[]>;
 
   // Set current user (mock login)
-  setCurrentUser(userId: string): Promise<void>;
+  setCurrentUser(userId: string): Promise<User | null>;
 
   // Log out (switch to guest)
   logout(): Promise<void>;
