@@ -28,6 +28,27 @@ function loadAgentConfig() {
 
 const AGENT_CONFIG = loadAgentConfig();
 
+// Dashboard title/subtitle/footer from config, defaulting to repo name from package.json
+function getDashboardMeta() {
+  const dashCfg = AGENT_CONFIG.dashboard || {};
+  let fallbackName = 'SDLC Dashboard';
+  try {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+    if (pkg.name) fallbackName = pkg.name;
+  } catch {
+    /* ignore */
+  }
+  return {
+    title: dashCfg.title || fallbackName,
+    subtitle: dashCfg.subtitle || 'Agentic AI SDLC',
+    footer: dashCfg.footer || `Agentic AI SDLC | ${fallbackName}`,
+    repoUrl: dashCfg.repoUrl || '',
+    primaryColor: dashCfg.primaryColor || '#D52B1E',
+  };
+}
+
+const DASH_META = getDashboardMeta();
+
 function readJSON(filePath) {
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -63,7 +84,7 @@ function generateHTML(status) {
     idle: '#888',
     active: '#34A853',
     complete: '#1565C0',
-    blocked: '#D52B1E',
+    blocked: DASH_META.primaryColor,
     pending: '#888',
     'in-progress': '#F57C00',
   };
@@ -81,10 +102,11 @@ function generateHTML(status) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CTC Mobile Wishlist — SDLC Live Dashboard</title>
+<title>${DASH_META.title} — SDLC Live Dashboard</title>
 <meta http-equiv="refresh" content="5">
 <style>
   :root {
+    --brand-primary: ${DASH_META.primaryColor};
     --bg-primary: #1a1a2e;
     --bg-card: #16213e;
     --bg-card-inner: #1a1a3e;
@@ -130,7 +152,7 @@ function generateHTML(status) {
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; transition: background 0.3s, color 0.3s; }
 
-  .header { background: linear-gradient(135deg, #D52B1E 0%, #8B1A12 100%); padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .header { background: linear-gradient(135deg, var(--brand-primary) 0%, #8B1A12 100%); padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
   .header h1 { font-size: 22px; color: white; font-weight: 700; }
   .header .subtitle { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 2px; }
   .header .controls { display: flex; align-items: center; gap: 16px; }
@@ -159,7 +181,7 @@ function generateHTML(status) {
   .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
 
   .card { background: var(--bg-card); border-radius: 12px; padding: 20px; border: 1px solid var(--bg-card-border); transition: background 0.3s, border-color 0.3s; }
-  .card h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: #D52B1E; text-transform: uppercase; letter-spacing: 1px; }
+  .card h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: var(--brand-primary); text-transform: uppercase; letter-spacing: 1px; }
 
   /* Metrics */
   .metric-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--divider); }
@@ -167,7 +189,7 @@ function generateHTML(status) {
   .metric-label { font-size: 13px; color: var(--text-secondary); }
   .metric-value { font-size: 20px; font-weight: 700; }
   .metric-value.green { color: #34A853; }
-  .metric-value.red { color: #D52B1E; }
+  .metric-value.red { color: var(--brand-primary); }
   .metric-value.blue { color: #1565C0; }
   .metric-value.orange { color: #F57C00; }
   [data-theme="light"] .metric-value.orange { color: #E65100; }
@@ -176,7 +198,7 @@ function generateHTML(status) {
   /* Progress bars */
   .progress-bar { height: 8px; background: var(--bg-progress); border-radius: 4px; overflow: hidden; margin-top: 6px; }
   .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
-  .progress-fill.red { background: linear-gradient(90deg, #D52B1E, #F44336); }
+  .progress-fill.red { background: linear-gradient(90deg, var(--brand-primary), #F44336); }
   .progress-fill.green { background: linear-gradient(90deg, #2E7D32, #4CAF50); }
   .progress-fill.blue { background: linear-gradient(90deg, #1565C0, #42A5F5); }
 
@@ -209,11 +231,11 @@ function generateHTML(status) {
   .story-list { display: flex; flex-direction: column; gap: 10px; }
   .epic-group { }
   .epic-header { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 0 4px 4px; border-bottom: 1px solid var(--divider); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-  .epic-id { color: #D52B1E; font-size: 10px; font-weight: 600; }
+  .epic-id { color: var(--brand-primary); font-size: 10px; font-weight: 600; }
   .epic-stories { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
   .story-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--bg-card-inner); border-radius: 6px; font-size: 12px; transition: all 0.2s; }
   .story-row:hover { filter: brightness(1.1); }
-  .story-id { font-weight: 700; color: #D52B1E; width: 65px; }
+  .story-id { font-weight: 700; color: var(--brand-primary); width: 65px; }
   .story-title { flex: 1; color: var(--story-title); margin: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .story-status { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
   .story-status.Planned { background: var(--status-planned-bg); color: var(--status-planned-color); }
@@ -231,8 +253,8 @@ function generateHTML(status) {
 
   /* Footer */
   .footer { text-align: center; padding: 16px; color: var(--footer-text); font-size: 11px; }
-  .footer span { color: #D52B1E; }
-  .footer a { color: #D52B1E; text-decoration: none; }
+  .footer span { color: var(--brand-primary); }
+  .footer a { color: var(--brand-primary); text-decoration: none; }
   .footer a:hover { text-decoration: underline; }
 
   /* About button */
@@ -243,10 +265,10 @@ function generateHTML(status) {
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--bg-card); border: 1px solid var(--bg-card-border); border-radius: 16px; padding: 32px; max-width: 420px; width: 90%; text-align: center; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-  .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #D52B1E; }
+  .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--brand-primary); }
   .modal p { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; }
   .modal .author { font-size: 15px; font-weight: 600; color: var(--text-primary); margin: 16px 0 8px; }
-  .modal .repo-link { display: inline-block; margin-top: 12px; background: #D52B1E; color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; transition: background 0.2s; }
+  .modal .repo-link { display: inline-block; margin-top: 12px; background: var(--brand-primary); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; transition: background 0.2s; }
   .modal .repo-link:hover { background: #B01E14; text-decoration: none; }
   .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; line-height: 1; padding: 4px 8px; border-radius: 6px; transition: background 0.2s; }
   .modal-close:hover { background: var(--bg-card-inner); color: var(--text-primary); }
@@ -352,7 +374,7 @@ function generateHTML(status) {
 
 <div class="header">
   <div>
-    <h1>CTC Mobile Wishlist — Agentic AI SDLC</h1>
+    <h1>${DASH_META.title} — ${DASH_META.subtitle}</h1>
     <div class="subtitle">Claude Code | 9 Specialized Agents | Hackathon Live Dashboard</div>
   </div>
   <div class="controls">
@@ -569,12 +591,12 @@ ${
     <p>Real-time dashboard for agentic AI software development lifecycle orchestration</p>
     <div class="author">by Kamal Syed</div>
     <p style="font-size:12px; color: var(--text-muted)">Director of Program Management, EPAM Systems</p>
-    <a class="repo-link" href="https://github.com/ksyed0/ctc-mobile-wishlist" target="_blank" rel="noopener">View on GitHub</a>
+    ${DASH_META.repoUrl ? `<a class="repo-link" href="${DASH_META.repoUrl}" target="_blank" rel="noopener">View on GitHub</a>` : ''}
   </div>
 </div>
 
 <div class="footer">
-  Claude Code Agentic AI SDLC | <span>Canadian Tire Corporation</span> | Auto-refreshes every 5 seconds
+  ${DASH_META.footer} | Auto-refreshes every 5 seconds
   <br><a href="plan-status.html">📊 Open Plan Visualizer →</a>
 </div>
 

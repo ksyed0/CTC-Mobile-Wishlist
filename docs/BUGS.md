@@ -409,3 +409,35 @@
 - **Found in:** `orchestrator/spawn.js`, `tools/generate-dashboard.js`, `tools/process-avatars.js`
 - **Description:** Agent names, roles, icons, and colors were hardcoded independently in 3 separate files (spawn.js had the agent registry, generate-dashboard.js had duplicate role/color/icon maps, process-avatars.js had a hardcoded AGENTS_ORDER array). Adding or renaming an agent required changes in 3+ files, making the framework non-portable and error-prone.
 - **Fix:** Created `agents.config.json` as the single source of truth for all agent definitions. Updated spawn.js, generate-dashboard.js, and process-avatars.js to load from config. Added `tools/init-sdlc-status.js` to generate sdlc-status.json from config. Any project can now customize agents by editing one JSON file.
+
+### BUG-0051: DM_AGENT.md says "7 sub-agents" but there are 8
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `docs/agents/DM_AGENT.md` (2 occurrences), `docs/HACKATHON_PLAN.md` (1 occurrence)
+- **Description:** DM_AGENT.md "Your 7 Sub-Agents" heading and table listed only 7 agents, omitting one. HACKATHON_PLAN.md startup prompt also said "7 specialized agents." Conductor would not know to spawn the 8th agent.
+- **Fix:** Updated to "8 sub-agents" in DM_AGENT.md and "8 specialized agents" in HACKATHON_PLAN.md.
+
+### BUG-0052: Agent instruction files contain project-specific content
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** All 9 files in `docs/agents/`
+- **Description:** All agent instruction files contained hardcoded project-specific content: user story IDs (US-0001–US-0013), screen names (CatalogScreen, WishlistsScreen), service names (ProductService, WishlistService), branch names (feature/US-0001-expo-scaffold), design tokens (#D52B1E), mock data specs, and feature names (barcode, wishlist, catalog). This made the agent framework non-portable — using it on a different project required rewriting all 9 files.
+- **Fix:** Refactored all 9 agent files to be project-agnostic role templates. Agent files now define HOW each role operates (patterns, rules, quality standards, output formats). The DM agent builds project-specific context dynamically at spawn time by reading `project.md` and the project's architecture docs.
+
+### BUG-0053: No project entry point for multi-platform agent discovery
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** Project root
+- **Description:** No single file existed for AI agents to discover project-specific context on startup. Each agent had project knowledge baked into its instruction file. Different AI platforms (Claude Code, Gemini, Codex, etc.) auto-read different convention files (CLAUDE.md, Gemini.md, etc.) but none existed.
+- **Fix:** Created `project.md` as the single project entry point referencing all architecture docs, release plan, test cases, and tracking files. Created 7 platform symlinks in repo root (`CLAUDE.md`, `Gemini.md`, `Codex.md`, `EliteA.md`, `CodeMie.md`, `Qwen.md`, `MiniMax.md`) all pointing to `project.md` for auto-discovery.
+
+### BUG-0054: Dashboard title, footer, brand color, and repo URL hardcoded
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `tools/generate-dashboard.js` lines 84, 355, 577, 591; 11 occurrences of `#D52B1E`
+- **Description:** Dashboard HTML had "CTC Mobile Wishlist" title, "Canadian Tire Corporation" footer, GitHub repo URL, and CTC brand color `#D52B1E` hardcoded throughout CSS and HTML. Changing the project required editing 15+ locations in the dashboard generator.
+- **Fix:** Added `dashboard` section to `agents.config.json` with `title`, `subtitle`, `footer`, `repoUrl`, and `primaryColor` fields. Dashboard generator reads these from config, defaulting to the repo name from `package.json`. All `#D52B1E` CSS references replaced with `var(--brand-primary)` CSS variable set from config.

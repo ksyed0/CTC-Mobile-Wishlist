@@ -253,3 +253,34 @@
 - 1 new config file: agents.config.json
 - 1 new tool: init-sdlc-status.js
 - 31 new tests, 246 total passing
+
+## Session 7 — 2026-04-04
+
+### What Was Done
+
+**Project-Agnostic Agent Framework (BUG-0051 – BUG-0053)**
+
+- Refactored all 9 agent instruction files to remove project-specific content (story IDs, screen names, service names, branch names, design tokens, mock data specs)
+- Agent files are now generic role templates defining HOW each role operates (patterns, rules, quality standards)
+- The DM agent builds project-specific context dynamically at spawn time from `project.md` and architecture docs
+- Fixed "7 sub-agents" → "8 sub-agents" in DM_AGENT.md and HACKATHON_PLAN.md
+
+**Project Entry Point + Platform Symlinks (BUG-0053)**
+
+- Created `project.md` as single project entry point referencing all docs (architecture, release plan, test cases, tracking)
+- Created 7 platform symlinks in repo root: `CLAUDE.md`, `Gemini.md`, `Codex.md`, `EliteA.md`, `CodeMie.md`, `Qwen.md`, `MiniMax.md` → all point to `project.md`
+- Each AI platform auto-discovers project context via its convention file
+
+**Config-Driven Dashboard (BUG-0054)**
+
+- Made dashboard title, subtitle, footer, repo URL, and brand accent color configurable via `agents.config.json` `dashboard` section
+- Replaced 11 hardcoded `#D52B1E` CSS references with `var(--brand-primary)` CSS variable
+- Defaults to repo name from `package.json` when config not set
+
+### Stats
+
+- 4 bugs logged (BUG-0051 – BUG-0054), all fixed
+- 9 agent files refactored (686 lines removed, 446 lines added)
+- 1 new file: project.md
+- 7 new symlinks for multi-platform support
+- 246 tests still passing
