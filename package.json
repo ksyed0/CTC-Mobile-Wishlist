@@ -4,13 +4,27 @@
   "description": "CTC Mobile Wishlist",
   "private": true,
   "scripts": {
+    "test": "jest --watchAll=false",
+    "test:coverage": "jest --watchAll=false --coverage",
     "plan:test": "jest --watchAll=false",
     "plan:test:coverage": "jest --watchAll=false --coverage",
-    "plan:generate": "node tools/generate-plan.js"
+    "plan:generate": "node tools/generate-plan.js",
+    "dashboard": "node tools/generate-dashboard.js",
+    "dashboard:watch": "node tools/generate-dashboard.js --watch",
+    "avatars": "node tools/process-avatars.js",
+    "build": "npm run avatars && npm run plan:generate && npm run dashboard",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "start": "npx expo start",
+    "android": "npx expo start --android",
+    "ios": "npx expo start --ios"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "canvas": "^3.2.3",
     "eslint": "10.0.3",
-    "jest": "^30.3.0"
+    "jest": "^30.3.0",
+    "prettier": "^3.8.1",
+    "tracking": "^1.1.3"
   }
 }

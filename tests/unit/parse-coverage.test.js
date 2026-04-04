@@ -6,7 +6,9 @@ const fixture = require('../fixtures/coverage-summary.json');
 
 describe('parseCoverage', () => {
   let result;
-  beforeAll(() => { result = parseCoverage(fixture); });
+  beforeAll(() => {
+    result = parseCoverage(fixture);
+  });
 
   it('returns lines pct', () => expect(result.lines).toBe(84.5));
   it('returns statements pct', () => expect(result.statements).toBe(83.2));
@@ -27,7 +29,9 @@ describe('parseCoverage — null guard', () => {
     expect(parseCoverage({}).available).toBe(false);
   });
   it('returns meetsTarget false when overall < 80', () => {
-    const low = { total: { lines: { pct: 70 }, statements: { pct: 70 }, functions: { pct: 70 }, branches: { pct: 70 } } };
+    const low = {
+      total: { lines: { pct: 70 }, statements: { pct: 70 }, functions: { pct: 70 }, branches: { pct: 70 } },
+    };
     expect(parseCoverage(low).meetsTarget).toBe(false);
   });
 });

@@ -26,6 +26,14 @@ Type: Functional
 Status: [ ] Not Run
 Defect Raised: None
 
+TC-0037: Splash screen displays CTC branding on launch
+Related Story: US-0001
+Related Task: TASK-0001
+Related AC: AC-0004
+Type: Functional
+Status: [ ] Not Run
+Defect Raised: None
+
 TC-0004: Mock products load with all required fields
 Related Story: US-0002
 Related Task: TASK-0004
@@ -38,6 +46,22 @@ TC-0005: Data persists across app restarts
 Related Story: US-0002
 Related Task: TASK-0006
 Related AC: AC-0008
+Type: Functional
+Status: [ ] Not Run
+Defect Raised: None
+
+TC-0038: Mock product images are bundled as local assets
+Related Story: US-0002
+Related Task: TASK-0005
+Related AC: AC-0006
+Type: Functional
+Status: [ ] Not Run
+Defect Raised: None
+
+TC-0039: Mock user profiles available for simulated login
+Related Story: US-0002
+Related Task: TASK-0005
+Related AC: AC-0007
 Type: Functional
 Status: [ ] Not Run
 Defect Raised: None
@@ -96,6 +120,14 @@ TC-0012: Search filters products by name in real time
 Related Story: US-0005
 Related Task: TASK-0009
 Related AC: AC-0016
+Type: Functional
+Status: [ ] Not Run
+Defect Raised: None
+
+TC-0040: Search bar visible at top of catalog screen
+Related Story: US-0005
+Related Task: TASK-0009
+Related AC: AC-0015
 Type: Functional
 Status: [ ] Not Run
 Defect Raised: None
