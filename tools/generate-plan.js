@@ -51,7 +51,7 @@ function loadConfig() {
   try {
     const raw = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
     const KNOWN_KEYS = ['project', 'docs', 'coverage', 'progress', 'costs', 'budget'];
-    Object.keys(raw).forEach(k => {
+    Object.keys(raw).forEach((k) => {
       if (!KNOWN_KEYS.includes(k)) console.warn(`[generate-plan] Unknown config key: "${k}" — ignored`);
     });
     return {
@@ -83,15 +83,27 @@ function readFile(relPath) {
 function readJson(relPath) {
   const full = path.join(ROOT, relPath);
   if (!fs.existsSync(full)) return null;
-  try { return JSON.parse(fs.readFileSync(full, 'utf8')); } catch { return null; }
+  try {
+    return JSON.parse(fs.readFileSync(full, 'utf8'));
+  } catch {
+    return null;
+  }
 }
 
 function getCommitSha() {
-  try { return execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim(); } catch { return 'unknown'; }
+  try {
+    return execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
+  } catch {
+    return 'unknown';
+  }
 }
 
 function getBuildNumber() {
-  try { return execSync('git rev-list --count HEAD', { encoding: 'utf8' }).trim(); } catch { return '0'; }
+  try {
+    return execSync('git rev-list --count HEAD', { encoding: 'utf8' }).trim();
+  } catch {
+    return '0';
+  }
 }
 
 function main() {
@@ -115,8 +127,8 @@ function main() {
 
   const aiAttribution = attributeAICosts(stories, costByBranch);
   const avgTokens = calculateAvgTokensPerEstimate({ stories, costs: aiAttribution });
-  const hasRealCosts = Object.values(aiAttribution).some(c => c && c.costUsd > 0);
-  
+  const hasRealCosts = Object.values(aiAttribution).some((c) => c && c.costUsd > 0);
+
   const costs = {};
   for (const story of stories) {
     let projectedUsd;
@@ -127,7 +139,7 @@ function main() {
     } else {
       projectedUsd = computeProjectedCost(story.estimate, HOURS, RATE);
     }
-    
+
     costs[story.id] = {
       projectedUsd: projectedUsd,
       costUsd: aiAttribution[story.id] ? aiAttribution[story.id].costUsd : 0,
@@ -168,8 +180,20 @@ function main() {
     }, []);
 
   const data = {
-    epics, stories, tasks, testCases, bugs, costs, atRisk, coverage,
-    recentActivity, lessons, generatedAt, commitSha, buildNumber, sessionTimeline,
+    epics,
+    stories,
+    tasks,
+    testCases,
+    bugs,
+    costs,
+    atRisk,
+    coverage,
+    recentActivity,
+    lessons,
+    generatedAt,
+    commitSha,
+    buildNumber,
+    sessionTimeline,
     projectName: config.project.name,
     tagline: config.project.tagline,
     version: pkg.version,
@@ -182,7 +206,7 @@ function main() {
 
   console.log('[generate-plan] Loading historical snapshots...');
   let snapshots = loadSnapshots({ root: ROOT });
-  
+
   if (snapshots.length < 2) {
     console.log('[generate-plan] Less than 2 snapshots found, attempting historical backfill...');
     const backfillResult = backfillHistory({ root: ROOT, days: 30 });
@@ -191,7 +215,7 @@ function main() {
       snapshots = loadSnapshots({ root: ROOT });
     }
   }
-  
+
   const trends = extractTrends(snapshots);
 
   console.log('[generate-plan] Computing budget metrics...');
@@ -211,7 +235,14 @@ function main() {
   const htmlPath = path.join(outputDir, 'plan-status.html');
   fs.writeFileSync(htmlPath, html, 'utf8');
   console.log(`[generate-plan] Written ${htmlPath}`);
-  console.log(`[generate-plan] Done. ${epics.length} epics, ${stories.length} stories, ${testCases.length} TCs, ${bugs.length} bugs, ${lessons.length} lessons.`);
+  console.log(
+    `[generate-plan] Done. ${epics.length} epics, ${stories.length} stories, ${testCases.length} TCs, ${bugs.length} bugs, ${lessons.length} lessons.`,
+  );
 }
 
-try { main(); } catch (e) { console.error('[generate-plan] Fatal:', e.message); process.exit(1); }
+try {
+  main();
+} catch (e) {
+  console.error('[generate-plan] Fatal:', e.message);
+  process.exit(1);
+}

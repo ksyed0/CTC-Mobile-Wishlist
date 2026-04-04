@@ -5,6 +5,7 @@
 ## P0 — Critical (Agent execution failures)
 
 ### BUG-0001: AsyncStorage key schema conflict between docs
+
 - **Severity:** Critical
 - **Status:** Fixed
 - **Found in:** `architecture/DATA_FLOW.md` line 70, `docs/agents/BE_DEV_AGENT.md`, `docs/agents/ARCHITECT_AGENT.md`
@@ -12,6 +13,7 @@
 - **Fix:** P0.1 — Standardize to global `wishlists` key, filtered by ownerId at read time.
 
 ### BUG-0002: Palette agent never spawned in orchestration playbook
+
 - **Severity:** Critical
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md` (orchestration playbook, Phase 3)
@@ -19,6 +21,7 @@
 - **Fix:** P0.2 — Insert Palette spawn step before Forge+Pixel parallel step in Phase 3.
 
 ### BUG-0003: No phase exit criteria defined for Conductor
+
 - **Severity:** Critical
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md`
@@ -26,6 +29,7 @@
 - **Fix:** P0.3 — Add Phase Exit Criteria table to DM_AGENT.md.
 
 ### BUG-0004: Vague error handling and escalation rules
+
 - **Severity:** Critical
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md` lines 242-246
@@ -33,6 +37,7 @@
 - **Fix:** P0.4 — Replace with structured Error Handling SOP table.
 
 ### BUG-0005: Lens Phase 5 review scope undefined
+
 - **Severity:** Critical
 - **Status:** Fixed
 - **Found in:** `docs/agents/CODE_REVIEWER_AGENT.md`
@@ -42,6 +47,7 @@
 ## P1 — Major (Prevents confusion)
 
 ### BUG-0006: AC ownership conflict between PO and Tester
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `docs/agents/PO_AGENT.md`, `docs/agents/FUNCTIONAL_TESTER_AGENT.md`
@@ -49,6 +55,7 @@
 - **Fix:** P1.1 — Clarify: Tester marks pass/fail, PO performs final acceptance sign-off.
 
 ### BUG-0007: Free-form context passing between agents
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md` lines 162-170
@@ -56,6 +63,7 @@
 - **Fix:** P1.2 — Add structured context passing template.
 
 ### BUG-0008: 4 acceptance criteria lack test cases
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `docs/TEST_CASES.md`
@@ -63,6 +71,7 @@
 - **Fix:** P1.3 — Add TC-0037 through TC-0040.
 
 ### BUG-0009: No single source of truth for real vs simulated features
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `docs/AGENT_PLAN.md` Section 4
@@ -70,6 +79,7 @@
 - **Fix:** P1.4 — Add feature-level real vs. simulated scope table.
 
 ### BUG-0010: ROLLBACK.md referenced but empty
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `docs/ROLLBACK.md` (does not exist)
@@ -77,6 +87,7 @@
 - **Fix:** P1.5 — Create ROLLBACK.md with POC rollback strategy.
 
 ### BUG-0011: No cross-link between SDLC dashboard and Plan Visualizer
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js`, `docs/dashboard.html`
@@ -84,6 +95,7 @@
 - **Fix:** P1.6 — Add Plan Visualizer link in dashboard footer.
 
 ### BUG-0012: No device compatibility section in design system
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `architecture/DESIGN_SYSTEM.md`
@@ -91,6 +103,7 @@
 - **Fix:** P1.7 — Add Device Compatibility section.
 
 ### BUG-0013: No deployment strategy documented
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `docs/AGENT_PLAN.md`, `docs/agents/DM_AGENT.md`
@@ -98,6 +111,7 @@
 - **Fix:** P1.8 — Add Deployment Strategy section to AGENT_PLAN.md and Phase 6 instruction to DM_AGENT.md.
 
 ### BUG-0014: Dashboard is dark-mode only with low contrast text
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js`
@@ -105,6 +119,7 @@
 - **Fix:** P1.9 — Add CSS variable theming, light/dark toggle with localStorage persistence, fix contrast ratios.
 
 ### BUG-0015: Dashboard references EliteA instead of Claude Code
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js` lines 174, 314; `docs/sdlc-status.json` line 3
@@ -114,6 +129,7 @@
 ## P2 — Minor (Polish)
 
 ### BUG-0016: Unused `spin` CSS keyframe in dashboard
+
 - **Severity:** Minor
 - **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js` line 111
@@ -121,6 +137,7 @@
 - **Fix:** P2.1 — Remove the unused keyframe.
 
 ### BUG-0017: No convenience `build` script in package.json
+
 - **Severity:** Minor
 - **Status:** Fixed
 - **Found in:** `package.json`
@@ -128,6 +145,7 @@
 - **Fix:** P2.2 — Add `"build": "npm run plan:generate && npm run dashboard"`.
 
 ### BUG-0018: No pre-phase file verification in orchestration
+
 - **Severity:** Minor
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md`
@@ -135,6 +153,7 @@
 - **Fix:** P2.3 — Add pre-phase verification note to DM_AGENT.md.
 
 ### BUG-0019: Design tokens duplicated across 3 files
+
 - **Severity:** Minor
 - **Status:** Fixed (partially — DM_AGENT.md hardcoded tokens removed by P0.2; remaining duplication acceptable)
 - **Found in:** `architecture/DESIGN_SYSTEM.md`, `docs/agents/UI_DESIGNER_AGENT.md`, `docs/agents/DM_AGENT.md` line 110
@@ -142,6 +161,7 @@
 - **Fix:** Resolved by P0.2 (Palette spawn removes hardcoded tokens from DM_AGENT.md). Remaining duplication is acceptable.
 
 ### BUG-0020: Story priorities duplicated in PO_AGENT.md and AGENT_PLAN.md
+
 - **Severity:** Minor
 - **Status:** Won't Fix (acceptable duplication for agent isolation)
 - **Found in:** `docs/agents/PO_AGENT.md`, `docs/AGENT_PLAN.md`
@@ -149,6 +169,7 @@
 - **Fix:** No change — acceptable duplication for agent isolation.
 
 ### BUG-0021: Branch naming convention stated 5+ times
+
 - **Severity:** Minor
 - **Status:** Won't Fix (acceptable duplication for agent isolation)
 - **Found in:** Multiple agent files
@@ -156,6 +177,7 @@
 - **Fix:** No change — acceptable duplication for agent isolation.
 
 ### BUG-0022: No hover states on dashboard interactive elements
+
 - **Severity:** Minor
 - **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js`
@@ -163,6 +185,7 @@
 - **Fix:** P1.9 — Add hover brightness filter to agent cards and story rows.
 
 ### BUG-0023: Dashboard has no responsive layout for phones/tablets
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js`
@@ -170,6 +193,7 @@
 - **Fix:** Add responsive CSS media queries for tablet portrait (768-1024px), tablet landscape, phone landscape (up to 767px), phone portrait (up to 480px), and small phone (up to 375px). Pipeline stacks vertically on phones, grids collapse to fewer columns, deliverables/agent tasks hide on small screens.
 
 ### BUG-0024: Dashboard has no About section or attribution
+
 - **Severity:** Minor
 - **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js`
@@ -179,6 +203,7 @@
 ## P0 — Critical (Orchestration Loop Failures)
 
 ### BUG-0025: No retry state tracking for Conductor
+
 - **Severity:** Critical
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md`
@@ -186,6 +211,7 @@
 - **Fix:** Add retry tracking section — Conductor logs retry counts in `progress.md` with structured format per task.
 
 ### BUG-0026: "Escalate to human" workflow undefined
+
 - **Severity:** Critical
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md` line 280
@@ -193,6 +219,7 @@
 - **Fix:** Add concrete escalation workflow: Conductor prints blocking issue summary, writes BLOCKED status to sdlc-status.json, pauses orchestration, and documents resume instructions.
 
 ### BUG-0027: No BLOCK recovery protocol
+
 - **Severity:** Critical
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md`, `docs/agents/CODE_REVIEWER_AGENT.md`
@@ -200,6 +227,7 @@
 - **Fix:** Add BLOCK recovery protocol to DM_AGENT.md and post-BLOCK guidance to CODE_REVIEWER_AGENT.md.
 
 ### BUG-0028: No parallel agent failure coordination rules
+
 - **Severity:** Critical
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md`
@@ -207,6 +235,7 @@
 - **Fix:** Add parallel agent failure coordination rules to DM_AGENT.md.
 
 ### BUG-0029: No hard phase timeout
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md` line 283
@@ -214,6 +243,7 @@
 - **Fix:** Add hard phase timeout (90 min max per phase) with force-cut-scope action at DM_AGENT.md.
 
 ### BUG-0030: No BLOCK vs REQUEST CHANGES threshold criteria for Lens
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `docs/agents/CODE_REVIEWER_AGENT.md` line 100
@@ -221,6 +251,7 @@
 - **Fix:** Add explicit BLOCK threshold criteria to CODE_REVIEWER_AGENT.md — security vulnerabilities, type-safety violations, and test failures = BLOCK; all other issues = REQUEST CHANGES.
 
 ### BUG-0031: Agentic orchestration is coupled to Claude Code platform
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `docs/agents/DM_AGENT.md`, `README.md`
@@ -228,6 +259,7 @@
 - **Fix:** Create `orchestrator/` adapter layer with platform-specific spawn implementations. Abstract DM_AGENT.md spawning to use platform-agnostic patterns. Update README.md with multi-platform quick-start instructions.
 
 ### BUG-0032: No CI checks on pull requests
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `.github/workflows/`
@@ -235,6 +267,7 @@
 - **Fix:** Add `.github/workflows/ci.yml` with 4 jobs (lint, test+coverage, build, orchestrator validation) on all PRs to main/develop. Add CI verification step to Conductor Phase 6. Expand ESLint targets to include orchestrator/ files.
 
 ### BUG-0033: ESLint not covering orchestrator/ or tests/ files
+
 - **Severity:** Major
 - **Status:** Fixed
 - **Found in:** `eslint.config.js`
@@ -242,6 +275,7 @@
 - **Fix:** Expand ESLint config to cover `orchestrator/**/*.js` and `tests/**/*.js`. Add Jest globals to test config block. Add Node.js timer globals (`setTimeout`, `clearTimeout`).
 
 ### BUG-0034: Unused imports in orchestrator/spawn.js
+
 - **Severity:** Minor
 - **Status:** Fixed
 - **Found in:** `orchestrator/spawn.js` lines 19-20
@@ -249,6 +283,7 @@
 - **Fix:** Remove unused `path` and `fs` require statements.
 
 ### BUG-0035: Useless assignment in generate-dashboard.js
+
 - **Severity:** Minor
 - **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js` line 454
@@ -256,8 +291,17 @@
 - **Fix:** Change to `let spotlight;` (uninitialized declaration).
 
 ### BUG-0036: Error cause not preserved in generate-plan.js
+
 - **Severity:** Minor
 - **Status:** Fixed
 - **Found in:** `tools/generate-plan.js` line 159
 - **Description:** When rethrowing a caught error for failed `package.json` read, the original error cause was not attached. ESLint `preserve-caught-error` rule flagged this as losing the error chain.
 - **Fix:** Add `{ cause: err }` to the rethrown `new Error(msg, { cause: err })`.
+
+### BUG-0037: No code formatting standard enforced
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** Project-wide
+- **Description:** No code formatter configured. Inconsistent formatting across JS files, markdown, and config files. No CI check to enforce formatting consistency.
+- **Fix:** Added Prettier with `.prettierrc` config (semi, singleQuote, trailingComma all, printWidth 120), `.prettierignore`, `format` and `format:check` npm scripts, and CI job to enforce formatting on PRs.

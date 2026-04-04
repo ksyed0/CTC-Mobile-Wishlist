@@ -20,7 +20,7 @@ const commonGlobals = {
 const commonRules = {
   'no-unused-vars': 'warn',
   'no-console': 'off',
-  'eqeqeq': 'error',
+  eqeqeq: 'error',
   'no-eval': 'error',
   'no-implied-eval': 'error',
   'no-undef': 'error',

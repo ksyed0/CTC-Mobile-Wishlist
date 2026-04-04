@@ -24,7 +24,12 @@ function readJSON(filePath) {
 }
 
 function generateHTML(status) {
-  const now = new Date().toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const now = new Date().toLocaleTimeString('en-US', {
+    hour12: true,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
   const agents = status.agents;
   const phases = status.phases;
   const metrics = status.metrics;
@@ -40,7 +45,7 @@ function generateHTML(status) {
     Forge: '#C62828',
     Pixel: '#283593',
     Sentinel: '#2E7D32',
-    Circuit: '#4527A0'
+    Circuit: '#4527A0',
   };
 
   const agentIcons = {
@@ -52,7 +57,7 @@ function generateHTML(status) {
     Forge: '⚒️',
     Pixel: '✨',
     Sentinel: '🛡️',
-    Circuit: '⚡'
+    Circuit: '⚡',
   };
 
   const statusColors = {
@@ -61,20 +66,16 @@ function generateHTML(status) {
     complete: '#1565C0',
     blocked: '#D52B1E',
     pending: '#888',
-    'in-progress': '#F57C00'
+    'in-progress': '#F57C00',
   };
 
-  const phasePercent = phases.length > 0
-    ? Math.round((phases.filter(p => p.status === 'complete').length / phases.length) * 100)
-    : 0;
+  const phasePercent =
+    phases.length > 0 ? Math.round((phases.filter((p) => p.status === 'complete').length / phases.length) * 100) : 0;
 
-  const storyPercent = metrics.storiesTotal > 0
-    ? Math.round((metrics.storiesCompleted / metrics.storiesTotal) * 100)
-    : 0;
+  const storyPercent =
+    metrics.storiesTotal > 0 ? Math.round((metrics.storiesCompleted / metrics.storiesTotal) * 100) : 0;
 
-  const testPercent = metrics.testsTotal > 0
-    ? Math.round((metrics.testsPassed / metrics.testsTotal) * 100)
-    : 0;
+  const testPercent = metrics.testsTotal > 0 ? Math.round((metrics.testsPassed / metrics.testsTotal) * 100) : 0;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -369,15 +370,17 @@ function generateHTML(status) {
 
 <!-- Phase Pipeline -->
 <div class="pipeline">
-${phases.map(p => {
-  const icon = p.status === 'complete' ? '✅' : p.status === 'in-progress' ? '🔄' : '⏳';
-  return `  <div class="phase-block ${p.status}">
+${phases
+  .map((p) => {
+    const icon = p.status === 'complete' ? '✅' : p.status === 'in-progress' ? '🔄' : '⏳';
+    return `  <div class="phase-block ${p.status}">
     <div class="phase-status">${icon}</div>
     <div class="phase-name">${p.name}</div>
     <div class="phase-agents">${p.agents.join(' · ')}</div>
     <div class="phase-deliverables">${p.deliverables.join(' · ')}</div>
   </div>`;
-}).join('\n')}
+  })
+  .join('\n')}
 </div>
 
 <!-- Metrics Row -->
@@ -386,7 +389,7 @@ ${phases.map(p => {
     <h2>Phase Progress</h2>
     <div class="metric-row">
       <span class="metric-label">Phases Complete</span>
-      <span class="metric-value blue">${phases.filter(p => p.status === 'complete').length} / ${phases.length}</span>
+      <span class="metric-value blue">${phases.filter((p) => p.status === 'complete').length} / ${phases.length}</span>
     </div>
     <div class="progress-bar"><div class="progress-fill blue" style="width: ${phasePercent}%"></div></div>
     <div class="metric-row" style="margin-top: 12px">
@@ -447,7 +450,17 @@ ${phases.map(p => {
   <div class="card">
     <h2>Agent Status</h2>
 ${(() => {
-  const roles = { Conductor: 'Delivery Manager', Compass: 'Product Owner', Keystone: 'Architect', Lens: 'Code Reviewer', Palette: 'UI Designer', Forge: 'Backend Dev', Pixel: 'Frontend Dev', Sentinel: 'Functional Tester', Circuit: 'Automation Tester' };
+  const roles = {
+    Conductor: 'Delivery Manager',
+    Compass: 'Product Owner',
+    Keystone: 'Architect',
+    Lens: 'Code Reviewer',
+    Palette: 'UI Designer',
+    Forge: 'Backend Dev',
+    Pixel: 'Frontend Dev',
+    Sentinel: 'Functional Tester',
+    Circuit: 'Automation Tester',
+  };
   const imgBase = 'agents/images';
   // Option 2: Spotlight banner for active agent
   const activeAgent = Object.entries(agents).find(([, a]) => a.status === 'active');
@@ -471,16 +484,27 @@ ${(() => {
   return spotlight;
 })()}
     <div class="agent-grid">
-${Object.entries(agents).map(([name, agent]) => {
-  const color = agentColors[name] || '#888';
-  const icon = agentIcons[name] || '🤖';
-  const imgBase = 'agents/images';
-  const statusBg = agent.status === 'active' ? 'rgba(52,168,83,0.2)' : 'rgba(136,136,136,0.15)';
-  const statusColor = agent.status === 'active' ? '#34A853' : agent.status === 'complete' ? '#1565C0' : '#888';
-  const roles = { Conductor: 'Delivery Manager', Compass: 'Product Owner', Keystone: 'Architect', Lens: 'Code Reviewer', Palette: 'UI Designer', Forge: 'Backend Dev', Pixel: 'Frontend Dev', Sentinel: 'Functional Tester', Circuit: 'Automation Tester' };
-  // Option 1: Avatar headshot (extracted from team-grid) with fallback to full image, then emoji
-  const avatarImg = `<img class="agent-avatar" src="${imgBase}/headshots/${name.toLowerCase()}.png" alt="${name}" style="border-color: ${color}" onerror="this.onerror=function(){this.outerHTML='<div class=\\'agent-avatar-fallback\\' style=\\'border-color: ${color}\\'>${icon}</div>'};this.src='${imgBase}/${name.toLowerCase()}.png'">`;
-  return `      <div class="agent-card ${agent.status === 'active' ? 'active' : ''}" style="border-left-color: ${color}">
+${Object.entries(agents)
+  .map(([name, agent]) => {
+    const color = agentColors[name] || '#888';
+    const icon = agentIcons[name] || '🤖';
+    const imgBase = 'agents/images';
+    const statusBg = agent.status === 'active' ? 'rgba(52,168,83,0.2)' : 'rgba(136,136,136,0.15)';
+    const statusColor = agent.status === 'active' ? '#34A853' : agent.status === 'complete' ? '#1565C0' : '#888';
+    const roles = {
+      Conductor: 'Delivery Manager',
+      Compass: 'Product Owner',
+      Keystone: 'Architect',
+      Lens: 'Code Reviewer',
+      Palette: 'UI Designer',
+      Forge: 'Backend Dev',
+      Pixel: 'Frontend Dev',
+      Sentinel: 'Functional Tester',
+      Circuit: 'Automation Tester',
+    };
+    // Option 1: Avatar headshot (extracted from team-grid) with fallback to full image, then emoji
+    const avatarImg = `<img class="agent-avatar" src="${imgBase}/headshots/${name.toLowerCase()}.png" alt="${name}" style="border-color: ${color}" onerror="this.onerror=function(){this.outerHTML='<div class=\\'agent-avatar-fallback\\' style=\\'border-color: ${color}\\'>${icon}</div>'};this.src='${imgBase}/${name.toLowerCase()}.png'">`;
+    return `      <div class="agent-card ${agent.status === 'active' ? 'active' : ''}" style="border-left-color: ${color}">
         ${avatarImg}
         <div class="agent-info">
           <div class="agent-name" style="color: ${color}">${name}</div>
@@ -489,7 +513,8 @@ ${Object.entries(agents).map(([name, agent]) => {
           ${agent.currentTask ? `<div class="agent-task">${agent.currentTask}</div>` : ''}
         </div>
       </div>`;
-}).join('\n')}
+  })
+  .join('\n')}
     </div>
   </div>
 
@@ -505,23 +530,27 @@ ${(() => {
     if (!groups[epicId]) groups[epicId] = [];
     groups[epicId].push({ id, ...story });
   });
-  return Object.entries(groups).map(([epicId, epicStories]) => {
-    const epicName = epics[epicId] || epicId;
-    const storyRows = epicStories.map(s => {
-      const statusClass = s.status === 'In Progress' ? 'InProgress' : s.status;
-      return `        <div class="story-row">
+  return Object.entries(groups)
+    .map(([epicId, epicStories]) => {
+      const epicName = epics[epicId] || epicId;
+      const storyRows = epicStories
+        .map((s) => {
+          const statusClass = s.status === 'In Progress' ? 'InProgress' : s.status;
+          return `        <div class="story-row">
           <span class="story-id">${s.id}</span>
           <span class="story-title">${s.title}</span>
           <span class="story-status ${statusClass}">${s.status}</span>
         </div>`;
-    }).join('\n');
-    return `      <div class="epic-group">
+        })
+        .join('\n');
+      return `      <div class="epic-group">
         <div class="epic-header"><span class="epic-id">${epicId}</span> ${epicName}</div>
         <div class="epic-stories">
 ${storyRows}
         </div>
       </div>`;
-  }).join('\n');
+    })
+    .join('\n');
 })()}
     </div>
   </div>
@@ -531,14 +560,22 @@ ${storyRows}
 <div class="card" style="margin-top: 24px">
   <h2>Activity Log</h2>
   <div class="log-scroll">
-${log.length > 0 ? log.slice(-20).reverse().map(entry => {
-  const agentColor = agentColors[entry.agent] || '#888';
-  return `    <div class="log-entry">
+${
+  log.length > 0
+    ? log
+        .slice(-20)
+        .reverse()
+        .map((entry) => {
+          const agentColor = agentColors[entry.agent] || '#888';
+          return `    <div class="log-entry">
       <span class="log-time">${entry.time || ''}</span>
       <span class="log-agent" style="color: ${agentColor}">${entry.agent || 'System'}</span>
       ${entry.message || ''}
     </div>`;
-}).join('\n') : '    <div class="log-entry" style="color: #666">Waiting for Conductor to begin orchestration...</div>'}
+        })
+        .join('\n')
+    : '    <div class="log-entry" style="color: #666">Waiting for Conductor to begin orchestration...</div>'
+}
   </div>
 </div>
 

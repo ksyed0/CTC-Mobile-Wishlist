@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+docs/dashboard.html
+docs/plan-status.html
+docs/plan-status.json
+docs/CTC_Mobile_Wishlist_Business_Case.pptx
+package-lock.json
+*.png
+*.jpg
+*.gif
