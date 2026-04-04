@@ -9,6 +9,9 @@
  *   - codex        — OpenAI Codex CLI
  *   - gemini       — Google Gemini CLI
  *   - aider        — Open-source Aider (any model backend)
+ *   - codemie      — EPAM CodeMie (Claude via DIAL)
+ *   - opencode     — OpenCode (Gemma, Qwen, MiniMax, Kimi)
+ *   - elitea       — EPAM EliteA (enterprise AI platform)
  *
  * Usage:
  *   ORCHESTRATOR_PLATFORM=codex node orchestrator/spawn.js --agent Forge --task "Implement services"
@@ -18,15 +21,51 @@
 
 // --- Agent Registry ---
 const AGENTS = {
-  Conductor: { instructionFile: 'docs/agents/DM_AGENT.md', icon: '🎯', role: 'Delivery Manager' },
-  Compass: { instructionFile: 'docs/agents/PO_AGENT.md', icon: '🧭', role: 'Product Owner' },
-  Keystone: { instructionFile: 'docs/agents/ARCHITECT_AGENT.md', icon: '🏗️', role: 'Architect' },
-  Lens: { instructionFile: 'docs/agents/CODE_REVIEWER_AGENT.md', icon: '🔍', role: 'Code Reviewer' },
-  Palette: { instructionFile: 'docs/agents/UI_DESIGNER_AGENT.md', icon: '🎨', role: 'UI Designer' },
-  Forge: { instructionFile: 'docs/agents/BE_DEV_AGENT.md', icon: '⚒️', role: 'Backend Developer' },
-  Pixel: { instructionFile: 'docs/agents/FE_DEV_AGENT.md', icon: '📱', role: 'Frontend Developer' },
-  Sentinel: { instructionFile: 'docs/agents/FUNCTIONAL_TESTER_AGENT.md', icon: '🛡️', role: 'Functional Tester' },
-  Circuit: { instructionFile: 'docs/agents/AUTOMATION_TESTER_AGENT.md', icon: '⚡', role: 'Automation Tester' },
+  Conductor: {
+    instructionFile: 'docs/agents/DM_AGENT.md',
+    icon: '🎯',
+    role: 'Delivery Manager',
+  },
+  Compass: {
+    instructionFile: 'docs/agents/PO_AGENT.md',
+    icon: '🧭',
+    role: 'Product Owner',
+  },
+  Keystone: {
+    instructionFile: 'docs/agents/ARCHITECT_AGENT.md',
+    icon: '🏗️',
+    role: 'Architect',
+  },
+  Lens: {
+    instructionFile: 'docs/agents/CODE_REVIEWER_AGENT.md',
+    icon: '🔍',
+    role: 'Code Reviewer',
+  },
+  Palette: {
+    instructionFile: 'docs/agents/UI_DESIGNER_AGENT.md',
+    icon: '🎨',
+    role: 'UI Designer',
+  },
+  Forge: {
+    instructionFile: 'docs/agents/BE_DEV_AGENT.md',
+    icon: '⚒️',
+    role: 'Backend Developer',
+  },
+  Pixel: {
+    instructionFile: 'docs/agents/FE_DEV_AGENT.md',
+    icon: '📱',
+    role: 'Frontend Developer',
+  },
+  Sentinel: {
+    instructionFile: 'docs/agents/FUNCTIONAL_TESTER_AGENT.md',
+    icon: '🛡️',
+    role: 'Functional Tester',
+  },
+  Circuit: {
+    instructionFile: 'docs/agents/AUTOMATION_TESTER_AGENT.md',
+    icon: '⚡',
+    role: 'Automation Tester',
+  },
 };
 
 // --- Platform Adapters ---
@@ -35,6 +74,9 @@ const ADAPTERS = {
   codex: require('./adapters/codex-cli'),
   gemini: require('./adapters/gemini-cli'),
   aider: require('./adapters/aider'),
+  codemie: require('./adapters/codemie'),
+  opencode: require('./adapters/opencode'),
+  elitea: require('./adapters/elitea'),
 };
 
 const DEFAULT_PLATFORM = 'claude-code';
@@ -161,8 +203,14 @@ function main() {
     const adapter_ = getAdapter();
     console.log(
       adapter_.parallelTerminals([
-        { ...getAgent('Keystone'), task: 'Scaffold the project, then implement all services.' },
-        { ...getAgent('Pixel'), task: 'Set up the theme, then build all screens and components.' },
+        {
+          ...getAgent('Keystone'),
+          task: 'Scaffold the project, then implement all services.',
+        },
+        {
+          ...getAgent('Pixel'),
+          task: 'Set up the theme, then build all screens and components.',
+        },
         { ...getAgent('Sentinel'), task: 'Execute all test cases.' },
       ]),
     );
@@ -195,7 +243,15 @@ function main() {
 }
 
 // Export for programmatic use
-module.exports = { spawnCommand, conductorSpawn, parallelSpawn, getAdapter, getAgent, AGENTS, ADAPTERS };
+module.exports = {
+  spawnCommand,
+  conductorSpawn,
+  parallelSpawn,
+  getAdapter,
+  getAgent,
+  AGENTS,
+  ADAPTERS,
+};
 
 if (require.main === module) {
   main();

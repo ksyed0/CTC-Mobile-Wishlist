@@ -32,7 +32,11 @@ function attributeAICosts(stories, costByBranch) {
     totalOutput += v.outputTokens;
   }
 
-  result._totals = { costUsd: totalCost, inputTokens: totalInput, outputTokens: totalOutput };
+  result._totals = {
+    costUsd: totalCost,
+    inputTokens: totalInput,
+    outputTokens: totalOutput,
+  };
   return result;
 }
 
@@ -57,12 +61,22 @@ function attributeBugCosts(bugs, costByBranch) {
       totalInput += match.inputTokens;
       totalOutput += match.outputTokens;
     } else {
-      result[bug.id] = { costUsd: estimated, inputTokens: 0, outputTokens: 0, sessions: 0, isEstimated: estimated > 0 };
+      result[bug.id] = {
+        costUsd: estimated,
+        inputTokens: 0,
+        outputTokens: 0,
+        sessions: 0,
+        isEstimated: estimated > 0,
+      };
       totalCost += estimated;
     }
   }
 
-  result._totals = { costUsd: totalCost, inputTokens: totalInput, outputTokens: totalOutput };
+  result._totals = {
+    costUsd: totalCost,
+    inputTokens: totalInput,
+    outputTokens: totalOutput,
+  };
   return result;
 }
 

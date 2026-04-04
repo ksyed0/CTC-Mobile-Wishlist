@@ -8,13 +8,13 @@ Built as a **hackathon POC** using React Native + Expo with TypeScript, powered 
 
 ## Project Overview
 
-| Attribute    | Detail                                                                         |
-| ------------ | ------------------------------------------------------------------------------ |
-| **Stack**    | React Native, Expo SDK 52, TypeScript, expo-router                             |
-| **Data**     | AsyncStorage with local mock data (POC)                                        |
-| **Platform** | iOS + Android                                                                  |
-| **Brand**    | Canadian Tire (#D52B1E), system fonts, 4px grid                                |
-| **Agents**   | 9 specialized AI agents, platform-agnostic (Claude Code, Codex, Gemini, Aider) |
+| Attribute    | Detail                                                                                                    |
+| ------------ | --------------------------------------------------------------------------------------------------------- |
+| **Stack**    | React Native, Expo SDK 52, TypeScript, expo-router                                                        |
+| **Data**     | AsyncStorage with local mock data (POC)                                                                   |
+| **Platform** | iOS + Android                                                                                             |
+| **Brand**    | Canadian Tire (#D52B1E), system fonts, 4px grid                                                           |
+| **Agents**   | 9 specialized AI agents, platform-agnostic (Claude Code, Codex, Gemini, Aider, CodeMie, OpenCode, EliteA) |
 
 ### Key Features (POC)
 
@@ -33,17 +33,20 @@ This project uses 9 specialized AI agents with **platform-agnostic orchestration
 
 ### Supported Platforms
 
-| Platform              | CLI      | Sub-Agent Spawning  | Setup                                      |
-| --------------------- | -------- | ------------------- | ------------------------------------------ |
-| **Claude Code**       | `claude` | Native (Agent tool) | `npm install -g @anthropic-ai/claude-code` |
-| **OpenAI Codex**      | `codex`  | Separate terminals  | `npm install -g @openai/codex`             |
-| **Google Gemini**     | `gemini` | Separate terminals  | `npm install -g @anthropic-ai/gemini`      |
-| **Aider** (any model) | `aider`  | Separate terminals  | `pip install aider-chat`                   |
+| Platform              | CLI        | Sub-Agent Spawning  | Setup                                                                            |
+| --------------------- | ---------- | ------------------- | -------------------------------------------------------------------------------- |
+| **Claude Code**       | `claude`   | Native (Agent tool) | `npm install -g @anthropic-ai/claude-code`                                       |
+| **OpenAI Codex**      | `codex`    | Separate terminals  | `npm install -g @openai/codex`                                                   |
+| **Google Gemini**     | `gemini`   | Separate terminals  | `npm install -g @anthropic-ai/gemini`                                            |
+| **Aider** (any model) | `aider`    | Separate terminals  | `pip install aider-chat`                                                         |
+| **CodeMie** (EPAM)    | `codemie`  | Separate terminals  | EPAM DIAL gateway — Claude/GPT/Gemini backends                                   |
+| **OpenCode**          | `opencode` | Separate terminals  | `go install github.com/opencode-ai/opencode@latest` — Gemma, Qwen, MiniMax, Kimi |
+| **EliteA** (EPAM)     | `elitea`   | Prompt chaining     | EPAM enterprise AI platform — registered prompt library                          |
 
 Switch platforms with an env var:
 
 ```bash
-export ORCHESTRATOR_PLATFORM=codex   # or: claude-code, gemini, aider
+export ORCHESTRATOR_PLATFORM=codex   # or: claude-code, gemini, aider, codemie, opencode, elitea
 ```
 
 ### Quick Start — Launch Conductor
@@ -193,13 +196,19 @@ CTC-Mobile-Wishlist/
 │       ├── FUNCTIONAL_TESTER_AGENT.md # Sentinel — Functional Tester
 │       ├── AUTOMATION_TESTER_AGENT.md # Circuit — Automation Tester
 │       └── images/                    # Agent avatar images (Pixar-style)
-├── orchestrator/                      # Platform-agnostic agent spawning
+├── orchestrator/                      # Platform-agnostic agent spawning & concurrency
 │   ├── spawn.js                       # CLI + API for spawning agents
+│   ├── file-lock.js                   # mkdir-based file locking (race condition prevention)
+│   ├── atomic-write.js                # Atomic JSON/text writes (prevents corruption)
+│   ├── git-safe.js                    # Retry-safe git push, conflict detection
 │   └── adapters/                      # Platform-specific adapters
 │       ├── claude-code.js             # Anthropic Claude Code
 │       ├── codex-cli.js               # OpenAI Codex CLI
 │       ├── gemini-cli.js              # Google Gemini CLI
-│       └── aider.js                   # Aider (open-source, any model)
+│       ├── aider.js                   # Aider (open-source, any model)
+│       ├── codemie.js                 # EPAM CodeMie (Claude via DIAL)
+│       ├── opencode.js                # OpenCode (Gemma, Qwen, MiniMax, Kimi)
+│       └── elitea.js                  # EPAM EliteA (enterprise AI)
 ├── scripts/
 │   └── generate-pptx.py              # PowerPoint deck generator
 ├── tools/
@@ -208,8 +217,10 @@ CTC-Mobile-Wishlist/
 │   ├── process-avatars.js             # Face detection avatar extraction
 │   └── capture-cost.js                # AI cost capture hook
 ├── tests/
-│   ├── unit/                          # 215 unit tests (Jest)
+│   ├── unit/                          # 237 unit tests (Jest)
 │   └── fixtures/                      # Test fixture data
+├── .husky/
+│   └── pre-commit                     # Husky pre-commit hook (lint-staged)
 └── .gitattributes                     # Cross-platform line endings + binary markers
 ```
 
@@ -252,6 +263,27 @@ Drop images into `docs/agents/images/` (all lowercase filenames):
 - `team.png` — Full team image for About popup
 
 Run `npm run avatars` to extract headshots via tracking.js face detection (Viola-Jones). Configurable padding: `npm run avatars -- --padding 2.0`
+
+### Concurrency Safety
+
+When agents run in parallel (e.g., Forge + Pixel in Phase 3), shared state files need protection against race conditions. Three orchestrator utilities handle this:
+
+| Utility                        | Purpose                                                     | Mechanism                                      |
+| ------------------------------ | ----------------------------------------------------------- | ---------------------------------------------- |
+| `orchestrator/file-lock.js`    | Prevents simultaneous writes to shared files                | mkdir-based locking with 30s stale detection   |
+| `orchestrator/atomic-write.js` | Ensures complete writes, locked appends, safe ID allocation | Write-to-temp + rename, file-lock integration  |
+| `orchestrator/git-safe.js`     | Retry-safe push, conflict detection, overlap checking       | Exponential backoff (4 retries), dry-run merge |
+
+Protected shared files: `sdlc-status.json`, `progress.md`, `BUGS.md`, `ID_REGISTRY.md`, `AI_COST_LOG.md`.
+
+### Pre-Commit Hooks
+
+Husky + lint-staged run automatically on every `git commit`:
+
+- **Prettier** formats staged `*.js`, `*.json`, `*.md`, `*.yml`, `*.yaml` files
+- **ESLint** auto-fixes staged `*.js` files
+
+Activated automatically via `npm install` (the `prepare` script runs `husky`). No global install needed.
 
 ---
 

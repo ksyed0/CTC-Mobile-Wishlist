@@ -37,7 +37,13 @@ function aggregateCostByBranch(rows) {
   const agg = {};
   for (const row of deduped) {
     if (!agg[row.branch]) {
-      agg[row.branch] = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, costUsd: 0, sessions: 0 };
+      agg[row.branch] = {
+        inputTokens: 0,
+        outputTokens: 0,
+        cacheReadTokens: 0,
+        costUsd: 0,
+        sessions: 0,
+      };
     }
     agg[row.branch].inputTokens += row.inputTokens;
     agg[row.branch].outputTokens += row.outputTokens;

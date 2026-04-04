@@ -27,16 +27,11 @@ const commonRules = {
 };
 
 module.exports = [
-  {
-    ignores: ['eslint.config.js', 'jest.config.js'],
-  },
+  { ignores: ['eslint.config.js', 'jest.config.js'] },
   js.configs.recommended,
   {
     files: ['tools/**/*.js', 'orchestrator/**/*.js'],
-    languageOptions: {
-      sourceType: 'commonjs',
-      globals: commonGlobals,
-    },
+    languageOptions: { sourceType: 'commonjs', globals: commonGlobals },
     rules: commonRules,
   },
   {

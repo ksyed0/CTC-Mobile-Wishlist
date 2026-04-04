@@ -61,7 +61,10 @@ function loadConfig() {
       progress: { ...DEFAULTS.progress, ...raw.progress },
       costs: {
         hourlyRate: raw.costs?.hourlyRate ?? DEFAULTS.costs.hourlyRate,
-        tshirtHours: { ...DEFAULTS.costs.tshirtHours, ...raw.costs?.tshirtHours },
+        tshirtHours: {
+          ...DEFAULTS.costs.tshirtHours,
+          ...raw.costs?.tshirtHours,
+        },
       },
       budget: {
         totalUsd: raw.budget?.totalUsd ?? DEFAULTS.budget.totalUsd,
@@ -121,12 +124,23 @@ function main() {
   const coverageJson = readJson(config.coverage.summaryPath);
   const coverage = coverageJson
     ? parseCoverage(coverageJson)
-    : { lines: 0, statements: 0, functions: 0, branches: 0, overall: 0, meetsTarget: false, available: false };
+    : {
+        lines: 0,
+        statements: 0,
+        functions: 0,
+        branches: 0,
+        overall: 0,
+        meetsTarget: false,
+        available: false,
+      };
   const recentActivity = parseRecentActivity(readFile(config.progress.path), 5);
   const lessons = parseLessons(readFile(config.docs.lessons));
 
   const aiAttribution = attributeAICosts(stories, costByBranch);
-  const avgTokens = calculateAvgTokensPerEstimate({ stories, costs: aiAttribution });
+  const avgTokens = calculateAvgTokensPerEstimate({
+    stories,
+    costs: aiAttribution,
+  });
   const hasRealCosts = Object.values(aiAttribution).some((c) => c && c.costUsd > 0);
 
   const costs = {};
@@ -147,7 +161,11 @@ function main() {
       outputTokens: aiAttribution[story.id] ? aiAttribution[story.id].outputTokens : 0,
     };
   }
-  costs._totals = aiAttribution._totals || { costUsd: 0, inputTokens: 0, outputTokens: 0 };
+  costs._totals = aiAttribution._totals || {
+    costUsd: 0,
+    inputTokens: 0,
+    outputTokens: 0,
+  };
   costs._bugs = attributeBugCosts(bugs, costByBranch);
 
   const SEVERITY_SIZE = { Critical: 'L', High: 'M', Medium: 'S', Low: 'S' };
@@ -175,7 +193,10 @@ function main() {
     .sort((a, b) => a.date.localeCompare(b.date))
     .reduce((acc, row) => {
       const prev = acc.length ? acc[acc.length - 1].cumCost : 0;
-      acc.push({ date: row.date, cumCost: parseFloat((prev + row.costUsd).toFixed(4)) });
+      acc.push({
+        date: row.date,
+        cumCost: parseFloat((prev + row.costUsd).toFixed(4)),
+      });
       return acc;
     }, []);
 
@@ -201,7 +222,15 @@ function main() {
   };
 
   console.log('[generate-plan] Saving snapshot...');
-  const snapshotData = { epics, stories, bugs, costs, coverage, lessons, testCases };
+  const snapshotData = {
+    epics,
+    stories,
+    bugs,
+    costs,
+    coverage,
+    lessons,
+    testCases,
+  };
   saveSnapshot(snapshotData, { root: ROOT, commit: commitSha });
 
   console.log('[generate-plan] Loading historical snapshots...');

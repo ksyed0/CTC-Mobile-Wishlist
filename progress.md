@@ -198,3 +198,40 @@
 - 11 bugs logged (BUG-0033 – BUG-0043), all fixed
 - 6-job CI pipeline protecting main and develop branches
 - Dashboard now surfaces BLOCKED states with audio, visual, and push alerts
+
+**New Platform Adapters**
+
+- Added CodeMie adapter (EPAM Claude via DIAL gateway)
+- Added OpenCode adapter (Gemma, Qwen, MiniMax, Kimi models)
+- Added EliteA adapter (EPAM enterprise AI platform with prompt library)
+- 7 total platforms now supported
+
+## Session 6 — 2026-04-04
+
+### What Was Done
+
+**Concurrency Safety (BUG-0044 – BUG-0048)**
+
+- Created `orchestrator/file-lock.js` — mkdir-based file locking with stale lock detection (30s threshold), PID tracking, and automatic cleanup
+- Created `orchestrator/atomic-write.js` — atomic file writes (temp+rename), locked read-modify-write for JSON, locked append for logs, and `reserveId()` for safe ID allocation
+- Created `orchestrator/git-safe.js` — retry-safe git push with exponential backoff, auto-pull on rejection, dry-run merge conflict detection, and overlapping file detection between branches
+- Updated DM_AGENT.md with concurrency safety section: shared file table, utility references, merge ordering rules
+- Added `.locks/` to `.gitignore`
+
+**Pre-commit Hook (BUG-0049)**
+
+- Installed husky + lint-staged
+- Pre-commit hook runs Prettier on staged `.js`, `.json`, `.md`, `.yml`, `.yaml` files
+- Pre-commit hook runs ESLint `--fix` on staged `.js` files
+- Prevents unformatted code from reaching CI
+
+**Tests**
+
+- 22 new tests for concurrency utilities (file-lock, atomic-write, git-safe)
+- 237 total tests passing
+
+### Stats
+
+- 6 bugs logged (BUG-0044 – BUG-0049), all fixed
+- 3 new orchestrator modules: file-lock.js, atomic-write.js, git-safe.js
+- 22 new tests, 237 total passing

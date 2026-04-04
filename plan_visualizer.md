@@ -217,7 +217,11 @@ Override default file paths in `plan-visualizer.config.json` at the project root
 
 ```json
 {
-  "project": { "name": "My Project", "tagline": "A short description.", "githubUrl": "" },
+  "project": {
+    "name": "My Project",
+    "tagline": "A short description.",
+    "githubUrl": ""
+  },
   "docs": {
     "releasePlan": "docs/RELEASE_PLAN.md",
     "testCases": "docs/TEST_CASES.md",
@@ -228,7 +232,10 @@ Override default file paths in `plan-visualizer.config.json` at the project root
   },
   "coverage": { "summaryPath": "docs/coverage/coverage-summary.json" },
   "progress": { "path": "progress.md" },
-  "costs": { "hourlyRate": 100, "tshirtHours": { "S": 4, "M": 8, "L": 16, "XL": 32 } }
+  "costs": {
+    "hourlyRate": 100,
+    "tshirtHours": { "S": 4, "M": 8, "L": 16, "XL": 32 }
+  }
 }
 ```
 

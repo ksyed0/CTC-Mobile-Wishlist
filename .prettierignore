@@ -1,10 +1,14 @@
-node_modules/
-coverage/
+# Generated output files
 docs/dashboard.html
 docs/plan-status.html
 docs/plan-status.json
-docs/CTC_Mobile_Wishlist_Business_Case.pptx
-package-lock.json
+
+# Binary and non-code files
+*.pptx
 *.png
 *.jpg
-*.gif
+*.ico
+
+# Dependencies
+package-lock.json
+node_modules/

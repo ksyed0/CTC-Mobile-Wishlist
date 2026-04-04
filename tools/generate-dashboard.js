@@ -69,16 +69,6 @@ function generateHTML(status) {
     'in-progress': '#F57C00',
   };
 
-  const blockedPhases = phases.filter((p) => p.status === 'blocked');
-  const blockedAgents = Object.entries(agents).filter(([, a]) => a.status === 'blocked');
-  const hasBlocker = blockedPhases.length > 0 || blockedAgents.length > 0;
-  const blockerSummary = hasBlocker
-    ? [
-        ...blockedPhases.map((p) => `Phase "${p.name}" is BLOCKED`),
-        ...blockedAgents.map(([name]) => `${name} is BLOCKED`),
-      ].join(' | ')
-    : '';
-
   const phasePercent =
     phases.length > 0 ? Math.round((phases.filter((p) => p.status === 'complete').length / phases.length) * 100) : 0;
 
@@ -159,15 +149,12 @@ function generateHTML(status) {
   .phase-block.pending { background: var(--bg-phase-pending); border: 1px solid var(--bg-phase-border); }
   .phase-block.in-progress { background: var(--bg-phase-pending); border: 2px solid #F57C00; animation: pulse 2s infinite; }
   .phase-block.complete { background: var(--bg-phase-complete); border: 1px solid #2E7D32; }
-  .phase-block.blocked { background: rgba(213, 43, 30, 0.15); border: 2px solid #D52B1E; animation: pulse-blocked 1.5s infinite; }
-  [data-theme="light"] .phase-block.blocked { background: #fde8e7; }
   .phase-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
   .phase-agents { font-size: 11px; color: var(--text-muted); }
   .phase-status { position: absolute; top: 8px; right: 12px; font-size: 18px; }
   .phase-deliverables { font-size: 10px; color: var(--text-dim); margin-top: 8px; }
 
   @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(245, 124, 0, 0.4); } 50% { box-shadow: 0 0 20px 4px rgba(245, 124, 0, 0.2); } }
-  @keyframes pulse-blocked { 0%, 100% { box-shadow: 0 0 0 0 rgba(213, 43, 30, 0.5); } 50% { box-shadow: 0 0 24px 6px rgba(213, 43, 30, 0.3); } }
 
   .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 24px; }
   .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
@@ -210,25 +197,6 @@ function generateHTML(status) {
   .agent-card { background: var(--bg-card-inner); border-radius: 8px; padding: 10px; border-left: 4px solid; transition: all 0.3s; display: flex; gap: 10px; align-items: flex-start; }
   .agent-card:hover { filter: brightness(1.1); }
   .agent-card.active { animation: pulse-agent 1.5s infinite; }
-  .agent-card.blocked { border-left-color: #D52B1E !important; background: rgba(213, 43, 30, 0.1); animation: pulse-blocked 1.5s infinite; }
-  [data-theme="light"] .agent-card.blocked { background: #fde8e7; }
-
-  /* Escalation alert banner */
-  .alert-banner { display: none; background: linear-gradient(90deg, #D52B1E, #B01E14); color: white; padding: 12px 24px; font-size: 14px; font-weight: 600; text-align: center; position: relative; z-index: 100; animation: pulse-blocked 1.5s infinite; }
-  .alert-banner.visible { display: flex; align-items: center; justify-content: center; gap: 12px; }
-  .alert-banner .alert-icon { font-size: 20px; }
-  .alert-banner .alert-text { flex: 1; }
-  .alert-banner .alert-dismiss { background: rgba(255,255,255,0.2); border: none; color: white; padding: 4px 12px; border-radius: 12px; cursor: pointer; font-size: 12px; }
-  .alert-banner .alert-dismiss:hover { background: rgba(255,255,255,0.35); }
-
-  /* Notification toggle switches */
-  .toggle-group { display: flex; align-items: center; gap: 12px; }
-  .toggle-switch { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.85); }
-  .toggle-switch input[type="checkbox"] { display: none; }
-  .toggle-switch .toggle-track { width: 32px; height: 18px; background: rgba(255,255,255,0.2); border-radius: 9px; position: relative; cursor: pointer; transition: background 0.2s; }
-  .toggle-switch input:checked + .toggle-track { background: #34A853; }
-  .toggle-switch .toggle-track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: white; transition: transform 0.2s; }
-  .toggle-switch input:checked + .toggle-track::after { transform: translateX(14px); }
   @keyframes pulse-agent { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
   .agent-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid; flex-shrink: 0; }
   .agent-avatar-fallback { width: 40px; height: 40px; border-radius: 50%; border: 2px solid; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; background: var(--bg-phase-pending); }
@@ -381,13 +349,7 @@ function generateHTML(status) {
   }
 </style>
 </head>
-<body data-has-blocker="${hasBlocker}">
-
-<div id="alert-banner" class="alert-banner${hasBlocker ? ' visible' : ''}">
-  <span class="alert-icon">⛔</span>
-  <span class="alert-text">ORCHESTRATION BLOCKED — ${blockerSummary || 'Human input required'} — See progress.md for details</span>
-  <button class="alert-dismiss" onclick="document.getElementById('alert-banner').classList.remove('visible')">Dismiss</button>
-</div>
+<body>
 
 <div class="header">
   <div>
@@ -395,18 +357,6 @@ function generateHTML(status) {
     <div class="subtitle">Claude Code | 9 Specialized Agents | Hackathon Live Dashboard</div>
   </div>
   <div class="controls">
-    <div class="toggle-group">
-      <label class="toggle-switch" title="Play audio tone on BLOCK events">
-        <input type="checkbox" id="audio-toggle" onchange="toggleAudio(this.checked)">
-        <span class="toggle-track"></span>
-        🔊
-      </label>
-      <label class="toggle-switch" title="Send browser notification on BLOCK events">
-        <input type="checkbox" id="notif-toggle" onchange="toggleNotifications(this.checked)">
-        <span class="toggle-track"></span>
-        🔔
-      </label>
-    </div>
     <button class="btn-header" onclick="document.getElementById('about-modal').classList.add('open')">ℹ️ About</button>
     <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
     <div class="clock">
@@ -422,8 +372,7 @@ function generateHTML(status) {
 <div class="pipeline">
 ${phases
   .map((p) => {
-    const icon =
-      p.status === 'complete' ? '✅' : p.status === 'in-progress' ? '🔄' : p.status === 'blocked' ? '⛔' : '⏳';
+    const icon = p.status === 'complete' ? '✅' : p.status === 'in-progress' ? '🔄' : '⏳';
     return `  <div class="phase-block ${p.status}">
     <div class="phase-status">${icon}</div>
     <div class="phase-name">${p.name}</div>
@@ -540,20 +489,8 @@ ${Object.entries(agents)
     const color = agentColors[name] || '#888';
     const icon = agentIcons[name] || '🤖';
     const imgBase = 'agents/images';
-    const statusBg =
-      agent.status === 'active'
-        ? 'rgba(52,168,83,0.2)'
-        : agent.status === 'blocked'
-          ? 'rgba(213,43,30,0.2)'
-          : 'rgba(136,136,136,0.15)';
-    const statusColor =
-      agent.status === 'active'
-        ? '#34A853'
-        : agent.status === 'complete'
-          ? '#1565C0'
-          : agent.status === 'blocked'
-            ? '#D52B1E'
-            : '#888';
+    const statusBg = agent.status === 'active' ? 'rgba(52,168,83,0.2)' : 'rgba(136,136,136,0.15)';
+    const statusColor = agent.status === 'active' ? '#34A853' : agent.status === 'complete' ? '#1565C0' : '#888';
     const roles = {
       Conductor: 'Delivery Manager',
       Compass: 'Product Owner',
@@ -567,8 +504,7 @@ ${Object.entries(agents)
     };
     // Option 1: Avatar headshot (extracted from team-grid) with fallback to full image, then emoji
     const avatarImg = `<img class="agent-avatar" src="${imgBase}/headshots/${name.toLowerCase()}.png" alt="${name}" style="border-color: ${color}" onerror="this.onerror=function(){this.outerHTML='<div class=\\'agent-avatar-fallback\\' style=\\'border-color: ${color}\\'>${icon}</div>'};this.src='${imgBase}/${name.toLowerCase()}.png'">`;
-    const cardClass = agent.status === 'active' ? 'active' : agent.status === 'blocked' ? 'blocked' : '';
-    return `      <div class="agent-card ${cardClass}" style="border-left-color: ${color}">
+    return `      <div class="agent-card ${agent.status === 'active' ? 'active' : ''}" style="border-left-color: ${color}">
         ${avatarImg}
         <div class="agent-info">
           <div class="agent-name" style="color: ${color}">${name}</div>
@@ -664,7 +600,6 @@ ${
 </div>
 
 <script>
-/* === Theme toggle === */
 function toggleTheme() {
   const html = document.documentElement;
   const current = html.getAttribute('data-theme');
@@ -677,97 +612,10 @@ function updateToggleButton(theme) {
   const btn = document.getElementById('theme-toggle');
   if (btn) btn.textContent = theme === 'light' ? '🌙 Dark' : '☀️ Light';
 }
-
-/* === Audio alert (Web Audio API — no external files) === */
-var audioEnabled = false;
-function toggleAudio(on) {
-  audioEnabled = on;
-  localStorage.setItem('dashboard-audio', on ? 'on' : 'off');
-}
-function playAlertTone() {
-  if (!audioEnabled) return;
-  try {
-    var ctx = new (window.AudioContext || window.webkitAudioContext)();
-    /* Three-tone alert: ascending urgency */
-    [440, 554, 659].forEach(function(freq, i) {
-      var osc = ctx.createOscillator();
-      var gain = ctx.createGain();
-      osc.type = 'square';
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.15, ctx.currentTime + i * 0.2);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.2 + 0.18);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(ctx.currentTime + i * 0.2);
-      osc.stop(ctx.currentTime + i * 0.2 + 0.2);
-    });
-    setTimeout(function() { ctx.close(); }, 1000);
-  } catch(e) { /* Web Audio not supported */ }
-}
-
-/* === Browser notifications === */
-var notificationsEnabled = false;
-function toggleNotifications(on) {
-  if (on && 'Notification' in window && Notification.permission !== 'granted') {
-    Notification.requestPermission().then(function(perm) {
-      notificationsEnabled = perm === 'granted';
-      document.getElementById('notif-toggle').checked = notificationsEnabled;
-      localStorage.setItem('dashboard-notifications', notificationsEnabled ? 'on' : 'off');
-    });
-  } else {
-    notificationsEnabled = on;
-    localStorage.setItem('dashboard-notifications', on ? 'on' : 'off');
-  }
-}
-function sendBlockNotification(message) {
-  if (!notificationsEnabled) return;
-  if (!('Notification' in window) || Notification.permission !== 'granted') return;
-  try {
-    new Notification('⛔ ORCHESTRATION BLOCKED', {
-      body: message || 'Human input required — see progress.md',
-      icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">⛔</text></svg>',
-      tag: 'sdlc-blocked',
-      requireInteraction: true
-    });
-  } catch(e) { /* Notification API not supported */ }
-}
-
-/* === Block state change detection === */
-var previousBlockState = ${hasBlocker ? 'true' : 'false'};
-function checkBlockStateOnRefresh() {
-  var body = document.body;
-  var currentlyBlocked = body.getAttribute('data-has-blocker') === 'true';
-  if (currentlyBlocked && !previousBlockState) {
-    /* Transition from OK → BLOCKED: fire alerts */
-    var bannerText = document.querySelector('.alert-text');
-    var message = bannerText ? bannerText.textContent : 'Human input required';
-    playAlertTone();
-    sendBlockNotification(message);
-  }
-  previousBlockState = currentlyBlocked;
-}
-
-/* === Init on page load === */
 (function() {
-  /* Theme */
-  var savedTheme = localStorage.getItem('dashboard-theme') || 'dark';
-  if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
-  updateToggleButton(savedTheme);
-
-  /* Audio toggle */
-  var savedAudio = localStorage.getItem('dashboard-audio') === 'on';
-  audioEnabled = savedAudio;
-  var audioEl = document.getElementById('audio-toggle');
-  if (audioEl) audioEl.checked = savedAudio;
-
-  /* Notification toggle */
-  var savedNotif = localStorage.getItem('dashboard-notifications') === 'on';
-  notificationsEnabled = savedNotif && 'Notification' in window && Notification.permission === 'granted';
-  var notifEl = document.getElementById('notif-toggle');
-  if (notifEl) notifEl.checked = notificationsEnabled;
-
-  /* Check for block state change (fires on each 5s auto-refresh) */
-  checkBlockStateOnRefresh();
+  var saved = localStorage.getItem('dashboard-theme') || 'dark';
+  if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  updateToggleButton(saved);
 })();
 </script>
 
