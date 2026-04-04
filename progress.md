@@ -553,3 +553,38 @@ One copy lives at `utils/wishlistUtils.ts` (root, in develop). The duplicate is 
 - Real product images (placeholder icons only currently)
 - Expo-splash-screen and app icon configuration
 - End-to-end automation tests (Circuit agent, Phase 5)
+
+---
+
+## Phase 6 Polish — Pixel (2026-04-04)
+
+Agent: Pixel | Branch: `feature/polish-fixes` | Based on: `develop`
+
+### Bugs Fixed
+
+**BUG-0084 (Critical) — Missing assets directory**
+- Created `assets/` directory at project root with four PNG placeholder files: `icon.png` (1024×1024), `adaptive-icon.png` (1024×1024), `splash.png` (1242×2688), `favicon.png` (32×32).
+- All filled with Canadian Tire red (#D52B1E) and a white triangle motif, generated via Node.js `canvas`.
+- Expo build will no longer crash on missing asset references in `app.json`.
+
+**BUG-0085 (Major) — No product images**
+- Updated `components/ProductCard.tsx`: when `image === "placeholder"`, renders a colored `View` with the category's initial letter instead of a broken image icon.
+- Category color map applied: Tools (red), Automotive (blue), Outdoor (green), Sports (orange), Home (purple).
+- Catalog now looks intentional and demo-ready.
+
+**BUG-0086 (Major) — Search bar missing from catalog screen**
+- Added `TextInput` search bar to `app/(tabs)/catalog.tsx` above the category chip row.
+- Real-time filtering via `useMemo` over `filteredProducts` — no async call needed, instant response.
+- Clear (×) button appears when query is non-empty.
+- Empty state subtitle adapts to show the search term when no results are found.
+- AC-0015 (search bar visible) and AC-0016 (real-time name filtering) now satisfied.
+
+### Docs Updated
+- `docs/BUGS.md` — BUG-0084, BUG-0085, BUG-0086 appended with Fixed status.
+- `docs/RELEASE_PLAN.md` — TASK-0009 (search bar) → Status: Done.
+
+### Stats
+- TypeScript errors in source files: **0**
+- Pre-existing test mock errors in test files: 11 (unchanged, not introduced by this work)
+- Assets created: 4 PNG files
+- Files modified: `components/ProductCard.tsx`, `app/(tabs)/catalog.tsx`

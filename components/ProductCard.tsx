@@ -6,6 +6,23 @@ import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
 
+/** BUG-0085: Category color map for placeholder views */
+const CATEGORY_COLORS: Record<string, string> = {
+  Tools: colors.primary,       // #D52B1E
+  Automotive: '#1565C0',
+  Outdoor: '#2E7D32',
+  Sports: '#F57C00',
+  Home: '#6A1B9A',
+};
+
+function getCategoryColor(category: string): string {
+  return CATEGORY_COLORS[category] ?? colors.textSecondary;
+}
+
+function getCategoryInitial(category: string): string {
+  return category.trim().charAt(0).toUpperCase();
+}
+
 interface ProductCardProps {
   product: Product;
   onPress?: () => void;
@@ -34,8 +51,16 @@ export const ProductCard = memo(function ProductCard({
             accessibilityLabel={product.name}
           />
         ) : (
-          <View style={styles.imagePlaceholder}>
-            <MaterialIcons name="image" size={40} color={colors.textLight} />
+          /* BUG-0085: Render a colored category placeholder instead of broken image */
+          <View
+            style={[
+              styles.imagePlaceholder,
+              { backgroundColor: getCategoryColor(product.category) },
+            ]}
+          >
+            <Text style={styles.categoryInitial}>
+              {getCategoryInitial(product.category)}
+            </Text>
           </View>
         )}
         {!product.inStock ? (
@@ -106,7 +131,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.background,
+  },
+  categoryInitial: {
+    fontSize: 48,
+    fontWeight: typography.fontWeight.bold,
+    color: colors.white,
+    opacity: 0.9,
   },
   outOfStockBadge: {
     position: 'absolute',
