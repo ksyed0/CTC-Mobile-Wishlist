@@ -219,3 +219,10 @@
 - **Found in:** `docs/agents/CODE_REVIEWER_AGENT.md` line 100
 - **Description:** Lens has three verdict options (APPROVE / REQUEST CHANGES / BLOCK) but no criteria for when to issue BLOCK vs REQUEST CHANGES. Left entirely to Lens discretion, which could produce inconsistent behavior across review cycles.
 - **Fix:** Add explicit BLOCK threshold criteria to CODE_REVIEWER_AGENT.md — security vulnerabilities, type-safety violations, and test failures = BLOCK; all other issues = REQUEST CHANGES.
+
+### BUG-0031: Agentic orchestration is coupled to Claude Code platform
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `docs/agents/DM_AGENT.md`, `README.md`
+- **Description:** Agent spawning instructions, CLI invocations, and parallel execution patterns are hardcoded to Claude Code. Cannot run the same orchestration on Codex, Gemini, or open-source models without rewriting DM_AGENT.md and README.md. The agent instruction files themselves are platform-agnostic markdown, but the invocation and spawning mechanism is not.
+- **Fix:** Create `orchestrator/` adapter layer with platform-specific spawn implementations. Abstract DM_AGENT.md spawning to use platform-agnostic patterns. Update README.md with multi-platform quick-start instructions.

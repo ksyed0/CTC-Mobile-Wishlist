@@ -38,7 +38,7 @@ You operate by spawning each agent as a **sub-agent** using Claude Code's Agent 
 
 ## How to Spawn Sub-Agents
 
-Use Claude Code's **Agent tool** to launch each agent. Always include:
+Launch each agent using the agentic platform's spawning mechanism. Always include:
 
 1. The agent's full instruction file content (read it first, then include in the prompt)
 2. The specific task or user story to work on
@@ -46,20 +46,31 @@ Use Claude Code's **Agent tool** to launch each agent. Always include:
 4. The branch to work on
 5. What to commit and push when done
 
+> **Platform-agnostic:** This orchestration works on any agentic platform.
+> See `orchestrator/spawn.js` for spawn commands per platform.
+> Set `ORCHESTRATOR_PLATFORM` env var: `claude-code` (default), `codex`, `gemini`, `aider`.
+
 ### Spawn Pattern
 
 ```
-Agent tool call:
-  prompt: "Read docs/agents/[AGENT].md for your full instructions. 
-           [Specific task context from previous agents].
-           Your task: [specific deliverable].
-           Work on branch: [branch name].
-           When done: commit with format from AGENTS.md, push, and report what you completed."
+Prompt to agent:
+  "Read docs/agents/[AGENT].md for your full instructions. 
+   [Specific task context from previous agents].
+   Your task: [specific deliverable].
+   Work on branch: [branch name].
+   When done: commit with format from AGENTS.md, push, and report what you completed."
 ```
+
+**Platform-specific spawning:**
+- **Claude Code:** Use the Agent tool to spawn sub-agents within a session
+- **Codex / Gemini / Aider:** Open a new terminal session per agent with the prompt above
 
 ### Parallel Spawning
 
-For phases with parallel work, launch multiple agents in a **single message** with multiple Agent tool calls:
+For phases with parallel work, launch multiple agents simultaneously:
+
+- **Claude Code:** Include multiple Agent tool calls in a single message
+- **Codex / Gemini / Aider:** Open separate terminal sessions and run agents concurrently
 
 ```
 Phase 3 example — launch Forge and Pixel simultaneously:

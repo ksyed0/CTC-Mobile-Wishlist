@@ -1137,9 +1137,9 @@
       "outputTokens": 0
     },
     "_totals": {
-      "costUsd": 93.0324,
-      "inputTokens": 6885066,
-      "outputTokens": 665710
+      "costUsd": 94.1651,
+      "inputTokens": 6905310,
+      "outputTokens": 669856
     },
     "_bugs": {
       "_totals": {
@@ -1269,9 +1269,9 @@
     }
   ],
   "lessons": [],
-  "generatedAt": "2026-04-04T04:21:31.670Z",
-  "commitSha": "4729ecf",
-  "buildNumber": "41",
+  "generatedAt": "2026-04-04T04:27:19.535Z",
+  "commitSha": "e20b773",
+  "buildNumber": "42",
   "sessionTimeline": [
     {
       "date": "2026-04-03",
@@ -1307,7 +1307,7 @@
     },
     {
       "date": "2026-04-04",
-      "cumCost": 93.0324
+      "cumCost": 94.1651
     }
   ],
   "projectName": "CTC-Mobile-Wishlist",
@@ -1315,13 +1315,13 @@
   "version": "1.0.0",
   "githubUrl": "",
   "budget": {
-    "totalBudget": 7693.0324,
-    "totalSpent": 93.0324,
+    "totalBudget": 7694.1651,
+    "totalSpent": 94.1651,
     "totalProjected": 7600,
     "percentUsed": 1,
-    "burnRate": 93.0324,
-    "daysRemaining": 81,
-    "projectedExhaustion": 81,
+    "burnRate": 94.1651,
+    "daysRemaining": 80,
+    "projectedExhaustion": 80,
     "thresholds": [
       50,
       75,

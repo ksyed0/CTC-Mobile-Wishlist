@@ -28,23 +28,58 @@ Built as a **hackathon POC** using React Native + Expo with TypeScript, powered 
 
 ## Running the Agentic AI SDLC
 
-This project uses 9 specialized AI agents orchestrated through Claude Code. Each agent has a dedicated instruction file with its role, responsibilities, and PlanVisualizer integration.
+This project uses 9 specialized AI agents with **platform-agnostic orchestration** — run on Claude Code, OpenAI Codex, Google Gemini, Aider (open-source), or any agentic CLI. Each agent has a dedicated markdown instruction file that works as a system prompt on any platform.
+
+### Supported Platforms
+
+| Platform | CLI | Sub-Agent Spawning | Setup |
+|----------|-----|-------------------|-------|
+| **Claude Code** | `claude` | Native (Agent tool) | `npm install -g @anthropic-ai/claude-code` |
+| **OpenAI Codex** | `codex` | Separate terminals | `npm install -g @openai/codex` |
+| **Google Gemini** | `gemini` | Separate terminals | `npm install -g @anthropic-ai/gemini` |
+| **Aider** (any model) | `aider` | Separate terminals | `pip install aider-chat` |
+
+Switch platforms with an env var:
+```bash
+export ORCHESTRATOR_PLATFORM=codex   # or: claude-code, gemini, aider
+```
 
 ### Quick Start — Launch Conductor
 
-Open a terminal and start Claude Code:
-
+**Claude Code** (default):
 ```bash
-claude
-```
-
-Then paste this prompt to begin the full orchestrated SDLC:
-
-```
-Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the 
+claude "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the 
 Delivery Manager orchestrating 9 specialized agents for today's hackathon. Follow 
 the orchestration playbook in your instruction file. Begin with Phase 1: spawn 
-Compass to prioritize the backlog.
+Compass to prioritize the backlog."
+```
+
+**OpenAI Codex:**
+```bash
+codex "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the 
+Delivery Manager orchestrating 9 specialized agents for today's hackathon. Follow 
+the orchestration playbook in your instruction file. Begin with Phase 1: spawn 
+Compass to prioritize the backlog."
+```
+
+**Google Gemini:**
+```bash
+gemini "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the 
+Delivery Manager orchestrating 9 specialized agents for today's hackathon. Follow 
+the orchestration playbook in your instruction file. Begin with Phase 1: spawn 
+Compass to prioritize the backlog."
+```
+
+**Aider** (with any model — OpenAI, Anthropic, Ollama local):
+```bash
+aider --model ollama/llama3 --message "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor."
+```
+
+**Spawn helper** (generates correct command for your platform):
+```bash
+node orchestrator/spawn.js --agent Conductor
+node orchestrator/spawn.js --list-platforms
+node orchestrator/spawn.js --print-all
 ```
 
 Conductor will automatically:
@@ -73,7 +108,7 @@ Conductor will automatically:
 
 ### Alternative: Run Individual Agents
 
-You can also run agents individually for specific tasks:
+Replace `claude` with your platform's CLI (`codex`, `gemini`, `aider --message`):
 
 ```bash
 # Run the architect to scaffold the project
@@ -91,7 +126,7 @@ claude "Read docs/agents/CODE_REVIEWER_AGENT.md for your full instructions.
 
 ### Parallel Sessions (Maximum Velocity)
 
-For fastest results, run 2-3 terminals simultaneously:
+For fastest results, run 2-3 terminals simultaneously (works on any platform):
 
 ```bash
 # Terminal 1: Backend (Keystone → Forge)
@@ -150,6 +185,13 @@ CTC-Mobile-Wishlist/
 │       ├── FUNCTIONAL_TESTER_AGENT.md # Sentinel — Functional Tester
 │       ├── AUTOMATION_TESTER_AGENT.md # Circuit — Automation Tester
 │       └── images/                    # Agent avatar images (Pixar-style)
+├── orchestrator/                      # Platform-agnostic agent spawning
+│   ├── spawn.js                       # CLI + API for spawning agents
+│   └── adapters/                      # Platform-specific adapters
+│       ├── claude-code.js             # Anthropic Claude Code
+│       ├── codex-cli.js               # OpenAI Codex CLI
+│       ├── gemini-cli.js              # Google Gemini CLI
+│       └── aider.js                   # Aider (open-source, any model)
 ├── scripts/
 │   └── generate-pptx.py              # PowerPoint deck generator
 └── tools/
