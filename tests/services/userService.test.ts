@@ -190,3 +190,39 @@ describe('userService.isGuest', () => {
     expect(result).toBe(false);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Error path coverage — catch branches in service methods
+// ---------------------------------------------------------------------------
+describe('userService error paths', () => {
+  it('getCurrentUser returns null when storage read throws', async () => {
+    // storage.getItem swallows the rejection and returns null,
+    // so getCurrentUser gets null userId and returns null
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('read error'));
+    const result = await userService.getCurrentUser();
+    expect(result).toBeNull();
+  });
+
+  it('getMockUsers returns array (no I/O — always succeeds)', async () => {
+    const result = await userService.getMockUsers();
+    expect(Array.isArray(result)).toBe(true);
+  });
+
+  it('setCurrentUser returns null (graceful) for unknown user without writing storage', async () => {
+    // storage.setItem swallows write errors; this tests the unknown-user guard
+    const result = await userService.setCurrentUser('user-unknown');
+    expect(result).toBeNull();
+    const stored = await AsyncStorage.getItem('currentUser');
+    expect(stored).toBeNull();
+  });
+
+  it('isGuest returns true (safe default) when storage throws', async () => {
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage failure'));
+    const result = await userService.isGuest();
+    expect(result).toBe(true);
+  });
+
+  it('logout completes without error even when no user is stored', async () => {
+    await expect(userService.logout()).resolves.toBeUndefined();
+  });
+});
