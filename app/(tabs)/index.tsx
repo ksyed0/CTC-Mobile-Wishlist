@@ -1,28 +1,180 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useCallback } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import { router } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useAuth } from '../../contexts/AuthContext';
+import { useWishlists } from '../../contexts/WishlistContext';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
-import { useAuth } from '../../contexts/AuthContext';
+import { typography } from '../../theme/typography';
 
 export default function HomeScreen() {
-  const { currentUser, isGuest } = useAuth();
+  const { currentUser, isGuest, isLoading: authLoading } = useAuth();
+  const { wishlists, isLoading: wishlistsLoading } = useWishlists();
+
+  const handleBrowseCatalog = useCallback(() => {
+    router.push('/(tabs)/catalog');
+  }, []);
+
+  const handleScan = useCallback(() => {
+    router.push('/(tabs)/scan');
+  }, []);
+
+  const handleMyWishlists = useCallback(() => {
+    router.push('/(tabs)/wishlists');
+  }, []);
+
+  const handleLogin = useCallback(() => {
+    router.push('/login');
+  }, []);
+
+  if (authLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.banner}>
-        <Text style={styles.bannerTitle}>Canadian Tire Wishlist</Text>
-        <Text style={styles.bannerSubtitle}>
-          {isGuest
-            ? 'Browsing as Guest'
-            : `Welcome back, ${currentUser?.name ?? ''}!`}
-        </Text>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Hero Banner */}
+      <View style={styles.heroBanner}>
+        <Text style={styles.heroTitle}>Canadian Tire</Text>
+        <Text style={styles.heroSubtitle}>Wishlist</Text>
+        {isGuest ? (
+          <Text style={styles.heroWelcome}>Browsing as Guest</Text>
+        ) : (
+          <Text style={styles.heroWelcome}>
+            Welcome back, {currentUser?.name ?? ''}!
+          </Text>
+        )}
       </View>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Get Started</Text>
-        <Text style={styles.sectionBody}>
-          Browse the catalog, scan barcodes in-store, and build your wishlist to
-          share with family and friends.
-        </Text>
-      </View>
+
+      {/* Guest Prompt */}
+      {isGuest ? (
+        <View style={styles.guestCard}>
+          <MaterialIcons name="account-circle" size={32} color={colors.primary} />
+          <View style={styles.guestCardText}>
+            <Text style={styles.guestCardTitle}>Sign in to save wishlists</Text>
+            <Text style={styles.guestCardSubtitle}>
+              Create and share wishlists with family and friends.
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={styles.signInButton}
+            onPress={handleLogin}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+          >
+            <Text style={styles.signInButtonText}>Sign In</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
+
+      {/* Quick Stats */}
+      {!isGuest ? (
+        <View style={styles.statsRow}>
+          <View style={styles.statCard}>
+            {wishlistsLoading ? (
+              <ActivityIndicator size="small" color={colors.primary} />
+            ) : (
+              <Text style={styles.statValue}>{wishlists.length}</Text>
+            )}
+            <Text style={styles.statLabel}>Wishlists</Text>
+          </View>
+          <View style={styles.statCard}>
+            {wishlistsLoading ? (
+              <ActivityIndicator size="small" color={colors.primary} />
+            ) : (
+              <Text style={styles.statValue}>
+                {wishlists.reduce((sum, w) => sum + w.items.length, 0)}
+              </Text>
+            )}
+            <Text style={styles.statLabel}>Items Saved</Text>
+          </View>
+          <View style={styles.statCard}>
+            {wishlistsLoading ? (
+              <ActivityIndicator size="small" color={colors.primary} />
+            ) : (
+              <Text style={styles.statValue}>
+                {wishlists.filter((w) => w.sharedWith.length > 0).length}
+              </Text>
+            )}
+            <Text style={styles.statLabel}>Shared</Text>
+          </View>
+        </View>
+      ) : null}
+
+      {/* CTA Buttons */}
+      <Text style={styles.sectionTitle}>Get Started</Text>
+
+      <TouchableOpacity
+        style={styles.ctaButton}
+        onPress={handleBrowseCatalog}
+        activeOpacity={0.8}
+        accessibilityRole="button"
+      >
+        <View style={styles.ctaIcon}>
+          <MaterialIcons name="grid-view" size={24} color={colors.primary} />
+        </View>
+        <View style={styles.ctaTextContainer}>
+          <Text style={styles.ctaTitle}>Browse Catalog</Text>
+          <Text style={styles.ctaSubtitle}>Explore products by category</Text>
+        </View>
+        <MaterialIcons name="chevron-right" size={22} color={colors.textLight} />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.ctaButton}
+        onPress={handleScan}
+        activeOpacity={0.8}
+        accessibilityRole="button"
+      >
+        <View style={styles.ctaIcon}>
+          <MaterialIcons name="qr-code-scanner" size={24} color={colors.primary} />
+        </View>
+        <View style={styles.ctaTextContainer}>
+          <Text style={styles.ctaTitle}>Scan Item</Text>
+          <Text style={styles.ctaSubtitle}>Scan a barcode in-store</Text>
+        </View>
+        <MaterialIcons name="chevron-right" size={22} color={colors.textLight} />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.ctaButton, isGuest ? styles.ctaButtonDisabled : null]}
+        onPress={isGuest ? handleLogin : handleMyWishlists}
+        activeOpacity={0.8}
+        accessibilityRole="button"
+      >
+        <View style={styles.ctaIcon}>
+          <MaterialIcons
+            name="favorite"
+            size={24}
+            color={isGuest ? colors.textLight : colors.primary}
+          />
+        </View>
+        <View style={styles.ctaTextContainer}>
+          <Text style={[styles.ctaTitle, isGuest ? styles.ctaTitleDisabled : null]}>
+            My Wishlists
+          </Text>
+          <Text style={styles.ctaSubtitle}>
+            {isGuest ? 'Sign in to view wishlists' : 'View and manage your wishlists'}
+          </Text>
+        </View>
+        <MaterialIcons name="chevron-right" size={22} color={colors.textLight} />
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -34,41 +186,153 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: spacing.md,
+    paddingBottom: spacing.xxl,
   },
-  banner: {
+  centered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heroBanner: {
     backgroundColor: colors.primary,
     borderRadius: spacing.borderRadius.lg,
     padding: spacing.lg,
     marginBottom: spacing.md,
   },
-  bannerTitle: {
+  heroTitle: {
     color: colors.white,
-    fontSize: 22,
-    fontWeight: '700',
+    fontSize: typography.fontSize.xxl,
+    fontWeight: typography.fontWeight.bold,
+  },
+  heroSubtitle: {
+    color: colors.white,
+    fontSize: typography.fontSize.xl,
+    fontWeight: typography.fontWeight.medium,
+    opacity: 0.9,
     marginBottom: spacing.xs,
   },
-  bannerSubtitle: {
+  heroWelcome: {
     color: colors.white,
-    fontSize: 15,
-    opacity: 0.9,
+    fontSize: typography.fontSize.md,
+    opacity: 0.85,
+    marginTop: spacing.sm,
   },
-  section: {
+  guestCard: {
     backgroundColor: colors.white,
     borderRadius: spacing.borderRadius.md,
     padding: spacing.md,
     marginBottom: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.border,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  guestCardText: {
+    flex: 1,
+  },
+  guestCardTitle: {
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.semiBold,
+    color: colors.dark,
+    marginBottom: 2,
+  },
+  guestCardSubtitle: {
+    fontSize: typography.fontSize.xs,
+    color: colors.textSecondary,
+  },
+  signInButton: {
+    backgroundColor: colors.primary,
+    borderRadius: spacing.borderRadius.sm,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.sm,
+    minHeight: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  signInButtonText: {
+    color: colors.white,
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.semiBold,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  statCard: {
+    flex: 1,
+    backgroundColor: colors.white,
+    borderRadius: spacing.borderRadius.md,
+    padding: spacing.md,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  statValue: {
+    fontSize: typography.fontSize.xxl,
+    fontWeight: typography.fontWeight.bold,
+    color: colors.primary,
+    marginBottom: 2,
+  },
+  statLabel: {
+    fontSize: typography.fontSize.xs,
+    color: colors.textSecondary,
+    textAlign: 'center',
   },
   sectionTitle: {
-    fontSize: 17,
-    fontWeight: '600',
+    fontSize: typography.fontSize.lg,
+    fontWeight: typography.fontWeight.bold,
     color: colors.dark,
     marginBottom: spacing.sm,
+    marginTop: spacing.xs,
   },
-  sectionBody: {
-    fontSize: 15,
+  ctaButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    borderRadius: spacing.borderRadius.md,
+    padding: spacing.md,
+    marginBottom: spacing.sm,
+    gap: spacing.md,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 2,
+    elevation: 1,
+    minHeight: 64,
+  },
+  ctaButtonDisabled: {
+    opacity: 0.6,
+  },
+  ctaIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: spacing.borderRadius.sm,
+    backgroundColor: colors.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ctaTextContainer: {
+    flex: 1,
+  },
+  ctaTitle: {
+    fontSize: typography.fontSize.md,
+    fontWeight: typography.fontWeight.semiBold,
+    color: colors.dark,
+    marginBottom: 2,
+  },
+  ctaTitleDisabled: {
     color: colors.textSecondary,
-    lineHeight: 22,
+  },
+  ctaSubtitle: {
+    fontSize: typography.fontSize.xs,
+    color: colors.textSecondary,
   },
 });
