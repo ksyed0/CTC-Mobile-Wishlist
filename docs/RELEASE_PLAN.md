@@ -168,9 +168,9 @@ Acceptance Criteria:
 TASK-0009 (US-0005): Add search bar to catalog screen with real-time filtering
 Type: Dev
 Assignee: Agent
-Status: To Do
-Branch: feature/US-0005-product-search
-Notes:
+Status: Done
+Branch: feature/polish-fixes
+Notes: BUG-0086 fix — TextInput search bar above category chips; filters filteredProducts locally via useMemo for real-time response; clear (×) button; theme-token styles.
 ```
 
 ---
