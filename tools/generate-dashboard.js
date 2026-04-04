@@ -478,8 +478,8 @@ ${Object.entries(agents).map(([name, agent]) => {
   const statusBg = agent.status === 'active' ? 'rgba(52,168,83,0.2)' : 'rgba(136,136,136,0.15)';
   const statusColor = agent.status === 'active' ? '#34A853' : agent.status === 'complete' ? '#1565C0' : '#888';
   const roles = { Conductor: 'Delivery Manager', Compass: 'Product Owner', Keystone: 'Architect', Lens: 'Code Reviewer', Palette: 'UI Designer', Forge: 'Backend Dev', Pixel: 'Frontend Dev', Sentinel: 'Functional Tester', Circuit: 'Automation Tester' };
-  // Option 1: Avatar with fallback to emoji
-  const avatarImg = `<img class="agent-avatar" src="${imgBase}/${name.toLowerCase()}.png" alt="${name}" style="border-color: ${color}" onerror="this.outerHTML='<div class=\\'agent-avatar-fallback\\' style=\\'border-color: ${color}\\'>${icon}</div>'">`;
+  // Option 1: Avatar headshot (extracted from team-grid) with fallback to full image, then emoji
+  const avatarImg = `<img class="agent-avatar" src="${imgBase}/headshots/${name.toLowerCase()}.png" alt="${name}" style="border-color: ${color}" onerror="this.onerror=function(){this.outerHTML='<div class=\\'agent-avatar-fallback\\' style=\\'border-color: ${color}\\'>${icon}</div>'};this.src='${imgBase}/${name.toLowerCase()}.png'">`;
   return `      <div class="agent-card ${agent.status === 'active' ? 'active' : ''}" style="border-left-color: ${color}">
         ${avatarImg}
         <div class="agent-info">
