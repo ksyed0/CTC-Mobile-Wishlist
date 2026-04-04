@@ -19,54 +19,31 @@
  *   node orchestrator/spawn.js --agent Conductor
  */
 
-// --- Agent Registry ---
-const AGENTS = {
-  Conductor: {
-    instructionFile: 'docs/agents/DM_AGENT.md',
-    icon: '🎯',
-    role: 'Delivery Manager',
-  },
-  Compass: {
-    instructionFile: 'docs/agents/PO_AGENT.md',
-    icon: '🧭',
-    role: 'Product Owner',
-  },
-  Keystone: {
-    instructionFile: 'docs/agents/ARCHITECT_AGENT.md',
-    icon: '🏗️',
-    role: 'Architect',
-  },
-  Lens: {
-    instructionFile: 'docs/agents/CODE_REVIEWER_AGENT.md',
-    icon: '🔍',
-    role: 'Code Reviewer',
-  },
-  Palette: {
-    instructionFile: 'docs/agents/UI_DESIGNER_AGENT.md',
-    icon: '🎨',
-    role: 'UI Designer',
-  },
-  Forge: {
-    instructionFile: 'docs/agents/BE_DEV_AGENT.md',
-    icon: '⚒️',
-    role: 'Backend Developer',
-  },
-  Pixel: {
-    instructionFile: 'docs/agents/FE_DEV_AGENT.md',
-    icon: '📱',
-    role: 'Frontend Developer',
-  },
-  Sentinel: {
-    instructionFile: 'docs/agents/FUNCTIONAL_TESTER_AGENT.md',
-    icon: '🛡️',
-    role: 'Functional Tester',
-  },
-  Circuit: {
-    instructionFile: 'docs/agents/AUTOMATION_TESTER_AGENT.md',
-    icon: '⚡',
-    role: 'Automation Tester',
-  },
-};
+// --- Agent Registry (loaded from agents.config.json) ---
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.join(__dirname, '..');
+
+function loadAgentsConfig() {
+  const cfgPath = path.join(ROOT, 'agents.config.json');
+  if (!fs.existsSync(cfgPath)) {
+    console.error('[spawn] agents.config.json not found. Create one with agent definitions.');
+    process.exit(1);
+  }
+  const raw = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+  const agents = {};
+  for (const [name, cfg] of Object.entries(raw.agents)) {
+    agents[name] = {
+      instructionFile: cfg.instructionFile,
+      icon: cfg.icon,
+      role: cfg.role,
+    };
+  }
+  return { agents, orchestrator: raw.orchestrator || {} };
+}
+
+const { agents: AGENTS, orchestrator: ORCHESTRATOR_CONFIG } = loadAgentsConfig();
 
 // --- Platform Adapters ---
 const ADAPTERS = {
@@ -191,8 +168,9 @@ function main() {
   if (args.includes('--print-all')) {
     const adapter = getAdapter();
     console.log(`Platform: ${adapter.name} (${adapter.cli})\n`);
-    console.log('=== Quick Start: Launch Conductor ===\n');
-    console.log(spawnCommand('Conductor'));
+    const dmAgent = ORCHESTRATOR_CONFIG.dmAgent || Object.keys(AGENTS)[0];
+    console.log(`=== Quick Start: Launch ${dmAgent} ===\n`);
+    console.log(spawnCommand(dmAgent));
     console.log('\n=== All Agent Spawn Commands ===\n');
     Object.keys(AGENTS).forEach((name) => {
       console.log(`# ${name}`);
@@ -249,8 +227,10 @@ module.exports = {
   parallelSpawn,
   getAdapter,
   getAgent,
+  loadAgentsConfig,
   AGENTS,
   ADAPTERS,
+  ORCHESTRATOR_CONFIG,
 };
 
 if (require.main === module) {

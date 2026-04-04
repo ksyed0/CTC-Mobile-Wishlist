@@ -18,10 +18,34 @@ const fs = require('fs');
 const path = require('path');
 const { createCanvas, loadImage } = require('canvas');
 
-// --- Configuration ---
-const AGENTS_ORDER = ['conductor', 'compass', 'keystone', 'lens', 'palette', 'forge', 'pixel', 'sentinel', 'circuit'];
-const TOP_ROW_COUNT = 5;
-const BOTTOM_ROW_COUNT = 4;
+// --- Configuration (loaded from agents.config.json) ---
+const ROOT = path.resolve(__dirname, '..');
+
+function loadAvatarConfig() {
+  const cfgPath = path.join(ROOT, 'agents.config.json');
+  if (!fs.existsSync(cfgPath)) {
+    // Fallback to hardcoded defaults if no config
+    return {
+      order: ['conductor', 'compass', 'keystone', 'lens', 'palette', 'forge', 'pixel', 'sentinel', 'circuit'],
+      topRowCount: 5,
+      bottomRowCount: 4,
+    };
+  }
+  const raw = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+  const grid = (raw.orchestrator || {}).avatarGrid;
+  if (grid && grid.topRow && grid.bottomRow) {
+    const order = [...grid.topRow, ...grid.bottomRow].map((n) => n.toLowerCase());
+    return { order, topRowCount: grid.topRow.length, bottomRowCount: grid.bottomRow.length };
+  }
+  // Derive from agent keys if no grid defined
+  const order = Object.keys(raw.agents || {}).map((n) => n.toLowerCase());
+  return { order, topRowCount: Math.ceil(order.length / 2), bottomRowCount: Math.floor(order.length / 2) };
+}
+
+const AVATAR_CONFIG = loadAvatarConfig();
+const AGENTS_ORDER = AVATAR_CONFIG.order;
+const TOP_ROW_COUNT = AVATAR_CONFIG.topRowCount;
+const BOTTOM_ROW_COUNT = AVATAR_CONFIG.bottomRowCount;
 const OUTPUT_SIZE = 200; // px — square headshot output
 
 const IMAGES_DIR = path.resolve(__dirname, '..', 'docs', 'agents', 'images');
