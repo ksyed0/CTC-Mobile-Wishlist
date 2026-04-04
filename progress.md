@@ -174,8 +174,27 @@
 - Updated DM_AGENT.md Phase 6 to verify CI checks pass after pushing
 - Conductor now checks PR CI status and spawns agents to fix failures
 
+**PR/CI/Review Documentation**
+
+- Documented PR creation protocol in AGENTS.md §11 (who creates PRs, review flow, CI pipeline table)
+- Added §2.1 PR Creation & Review Flow and §2.2 BLOCK Recovery Protocol to AGENT_PLAN.md
+- Added 3 Mermaid diagrams to DIAGRAMS.md: PR review workflow, CI pipeline flow, agent branch strategy
+
+**Dashboard BLOCK Alert System (BUG-0038 – BUG-0042)**
+
+- Added `.phase-block.blocked` CSS with red pulsing animation and ⛔ icon
+- Added `.agent-card.blocked` CSS with red border and status color
+- Added top-of-page alert banner when any phase/agent is blocked
+- Added Web Audio API three-tone alert on BLOCK state transitions (toggle in header)
+- Added browser Notification API push on BLOCK transitions (toggle in header)
+- Both toggles persist to localStorage; notification requests permission on enable
+
+**CI Fix (BUG-0043)**
+
+- Fixed Prettier reformatting test fixture that broke parse-bugs tests
+
 ### Stats
 
-- 5 bugs logged (BUG-0033 – BUG-0037), all fixed
-- 65 files changed across CI, formatting, and lint improvements
+- 11 bugs logged (BUG-0033 – BUG-0043), all fixed
 - 6-job CI pipeline protecting main and develop branches
+- Dashboard now surfaces BLOCKED states with audio, visual, and push alerts
