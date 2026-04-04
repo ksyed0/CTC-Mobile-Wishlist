@@ -353,3 +353,51 @@
 - **Found in:** `tests/fixtures/BUGS.md`
 - **Description:** Prettier markdown formatting indented metadata fields (Status, Fix Branch, Estimated Cost USD) under a numbered list item. The `parseBugs` regex uses `^` anchors requiring column 0, causing 4 test failures in CI.
 - **Fix:** Restructured fixture to keep numbered list items and metadata fields at separate paragraph levels so Prettier does not nest them.
+
+### BUG-0044: Race condition on sdlc-status.json during parallel agent writes
+
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `docs/sdlc-status.json`, `docs/agents/DM_AGENT.md`
+- **Description:** When Forge and Pixel run in parallel (Phase 3), both agents update `sdlc-status.json` to report progress. Without locking, one agent's write can overwrite the other's, losing status updates. This is a classic lost-update race condition.
+- **Fix:** Added `orchestrator/file-lock.js` (mkdir-based locking with stale detection) and `orchestrator/atomic-write.js` (atomic read-modify-write via temp+rename). All agents must use `atomicReadModifyWriteJson()` for sdlc-status.json updates.
+
+### BUG-0045: Race condition on ID_REGISTRY.md causes duplicate IDs
+
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `docs/ID_REGISTRY.md`
+- **Description:** When parallel agents both need to allocate a new bug or task ID, they could read the same "next available" value from ID_REGISTRY.md simultaneously, producing duplicate IDs. This corrupts cross-references across BUGS.md, RELEASE_PLAN.md, and TEST_CASES.md.
+- **Fix:** Added `reserveId(sequence)` in `orchestrator/atomic-write.js` that acquires a file lock, reads the registry, increments the sequence, and writes back atomically. Agents must use this instead of manual ID allocation.
+
+### BUG-0046: Interleaved writes to progress.md and AI_COST_LOG.md
+
+- **Severity:** High
+- **Status:** Fixed
+- **Found in:** `progress.md`, `docs/AI_COST_LOG.md`
+- **Description:** Append-only log files written by multiple parallel agents can produce interleaved or corrupted entries when two processes append simultaneously. Markdown structure breaks when partial lines from different agents mix.
+- **Fix:** Added `atomicAppend()` in `orchestrator/atomic-write.js` that acquires a file lock before appending. All log-style file writes must use this function.
+
+### BUG-0047: Git push failures during parallel agent branches
+
+- **Severity:** High
+- **Status:** Fixed
+- **Found in:** Orchestrator agent workflow
+- **Description:** When parallel agents push to different branches simultaneously, network contention or remote rejections can cause silent push failures. Agents may believe code is pushed when it isn't, leading to lost work or stale PRs.
+- **Fix:** Added `orchestrator/git-safe.js` with `safePush()` (exponential backoff retry, auto-pull on rejection), `detectConflicts()` (dry-run merge check), and `checkOverlap()` (overlapping file detection between branches).
+
+### BUG-0048: No merge conflict detection before parallel branch merges
+
+- **Severity:** High
+- **Status:** Fixed
+- **Found in:** `docs/agents/DM_AGENT.md`
+- **Description:** When Conductor merges parallel branches (e.g., Forge's backend + Pixel's frontend), there is no pre-merge conflict check. If both branches modify shared files (package.json, types, test fixtures), the merge fails mid-way and requires manual intervention.
+- **Fix:** Added `checkOverlap()` and `detectConflicts()` to `orchestrator/git-safe.js`. Conductor must run overlap check before merging parallel branches. Sequential merge order: first-in merges clean, second rebases on top.
+
+### BUG-0049: No pre-commit formatting enforcement
+
+- **Severity:** Medium
+- **Status:** Fixed
+- **Found in:** Project configuration
+- **Description:** Prettier formatting was only enforced in CI. Developers and agents could commit unformatted code, causing CI failures on every PR. No local feedback loop before push.
+- **Fix:** Added husky pre-commit hook with lint-staged. On commit, staged `.js`, `.json`, `.md`, `.yml`, `.yaml` files are auto-formatted with Prettier, and `.js` files are auto-fixed with ESLint.

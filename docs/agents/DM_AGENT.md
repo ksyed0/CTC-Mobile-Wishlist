@@ -394,6 +394,32 @@ Each phase has a **90-minute hard timeout** measured from when the first agent i
 
 **Exception:** Phase 6 (Polish) has no hard timeout — it runs until the hackathon end time or until all critical bugs are fixed, whichever comes first.
 
+### Concurrency Safety for Shared Files
+
+Multiple agents may run in parallel (e.g., Forge + Pixel in Phase 3). Shared files require concurrency-safe access to prevent race conditions, data corruption, and lost writes.
+
+**Critical shared files:**
+
+| File                    | Risk                                             | Mitigation                                          |
+| ----------------------- | ------------------------------------------------ | --------------------------------------------------- |
+| `docs/sdlc-status.json` | Lost updates from parallel agents                | Use `atomicReadModifyWriteJson()` for all writes    |
+| `progress.md`           | Interleaved log entries                          | Use `atomicAppend()` for all appends                |
+| `docs/BUGS.md`          | Duplicate bug IDs when parallel agents find bugs | Use `reserveId('BUG')` before writing               |
+| `docs/ID_REGISTRY.md`   | Sequence collision on parallel ID allocation     | Always use `reserveId()` — never manually increment |
+| `docs/AI_COST_LOG.md`   | Interleaved cost entries                         | Use `atomicAppend()` for all entries                |
+
+**Concurrency utilities** (in `orchestrator/`):
+
+```javascript
+const { atomicReadModifyWriteJson, atomicAppend, reserveId } = require('./orchestrator/atomic-write');
+const { safePush, detectConflicts, checkOverlap } = require('./orchestrator/git-safe');
+const { withLock } = require('./orchestrator/file-lock');
+```
+
+**Git push safety:** Always use `safePush(branch)` instead of raw `git push`. It retries on network errors (exponential backoff, 4 attempts) and auto-pulls on rejection.
+
+**Before merging parallel branches:** Run `checkOverlap(branchA, branchB)` to identify overlapping file edits. If files overlap, merge branches sequentially (first-in merges clean, second rebases on top).
+
 ## Rules
 
 - Never write application code yourself — always delegate to the appropriate agent

@@ -17,13 +17,20 @@
     "format:check": "prettier --check .",
     "start": "npx expo start",
     "android": "npx expo start --android",
-    "ios": "npx expo start --ios"
+    "ios": "npx expo start --ios",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,json,md,yml,yaml}": "prettier --write",
+    "*.js": "eslint --fix"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "canvas": "^3.2.3",
     "eslint": "10.0.3",
+    "husky": "^9.1.7",
     "jest": "^30.3.0",
+    "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
     "tracking": "^1.1.3"
   }

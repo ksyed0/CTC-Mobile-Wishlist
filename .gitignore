@@ -13,6 +13,9 @@ coverage/
 *.swo
 .history/
 
+# Lock files (orchestrator concurrency)
+.locks/
+
 # Expo / React Native
 .expo/
 web-build/
