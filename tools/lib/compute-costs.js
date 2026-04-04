@@ -8,12 +8,19 @@ function computeProjectedCost(estimate, hoursMap, rate) {
 
 function attributeAICosts(stories, costByBranch) {
   const result = {};
-  let totalCost = 0, totalInput = 0, totalOutput = 0;
+  let totalCost = 0,
+    totalInput = 0,
+    totalOutput = 0;
 
   for (const story of stories) {
     const match = story.branch ? costByBranch[story.branch] : null;
     result[story.id] = match
-      ? { costUsd: match.costUsd, inputTokens: match.inputTokens, outputTokens: match.outputTokens, sessions: match.sessions }
+      ? {
+          costUsd: match.costUsd,
+          inputTokens: match.inputTokens,
+          outputTokens: match.outputTokens,
+          sessions: match.sessions,
+        }
       : { costUsd: 0, inputTokens: 0, outputTokens: 0, sessions: 0 };
   }
 
@@ -31,13 +38,21 @@ function attributeAICosts(stories, costByBranch) {
 
 function attributeBugCosts(bugs, costByBranch) {
   const result = {};
-  let totalCost = 0, totalInput = 0, totalOutput = 0;
+  let totalCost = 0,
+    totalInput = 0,
+    totalOutput = 0;
 
   for (const bug of bugs) {
     const match = bug.fixBranch ? costByBranch[bug.fixBranch] : null;
     const estimated = bug.estimatedCostUsd || 0;
     if (match) {
-      result[bug.id] = { costUsd: match.costUsd, inputTokens: match.inputTokens, outputTokens: match.outputTokens, sessions: match.sessions, isEstimated: false };
+      result[bug.id] = {
+        costUsd: match.costUsd,
+        inputTokens: match.inputTokens,
+        outputTokens: match.outputTokens,
+        sessions: match.sessions,
+        isEstimated: false,
+      };
       totalCost += match.costUsd;
       totalInput += match.inputTokens;
       totalOutput += match.outputTokens;

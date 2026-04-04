@@ -16,28 +16,25 @@
  *   node orchestrator/spawn.js --agent Conductor
  */
 
-const path = require('path');
-const fs = require('fs');
-
 // --- Agent Registry ---
 const AGENTS = {
-  Conductor:  { instructionFile: 'docs/agents/DM_AGENT.md',               icon: '🎯', role: 'Delivery Manager' },
-  Compass:    { instructionFile: 'docs/agents/PO_AGENT.md',               icon: '🧭', role: 'Product Owner' },
-  Keystone:   { instructionFile: 'docs/agents/ARCHITECT_AGENT.md',        icon: '🏗️', role: 'Architect' },
-  Lens:       { instructionFile: 'docs/agents/CODE_REVIEWER_AGENT.md',    icon: '🔍', role: 'Code Reviewer' },
-  Palette:    { instructionFile: 'docs/agents/UI_DESIGNER_AGENT.md',      icon: '🎨', role: 'UI Designer' },
-  Forge:      { instructionFile: 'docs/agents/BE_DEV_AGENT.md',           icon: '⚒️', role: 'Backend Developer' },
-  Pixel:      { instructionFile: 'docs/agents/FE_DEV_AGENT.md',           icon: '📱', role: 'Frontend Developer' },
-  Sentinel:   { instructionFile: 'docs/agents/FUNCTIONAL_TESTER_AGENT.md',icon: '🛡️', role: 'Functional Tester' },
-  Circuit:    { instructionFile: 'docs/agents/AUTOMATION_TESTER_AGENT.md', icon: '⚡', role: 'Automation Tester' },
+  Conductor: { instructionFile: 'docs/agents/DM_AGENT.md', icon: '🎯', role: 'Delivery Manager' },
+  Compass: { instructionFile: 'docs/agents/PO_AGENT.md', icon: '🧭', role: 'Product Owner' },
+  Keystone: { instructionFile: 'docs/agents/ARCHITECT_AGENT.md', icon: '🏗️', role: 'Architect' },
+  Lens: { instructionFile: 'docs/agents/CODE_REVIEWER_AGENT.md', icon: '🔍', role: 'Code Reviewer' },
+  Palette: { instructionFile: 'docs/agents/UI_DESIGNER_AGENT.md', icon: '🎨', role: 'UI Designer' },
+  Forge: { instructionFile: 'docs/agents/BE_DEV_AGENT.md', icon: '⚒️', role: 'Backend Developer' },
+  Pixel: { instructionFile: 'docs/agents/FE_DEV_AGENT.md', icon: '📱', role: 'Frontend Developer' },
+  Sentinel: { instructionFile: 'docs/agents/FUNCTIONAL_TESTER_AGENT.md', icon: '🛡️', role: 'Functional Tester' },
+  Circuit: { instructionFile: 'docs/agents/AUTOMATION_TESTER_AGENT.md', icon: '⚡', role: 'Automation Tester' },
 };
 
 // --- Platform Adapters ---
 const ADAPTERS = {
   'claude-code': require('./adapters/claude-code'),
-  'codex':       require('./adapters/codex-cli'),
-  'gemini':      require('./adapters/gemini-cli'),
-  'aider':       require('./adapters/aider'),
+  codex: require('./adapters/codex-cli'),
+  gemini: require('./adapters/gemini-cli'),
+  aider: require('./adapters/aider'),
 };
 
 const DEFAULT_PLATFORM = 'claude-code';
@@ -120,7 +117,7 @@ function conductorSpawn(agentName, task) {
  */
 function parallelSpawn(agentConfigs) {
   const adapter = getAdapter();
-  const agents = agentConfigs.map(a => ({
+  const agents = agentConfigs.map((a) => ({
     ...getAgent(a.name),
     task: a.task || `Follow your instruction file.`,
   }));
@@ -155,20 +152,22 @@ function main() {
     console.log('=== Quick Start: Launch Conductor ===\n');
     console.log(spawnCommand('Conductor'));
     console.log('\n=== All Agent Spawn Commands ===\n');
-    Object.keys(AGENTS).forEach(name => {
+    Object.keys(AGENTS).forEach((name) => {
       console.log(`# ${name}`);
       console.log(spawnCommand(name));
       console.log('');
     });
     console.log('=== Parallel Sessions (Maximum Velocity) ===\n');
     const adapter_ = getAdapter();
-    console.log(adapter_.parallelTerminals([
-      { ...getAgent('Keystone'), task: 'Scaffold the project, then implement all services.' },
-      { ...getAgent('Pixel'), task: 'Set up the theme, then build all screens and components.' },
-      { ...getAgent('Sentinel'), task: 'Execute all test cases.' },
-    ]));
+    console.log(
+      adapter_.parallelTerminals([
+        { ...getAgent('Keystone'), task: 'Scaffold the project, then implement all services.' },
+        { ...getAgent('Pixel'), task: 'Set up the theme, then build all screens and components.' },
+        { ...getAgent('Sentinel'), task: 'Execute all test cases.' },
+      ]),
+    );
     console.log('\n=== Platform Notes ===\n');
-    adapter.notes.forEach(n => console.log(`  • ${n}`));
+    adapter.notes.forEach((n) => console.log(`  • ${n}`));
     return;
   }
 

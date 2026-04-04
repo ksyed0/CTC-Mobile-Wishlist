@@ -44,10 +44,12 @@ module.exports = {
   parallelSpawnPattern(agents) {
     return [
       `Open ${agents.length} separate terminals and run each:`,
-      ...agents.map((a, i) => [
-        `  Terminal ${i + 1} (${a.name}):`,
-        `    codex "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
-      ].join('\n')),
+      ...agents.map((a, i) =>
+        [
+          `  Terminal ${i + 1} (${a.name}):`,
+          `    codex "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
+        ].join('\n'),
+      ),
       ``,
       `Wait for all terminals to complete before proceeding.`,
     ].join('\n');
@@ -57,9 +59,12 @@ module.exports = {
    * How to run parallel terminal sessions for maximum velocity.
    */
   parallelTerminals(agents) {
-    return agents.map((a, i) =>
-      `# Terminal ${i + 1}: ${a.name}\ncodex "Read ${a.instructionFile} for your full instructions. ${a.task}"`
-    ).join('\n\n');
+    return agents
+      .map(
+        (a, i) =>
+          `# Terminal ${i + 1}: ${a.name}\ncodex "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
+      )
+      .join('\n\n');
   },
 
   /**

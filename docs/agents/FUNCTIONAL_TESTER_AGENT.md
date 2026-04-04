@@ -19,19 +19,19 @@ You are the **Functional Tester Agent** for the CTC Mobile Wishlist POC. You own
 
 ## Test Case Inventory
 
-| TC Range | Area | Story |
-|----------|------|-------|
-| TC-0001 – TC-0004 | Project scaffold, navigation, theming | US-0001 |
-| TC-0005 – TC-0008 | Mock data layer, products, users | US-0002 |
-| TC-0009 – TC-0012 | Catalog browsing, search, filters | US-0003 |
-| TC-0013 – TC-0015 | Product detail screen | US-0004 |
-| TC-0016 – TC-0018 | Barcode scanning | US-0005 |
-| TC-0019 – TC-0021 | Barcode → product lookup | US-0006 |
-| TC-0022 – TC-0024 | Wishlist CRUD | US-0007, US-0008 |
-| TC-0025 – TC-0027 | Wishlist detail view | US-0009 |
-| TC-0028 – TC-0030 | Share wishlist | US-0010, US-0011 |
-| TC-0031 – TC-0033 | Claim/unclaim items | US-0012 |
-| TC-0034 – TC-0036 | User switcher | US-0013 |
+| TC Range          | Area                                  | Story            |
+| ----------------- | ------------------------------------- | ---------------- |
+| TC-0001 – TC-0004 | Project scaffold, navigation, theming | US-0001          |
+| TC-0005 – TC-0008 | Mock data layer, products, users      | US-0002          |
+| TC-0009 – TC-0012 | Catalog browsing, search, filters     | US-0003          |
+| TC-0013 – TC-0015 | Product detail screen                 | US-0004          |
+| TC-0016 – TC-0018 | Barcode scanning                      | US-0005          |
+| TC-0019 – TC-0021 | Barcode → product lookup              | US-0006          |
+| TC-0022 – TC-0024 | Wishlist CRUD                         | US-0007, US-0008 |
+| TC-0025 – TC-0027 | Wishlist detail view                  | US-0009          |
+| TC-0028 – TC-0030 | Share wishlist                        | US-0010, US-0011 |
+| TC-0031 – TC-0033 | Claim/unclaim items                   | US-0012          |
+| TC-0034 – TC-0036 | User switcher                         | US-0013          |
 
 ## Execution Process
 
@@ -63,30 +63,33 @@ After executing all test cases, add this summary to `progress.md`:
 ```markdown
 ## Test Execution Report — [Date]
 
-| Metric | Value |
-|--------|-------|
-| Total Test Cases | 40 |
-| Executed | XX |
-| Passed | XX |
-| Failed | XX |
-| Blocked | XX |
-| Not Run | XX |
-| Pass Rate | XX% |
+| Metric           | Value |
+| ---------------- | ----- |
+| Total Test Cases | 40    |
+| Executed         | XX    |
+| Passed           | XX    |
+| Failed           | XX    |
+| Blocked          | XX    |
+| Not Run          | XX    |
+| Pass Rate        | XX%   |
 
 ### Failed Tests
-| TC ID | Summary | Bug ID |
-|-------|---------|--------|
+
+| TC ID   | Summary           | Bug ID   |
+| ------- | ----------------- | -------- |
 | TC-XXXX | Brief description | BUG-XXXX |
 
 ### Blocked Tests
-| TC ID | Reason |
-|-------|--------|
+
+| TC ID   | Reason                         |
+| ------- | ------------------------------ |
 | TC-XXXX | Feature not implemented in POC |
 ```
 
 ## POC Simulation
 
 For features not implemented in the POC, mark test cases as:
+
 - `Status: [ ] Not Run`
 - `Actual Result: SIMULATED — Feature not implemented in POC scope`
 - `Notes: Expected to pass when [feature] is implemented`
@@ -96,6 +99,7 @@ Do NOT mark simulated tests as Pass — they must remain Not Run.
 ## Acceptance Criteria Verification
 
 After test execution, update each AC's checkbox in `docs/RELEASE_PLAN.md` based on test results:
+
 - If all linked TCs pass → check the AC box `[x]`
 - If any linked TC fails → leave unchecked `[ ]` and note the blocking bug
 

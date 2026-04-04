@@ -45,16 +45,17 @@ __tests__/
 
 ## Coverage Targets
 
-| Layer | Target | Rationale |
-|-------|--------|-----------|
-| Services (`src/services/`) | ≥ 80% | Business logic — highest priority |
-| Components (`src/components/`) | ≥ 50% | UI rendering — snapshot + interaction |
-| Screens (`src/screens/`) | ≥ 30% | Integration — basic render tests |
-| **Overall** | **≥ 60%** | Hackathon POC target |
+| Layer                          | Target    | Rationale                             |
+| ------------------------------ | --------- | ------------------------------------- |
+| Services (`src/services/`)     | ≥ 80%     | Business logic — highest priority     |
+| Components (`src/components/`) | ≥ 50%     | UI rendering — snapshot + interaction |
+| Screens (`src/screens/`)       | ≥ 30%     | Integration — basic render tests      |
+| **Overall**                    | **≥ 60%** | Hackathon POC target                  |
 
 ## Test Patterns
 
 ### Service Tests
+
 ```typescript
 import { productService } from '../../src/services/productService';
 
@@ -80,6 +81,7 @@ describe('ProductService', () => {
 ```
 
 ### Component Tests
+
 ```typescript
 import { render, fireEvent } from '@testing-library/react-native';
 import ProductCard from '../../src/components/ProductCard';
@@ -117,6 +119,7 @@ describe('ProductCard', () => {
 ## Jest Configuration
 
 Ensure `package.json` includes:
+
 ```json
 {
   "scripts": {

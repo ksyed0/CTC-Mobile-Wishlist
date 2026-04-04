@@ -19,10 +19,7 @@ const path = require('path');
 const { createCanvas, loadImage } = require('canvas');
 
 // --- Configuration ---
-const AGENTS_ORDER = [
-  'conductor', 'compass', 'keystone', 'lens', 'palette',
-  'forge', 'pixel', 'sentinel', 'circuit',
-];
+const AGENTS_ORDER = ['conductor', 'compass', 'keystone', 'lens', 'palette', 'forge', 'pixel', 'sentinel', 'circuit'];
 const TOP_ROW_COUNT = 5;
 const BOTTOM_ROW_COUNT = 4;
 const OUTPUT_SIZE = 200; // px — square headshot output
@@ -34,7 +31,7 @@ const HEADSHOTS_DIR = path.join(IMAGES_DIR, 'headshots');
 function findGridFile() {
   if (!fs.existsSync(IMAGES_DIR)) return null;
   const files = fs.readdirSync(IMAGES_DIR);
-  const match = files.find(f => f.toLowerCase() === 'team-grid.png');
+  const match = files.find((f) => f.toLowerCase() === 'team-grid.png');
   if (!match) return null;
   // Rename to lowercase if needed (normalize for Linux)
   const fullPath = path.join(IMAGES_DIR, match);
@@ -49,9 +46,7 @@ const GRID_FILE = findGridFile();
 
 // Parse --padding flag (default 1.5x around detected face)
 const paddingArg = process.argv.indexOf('--padding');
-const PADDING_MULTIPLIER = paddingArg !== -1
-  ? parseFloat(process.argv[paddingArg + 1])
-  : 1.5;
+const PADDING_MULTIPLIER = paddingArg !== -1 ? parseFloat(process.argv[paddingArg + 1]) : 1.5;
 
 // --- Shim window/document for tracking.js in Node.js ---
 // tracking.js expects browser globals (window, document, navigator)
@@ -118,7 +113,7 @@ function mergeOverlapping(faces, overlapThreshold = 0.3) {
   if (faces.length === 0) return [];
 
   // Sort by area descending
-  const sorted = [...faces].sort((a, b) => (b.width * b.height) - (a.width * a.height));
+  const sorted = [...faces].sort((a, b) => b.width * b.height - a.width * a.height);
   const merged = [];
   const used = new Set();
 
@@ -163,8 +158,8 @@ function mergeOverlapping(faces, overlapThreshold = 0.3) {
 function sortFacesGridOrder(faces, imgHeight) {
   const midY = imgHeight / 2;
 
-  const topRow = faces.filter(f => f.y + f.height / 2 < midY).sort((a, b) => a.x - b.x);
-  const bottomRow = faces.filter(f => f.y + f.height / 2 >= midY).sort((a, b) => a.x - b.x);
+  const topRow = faces.filter((f) => f.y + f.height / 2 < midY).sort((a, b) => a.x - b.x);
+  const bottomRow = faces.filter((f) => f.y + f.height / 2 >= midY).sort((a, b) => a.x - b.x);
 
   return [...topRow, ...bottomRow];
 }
@@ -275,7 +270,7 @@ async function main() {
     faces = gridFallback(width, height);
   } else if (faces.length > 9) {
     // Take the 9 largest
-    faces.sort((a, b) => (b.width * b.height) - (a.width * a.height));
+    faces.sort((a, b) => b.width * b.height - a.width * a.height);
     faces = faces.slice(0, 9);
   }
 
@@ -300,7 +295,7 @@ async function main() {
   console.log(`[avatars] Done. ${AGENTS_ORDER.length} headshots saved to ${HEADSHOTS_DIR}`);
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error('[avatars] Error:', err.message);
   process.exit(1);
 });

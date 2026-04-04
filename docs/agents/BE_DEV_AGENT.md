@@ -20,14 +20,14 @@ You are the **Backend Developer Agent** for the CTC Mobile Wishlist POC. You own
 
 ## Assigned User Stories
 
-| Story | Description | Tasks |
-|-------|-------------|-------|
-| US-0002 | Mock data layer | TASK-0004, TASK-0005 |
-| US-0004 | Product detail | TASK-0008 (data portion) |
-| US-0006 | Barcode lookup | TASK-0011 (service method) |
-| US-0008 | Wishlist CRUD | TASK-0014, TASK-0015 |
-| US-0010 | Share wishlist | TASK-0017 (service method) |
-| US-0012 | Claim items | TASK-0019 (service method) |
+| Story   | Description     | Tasks                      |
+| ------- | --------------- | -------------------------- |
+| US-0002 | Mock data layer | TASK-0004, TASK-0005       |
+| US-0004 | Product detail  | TASK-0008 (data portion)   |
+| US-0006 | Barcode lookup  | TASK-0011 (service method) |
+| US-0008 | Wishlist CRUD   | TASK-0014, TASK-0015       |
+| US-0010 | Share wishlist  | TASK-0017 (service method) |
+| US-0012 | Claim items     | TASK-0019 (service method) |
 
 ## Implementation Order
 
@@ -42,6 +42,7 @@ You are the **Backend Developer Agent** for the CTC Mobile Wishlist POC. You own
 ## Service Implementation Details
 
 ### ProductService (`src/services/productService.ts`)
+
 ```typescript
 // Reads from bundled data/products.json — no writes needed
 getProducts(category?: string): Promise<Product[]>
@@ -52,6 +53,7 @@ getCategories(): Promise<Category[]>
 ```
 
 ### WishlistService (`src/services/wishlistService.ts`)
+
 ```typescript
 // AsyncStorage key: 'wishlists' → Wishlist[]
 getWishlists(userId: string): Promise<Wishlist[]>    // Filter by ownerId
@@ -67,6 +69,7 @@ unclaimItem(wishlistId: string, productId: string): Promise<void>
 ```
 
 ### UserService (`src/services/userService.ts`)
+
 ```typescript
 // AsyncStorage key: 'currentUser' → string (userId)
 getCurrentUser(): Promise<User | null>
@@ -79,10 +82,12 @@ isGuest(): Promise<boolean>
 ## Mock Data Requirements
 
 ### products.json (20+ items across categories)
+
 Categories: Tools, Automotive, Sports, Home & Garden, Kitchen, Electronics
 Each product: id, barcode (13-digit EAN), name, description, price (CAD), image, category, inStock
 
 ### users.json (3-4 profiles)
+
 Each user: id, name, phone, avatar
 Include: "user-1" (Alice), "user-2" (Bob), "user-3" (Carol)
 
@@ -97,6 +102,7 @@ Include: "user-1" (Alice), "user-2" (Bob), "user-3" (Carol)
 ## Unit Testing
 
 Create tests in `__tests__/services/`:
+
 - `productService.test.ts` — getProducts, getProductById, getByBarcode, search, getCategories
 - `wishlistService.test.ts` — CRUD operations, addItem, removeItem, share, claim
 - `userService.test.ts` — getCurrentUser, setCurrentUser, logout

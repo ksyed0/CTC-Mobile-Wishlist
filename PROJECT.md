@@ -1,6 +1,7 @@
 # PROJECT.md — Project Constitution
 
 ## Project Overview
+
 - **Name:** CTC-Mobile-Wishlist
 - **Description:** A limited-functional POC for Canadian Tire's mobile app, enabling users to create arbitrary wishlists, add items via product catalog browsing or barcode scanning of physical store shelf products, and share wishlists with phone contacts for collaborative gift fulfillment.
 - **Client:** Canadian Tire Corporation (CTC)
@@ -27,21 +28,22 @@
 
 ## Tech Stack
 
-| Layer | Technology | Reason |
-|-------|-----------|--------|
-| Framework | React Native + Expo (SDK 52) | Single codebase, iOS + Android, fast POC iteration |
-| Language | TypeScript | Type safety, better DX |
-| Navigation | Expo Router | File-based routing, simple setup |
-| Barcode Scanning | expo-camera / expo-barcode-scanner | Native barcode scanning, no config |
-| Contacts | expo-contacts | Access phone contacts for sharing |
-| Sharing | expo-sharing / Share API | Native share sheet |
-| Local Storage | AsyncStorage | Simple key-value persistence for POC |
-| UI Components | React Native Paper or NativeWind | Polished UI with minimal effort |
-| Mock Data | Local JSON + bundled images | No backend needed for POC |
+| Layer            | Technology                         | Reason                                             |
+| ---------------- | ---------------------------------- | -------------------------------------------------- |
+| Framework        | React Native + Expo (SDK 52)       | Single codebase, iOS + Android, fast POC iteration |
+| Language         | TypeScript                         | Type safety, better DX                             |
+| Navigation       | Expo Router                        | File-based routing, simple setup                   |
+| Barcode Scanning | expo-camera / expo-barcode-scanner | Native barcode scanning, no config                 |
+| Contacts         | expo-contacts                      | Access phone contacts for sharing                  |
+| Sharing          | expo-sharing / Share API           | Native share sheet                                 |
+| Local Storage    | AsyncStorage                       | Simple key-value persistence for POC               |
+| UI Components    | React Native Paper or NativeWind   | Polished UI with minimal effort                    |
+| Mock Data        | Local JSON + bundled images        | No backend needed for POC                          |
 
 ## Data Schema
 
 ### Product
+
 ```json
 {
   "id": "string",
@@ -56,6 +58,7 @@
 ```
 
 ### Wishlist
+
 ```json
 {
   "id": "string",
@@ -81,6 +84,7 @@
 ```
 
 ### User (local mock)
+
 ```json
 {
   "id": "string",
@@ -107,4 +111,5 @@
 - **Status bar:** Dark content on light background
 
 ## Maintenance Log
+
 _Updated during Phase 5 — Trigger._

@@ -45,10 +45,12 @@ module.exports = {
   parallelSpawnPattern(agents) {
     return [
       `Open ${agents.length} separate terminals and run each:`,
-      ...agents.map((a, i) => [
-        `  Terminal ${i + 1} (${a.name}):`,
-        `    aider --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
-      ].join('\n')),
+      ...agents.map((a, i) =>
+        [
+          `  Terminal ${i + 1} (${a.name}):`,
+          `    aider --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
+        ].join('\n'),
+      ),
       ``,
       `Use --yes-always for autonomous mode. Wait for all to complete.`,
     ].join('\n');
@@ -58,9 +60,12 @@ module.exports = {
    * How to run parallel terminal sessions for maximum velocity.
    */
   parallelTerminals(agents) {
-    return agents.map((a, i) =>
-      `# Terminal ${i + 1}: ${a.name}\naider --yes-always --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`
-    ).join('\n\n');
+    return agents
+      .map(
+        (a, i) =>
+          `# Terminal ${i + 1}: ${a.name}\naider --yes-always --message "Read ${a.instructionFile} for your full instructions. ${a.task}"`,
+      )
+      .join('\n\n');
   },
 
   /**

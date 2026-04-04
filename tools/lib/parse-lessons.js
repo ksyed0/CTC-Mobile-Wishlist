@@ -14,7 +14,7 @@ function parseLessons(markdown) {
     const block = markdown.slice(startIdx, next ? next.index : undefined);
     const ruleM = block.match(/\*\*Rule:\*\*\s*(.+?)(?=\n\*|\n\*\*Date|\n---|\n## |$)/s);
     const ctxMatches = [...block.matchAll(/\n\*([^*]+)\*/g)];
-    const context = ctxMatches.map(m => m[1].trim()).join(' ');
+    const context = ctxMatches.map((m) => m[1].trim()).join(' ');
     const dateM = block.match(/\*\*Date:\*\*\s*(\S+)/);
     results.push({
       id,

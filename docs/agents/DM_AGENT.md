@@ -25,16 +25,16 @@ You operate by spawning each agent as a **sub-agent** using Claude Code's Agent 
 
 ## Your 7 Sub-Agents
 
-| Name | Role | Instruction File | When to Spawn |
-|------|------|-----------------|---------------|
-| **Compass** | Product Owner | `docs/agents/PO_AGENT.md` | Phase 1: Blueprint |
-| **Keystone** | Architect | `docs/agents/ARCHITECT_AGENT.md` | Phase 2: Architect |
-| **Lens** | Code Reviewer | `docs/agents/CODE_REVIEWER_AGENT.md` | After each phase, before merge |
-| **Palette** | UI Designer | `docs/agents/UI_DESIGNER_AGENT.md` | Phase 3: With Pixel |
-| **Forge** | Backend Dev | `docs/agents/BE_DEV_AGENT.md` | Phase 3: Parallel with Pixel |
-| **Pixel** | Frontend Dev | `docs/agents/FE_DEV_AGENT.md` | Phase 3: Parallel with Forge |
-| **Sentinel** | Functional Tester | `docs/agents/FUNCTIONAL_TESTER_AGENT.md` | Phase 5: After integration |
-| **Circuit** | Automation Tester | `docs/agents/AUTOMATION_TESTER_AGENT.md` | Phase 5: Parallel with Sentinel |
+| Name         | Role              | Instruction File                         | When to Spawn                   |
+| ------------ | ----------------- | ---------------------------------------- | ------------------------------- |
+| **Compass**  | Product Owner     | `docs/agents/PO_AGENT.md`                | Phase 1: Blueprint              |
+| **Keystone** | Architect         | `docs/agents/ARCHITECT_AGENT.md`         | Phase 2: Architect              |
+| **Lens**     | Code Reviewer     | `docs/agents/CODE_REVIEWER_AGENT.md`     | After each phase, before merge  |
+| **Palette**  | UI Designer       | `docs/agents/UI_DESIGNER_AGENT.md`       | Phase 3: With Pixel             |
+| **Forge**    | Backend Dev       | `docs/agents/BE_DEV_AGENT.md`            | Phase 3: Parallel with Pixel    |
+| **Pixel**    | Frontend Dev      | `docs/agents/FE_DEV_AGENT.md`            | Phase 3: Parallel with Forge    |
+| **Sentinel** | Functional Tester | `docs/agents/FUNCTIONAL_TESTER_AGENT.md` | Phase 5: After integration      |
+| **Circuit**  | Automation Tester | `docs/agents/AUTOMATION_TESTER_AGENT.md` | Phase 5: Parallel with Sentinel |
 
 ## How to Spawn Sub-Agents
 
@@ -54,7 +54,7 @@ Launch each agent using the agentic platform's spawning mechanism. Always includ
 
 ```
 Prompt to agent:
-  "Read docs/agents/[AGENT].md for your full instructions. 
+  "Read docs/agents/[AGENT].md for your full instructions.
    [Specific task context from previous agents].
    Your task: [specific deliverable].
    Work on branch: [branch name].
@@ -62,6 +62,7 @@ Prompt to agent:
 ```
 
 **Platform-specific spawning:**
+
 - **Claude Code:** Use the Agent tool to spawn sub-agents within a session
 - **Codex / Gemini / Aider:** Open a new terminal session per agent with the prompt above
 
@@ -81,9 +82,10 @@ Phase 3 example — launch Forge and Pixel simultaneously:
 ## Orchestration Playbook
 
 ### Phase 1: Blueprint (30 min)
+
 ```
 1. Spawn Compass (PO Agent)
-   Task: "Review and prioritize the backlog for an 8-hour hackathon. 
+   Task: "Review and prioritize the backlog for an 8-hour hackathon.
           Update docs/RELEASE_PLAN.md with refined ACs and priority order.
           Focus: US-0001, US-0002, US-0003, US-0007, US-0005 are top priority."
 2. Review Compass output
@@ -91,21 +93,23 @@ Phase 3 example — launch Forge and Pixel simultaneously:
 ```
 
 ### Phase 2: Architect (60 min)
+
 ```
 1. Spawn Keystone (Architect Agent)
-   Task: "Scaffold the Expo project. Create types from DATA_FLOW.md, 
+   Task: "Scaffold the Expo project. Create types from DATA_FLOW.md,
           implement service interfaces, set up Context providers.
           Work on branch: feature/US-0001-expo-scaffold
           Then: feature/US-0002-mock-data-layer"
 2. Spawn Lens (Code Reviewer) to review Keystone's output
-   Task: "Review branch feature/US-0001-expo-scaffold. Check types match 
-          DATA_FLOW.md, service interfaces are complete, Context providers 
+   Task: "Review branch feature/US-0001-expo-scaffold. Check types match
+          DATA_FLOW.md, service interfaces are complete, Context providers
           nest correctly. Produce a review report."
 3. If Lens returns REQUEST CHANGES → re-spawn Keystone with fix instructions
 4. Update progress.md and RELEASE_PLAN.md task statuses
 ```
 
 ### Phase 3: Link + Stylize (150 min) — PARALLEL
+
 ```
 0. Spawn Palette (UI Designer Agent)
    Task: "Keystone created the scaffold. Theme stub is at src/theme/index.ts.
@@ -115,12 +119,12 @@ Phase 3 example — launch Forge and Pixel simultaneously:
           component specs when done."
 
 1. Spawn Forge AND Pixel simultaneously (after Palette completes):
-   
+
    Forge: "Keystone created the scaffold on feature/US-0001-expo-scaffold.
            Types are in src/types/index.ts. Service interfaces are in src/services/.
            Your task: Implement all service methods with AsyncStorage, create mock data.
            Work on branch: feature/US-0002-mock-data-layer"
-   
+
    Pixel: "Keystone created the scaffold with tab navigation.
            Palette completed the theme at src/theme/index.ts — read it for all
            design tokens. Types in src/types/index.ts.
@@ -136,29 +140,31 @@ Phase 3 example — launch Forge and Pixel simultaneously:
 ```
 
 ### Phase 4: Integration (60 min)
+
 ```
 1. Spawn Pixel (Frontend Dev Agent)
-   Task: "Forge completed services on [branch]. Merge and wire services 
+   Task: "Forge completed services on [branch]. Merge and wire services
           to all screens via Context hooks. Verify end-to-end flows:
           - Browse catalog → view product → add to wishlist
-          - Scan barcode → view product → add to wishlist  
+          - Scan barcode → view product → add to wishlist
           - View wishlist → share with contact
           Work on branch: feature/US-0007-wishlist-management"
 2. Spawn Lens to review integration:
-   Task: "Review Pixel's integration work on [branch]. Verify services are 
+   Task: "Review Pixel's integration work on [branch]. Verify services are
           wired correctly, end-to-end flows work, no broken imports."
 3. Verify the app runs end-to-end
 4. Update progress.md
 ```
 
 ### Phase 5: Trigger (60 min) — PARALLEL
+
 ```
 1. Spawn Sentinel AND Circuit simultaneously:
 
    Sentinel: "The app is feature-complete on [branch].
               Execute test cases TC-0001 through TC-0036 from docs/TEST_CASES.md.
               Log results, raise bugs in docs/BUGS.md."
-   
+
    Circuit: "The app is feature-complete on [branch].
              Create Jest test suites for services and components.
              Generate coverage report to docs/coverage/coverage-summary.json."
@@ -168,27 +174,32 @@ Phase 3 example — launch Forge and Pixel simultaneously:
 ```
 
 ### Phase 6: Polish (30 min)
+
 ```
 1. If critical bugs exist, spawn Forge or Pixel to fix them
 2. Final merge to develop branch
 3. Update all documentation: RELEASE_PLAN.md, progress.md, AI_COST_LOG.md
-4. Start Expo dev server: npx expo start
-5. Verify app loads in Expo Go on demo device (scan QR code)
-6. Prepare demo talking points
+4. After pushing to remote, verify CI checks pass:
+   - Check the PR's CI status (lint, test, build, orchestrator)
+   - If any check fails, read the error and spawn the appropriate agent to fix it
+   - Do not merge until all checks are green
+5. Start Expo dev server: npx expo start
+6. Verify app loads in Expo Go on demo device (scan QR code)
+7. Prepare demo talking points
 ```
 
 ## Phase Exit Criteria
 
 Do NOT advance to the next phase until the current phase's exit criteria are met.
 
-| Phase | Exit Criteria |
-|-------|--------------|
-| 1 Blueprint | Compass has updated RELEASE_PLAN.md with refined ACs and priority order. progress.md updated. |
-| 2 Architect | Keystone's scaffold compiles (no TS errors). Lens verdict: APPROVE. Branches pushed. |
-| 3 Build | Forge's services have passing unit tests. Pixel's screens render without crash. Lens verdict: APPROVE for both. |
-| 4 Integration | End-to-end flow (browse → detail → add to wishlist) works. Lens verdict: APPROVE. |
-| 5 Test | Sentinel's test execution report is in progress.md. Circuit's Jest suites pass. Coverage report generated at docs/coverage/coverage-summary.json. |
-| 6 Polish | All critical bugs fixed. develop branch has final merge. Demo talking points documented. |
+| Phase         | Exit Criteria                                                                                                                                     |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 Blueprint   | Compass has updated RELEASE_PLAN.md with refined ACs and priority order. progress.md updated.                                                     |
+| 2 Architect   | Keystone's scaffold compiles (no TS errors). Lens verdict: APPROVE. Branches pushed.                                                              |
+| 3 Build       | Forge's services have passing unit tests. Pixel's screens render without crash. Lens verdict: APPROVE for both.                                   |
+| 4 Integration | End-to-end flow (browse → detail → add to wishlist) works. Lens verdict: APPROVE.                                                                 |
+| 5 Test        | Sentinel's test execution report is in progress.md. Circuit's Jest suites pass. Coverage report generated at docs/coverage/coverage-summary.json. |
+| 6 Polish      | All critical bugs fixed. develop branch has final merge. Demo talking points documented.                                                          |
 
 **Pre-phase check:** Before spawning an agent, verify the files it needs exist (`ls` the instruction file path, the branch, and key input files from prior phases).
 
@@ -219,6 +230,7 @@ COMMIT WHEN DONE: yes, format per AGENTS.md
 A live HTML dashboard visualizes the SDLC execution in real-time. It reads from `docs/sdlc-status.json` and auto-refreshes every 5 seconds.
 
 **Setup:** Before starting, run in a separate terminal:
+
 ```bash
 npm run dashboard:watch
 # Then open docs/dashboard.html in a browser
@@ -236,19 +248,24 @@ npm run dashboard:watch
 8. Run `npm run dashboard` (or let --watch mode auto-regenerate)
 
 **Example status update after Phase 2:**
+
 ```javascript
 // Read, modify, write docs/sdlc-status.json:
 status.currentPhase = 2;
-status.phases[1].status = "complete";
-status.phases[1].completedAt = "10:30";
-status.phases[2].status = "in-progress";
-status.phases[2].startedAt = "10:30";
-status.agents.Keystone.status = "complete";
+status.phases[1].status = 'complete';
+status.phases[1].completedAt = '10:30';
+status.phases[2].status = 'in-progress';
+status.phases[2].startedAt = '10:30';
+status.agents.Keystone.status = 'complete';
 status.agents.Keystone.tasksCompleted = 3;
-status.agents.Forge.status = "active";
-status.agents.Forge.currentTask = "Implementing ProductService";
+status.agents.Forge.status = 'active';
+status.agents.Forge.currentTask = 'Implementing ProductService';
 status.metrics.storiesCompleted = 2;
-status.log.push({ time: "10:30", agent: "Conductor", message: "Phase 2 complete. Keystone scaffold approved by Lens. Starting Phase 3." });
+status.log.push({
+  time: '10:30',
+  agent: 'Conductor',
+  message: 'Phase 2 complete. Keystone scaffold approved by Lens. Starting Phase 3.',
+});
 ```
 
 ---
@@ -283,17 +300,17 @@ After each phase, append to `progress.md`:
 
 ## Error Handling SOP
 
-| Scenario | Action | Max Retries |
-|----------|--------|-------------|
-| Agent produces incorrect output | Re-read instruction file, pass corrected context, re-spawn | 2 |
-| Agent fails to start or crashes | Verify instruction file path, simplify task scope, re-spawn | 2 |
-| Lens returns REQUEST CHANGES | Re-spawn original agent with Lens findings as context | 1 |
-| Lens returns BLOCK | **Escalate to human** per Escalation Workflow below. Do not proceed. | 0 |
-| Merge conflict between parallel agents | Resolve manually before spawning next phase | N/A |
-| Critical bug blocks testing | Spawn Forge or Pixel to fix before continuing Phase 5 | 1 |
-| Phase runs over timebox by >50% | Consult Compass's priority list, cut lowest-priority stories | N/A |
-| Phase hits hard timeout (90 min) | Force-cut scope: drop all remaining stories except highest-priority. Log in progress.md. Advance phase. | N/A |
-| After max retries exhausted | Log the failure in progress.md, skip the task, continue with remaining work | N/A |
+| Scenario                               | Action                                                                                                  | Max Retries |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------- |
+| Agent produces incorrect output        | Re-read instruction file, pass corrected context, re-spawn                                              | 2           |
+| Agent fails to start or crashes        | Verify instruction file path, simplify task scope, re-spawn                                             | 2           |
+| Lens returns REQUEST CHANGES           | Re-spawn original agent with Lens findings as context                                                   | 1           |
+| Lens returns BLOCK                     | **Escalate to human** per Escalation Workflow below. Do not proceed.                                    | 0           |
+| Merge conflict between parallel agents | Resolve manually before spawning next phase                                                             | N/A         |
+| Critical bug blocks testing            | Spawn Forge or Pixel to fix before continuing Phase 5                                                   | 1           |
+| Phase runs over timebox by >50%        | Consult Compass's priority list, cut lowest-priority stories                                            | N/A         |
+| Phase hits hard timeout (90 min)       | Force-cut scope: drop all remaining stories except highest-priority. Log in progress.md. Advance phase. | N/A         |
+| After max retries exhausted            | Log the failure in progress.md, skip the task, continue with remaining work                             | N/A         |
 
 ### Retry State Tracking
 
@@ -310,6 +327,7 @@ Add this block to `progress.md` after each retry:
 ```
 
 **Rules:**
+
 - Read the retry log before every re-spawn to check the current count
 - If `Attempt >= Max`, stop retrying — log failure, skip task, continue
 - Never reset retry counts for the same task — if a task was retried twice and failed, it stays failed
@@ -334,6 +352,7 @@ When escalation to human is required (BLOCK verdict, unrecoverable failure):
 5. **Stop.** Do not continue until the human resolves the issue and explicitly says "resume".
 
 **Resuming after human fix:**
+
 - Human fixes the issue on the affected branch and tells Conductor to resume
 - Conductor re-spawns Lens to review the fixed branch
 - If Lens returns APPROVE, continue from the step after the review
@@ -353,12 +372,12 @@ When Lens issues BLOCK and the human resolves it:
 
 When running agents in parallel (e.g., Forge + Pixel in Phase 3):
 
-| Scenario | Action |
-|----------|--------|
-| One agent completes, other still running | Wait for both to finish before proceeding to Lens review |
-| One agent fails (crash/bad output) | Let the other agent finish. Retry the failed agent per Error Handling SOP. Review both when ready. |
-| One agent's work is BLOCKed by Lens | The other agent's work can still be reviewed and merged independently. Escalate only the blocked work. |
-| Both agents fail | Retry each independently per their max retry counts. If both exhaust retries, escalate the phase. |
+| Scenario                                 | Action                                                                                                 |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| One agent completes, other still running | Wait for both to finish before proceeding to Lens review                                               |
+| One agent fails (crash/bad output)       | Let the other agent finish. Retry the failed agent per Error Handling SOP. Review both when ready.     |
+| One agent's work is BLOCKed by Lens      | The other agent's work can still be reviewed and merged independently. Escalate only the blocked work. |
+| Both agents fail                         | Retry each independently per their max retry counts. If both exhaust retries, escalate the phase.      |
 | Merge conflict between parallel branches | Resolve the conflict before spawning Lens. Prefer the branch that was merged first; rebase the second. |
 
 **Key rule:** A failure in one parallel agent does NOT automatically block the other. Each agent's work is reviewed and merged independently.
@@ -367,10 +386,10 @@ When running agents in parallel (e.g., Forge + Pixel in Phase 3):
 
 Each phase has a **90-minute hard timeout** measured from when the first agent in that phase is spawned.
 
-| Time Elapsed | Action |
-|-------------|--------|
-| 0–50% of timebox | Normal execution |
-| 50–90 min | Warning zone — consult Compass's priority list, cut lowest-priority stories if behind |
+| Time Elapsed        | Action                                                                                                                                                                                                      |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0–50% of timebox    | Normal execution                                                                                                                                                                                            |
+| 50–90 min           | Warning zone — consult Compass's priority list, cut lowest-priority stories if behind                                                                                                                       |
 | 90 min (hard limit) | **Force-cut scope:** Drop all remaining unfinished stories in this phase except the single highest-priority story. Log dropped stories in progress.md. Advance to the next phase with whatever is complete. |
 
 **Exception:** Phase 6 (Polish) has no hard timeout — it runs until the hackathon end time or until all critical bugs are fixed, whichever comes first.

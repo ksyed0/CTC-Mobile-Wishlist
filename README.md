@@ -8,15 +8,16 @@ Built as a **hackathon POC** using React Native + Expo with TypeScript, powered 
 
 ## Project Overview
 
-| Attribute | Detail |
-|-----------|--------|
-| **Stack** | React Native, Expo SDK 52, TypeScript, expo-router |
-| **Data** | AsyncStorage with local mock data (POC) |
-| **Platform** | iOS + Android |
-| **Brand** | Canadian Tire (#D52B1E), system fonts, 4px grid |
-| **Agents** | 9 specialized AI agents, platform-agnostic (Claude Code, Codex, Gemini, Aider) |
+| Attribute    | Detail                                                                         |
+| ------------ | ------------------------------------------------------------------------------ |
+| **Stack**    | React Native, Expo SDK 52, TypeScript, expo-router                             |
+| **Data**     | AsyncStorage with local mock data (POC)                                        |
+| **Platform** | iOS + Android                                                                  |
+| **Brand**    | Canadian Tire (#D52B1E), system fonts, 4px grid                                |
+| **Agents**   | 9 specialized AI agents, platform-agnostic (Claude Code, Codex, Gemini, Aider) |
 
 ### Key Features (POC)
+
 - Browse product catalog with category filters and search
 - Scan barcodes in-store to add products to wishlists
 - Create and manage multiple named wishlists
@@ -32,14 +33,15 @@ This project uses 9 specialized AI agents with **platform-agnostic orchestration
 
 ### Supported Platforms
 
-| Platform | CLI | Sub-Agent Spawning | Setup |
-|----------|-----|-------------------|-------|
-| **Claude Code** | `claude` | Native (Agent tool) | `npm install -g @anthropic-ai/claude-code` |
-| **OpenAI Codex** | `codex` | Separate terminals | `npm install -g @openai/codex` |
-| **Google Gemini** | `gemini` | Separate terminals | `npm install -g @anthropic-ai/gemini` |
-| **Aider** (any model) | `aider` | Separate terminals | `pip install aider-chat` |
+| Platform              | CLI      | Sub-Agent Spawning  | Setup                                      |
+| --------------------- | -------- | ------------------- | ------------------------------------------ |
+| **Claude Code**       | `claude` | Native (Agent tool) | `npm install -g @anthropic-ai/claude-code` |
+| **OpenAI Codex**      | `codex`  | Separate terminals  | `npm install -g @openai/codex`             |
+| **Google Gemini**     | `gemini` | Separate terminals  | `npm install -g @anthropic-ai/gemini`      |
+| **Aider** (any model) | `aider`  | Separate terminals  | `pip install aider-chat`                   |
 
 Switch platforms with an env var:
+
 ```bash
 export ORCHESTRATOR_PLATFORM=codex   # or: claude-code, gemini, aider
 ```
@@ -47,35 +49,40 @@ export ORCHESTRATOR_PLATFORM=codex   # or: claude-code, gemini, aider
 ### Quick Start — Launch Conductor
 
 **Claude Code** (default):
+
 ```bash
-claude "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the 
-Delivery Manager orchestrating 9 specialized agents for today's hackathon. Follow 
-the orchestration playbook in your instruction file. Begin with Phase 1: spawn 
+claude "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the
+Delivery Manager orchestrating 9 specialized agents for today's hackathon. Follow
+the orchestration playbook in your instruction file. Begin with Phase 1: spawn
 Compass to prioritize the backlog."
 ```
 
 **OpenAI Codex:**
+
 ```bash
-codex "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the 
-Delivery Manager orchestrating 9 specialized agents for today's hackathon. Follow 
-the orchestration playbook in your instruction file. Begin with Phase 1: spawn 
+codex "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the
+Delivery Manager orchestrating 9 specialized agents for today's hackathon. Follow
+the orchestration playbook in your instruction file. Begin with Phase 1: spawn
 Compass to prioritize the backlog."
 ```
 
 **Google Gemini:**
+
 ```bash
-gemini "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the 
-Delivery Manager orchestrating 9 specialized agents for today's hackathon. Follow 
-the orchestration playbook in your instruction file. Begin with Phase 1: spawn 
+gemini "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor, the
+Delivery Manager orchestrating 9 specialized agents for today's hackathon. Follow
+the orchestration playbook in your instruction file. Begin with Phase 1: spawn
 Compass to prioritize the backlog."
 ```
 
 **Aider** (with any model — OpenAI, Anthropic, Ollama local):
+
 ```bash
 aider --model ollama/llama3 --message "Read docs/agents/DM_AGENT.md for your full instructions. You are Conductor."
 ```
 
 **Spawn helper** (generates correct command for your platform):
+
 ```bash
 node orchestrator/spawn.js --agent Conductor
 node orchestrator/spawn.js --list-platforms
@@ -83,6 +90,7 @@ node orchestrator/spawn.js --print-all
 ```
 
 Conductor will automatically:
+
 1. Spawn **Compass** (PO) to prioritize the backlog
 2. Spawn **Keystone** (Architect) to scaffold the project
 3. Spawn **Lens** (Code Reviewer) to review the scaffold
@@ -94,17 +102,17 @@ Conductor will automatically:
 
 ### The 9 Agents
 
-| Agent | Name | Role | Instruction File |
-|-------|------|------|-----------------|
-| Delivery Manager | **Conductor** | Orchestrates all agents, manages context | `docs/agents/DM_AGENT.md` |
-| Code Reviewer | **Lens** | Reviews every PR for quality gates | `docs/agents/CODE_REVIEWER_AGENT.md` |
-| Product Owner | **Compass** | Requirements, ACs, backlog prioritization | `docs/agents/PO_AGENT.md` |
-| Architect | **Keystone** | Project scaffold, types, service interfaces | `docs/agents/ARCHITECT_AGENT.md` |
-| UI Designer | **Palette** | Theme, component styles, CTC brand | `docs/agents/UI_DESIGNER_AGENT.md` |
-| Backend Dev | **Forge** | Services, mock data, AsyncStorage | `docs/agents/BE_DEV_AGENT.md` |
-| Frontend Dev | **Pixel** | Screens, components, navigation | `docs/agents/FE_DEV_AGENT.md` |
-| Functional Tester | **Sentinel** | Manual test execution, bug reporting | `docs/agents/FUNCTIONAL_TESTER_AGENT.md` |
-| Automation Tester | **Circuit** | Jest test suites, coverage reports | `docs/agents/AUTOMATION_TESTER_AGENT.md` |
+| Agent             | Name          | Role                                        | Instruction File                         |
+| ----------------- | ------------- | ------------------------------------------- | ---------------------------------------- |
+| Delivery Manager  | **Conductor** | Orchestrates all agents, manages context    | `docs/agents/DM_AGENT.md`                |
+| Code Reviewer     | **Lens**      | Reviews every PR for quality gates          | `docs/agents/CODE_REVIEWER_AGENT.md`     |
+| Product Owner     | **Compass**   | Requirements, ACs, backlog prioritization   | `docs/agents/PO_AGENT.md`                |
+| Architect         | **Keystone**  | Project scaffold, types, service interfaces | `docs/agents/ARCHITECT_AGENT.md`         |
+| UI Designer       | **Palette**   | Theme, component styles, CTC brand          | `docs/agents/UI_DESIGNER_AGENT.md`       |
+| Backend Dev       | **Forge**     | Services, mock data, AsyncStorage           | `docs/agents/BE_DEV_AGENT.md`            |
+| Frontend Dev      | **Pixel**     | Screens, components, navigation             | `docs/agents/FE_DEV_AGENT.md`            |
+| Functional Tester | **Sentinel**  | Manual test execution, bug reporting        | `docs/agents/FUNCTIONAL_TESTER_AGENT.md` |
+| Automation Tester | **Circuit**   | Jest test suites, coverage reports          | `docs/agents/AUTOMATION_TESTER_AGENT.md` |
 
 ### Alternative: Run Individual Agents
 
@@ -112,7 +120,7 @@ Replace `claude` with your platform's CLI (`codex`, `gemini`, `aider --message`)
 
 ```bash
 # Run the architect to scaffold the project
-claude "Read docs/agents/ARCHITECT_AGENT.md for your full instructions. 
+claude "Read docs/agents/ARCHITECT_AGENT.md for your full instructions.
         Scaffold the Expo project and create all type definitions."
 
 # Run the backend dev to implement services
@@ -211,10 +219,10 @@ CTC-Mobile-Wishlist/
 
 Two dashboards track project health in real time:
 
-| Dashboard | File | Generator | Content |
-|-----------|------|-----------|---------|
-| **SDLC Dashboard** | `docs/dashboard.html` | `tools/generate-dashboard.js` | Agent status, phases, stories by epic, progress |
-| **Plan Visualizer** | `docs/plan-status.html` | `tools/generate-plan.js` | Release plan, test cases, bugs, cost tracking |
+| Dashboard           | File                    | Generator                     | Content                                         |
+| ------------------- | ----------------------- | ----------------------------- | ----------------------------------------------- |
+| **SDLC Dashboard**  | `docs/dashboard.html`   | `tools/generate-dashboard.js` | Agent status, phases, stories by epic, progress |
+| **Plan Visualizer** | `docs/plan-status.html` | `tools/generate-plan.js`      | Release plan, test cases, bugs, cost tracking   |
 
 ```bash
 npm run build            # Full pipeline: avatars → plan → dashboard
@@ -227,6 +235,7 @@ npm run test:coverage    # Run tests with coverage report
 ```
 
 ### SDLC Dashboard Features
+
 - Light/dark mode toggle (persists across 5-second auto-refresh)
 - Responsive layout for phones, tablets, and desktop
 - Agent avatars with face-detection extraction from composite team image
@@ -235,7 +244,9 @@ npm run test:coverage    # Run tests with coverage report
 - About modal with team image
 
 ### Agent Avatar System
+
 Drop images into `docs/agents/images/` (all lowercase filenames):
+
 - `team-grid.png` — Composite image (5 top row, 4 bottom row) for headshot extraction
 - `conductor.png`, `compass.png`, etc. — Individual landscape images for spotlight view
 - `team.png` — Full team image for About popup
@@ -246,16 +257,16 @@ Run `npm run avatars` to extract headshots via tracking.js face detection (Viola
 
 ## Business Case
 
-| Metric | Value |
-|--------|-------|
-| Year 1 incremental revenue | $189.5M CAD |
-| Agentic AI build investment | $344K CAD |
-| Year 1 ROI | 19,270% |
-| Timeline (Agentic AI SDLC) | 8–15 weeks |
+| Metric                       | Value                   |
+| ---------------------------- | ----------------------- |
+| Year 1 incremental revenue   | $189.5M CAD             |
+| Agentic AI build investment  | $344K CAD               |
+| Year 1 ROI                   | 19,270%                 |
+| Timeline (Agentic AI SDLC)   | 8–15 weeks              |
 | Savings vs. traditional SDLC | $320K–550K CAD (48–61%) |
 
 See `docs/BUSINESS_PLAN.md` and `docs/CTC_Mobile_Wishlist_Business_Case.pptx` for the full analysis.
 
 ---
 
-*Built for the EPAM–CTC Hackathon using Claude Code agentic AI SDLC.*
+_Built for the EPAM–CTC Hackathon using Claude Code agentic AI SDLC._
