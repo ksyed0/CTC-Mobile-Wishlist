@@ -58,7 +58,7 @@ Every phase that produces code follows this PR lifecycle, owned by the **DM Agen
 ```
 Dev Agent (any code-producing agent)
   │
-  ├─ Commits to feature branch (e.g., feature/US-0001-expo-scaffold)
+  ├─ Commits to feature branch (e.g., feature/US-XXXX-feature-name)
   ├─ Pushes to remote
   └─ Reports completion to DM
           │

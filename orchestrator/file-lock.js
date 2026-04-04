@@ -47,7 +47,10 @@ function lockPath(filePath) {
  * Try to acquire a lock. Returns true if acquired, false if held by another process.
  * Uses mkdir which is atomic on POSIX and Windows.
  */
-function tryAcquire(filePath) {
+function tryAcquire(filePath, _depth = 0) {
+  if (_depth > 2) {
+    throw new Error(`[file-lock] Too many stale lock retries for "${filePath}"`);
+  }
   ensureLockDir();
   const lp = lockPath(filePath);
   try {
@@ -64,12 +67,12 @@ function tryAcquire(filePath) {
           // Stale lock — break it
           console.warn(`[file-lock] Breaking stale lock for "${filePath}" (held by PID ${info.pid})`);
           release(filePath);
-          return tryAcquire(filePath);
+          return tryAcquire(filePath, _depth + 1);
         }
       } catch {
         // Can't read info — break the lock
         release(filePath);
-        return tryAcquire(filePath);
+        return tryAcquire(filePath, _depth + 1);
       }
       return false;
     }
@@ -86,7 +89,13 @@ function release(filePath) {
     // Remove info file first, then directory
     const infoPath = path.join(lp, 'info');
     if (fs.existsSync(infoPath)) fs.unlinkSync(infoPath);
-    if (fs.existsSync(lp)) fs.rmdirSync(lp);
+    if (fs.existsSync(lp)) {
+      try {
+        fs.rmdirSync(lp);
+      } catch (err) {
+        console.warn(`[file-lock] Failed to remove lock dir for "${filePath}": ${err.message}`);
+      }
+    }
   } catch {
     // Already released
   }

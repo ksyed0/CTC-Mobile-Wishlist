@@ -41,7 +41,7 @@ const ROOT = path.join(__dirname, '..');
 function atomicWrite(filePath, content) {
   const abs = path.isAbsolute(filePath) ? filePath : path.join(ROOT, filePath);
   const dir = path.dirname(abs);
-  const tmpPath = path.join(dir, `.${path.basename(abs)}.tmp.${process.pid}`);
+  const tmpPath = path.join(dir, `.${path.basename(abs)}.tmp.${process.pid}.${Date.now()}`);
   fs.writeFileSync(tmpPath, content, 'utf8');
   fs.renameSync(tmpPath, abs);
 }
@@ -68,7 +68,12 @@ async function atomicReadModifyWriteJson(filePath, modifier) {
   return withLock(filePath, async () => {
     const abs = path.isAbsolute(filePath) ? filePath : path.join(ROOT, filePath);
     const raw = fs.readFileSync(abs, 'utf8');
-    const data = JSON.parse(raw);
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch (parseErr) {
+      throw new Error(`[atomic-write] Invalid JSON in ${filePath}: ${parseErr.message}`, { cause: parseErr });
+    }
     const modified = await modifier(data);
     atomicWriteJson(filePath, modified);
     return modified;

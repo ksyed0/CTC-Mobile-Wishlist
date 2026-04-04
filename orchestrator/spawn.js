@@ -31,7 +31,13 @@ function loadAgentsConfig() {
     console.error('[spawn] agents.config.json not found. Create one with agent definitions.');
     process.exit(1);
   }
-  const raw = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+  let raw;
+  try {
+    raw = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+  } catch (err) {
+    console.error(`[spawn] Failed to parse agents.config.json: ${err.message}`);
+    process.exit(1);
+  }
   const agents = {};
   for (const [name, cfg] of Object.entries(raw.agents)) {
     agents[name] = {
@@ -178,9 +184,8 @@ function main() {
       console.log('');
     });
     console.log('=== Parallel Sessions (Maximum Velocity) ===\n');
-    const adapter_ = getAdapter();
     console.log(
-      adapter_.parallelTerminals([
+      adapter.parallelTerminals([
         {
           ...getAgent('Keystone'),
           task: 'Scaffold the project, then implement all services.',
@@ -208,8 +213,17 @@ function main() {
     return;
   }
 
+  if (agentIdx + 1 >= args.length) {
+    console.error('Error: --agent requires an argument');
+    console.log('Usage: node orchestrator/spawn.js --agent <AgentName> [--task "description"]');
+    process.exit(1);
+  }
   const agentName = args[agentIdx + 1];
   const taskIdx = args.indexOf('--task');
+  if (taskIdx !== -1 && taskIdx + 1 >= args.length) {
+    console.error('Error: --task requires an argument');
+    process.exit(1);
+  }
   const task = taskIdx !== -1 ? args[taskIdx + 1] : null;
 
   const cmd = spawnCommand(agentName, task);

@@ -409,3 +409,131 @@
 - **Found in:** `orchestrator/spawn.js`, `tools/generate-dashboard.js`, `tools/process-avatars.js`
 - **Description:** Agent names, roles, icons, and colors were hardcoded independently in 3 separate files (spawn.js had the agent registry, generate-dashboard.js had duplicate role/color/icon maps, process-avatars.js had a hardcoded AGENTS_ORDER array). Adding or renaming an agent required changes in 3+ files, making the framework non-portable and error-prone.
 - **Fix:** Created `agents.config.json` as the single source of truth for all agent definitions. Updated spawn.js, generate-dashboard.js, and process-avatars.js to load from config. Added `tools/init-sdlc-status.js` to generate sdlc-status.json from config. Any project can now customize agents by editing one JSON file.
+
+### BUG-0051: DM_AGENT.md says "7 sub-agents" but there are 8
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `docs/agents/DM_AGENT.md` (2 occurrences), `docs/HACKATHON_PLAN.md` (1 occurrence)
+- **Description:** DM_AGENT.md "Your 7 Sub-Agents" heading and table listed only 7 agents, omitting one. HACKATHON_PLAN.md startup prompt also said "7 specialized agents." Conductor would not know to spawn the 8th agent.
+- **Fix:** Updated to "8 sub-agents" in DM_AGENT.md and "8 specialized agents" in HACKATHON_PLAN.md.
+
+### BUG-0052: Agent instruction files contain project-specific content
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** All 9 files in `docs/agents/`
+- **Description:** All agent instruction files contained hardcoded project-specific content: user story IDs (US-0001–US-0013), screen names (CatalogScreen, WishlistsScreen), service names (ProductService, WishlistService), branch names (feature/US-0001-expo-scaffold), design tokens (#D52B1E), mock data specs, and feature names (barcode, wishlist, catalog). This made the agent framework non-portable — using it on a different project required rewriting all 9 files.
+- **Fix:** Refactored all 9 agent files to be project-agnostic role templates. Agent files now define HOW each role operates (patterns, rules, quality standards, output formats). The DM agent builds project-specific context dynamically at spawn time by reading `project.md` and the project's architecture docs.
+
+### BUG-0053: No project entry point for multi-platform agent discovery
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** Project root
+- **Description:** No single file existed for AI agents to discover project-specific context on startup. Each agent had project knowledge baked into its instruction file. Different AI platforms (Claude Code, Gemini, Codex, etc.) auto-read different convention files (CLAUDE.md, Gemini.md, etc.) but none existed.
+- **Fix:** Created `project.md` as the single project entry point referencing all architecture docs, release plan, test cases, and tracking files. Created 7 platform symlinks in repo root (`CLAUDE.md`, `Gemini.md`, `Codex.md`, `EliteA.md`, `CodeMie.md`, `Qwen.md`, `MiniMax.md`) all pointing to `project.md` for auto-discovery.
+
+### BUG-0054: Dashboard title, footer, brand color, and repo URL hardcoded
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `tools/generate-dashboard.js` lines 84, 355, 577, 591; 11 occurrences of `#D52B1E`
+- **Description:** Dashboard HTML had "CTC Mobile Wishlist" title, "Canadian Tire Corporation" footer, GitHub repo URL, and CTC brand color `#D52B1E` hardcoded throughout CSS and HTML. Changing the project required editing 15+ locations in the dashboard generator.
+- **Fix:** Added `dashboard` section to `agents.config.json` with `title`, `subtitle`, `footer`, `repoUrl`, and `primaryColor` fields. Dashboard generator reads these from config, defaulting to the repo name from `package.json`. All `#D52B1E` CSS references replaced with `var(--brand-primary)` CSS variable set from config.
+
+### BUG-0055: XSS via unescaped data attributes in render-html.js
+
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `tools/lib/render-html.js` lines 225, 284, 319, 549, 1096, 1205, 1206, 1355, 1369
+- **Description:** Multiple `data-*` HTML attributes and `onclick` handler strings were interpolated without escaping. Malicious story/epic IDs or bug statuses could inject arbitrary HTML/JS. Affected: story cards, epic headers, bug table rows, bug card views.
+- **Fix:** Applied `esc()` to all `data-*` attribute interpolations and `jsEsc()` to all `onclick` handler string interpolations across 9 locations.
+
+### BUG-0056: Command injection via unquoted branch names in git-safe.js
+
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `orchestrator/git-safe.js` — `safePush`, `safePull`, `detectConflicts`, `branchFiles` functions
+- **Description:** Branch names were interpolated into shell commands without quoting: `git push origin ${branch}`. A branch name containing shell metacharacters (`;`, `$()`, backticks) could execute arbitrary commands.
+- **Fix:** Quoted all 6 branch name interpolations in git shell commands with double quotes.
+
+### BUG-0057: Infinite recursion in stale lock recovery (file-lock.js)
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `orchestrator/file-lock.js` — `tryAcquire()` function
+- **Description:** If a stale lock's info file was repeatedly unreadable, `tryAcquire()` would recursively call itself with no depth limit, causing a stack overflow.
+- **Fix:** Added `_depth` parameter with max depth of 2 retries. Throws explicit error on excessive retries.
+
+### BUG-0058: Race condition on temp file names in atomic-write.js
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `orchestrator/atomic-write.js` — `atomicWrite()` function
+- **Description:** Temp file suffix used only `process.pid`, so two rapid writes from the same process to the same directory could collide.
+- **Fix:** Added `Date.now()` to temp file suffix: `.${basename}.tmp.${pid}.${timestamp}`.
+
+### BUG-0059: Missing JSON parse error handling in atomic-write.js
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `orchestrator/atomic-write.js` — `atomicReadModifyWriteJson()` function
+- **Description:** `JSON.parse()` call had no try-catch. A corrupt JSON file would throw an opaque error without identifying the problematic file.
+- **Fix:** Wrapped in try-catch with descriptive error message including the file path.
+
+### BUG-0060: Missing JSON parse error handling in spawn.js
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `orchestrator/spawn.js` — `loadAgentsConfig()` function
+- **Description:** `JSON.parse()` of `agents.config.json` had no error handling. A malformed config file would crash with an unhelpful stack trace.
+- **Fix:** Added try-catch with descriptive error message.
+
+### BUG-0061: Missing argument bounds checking in spawn.js CLI
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `orchestrator/spawn.js` — `main()` function
+- **Description:** `--agent` and `--task` flags accessed `args[idx + 1]` without bounds checking, producing `undefined` if the argument was missing.
+- **Fix:** Added bounds checks with descriptive error messages and usage hints.
+
+### BUG-0062: Silent lock directory removal failure in file-lock.js
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `orchestrator/file-lock.js` — `release()` function
+- **Description:** `rmdirSync` in `release()` could fail silently if directory had unexpected contents, leaving stale locks that would eventually expire via timeout.
+- **Fix:** Added separate try-catch for `rmdirSync` with warning log.
+
+### BUG-0063: Dashboard author info hardcoded in generate-dashboard.js
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `tools/generate-dashboard.js` lines 594-595
+- **Description:** Author name "Kamal Syed" and title "Director of Program Management, EPAM Systems" were hardcoded in the About modal HTML.
+- **Fix:** Added `author` and `authorTitle` fields to `agents.config.json` dashboard config. Dashboard reads from config and conditionally renders.
+
+### BUG-0064: Hardcoded agent count (9) in process-avatars.js
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `tools/process-avatars.js` lines 292-306
+- **Description:** Face detection expected exactly 9 faces, hardcoded. Adding or removing agents would require code changes.
+- **Fix:** Changed to `AGENTS_ORDER.length` which derives from `agents.config.json`.
+
+### BUG-0065: Project-specific branch examples in AGENTS.md and AGENT_PLAN.md
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `AGENTS.md` lines 338-339, `docs/AGENT_PLAN.md` line 61
+- **Description:** Branch naming examples contained specific story/bug IDs (US-0003, BUG-0007, BUG-0012) instead of generic placeholders.
+- **Fix:** Replaced with generic placeholders (US-XXXX, BUG-XXXX).
+
+### BUG-0066: No SAST or secret scanning in CI pipeline
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `.github/workflows/ci.yml`
+- **Description:** CI pipeline had lint, test, build, format check, and dependency audit but no static analysis security testing (SAST) or secret scanning. Code vulnerabilities and accidentally committed secrets would go undetected.
+- **Fix:** Added CodeQL SAST job (javascript-typescript) and TruffleHog secret scanning job to CI pipeline.

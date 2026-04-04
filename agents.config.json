@@ -55,6 +55,16 @@
       "instructionFile": "docs/agents/AUTOMATION_TESTER_AGENT.md"
     }
   },
+  "dashboard": {
+    "title": "CTC Mobile Wishlist",
+    "subtitle": "Agentic AI SDLC",
+    "footer": "Claude Code Agentic AI SDLC | Canadian Tire Corporation",
+    "repoUrl": "https://github.com/ksyed0/ctc-mobile-wishlist",
+    "primaryColor": "#D52B1E",
+    "platform": "Claude Code",
+    "author": "Kamal Syed",
+    "authorTitle": "Director of Program Management, EPAM Systems"
+  },
   "orchestrator": {
     "dmAgent": "Conductor",
     "reviewer": "Lens",

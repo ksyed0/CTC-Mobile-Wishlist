@@ -289,20 +289,21 @@ async function main() {
   faces = mergeOverlapping(faces);
   console.log(`[avatars] After merge: ${faces.length} faces`);
 
-  // Need exactly 9 faces
-  if (faces.length < 9) {
+  // Need exactly as many faces as agents
+  const expectedFaces = AGENTS_ORDER.length;
+  if (faces.length < expectedFaces) {
     faces = gridFallback(width, height);
-  } else if (faces.length > 9) {
-    // Take the 9 largest
+  } else if (faces.length > expectedFaces) {
+    // Take the N largest
     faces.sort((a, b) => b.width * b.height - a.width * a.height);
-    faces = faces.slice(0, 9);
+    faces = faces.slice(0, expectedFaces);
   }
 
   // Sort into grid order
   faces = sortFacesGridOrder(faces, height);
 
-  if (faces.length !== 9) {
-    console.error(`[avatars] Expected 9 faces, got ${faces.length}. Check input image.`);
+  if (faces.length !== expectedFaces) {
+    console.error(`[avatars] Expected ${expectedFaces} faces, got ${faces.length}. Check input image.`);
     process.exit(1);
   }
 
