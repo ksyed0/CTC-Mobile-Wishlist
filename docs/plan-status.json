@@ -1137,9 +1137,9 @@
       "outputTokens": 0
     },
     "_totals": {
-      "costUsd": 108.5446,
-      "inputTokens": 7403385,
-      "outputTokens": 700442
+      "costUsd": 128.9751,
+      "inputTokens": 8318157,
+      "outputTokens": 736583
     },
     "_bugs": {
       "_totals": {
@@ -1265,18 +1265,23 @@
     {
       "sessionNum": 3,
       "date": "2026-04-04",
-      "summary": "**Offshore Rate Standardization**; All offshore rates updated to flat $72 CAD/h; Traditional SDLC: $663K-890K | EliteA: $344K | ROI: 19,270%"
+      "summary": "**Offshore Rate Standardization**; ; All offshore rates updated to flat $72 CAD/h"
     },
     {
       "sessionNum": 4,
       "date": "2026-04-04",
-      "summary": "**Documentation & Agent Optimization (BUG-0001 – BUG-0024)**; Reviewed all agent docs, architecture, and tooling — logged 24 bugs; Fixed AsyncStorage key conflict (global `wishlists` key, filter by ownerId)"
+      "summary": "**Documentation & Agent Optimization (BUG-0001 – BUG-0024)**; ; Reviewed all agent docs, architecture, and tooling — logged 24 bugs"
+    },
+    {
+      "sessionNum": 5,
+      "date": "2026-04-04",
+      "summary": "**CI Pipeline (6 Jobs)**; ; Created `.github/workflows/ci.yml` with 6 parallel jobs for all PRs to main/develop"
     }
   ],
   "lessons": [],
-  "generatedAt": "2026-04-04T04:51:48.406Z",
-  "commitSha": "bc1b841",
-  "buildNumber": "54",
+  "generatedAt": "2026-04-04T12:46:21.873Z",
+  "commitSha": "27205ff",
+  "buildNumber": "60",
   "sessionTimeline": [
     {
       "date": "2026-04-03",
@@ -1316,7 +1321,11 @@
     },
     {
       "date": "2026-04-04",
-      "cumCost": 108.5446
+      "cumCost": 111.5751
+    },
+    {
+      "date": "2026-04-04",
+      "cumCost": 128.9751
     }
   ],
   "projectName": "CTC-Mobile-Wishlist",
@@ -1324,13 +1333,13 @@
   "version": "1.0.0",
   "githubUrl": "",
   "budget": {
-    "totalBudget": 7708.5446,
-    "totalSpent": 108.5446,
+    "totalBudget": 7728.9751,
+    "totalSpent": 128.9751,
     "totalProjected": 7600,
-    "percentUsed": 1,
-    "burnRate": 108.5446,
-    "daysRemaining": 70,
-    "projectedExhaustion": 70,
+    "percentUsed": 2,
+    "burnRate": 128.9751,
+    "daysRemaining": 58,
+    "projectedExhaustion": 58,
     "thresholds": [
       50,
       75,
