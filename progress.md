@@ -553,3 +553,52 @@ One copy lives at `utils/wishlistUtils.ts` (root, in develop). The duplicate is 
 - Real product images (placeholder icons only currently)
 - Expo-splash-screen and app icon configuration
 - End-to-end automation tests (Circuit agent, Phase 5)
+
+## Test Execution Report — 2026-04-04
+
+**Agent:** Sentinel (Functional Tester)
+**Method:** Static analysis of app code on develop branch (Phase 4 complete)
+**Branch examined:** develop (feature/pixel-integration merged)
+
+| Metric           | Value  |
+| ---------------- | ------ |
+| Total Test Cases | 40     |
+| Executed         | 40     |
+| Passed           | 36     |
+| Failed           | 4      |
+| Blocked          | 0      |
+| Not Run          | 0      |
+| Pass Rate        | 90%    |
+
+### Failed Tests
+
+| TC ID   | Summary                                        | Bug ID   |
+| ------- | ---------------------------------------------- | -------- |
+| TC-0037 | Splash screen displays CTC branding on launch  | BUG-0084 |
+| TC-0038 | Mock product images are bundled as local assets | BUG-0085 |
+| TC-0012 | Search filters products by name in real time   | BUG-0086 |
+| TC-0040 | Search bar visible at top of catalog screen    | BUG-0086 |
+
+### Blocked Tests
+
+None — all 40 test cases were executable via static analysis.
+
+### Analysis Notes
+
+**Critical/Major findings:**
+
+1. **BUG-0084 (TC-0037) — assets/ directory missing:** The `assets/` directory does not exist. `app.json` references `./assets/splash.png`, `./assets/icon.png`, `./assets/adaptive-icon.png`, and `./assets/favicon.png`. Without these files the app cannot be built via Expo. This was previously noted in Phase 4's "Remaining" items. Severity: Major — blocks app build.
+
+2. **BUG-0085 (TC-0038) — No bundled product images:** All 23 products use `image: "placeholder"`. The app renders icon placeholders everywhere. Previously noted as a known gap. Severity: Major — degrades demo quality.
+
+3. **BUG-0086 (TC-0012 + TC-0040) — Search bar not implemented in catalog:** `catalog.tsx` has no search UI. `productService.search()` and `ProductContext.search()` are fully implemented but no TextInput is wired to them. TASK-0009 was previously noted as "still To Do." Severity: Major — AC-0015 and AC-0016 unmet.
+
+**The 9-step demo flow passes end-to-end:** Login (TC-0033) → Browse catalog (TC-0006/07/08) → Scan barcode (TC-0013/14) → Add to wishlist (TC-0010/11) → Share wishlist (TC-0024/25/26) → Claim item (TC-0030/31/32) — all pass.
+
+**Duplicate item guard (AC-0042) verified:** Both wishlistService.addItem() and product/[id].tsx addToWishlist() check for duplicates. Service returns early; UI shows Alert "Already in Wishlist." Pass.
+
+**Owner surprise preservation (AC-0036) verified:** isOwner check in wishlist/[id].tsx and WishlistItemRow correctly hides claimer identity from the wishlist owner. Pass.
+
+**Wishlist persistence across user switches (AC-0040) verified:** WishlistContext re-runs load() when currentUser changes via useCallback dependency. Pass.
+
+**New bugs filed:** BUG-0084, BUG-0085, BUG-0086 (IDs BUG-0084 through BUG-0086; next available BUG-0087).

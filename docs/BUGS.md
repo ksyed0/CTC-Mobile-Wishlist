@@ -540,6 +540,46 @@
 
 ---
 
+## P1 — Major (functional test execution — found by Sentinel 2026-04-04)
+
+### BUG-0084: Splash screen asset file missing — assets/ directory does not exist
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `app.json` splash config; project root (no `assets/` directory)
+- **Story:** US-0001
+- **AC:** AC-0004
+- **TC:** TC-0037
+- **Found by:** Sentinel (static analysis — test execution 2026-04-04)
+- **Description:** `app.json` configures the Expo splash screen as `./assets/splash.png` with background color `#D52B1E`. However, the `assets/` directory does not exist in the project root. The referenced files — `splash.png`, `icon.png`, `adaptive-icon.png`, and `favicon.png` — are all missing. Without these files the app cannot be built (Expo build will fail on missing assets). If somehow launched in development mode without a build, no CTC-branded splash screen would display.
+- **Fix:** Create the `assets/` directory and add all required Expo asset files: `icon.png` (1024×1024), `splash.png` (1284×2778 for iPhone, contain mode), `adaptive-icon.png` (1024×1024 foreground), and `favicon.png` (48×48). Use CTC red (`#D52B1E`) as background. Refer to `docs/assets/ASSET_SETUP_GUIDE.md` for the asset naming conventions and build pipeline.
+
+### BUG-0085: No product images bundled — all products use placeholder string
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `data/products.json` (all 23 entries), project root (no `assets/` directory)
+- **Story:** US-0002
+- **AC:** AC-0006
+- **TC:** TC-0038
+- **Found by:** Sentinel (static analysis — test execution 2026-04-04)
+- **Description:** All 23 products in `data/products.json` have `"image": "placeholder"`. `ProductCard.tsx` and `WishlistItemRow.tsx` both check `product.image !== 'placeholder'` before rendering a real `<Image>` component; when the check fails, they render a `MaterialIcons name="image"` icon placeholder. The `assets/` directory does not exist, so no bundled product images are available. The app displays icon placeholders everywhere instead of product photos, degrading the demo experience and failing AC-0006.
+- **Fix:** (1) Add real or representative product images to `assets/images/products/` directory, named by product id (e.g., `prod-001.jpg`). (2) Update `data/products.json` image fields to reference bundled assets using `require()` paths or asset URIs. (3) Alternatively, use placeholder CDN URLs (e.g., `https://via.placeholder.com/300x300`) if bundled images are not feasible for the POC.
+
+### BUG-0086: Search bar missing from catalog screen — AC-0015 and AC-0016 not implemented
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `app/(tabs)/catalog.tsx` — entire screen
+- **Story:** US-0005
+- **AC:** AC-0015, AC-0016
+- **TC:** TC-0012, TC-0040
+- **Found by:** Sentinel (static analysis — test execution 2026-04-04)
+- **Description:** `catalog.tsx` contains no `TextInput`, `SearchBar`, or any search UI element. The screen renders only a horizontal category chip row and a product `FlatList`. `ProductContext` exposes a `search(query)` method and `productService.search()` performs case-insensitive name/description filtering — but neither is connected to any UI. AC-0015 requires a search bar visible at the top of the catalog screen; AC-0016 requires real-time filtering as the user types. Both acceptance criteria are unmet.
+- **Fix:** Add a `TextInput` search bar at the top of `catalog.tsx` (above the category chip row). On text change, call `productContext.search(query)` or filter `products` locally using the same logic as `productService.search()`. Display results in the existing FlatList. When the search query is empty, show the full product list (or category-filtered list). Debounce the search input for performance.
+
+---
+
 ## P1 — Major (feature/pixel-screens review — found by Lens 2026-04-04)
 
 ### BUG-0067: AC-0034/AC-0035 — No "I'll Get This" claim button in shared/[id].tsx
