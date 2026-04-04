@@ -4,6 +4,8 @@
   "description": "CTC Mobile Wishlist",
   "private": true,
   "scripts": {
+    "test": "jest --watchAll=false",
+    "test:coverage": "jest --watchAll=false --coverage",
     "plan:test": "jest --watchAll=false",
     "plan:test:coverage": "jest --watchAll=false --coverage",
     "plan:generate": "node tools/generate-plan.js"
