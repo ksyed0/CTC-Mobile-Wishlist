@@ -230,8 +230,26 @@
 - 22 new tests for concurrency utilities (file-lock, atomic-write, git-safe)
 - 237 total tests passing
 
+**Config-Driven Agent Registry (BUG-0050)**
+
+- Created `agents.config.json` — single source of truth for agent names, roles, icons, colors, instruction files, and orchestrator settings (dmAgent, reviewer, avatarGrid)
+- Updated `orchestrator/spawn.js` — loads AGENTS from config, `--print-all` uses `orchestrator.dmAgent`
+- Updated `tools/generate-dashboard.js` — derives agentColors, agentIcons, agentRoles from config (removed 3 duplicate hardcoded maps)
+- Updated `tools/process-avatars.js` — reads avatar grid layout from config
+- Created `tools/init-sdlc-status.js` — generates `docs/sdlc-status.json` from config (`npm run init:status`)
+- 9 new tests for config validation and spawn.js integration
+
+**Documentation Updates**
+
+- README.md: added agents.config.json to project structure, added Config-Driven Agent Registry section, updated test count to 246, added init:status to commands
+- AGENTS.md: added Config-Driven Agent Registry section with rules
+- AGENT_PLAN.md: added config reference to platform line and Conductor description
+- DM_AGENT.md: added agents.config.json to mandatory startup reads
+
 ### Stats
 
-- 6 bugs logged (BUG-0044 – BUG-0049), all fixed
+- 7 bugs logged (BUG-0044 – BUG-0050), all fixed
 - 3 new orchestrator modules: file-lock.js, atomic-write.js, git-safe.js
-- 22 new tests, 237 total passing
+- 1 new config file: agents.config.json
+- 1 new tool: init-sdlc-status.js
+- 31 new tests, 246 total passing

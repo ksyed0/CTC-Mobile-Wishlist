@@ -401,3 +401,11 @@
 - **Found in:** Project configuration
 - **Description:** Prettier formatting was only enforced in CI. Developers and agents could commit unformatted code, causing CI failures on every PR. No local feedback loop before push.
 - **Fix:** Added husky pre-commit hook with lint-staged. On commit, staged `.js`, `.json`, `.md`, `.yml`, `.yaml` files are auto-formatted with Prettier, and `.js` files are auto-fixed with ESLint.
+
+### BUG-0050: Agent registry hardcoded across 3 files
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `orchestrator/spawn.js`, `tools/generate-dashboard.js`, `tools/process-avatars.js`
+- **Description:** Agent names, roles, icons, and colors were hardcoded independently in 3 separate files (spawn.js had the agent registry, generate-dashboard.js had duplicate role/color/icon maps, process-avatars.js had a hardcoded AGENTS_ORDER array). Adding or renaming an agent required changes in 3+ files, making the framework non-portable and error-prone.
+- **Fix:** Created `agents.config.json` as the single source of truth for all agent definitions. Updated spawn.js, generate-dashboard.js, and process-avatars.js to load from config. Added `tools/init-sdlc-status.js` to generate sdlc-status.json from config. Any project can now customize agents by editing one JSON file.

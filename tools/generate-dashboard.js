@@ -15,6 +15,19 @@ const ROOT = path.resolve(__dirname, '..');
 const STATUS_PATH = path.join(ROOT, 'docs', 'sdlc-status.json');
 const OUTPUT_PATH = path.join(ROOT, 'docs', 'dashboard.html');
 
+// Load agent config (colors, icons, roles) from agents.config.json
+function loadAgentConfig() {
+  const cfgPath = path.join(ROOT, 'agents.config.json');
+  if (!fs.existsSync(cfgPath)) return {};
+  try {
+    return JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+  } catch {
+    return {};
+  }
+}
+
+const AGENT_CONFIG = loadAgentConfig();
+
 function readJSON(filePath) {
   try {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -36,29 +49,15 @@ function generateHTML(status) {
   const stories = status.stories;
   const log = status.log || [];
 
-  const agentColors = {
-    Conductor: '#D52B1E',
-    Compass: '#1565C0',
-    Keystone: '#6A1B9A',
-    Lens: '#F57C00',
-    Palette: '#00897B',
-    Forge: '#C62828',
-    Pixel: '#283593',
-    Sentinel: '#2E7D32',
-    Circuit: '#4527A0',
-  };
-
-  const agentIcons = {
-    Conductor: '🎯',
-    Compass: '🧭',
-    Keystone: '🏛️',
-    Lens: '🔍',
-    Palette: '🎨',
-    Forge: '⚒️',
-    Pixel: '✨',
-    Sentinel: '🛡️',
-    Circuit: '⚡',
-  };
+  // Agent colors, icons, and roles derived from agents.config.json
+  const agentColors = {};
+  const agentIcons = {};
+  const agentRoles = {};
+  for (const [name, cfg] of Object.entries(AGENT_CONFIG.agents || {})) {
+    agentColors[name] = cfg.color || '#888';
+    agentIcons[name] = cfg.icon || '🤖';
+    agentRoles[name] = cfg.role || name;
+  }
 
   const statusColors = {
     idle: '#888',
@@ -450,17 +449,7 @@ ${phases
   <div class="card">
     <h2>Agent Status</h2>
 ${(() => {
-  const roles = {
-    Conductor: 'Delivery Manager',
-    Compass: 'Product Owner',
-    Keystone: 'Architect',
-    Lens: 'Code Reviewer',
-    Palette: 'UI Designer',
-    Forge: 'Backend Dev',
-    Pixel: 'Frontend Dev',
-    Sentinel: 'Functional Tester',
-    Circuit: 'Automation Tester',
-  };
+  const roles = agentRoles;
   const imgBase = 'agents/images';
   // Option 2: Spotlight banner for active agent
   const activeAgent = Object.entries(agents).find(([, a]) => a.status === 'active');
@@ -478,7 +467,7 @@ ${(() => {
     </div>`;
   } else {
     spotlight = `    <div class="agent-spotlight no-active">
-      <div class="spotlight-waiting">Waiting for Conductor to activate agents...</div>
+      <div class="spotlight-waiting">Waiting for ${(AGENT_CONFIG.orchestrator || {}).dmAgent || 'orchestrator'} to activate agents...</div>
     </div>`;
   }
   return spotlight;
@@ -491,17 +480,7 @@ ${Object.entries(agents)
     const imgBase = 'agents/images';
     const statusBg = agent.status === 'active' ? 'rgba(52,168,83,0.2)' : 'rgba(136,136,136,0.15)';
     const statusColor = agent.status === 'active' ? '#34A853' : agent.status === 'complete' ? '#1565C0' : '#888';
-    const roles = {
-      Conductor: 'Delivery Manager',
-      Compass: 'Product Owner',
-      Keystone: 'Architect',
-      Lens: 'Code Reviewer',
-      Palette: 'UI Designer',
-      Forge: 'Backend Dev',
-      Pixel: 'Frontend Dev',
-      Sentinel: 'Functional Tester',
-      Circuit: 'Automation Tester',
-    };
+    const roles = agentRoles;
     // Option 1: Avatar headshot (extracted from team-grid) with fallback to full image, then emoji
     const avatarImg = `<img class="agent-avatar" src="${imgBase}/headshots/${name.toLowerCase()}.png" alt="${name}" style="border-color: ${color}" onerror="this.onerror=function(){this.outerHTML='<div class=\\'agent-avatar-fallback\\' style=\\'border-color: ${color}\\'>${icon}</div>'};this.src='${imgBase}/${name.toLowerCase()}.png'">`;
     return `      <div class="agent-card ${agent.status === 'active' ? 'active' : ''}" style="border-left-color: ${color}">
@@ -574,7 +553,7 @@ ${
     </div>`;
         })
         .join('\n')
-    : '    <div class="log-entry" style="color: #666">Waiting for Conductor to begin orchestration...</div>'
+    : `    <div class="log-entry" style="color: #666">Waiting for ${(AGENT_CONFIG.orchestrator || {}).dmAgent || 'orchestrator'} to begin orchestration...</div>`
 }
   </div>
 </div>
