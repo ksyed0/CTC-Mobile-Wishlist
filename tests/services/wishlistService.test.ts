@@ -430,6 +430,67 @@ describe('wishlistService.claimItem', () => {
 });
 
 // ---------------------------------------------------------------------------
+// Error path coverage — loadWishlists catch branch (getItem rejection)
+// ---------------------------------------------------------------------------
+describe('wishlistService error paths', () => {
+  it('getWishlists returns empty array when storage read throws', async () => {
+    // storage.getItem swallows the rejection and returns null,
+    // so wishlists defaults to [] and filter returns []
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage read error'));
+    const result = await wishlistService.getWishlists('user-001');
+    expect(result).toEqual([]);
+  });
+
+  it('getSharedWishlists returns empty array when storage read throws', async () => {
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage read error'));
+    const result = await wishlistService.getSharedWishlists('user-001');
+    expect(result).toEqual([]);
+  });
+
+  it('getWishlistById returns null when storage read throws', async () => {
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage read error'));
+    const result = await wishlistService.getWishlistById('wl-any');
+    expect(result).toBeNull();
+  });
+
+  it('addItem returns null when storage read throws (wishlist not found)', async () => {
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage read error'));
+    const result = await wishlistService.addItem('wl-any', 'prod-001');
+    expect(result).toBeNull();
+  });
+
+  it('deleteWishlist resolves without error when storage read throws', async () => {
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage read error'));
+    await expect(wishlistService.deleteWishlist('wl-any')).resolves.toBeUndefined();
+  });
+
+  it('removeItem returns null when storage read throws', async () => {
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage read error'));
+    const result = await wishlistService.removeItem('wl-any', 'prod-001');
+    expect(result).toBeNull();
+  });
+
+  it('shareWishlist returns null when storage read throws', async () => {
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage read error'));
+    const bob = { contactId: 'user-002', contactName: 'Bob', phone: '416-555-0102', sharedAt: '2026-01-02T00:00:00.000Z' };
+    const result = await wishlistService.shareWishlist('wl-any', [bob]);
+    expect(result).toBeNull();
+  });
+
+  it('claimItem returns null when storage read throws', async () => {
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage read error'));
+    const result = await wishlistService.claimItem('wl-any', 'prod-001', 'user-002');
+    expect(result).toBeNull();
+  });
+
+  it('unclaimItem returns null when storage read throws', async () => {
+    AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage read error'));
+    const result = await wishlistService.unclaimItem('wl-any', 'prod-001');
+    expect(result).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
 // unclaimItem (US-0012)
 // ---------------------------------------------------------------------------
 describe('wishlistService.unclaimItem', () => {

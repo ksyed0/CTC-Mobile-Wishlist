@@ -5,6 +5,8 @@ node_modules/
 dist/
 build/
 coverage/
+# Keep the docs/coverage summary for the PlanVisualizer dashboard
+!docs/coverage/
 *.log
 .DS_Store
 .idea/
