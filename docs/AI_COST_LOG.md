@@ -1,0 +1,26 @@
+| Date       | Session ID | Branch | Input Tokens | Output Tokens | Cache Read Tokens | Cost USD |
+|------------|------------|--------|--------------|---------------|-------------------|----------|
+| 2026-04-03 | a3fe94cd-e4cb-4b01-9fd5-b823350f085b | claude/install-plan-visualizer-09PFc | 155354 | 4129 | 1275225 | 1.0267 |
+| 2026-04-03 | a3fe94cd-e4cb-4b01-9fd5-b823350f085b | claude/install-plan-visualizer-09PFc | 157137 | 4241 | 1440572 | 1.0846 |
+| 2026-04-03 | a3fe94cd-e4cb-4b01-9fd5-b823350f085b | claude/install-plan-visualizer-09PFc | 157303 | 4288 | 1508407 | 1.1063 |
+| 2026-04-03 | a3fe94cd-e4cb-4b01-9fd5-b823350f085b | claude/install-plan-visualizer-09PFc | 158100 | 4404 | 1611252 | 1.1419 |
+| 2026-04-03 | 503517c7-985e-4672-8995-e01f83ed45f2 | claude/install-plan-visualizer-09PFc | 189955 | 4388 | 2879196 | 1.6415 |
+| 2026-04-03 | 503517c7-985e-4672-8995-e01f83ed45f2 | claude/install-plan-visualizer-09PFc | 191703 | 4454 | 2978922 | 1.6789 |
+| 2026-04-03 | 503517c7-985e-4672-8995-e01f83ed45f2 | claude/install-plan-visualizer-09PFc | 193063 | 4670 | 3131797 | 1.7331 |
+| 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 318772 | 5266 | 3271359 | 2.2553 |
+| 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 321044 | 5572 | 3545135 | 2.3506 |
+| 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 347701 | 6142 | 4183518 | 2.6506 |
+| 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 348663 | 6178 | 4313487 | 2.6937 |
+| 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 350020 | 6392 | 4510597 | 2.7611 |
+| 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 380087 | 11141 | 5386911 | 3.2080 |
+| 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 385706 | 11146 | 5632183 | 3.3027 |
+| 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 386408 | 11234 | 5893992 | 3.3852 |
+| 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | feature/US-0000-business-case-deck | 493237 | 137939 | 10686990 | 7.1243 |
+| 2026-04-04 | 2d8bef1e-e3e6-403b-8dab-8c2b51a518df | feature/US-0000-business-case-deck | 690698 | 120235 | 10709542 | 7.6059 |
+| 2026-04-04 | 2d8bef1e-e3e6-403b-8dab-8c2b51a518df | develop | 695828 | 120528 | 11840782 | 7.9689 |
+| 2026-04-04 | 3424527f-65dd-43c8-865f-404d5d875ffa | develop | 953370 | 131411 | 19809782 | 11.4886 |
+| 2026-04-04 | 7dc98c0c-331c-40bc-9bff-a39f0da49c92 | claude/install-plan-visualizer-09PFc | 1662734 | 140104 | 29624483 | 17.2234 |
+| 2026-04-04 | 7dc98c0c-331c-40bc-9bff-a39f0da49c92 | claude/install-plan-visualizer-09PFc | 1664325 | 140349 | 29906312 | 17.3176 |
+| 2026-04-04 | 7dc98c0c-331c-40bc-9bff-a39f0da49c92 | claude/install-plan-visualizer-09PFc | 1666361 | 140351 | 29977474 | 17.3466 |
+| 2026-04-04 | 7dc98c0c-331c-40bc-9bff-a39f0da49c92 | claude/install-plan-visualizer-09PFc | 1666893 | 140492 | 30197373 | 17.4167 |
+| 2026-04-04 | 7dc98c0c-331c-40bc-9bff-a39f0da49c92 | claude/install-plan-visualizer-09PFc | 1667580 | 140613 | 30492762 | 17.5097 |
