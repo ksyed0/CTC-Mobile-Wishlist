@@ -96,7 +96,14 @@ Phase 3 example — launch Forge and Pixel simultaneously:
 
 ### Phase 3: Link + Stylize (150 min) — PARALLEL
 ```
-1. Spawn Forge AND Pixel simultaneously:
+0. Spawn Palette (UI Designer Agent)
+   Task: "Keystone created the scaffold. Theme stub is at src/theme/index.ts.
+          Your task: Define all design tokens, component style specs, and
+          wireframe mockups per architecture/DESIGN_SYSTEM.md. Commit to branch:
+          feature/US-0001-expo-scaffold. Report your theme file path and
+          component specs when done."
+
+1. Spawn Forge AND Pixel simultaneously (after Palette completes):
    
    Forge: "Keystone created the scaffold on feature/US-0001-expo-scaffold.
            Types are in src/types/index.ts. Service interfaces are in src/services/.
@@ -104,10 +111,10 @@ Phase 3 example — launch Forge and Pixel simultaneously:
            Work on branch: feature/US-0002-mock-data-layer"
    
    Pixel: "Keystone created the scaffold with tab navigation.
-           Theme is in src/theme/index.ts. Types in src/types/index.ts.
+           Palette completed the theme at src/theme/index.ts — read it for all
+           design tokens. Types in src/types/index.ts.
            Your task: Build all screens and components per DESIGN_SYSTEM.md.
-           Work on branch: feature/US-0003-catalog-browsing
-           (Palette's guidance: use CT_RED #D52B1E, 8px radius, 4px grid)"
+           Work on branch: feature/US-0003-catalog-browsing"
 
 2. Monitor both agents — check for merge conflicts
 3. Spawn Lens to review both branches:
@@ -154,19 +161,45 @@ Phase 3 example — launch Forge and Pixel simultaneously:
 1. If critical bugs exist, spawn Forge or Pixel to fix them
 2. Final merge to develop branch
 3. Update all documentation: RELEASE_PLAN.md, progress.md, AI_COST_LOG.md
-4. Prepare demo talking points
+4. Start Expo dev server: npx expo start
+5. Verify app loads in Expo Go on demo device (scan QR code)
+6. Prepare demo talking points
 ```
+
+## Phase Exit Criteria
+
+Do NOT advance to the next phase until the current phase's exit criteria are met.
+
+| Phase | Exit Criteria |
+|-------|--------------|
+| 1 Blueprint | Compass has updated RELEASE_PLAN.md with refined ACs and priority order. progress.md updated. |
+| 2 Architect | Keystone's scaffold compiles (no TS errors). Lens verdict: APPROVE. Branches pushed. |
+| 3 Build | Forge's services have passing unit tests. Pixel's screens render without crash. Lens verdict: APPROVE for both. |
+| 4 Integration | End-to-end flow (browse → detail → add to wishlist) works. Lens verdict: APPROVE. |
+| 5 Test | Sentinel's test execution report is in progress.md. Circuit's Jest suites pass. Coverage report generated at docs/coverage/coverage-summary.json. |
+| 6 Polish | All critical bugs fixed. develop branch has final merge. Demo talking points documented. |
+
+**Pre-phase check:** Before spawning an agent, verify the files it needs exist (`ls` the instruction file path, the branch, and key input files from prior phases).
 
 ## Context Passing Rules
 
-Each agent operates in a fresh Claude Code context. They do NOT see what other agents did unless you tell them. Always pass:
+Each agent operates in a fresh Claude Code context. They do NOT see what other agents did unless you tell them.
 
-| What to Pass | Why |
-|-------------|-----|
-| Branch name where previous work lives | So they can check it out |
-| File paths of key artifacts created | So they know where to find types, services, etc. |
-| Any blockers or decisions from previous phases | So they don't redo or contradict earlier work |
-| Specific story/task IDs to work on | So they update the right items in RELEASE_PLAN.md |
+**When spawning any agent, structure your prompt as follows:**
+
+```
+AGENT: [Name]
+INSTRUCTION FILE: docs/agents/[FILE].md
+TASK: [Specific deliverable in one sentence]
+STORIES: [US-XXXX, US-XXXX]
+BRANCH: [branch name to work on]
+PRIOR CONTEXT:
+  - [Agent] completed [what] on branch [name]
+  - Key files: [path1], [path2]
+  - Decisions: [any relevant decisions from prior phases]
+EXIT CRITERIA: [What "done" looks like for this task]
+COMMIT WHEN DONE: yes, format per AGENTS.md
+```
 
 **Never assume an agent knows what another agent did. Be explicit.**
 
@@ -237,12 +270,18 @@ After each phase, append to `progress.md`:
 **Notes:** [Any issues, decisions, or blockers]
 ```
 
-## Escalation Rules
+## Error Handling SOP
 
-- If an agent fails or produces incorrect output → re-read its instruction file, provide corrected context, re-spawn
-- If two agents create merge conflicts → resolve manually before spawning the next phase
-- If a critical bug blocks Phase 5 → spawn Forge or Pixel to fix before continuing testing
-- If time runs short → consult Compass's priority list and cut lowest-priority stories
+| Scenario | Action | Max Retries |
+|----------|--------|-------------|
+| Agent produces incorrect output | Re-read instruction file, pass corrected context, re-spawn | 2 |
+| Agent fails to start or crashes | Verify instruction file path, simplify task scope, re-spawn | 2 |
+| Lens returns REQUEST CHANGES | Re-spawn original agent with Lens findings as context | 1 |
+| Lens returns BLOCK | **Escalate to human.** Do not proceed. | 0 |
+| Merge conflict between parallel agents | Resolve manually before spawning next phase | N/A |
+| Critical bug blocks testing | Spawn Forge or Pixel to fix before continuing Phase 5 | 1 |
+| Phase runs over timebox by >50% | Consult Compass's priority list, cut lowest-priority stories | N/A |
+| After max retries exhausted | Log the failure in progress.md, skip the task, continue with remaining work | N/A |
 
 ## Rules
 

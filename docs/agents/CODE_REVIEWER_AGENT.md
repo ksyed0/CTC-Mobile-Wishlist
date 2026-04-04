@@ -137,6 +137,16 @@ Phase 4 → Lens reviews Pixel's integration work
 Phase 5 → Lens reviews Sentinel's test results and Circuit's test suites
 ```
 
+### Phase 5 Review Focus
+
+When reviewing Phase 5 (Trigger) output:
+- Verify Sentinel executed all in-scope test cases (not just a subset)
+- Verify bugs in `docs/BUGS.md` have proper IDs, repro steps, and TC cross-references
+- Verify Circuit's Jest tests actually test meaningful behavior (not just existence/smoke checks)
+- Verify coverage report exists at `docs/coverage/coverage-summary.json`
+- Verify test results are recorded in `docs/TEST_CASES.md` with `Actual Result:` filled in
+- Verdict: APPROVE if pass rate >70% and all critical bugs are logged; REQUEST CHANGES if gaps found
+
 ## PlanVisualizer Integration
 
 - Log review results in `progress.md` under the relevant phase

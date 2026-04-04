@@ -284,6 +284,36 @@ Phase 6: Polish (30 min)
 | **Sentinel** (Func Tester) | Test cases on working screens | Cross-device testing, load testing |
 | **Circuit** (Auto Tester) | Jest unit tests for services + components | E2E tests (Detox), CI integration |
 
+### Feature-Level Scope
+
+| Feature | Real (Code) | Simulated (Docs/Mocks) |
+|---------|-------------|----------------------|
+| Tab navigation | Yes | -- |
+| CTC theming / design tokens | Yes | -- |
+| Mock data (products, users) | Yes | -- |
+| Catalog browsing + search | Yes | -- |
+| Product detail screen | Yes | -- |
+| Barcode scanner | Camera UI real; scan result uses mock lookup | Real barcode recognition |
+| Wishlist CRUD | Yes | -- |
+| Wishlist sharing | Service logic real; contacts from mock data | Real SMS/push notifications |
+| Item claiming | Service logic real | Multi-device sync |
+| User switching | Mock login real | Real authentication (OAuth, JWT) |
+| Splash screen | Static branded screen | Animated splash |
+
+## Deployment Strategy
+
+**Hackathon (Monday):** Use Expo Go + iOS Simulator. No paid accounts needed.
+
+| Method | Account Needed? | Use Case |
+|--------|----------------|----------|
+| **Expo Go** (free app) | No | Demo on physical iPhone/Android — scan QR code |
+| **iOS Simulator** (Xcode) | No (free Xcode) | Local dev/demo on Mac |
+| **Android Emulator** | No | Local dev/demo on any OS |
+| **EAS Development Build** | Free Apple ID | Custom native modules (not needed for POC) |
+| **TestFlight / App Store** | $99/yr Apple Developer | Production — not applicable for hackathon |
+
+**To run:** `npx expo start` → scan QR with Expo Go on demo device.
+
 ---
 
 ## 5. Claude Code Execution Modes

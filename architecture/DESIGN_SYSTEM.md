@@ -281,3 +281,27 @@ Icons: MaterialCommunityIcons from @expo/vector-icons
 | Screen reader | All images have `accessibilityLabel`, buttons have `accessibilityRole` |
 | Dynamic type | Respect system font size preferences |
 | Reduced motion | Check `AccessibilityInfo.isReduceMotionEnabled` and skip animations |
+
+---
+
+## 9. Device Compatibility
+
+**Orientation:** Portrait only for POC.
+
+### Target Devices
+
+| Device | Width (pt) | Height (pt) | Safe Area Top | Safe Area Bottom |
+|--------|-----------|-------------|---------------|-----------------|
+| iPhone 17 Pro Max | 430 | 932 | 59 (Dynamic Island) | 34 (home indicator) |
+| iPhone 16 Pro | 393 | 852 | 59 | 34 |
+| Google Pixel 10 Pro XL | ~411 | ~915 | ~48 (status bar) | ~48 (gesture nav) |
+| Google Pixel 9 | ~393 | ~873 | ~48 | ~48 |
+
+### Layout Guarantees
+
+- All components use flex layouts with percentage widths — no fixed-width elements exceed 375pt
+- `SafeAreaProvider` wraps the entire app, handling notch, Dynamic Island, and gesture bar
+- 16px horizontal padding on all screens ensures content doesn't touch edges
+- Tab bar: 60px height including safe area inset
+- Product cards and list items use `100% width` with consistent padding
+- System fonts (SF Pro on iOS, Roboto on Android) respect dynamic type scaling

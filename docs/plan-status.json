@@ -686,6 +686,16 @@
       "defect": "None"
     },
     {
+      "id": "TC-0037",
+      "title": "Splash screen displays CTC branding on launch",
+      "relatedStory": "US-0001",
+      "relatedTask": "TASK-0001",
+      "relatedAC": "AC-0004",
+      "type": "Functional",
+      "status": "Not Run",
+      "defect": "None"
+    },
+    {
       "id": "TC-0004",
       "title": "Mock products load with all required fields",
       "relatedStory": "US-0002",
@@ -701,6 +711,26 @@
       "relatedStory": "US-0002",
       "relatedTask": "TASK-0006",
       "relatedAC": "AC-0008",
+      "type": "Functional",
+      "status": "Not Run",
+      "defect": "None"
+    },
+    {
+      "id": "TC-0038",
+      "title": "Mock product images are bundled as local assets",
+      "relatedStory": "US-0002",
+      "relatedTask": "TASK-0005",
+      "relatedAC": "AC-0006",
+      "type": "Functional",
+      "status": "Not Run",
+      "defect": "None"
+    },
+    {
+      "id": "TC-0039",
+      "title": "Mock user profiles available for simulated login",
+      "relatedStory": "US-0002",
+      "relatedTask": "TASK-0005",
+      "relatedAC": "AC-0007",
       "type": "Functional",
       "status": "Not Run",
       "defect": "None"
@@ -771,6 +801,16 @@
       "relatedStory": "US-0005",
       "relatedTask": "TASK-0009",
       "relatedAC": "AC-0016",
+      "type": "Functional",
+      "status": "Not Run",
+      "defect": "None"
+    },
+    {
+      "id": "TC-0040",
+      "title": "Search bar visible at top of catalog screen",
+      "relatedStory": "US-0005",
+      "relatedTask": "TASK-0009",
+      "relatedAC": "AC-0015",
       "type": "Functional",
       "status": "Not Run",
       "defect": "None"
@@ -1097,9 +1137,9 @@
       "outputTokens": 0
     },
     "_totals": {
-      "costUsd": 5.2256,
-      "inputTokens": 672207,
-      "outputTokens": 14646
+      "costUsd": 68.84140000000001,
+      "inputTokens": 5469040,
+      "outputTokens": 591862
     },
     "_bugs": {
       "_totals": {
@@ -1216,12 +1256,22 @@
       "sessionNum": 1,
       "date": "2026-04-03",
       "summary": "Installed PlanVisualizer tool from ksyed0/PlanVisualizer; Initialized project docs (RELEASE_PLAN, TEST_CASES, BUGS, AI_COST_LOG, LESSONS, ID_REGISTRY); Configured plan-visualizer.config.json for CTC-Mobile-Wishlist"
+    },
+    {
+      "sessionNum": 2,
+      "date": "2026-04-03",
+      "summary": "Created full release plan: 6 epics, 13 user stories, 21 tasks, 40 ACs, 36 test cases; Created architecture docs: SYSTEM_ARCHITECTURE.md, DESIGN_SYSTEM.md, DATA_FLOW.md; Created business plan with CTC revenue analysis and 4-channel uplift model"
+    },
+    {
+      "sessionNum": 3,
+      "date": "2026-04-04",
+      "summary": "**Offshore Rate Standardization**; All offshore rates updated to flat $72 CAD/h; Traditional SDLC: $663K-890K | EliteA: $344K | ROI: 19,270%"
     }
   ],
   "lessons": [],
-  "generatedAt": "2026-04-03T22:15:20.829Z",
-  "commitSha": "8ea5d41",
-  "buildNumber": "9",
+  "generatedAt": "2026-04-04T03:13:22.140Z",
+  "commitSha": "ed97148",
+  "buildNumber": "28",
   "sessionTimeline": [
     {
       "date": "2026-04-03",
@@ -1233,7 +1283,23 @@
     },
     {
       "date": "2026-04-03",
-      "cumCost": 5.2256
+      "cumCost": 9.9993
+    },
+    {
+      "date": "2026-04-04",
+      "cumCost": 17.9682
+    },
+    {
+      "date": "2026-04-04",
+      "cumCost": 29.4568
+    },
+    {
+      "date": "2026-04-04",
+      "cumCost": 55.2866
+    },
+    {
+      "date": "2026-04-04",
+      "cumCost": 68.8414
     }
   ],
   "projectName": "CTC-Mobile-Wishlist",
@@ -1241,13 +1307,13 @@
   "version": "1.0.0",
   "githubUrl": "",
   "budget": {
-    "totalBudget": 7605.2256,
-    "totalSpent": 5.2256,
+    "totalBudget": 7668.8414,
+    "totalSpent": 68.84140000000001,
     "totalProjected": 7600,
-    "percentUsed": 0,
-    "burnRate": 5.2256,
-    "daysRemaining": 1454,
-    "projectedExhaustion": 1454,
+    "percentUsed": 1,
+    "burnRate": 68.84140000000001,
+    "daysRemaining": 110,
+    "projectedExhaustion": 110,
     "thresholds": [
       50,
       75,

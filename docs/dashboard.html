@@ -6,50 +6,97 @@
 <title>CTC Mobile Wishlist — SDLC Live Dashboard</title>
 <meta http-equiv="refresh" content="5">
 <style>
+  :root {
+    --bg-primary: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-card-inner: #1a1a3e;
+    --bg-card-border: #2a2a5a;
+    --bg-phase-pending: #2a2a4a;
+    --bg-phase-border: #3a3a5a;
+    --bg-phase-complete: #1a3a2a;
+    --bg-progress: #2a2a4a;
+    --text-primary: #e0e0e0;
+    --text-secondary: #aaa;
+    --text-muted: #999;
+    --text-dim: #777;
+    --divider: #2a2a4a;
+    --story-title: #ccc;
+    --footer-text: #666;
+    --status-planned-bg: #2a2a4a;
+    --status-planned-color: #888;
+    --status-inprogress-bg: #3a2a0a;
+    --status-complete-bg: #1a3a2a;
+  }
+  [data-theme="light"] {
+    --bg-primary: #f0f2f5;
+    --bg-card: #ffffff;
+    --bg-card-inner: #f5f5f5;
+    --bg-card-border: #e0e0e0;
+    --bg-phase-pending: #f5f5f5;
+    --bg-phase-border: #ddd;
+    --bg-phase-complete: #e8f5e9;
+    --bg-progress: #e0e0e0;
+    --text-primary: #1a1a2e;
+    --text-secondary: #555;
+    --text-muted: #666;
+    --text-dim: #999;
+    --divider: #e8e8e8;
+    --story-title: #333;
+    --footer-text: #999;
+    --status-planned-bg: #e8e8e8;
+    --status-planned-color: #666;
+    --status-inprogress-bg: #fff3e0;
+    --status-complete-bg: #e8f5e9;
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #e0e0e0; min-height: 100vh; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; transition: background 0.3s, color 0.3s; }
 
   .header { background: linear-gradient(135deg, #D52B1E 0%, #8B1A12 100%); padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
   .header h1 { font-size: 22px; color: white; font-weight: 700; }
   .header .subtitle { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 2px; }
+  .header .controls { display: flex; align-items: center; gap: 16px; }
   .header .clock { text-align: right; }
   .header .clock .time { font-size: 28px; font-weight: 700; color: white; font-variant-numeric: tabular-nums; }
   .header .clock .label { font-size: 11px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px; }
+  #theme-toggle { background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
+  #theme-toggle:hover { background: rgba(255,255,255,0.35); }
 
   .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
 
   /* Phase Pipeline */
   .pipeline { display: flex; gap: 4px; margin-bottom: 24px; }
   .phase-block { flex: 1; border-radius: 8px; padding: 16px; position: relative; overflow: hidden; transition: all 0.3s; }
-  .phase-block.pending { background: #2a2a4a; border: 1px solid #3a3a5a; }
-  .phase-block.in-progress { background: #2a2a4a; border: 2px solid #F57C00; animation: pulse 2s infinite; }
-  .phase-block.complete { background: #1a3a2a; border: 1px solid #2E7D32; }
+  .phase-block.pending { background: var(--bg-phase-pending); border: 1px solid var(--bg-phase-border); }
+  .phase-block.in-progress { background: var(--bg-phase-pending); border: 2px solid #F57C00; animation: pulse 2s infinite; }
+  .phase-block.complete { background: var(--bg-phase-complete); border: 1px solid #2E7D32; }
   .phase-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-  .phase-agents { font-size: 11px; color: #888; }
+  .phase-agents { font-size: 11px; color: var(--text-muted); }
   .phase-status { position: absolute; top: 8px; right: 12px; font-size: 18px; }
-  .phase-deliverables { font-size: 10px; color: #666; margin-top: 8px; }
+  .phase-deliverables { font-size: 10px; color: var(--text-dim); margin-top: 8px; }
 
   @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(245, 124, 0, 0.4); } 50% { box-shadow: 0 0 20px 4px rgba(245, 124, 0, 0.2); } }
-  @keyframes spin { to { transform: rotate(360deg); } }
 
   .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 24px; }
   .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
 
-  .card { background: #16213e; border-radius: 12px; padding: 20px; border: 1px solid #1a1a3e; }
+  .card { background: var(--bg-card); border-radius: 12px; padding: 20px; border: 1px solid var(--bg-card-border); transition: background 0.3s, border-color 0.3s; }
   .card h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: #D52B1E; text-transform: uppercase; letter-spacing: 1px; }
 
   /* Metrics */
-  .metric-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #1a1a3e; }
+  .metric-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--divider); }
   .metric-row:last-child { border-bottom: none; }
-  .metric-label { font-size: 13px; color: #aaa; }
+  .metric-label { font-size: 13px; color: var(--text-secondary); }
   .metric-value { font-size: 20px; font-weight: 700; }
   .metric-value.green { color: #34A853; }
   .metric-value.red { color: #D52B1E; }
   .metric-value.blue { color: #1565C0; }
   .metric-value.orange { color: #F57C00; }
+  [data-theme="light"] .metric-value.orange { color: #E65100; }
+  [data-theme="light"] .metric-value.green { color: #2E7D32; }
 
   /* Progress bars */
-  .progress-bar { height: 8px; background: #2a2a4a; border-radius: 4px; overflow: hidden; margin-top: 6px; }
+  .progress-bar { height: 8px; background: var(--bg-progress); border-radius: 4px; overflow: hidden; margin-top: 6px; }
   .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
   .progress-fill.red { background: linear-gradient(90deg, #D52B1E, #F44336); }
   .progress-fill.green { background: linear-gradient(90deg, #2E7D32, #4CAF50); }
@@ -57,35 +104,41 @@
 
   /* Agent grid */
   .agent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .agent-card { background: #1a1a3e; border-radius: 8px; padding: 12px; border-left: 4px solid; transition: all 0.3s; }
+  .agent-card { background: var(--bg-card-inner); border-radius: 8px; padding: 12px; border-left: 4px solid; transition: all 0.3s; }
+  .agent-card:hover { filter: brightness(1.1); }
   .agent-card.active { animation: pulse-agent 1.5s infinite; }
   @keyframes pulse-agent { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
   .agent-icon { font-size: 20px; margin-bottom: 4px; }
   .agent-name { font-size: 13px; font-weight: 700; }
-  .agent-role { font-size: 10px; color: #888; margin-bottom: 6px; }
+  .agent-role { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; }
   .agent-status { font-size: 11px; padding: 2px 8px; border-radius: 10px; display: inline-block; }
-  .agent-task { font-size: 10px; color: #aaa; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .agent-task { font-size: 10px; color: var(--text-secondary); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   /* Story table */
   .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-  .story-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: #1a1a3e; border-radius: 6px; font-size: 12px; }
+  .story-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--bg-card-inner); border-radius: 6px; font-size: 12px; transition: all 0.2s; }
+  .story-row:hover { filter: brightness(1.1); }
   .story-id { font-weight: 700; color: #D52B1E; width: 65px; }
-  .story-title { flex: 1; color: #ccc; margin: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .story-title { flex: 1; color: var(--story-title); margin: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .story-status { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
-  .story-status.Planned { background: #2a2a4a; color: #888; }
-  .story-status.InProgress { background: #3a2a0a; color: #F57C00; }
-  .story-status.Complete { background: #1a3a2a; color: #34A853; }
+  .story-status.Planned { background: var(--status-planned-bg); color: var(--status-planned-color); }
+  .story-status.InProgress { background: var(--status-inprogress-bg); color: #F57C00; }
+  [data-theme="light"] .story-status.InProgress { color: #E65100; }
+  .story-status.Complete { background: var(--status-complete-bg); color: #34A853; }
+  [data-theme="light"] .story-status.Complete { color: #2E7D32; }
 
   /* Activity log */
-  .log-entry { padding: 8px 0; border-bottom: 1px solid #1a1a3e; font-size: 12px; }
+  .log-entry { padding: 8px 0; border-bottom: 1px solid var(--divider); font-size: 12px; }
   .log-entry:last-child { border-bottom: none; }
-  .log-time { color: #666; font-variant-numeric: tabular-nums; margin-right: 8px; }
+  .log-time { color: var(--text-dim); font-variant-numeric: tabular-nums; margin-right: 8px; }
   .log-agent { font-weight: 700; margin-right: 4px; }
   .log-scroll { max-height: 240px; overflow-y: auto; }
 
   /* Footer */
-  .footer { text-align: center; padding: 16px; color: #444; font-size: 11px; }
+  .footer { text-align: center; padding: 16px; color: var(--footer-text); font-size: 11px; }
   .footer span { color: #D52B1E; }
+  .footer a { color: #D52B1E; text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -93,11 +146,14 @@
 <div class="header">
   <div>
     <h1>CTC Mobile Wishlist — Agentic AI SDLC</h1>
-    <div class="subtitle">EPAM EliteA | 9 Specialized Agents | Hackathon Live Dashboard</div>
+    <div class="subtitle">Claude Code | 9 Specialized Agents | Hackathon Live Dashboard</div>
   </div>
-  <div class="clock">
-    <div class="time">02:30:56 AM</div>
-    <div class="label">Last Updated</div>
+  <div class="controls">
+    <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    <div class="clock">
+      <div class="time">03:13:22 AM</div>
+      <div class="label">Last Updated</div>
+    </div>
   </div>
 </div>
 
@@ -359,8 +415,29 @@
 </div>
 
 <div class="footer">
-  EPAM EliteA Agentic AI SDLC | <span>Canadian Tire Corporation</span> | Auto-refreshes every 5 seconds
+  Claude Code Agentic AI SDLC | <span>Canadian Tire Corporation</span> | Auto-refreshes every 5 seconds
+  <br><a href="plan-status.html">📊 Open Plan Visualizer →</a>
 </div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('dashboard-theme', next);
+  updateToggleButton(next);
+}
+function updateToggleButton(theme) {
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = theme === 'light' ? '🌙 Dark' : '☀️ Light';
+}
+(function() {
+  var saved = localStorage.getItem('dashboard-theme') || 'dark';
+  if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  updateToggleButton(saved);
+})();
+</script>
 
 </body>
 </html>

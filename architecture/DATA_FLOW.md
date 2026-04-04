@@ -67,7 +67,7 @@ interface WishlistService {
 }
 ```
 
-**POC Implementation:** AsyncStorage with key pattern `wishlists:${userId}`. Shared wishlists are simulated by storing `sharedWith` arrays and querying across all users' wishlists.
+**POC Implementation:** AsyncStorage with global key `wishlists` storing all `Wishlist[]`, filtered by `ownerId` at read time (see Section 5 key schema). Shared wishlists are simulated by storing `sharedWith` arrays and querying across all wishlists.
 
 ---
 
