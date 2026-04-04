@@ -156,7 +156,7 @@ function main() {
   } catch (err) {
     let msg = 'Failed to read package.json';
     if (err instanceof Error) msg += ': ' + err.message;
-    throw new Error(msg);
+    throw new Error(msg, { cause: err });
   }
 
   const sessionTimeline = deduplicateSessions(costRows)

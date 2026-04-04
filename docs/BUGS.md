@@ -226,3 +226,10 @@
 - **Found in:** `docs/agents/DM_AGENT.md`, `README.md`
 - **Description:** Agent spawning instructions, CLI invocations, and parallel execution patterns are hardcoded to Claude Code. Cannot run the same orchestration on Codex, Gemini, or open-source models without rewriting DM_AGENT.md and README.md. The agent instruction files themselves are platform-agnostic markdown, but the invocation and spawning mechanism is not.
 - **Fix:** Create `orchestrator/` adapter layer with platform-specific spawn implementations. Abstract DM_AGENT.md spawning to use platform-agnostic patterns. Update README.md with multi-platform quick-start instructions.
+
+### BUG-0032: No CI checks on pull requests
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `.github/workflows/`
+- **Description:** Only 1 GitHub Actions workflow exists (`plan-visualizer.yml`) which auto-generates dashboards. No CI checks run on pull requests — PRs can be merged with broken code, failing tests, or lint errors. Conductor has no awareness of CI status after pushing code.
+- **Fix:** Add `.github/workflows/ci.yml` with 4 jobs (lint, test+coverage, build, orchestrator validation) on all PRs to main/develop. Add CI verification step to Conductor Phase 6. Expand ESLint targets to include orchestrator/ files.

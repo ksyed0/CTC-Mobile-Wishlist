@@ -451,7 +451,7 @@ ${(() => {
   const imgBase = 'agents/images';
   // Option 2: Spotlight banner for active agent
   const activeAgent = Object.entries(agents).find(([, a]) => a.status === 'active');
-  let spotlight = '';
+  let spotlight;
   if (activeAgent) {
     const [aName, aData] = activeAgent;
     const aColor = agentColors[aName] || '#888';

@@ -16,8 +16,7 @@
  *   node orchestrator/spawn.js --agent Conductor
  */
 
-const path = require('path');
-const fs = require('fs');
+
 
 // --- Agent Registry ---
 const AGENTS = {
