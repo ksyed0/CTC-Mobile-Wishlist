@@ -208,19 +208,19 @@ Applying the moderate scenario proportionally to banner revenue and e-commerce p
 
 ### 6.2 Traditional Production Build Estimate (CAD)
 
-> **Rate card:** Onshore (Canada): DM $200 CAD/h, BA $160 CAD/h, SA $190 CAD/h. Offshore: Sr Dev $130 CAD/h, Functional Tester $95 CAD/h, Automation Tester $110 CAD/h, DevOps $140 CAD/h. All based on 160h/month.
+> **Rate card:** Onshore (Canada): DM $200 CAD/h, BA $160 CAD/h, SA $190 CAD/h. Offshore: All resources $72 CAD/h. All based on 160h/month.
 
 | Role | HC | Shore | Rate (CAD/h) | Duration | Est. Cost (CAD) |
 |------|-----|-------|-------------|----------|----------------|
 | Delivery Manager | 1 | Onshore | $200 | 6–9 months | $192K–288K |
 | Business Analyst | 1 | Onshore | $160 | 2–3 months | $51K–77K |
 | Solution Architect | 1 | Onshore | $190 | 3–4 months | $91K–122K |
-| Sr Backend Developer | 2 | Offshore | $130 | 5–6 months | $208K–250K |
-| Sr Mobile Developer | 2 | Offshore | $130 | 5–6 months | $208K–250K |
-| Functional Tester | 1 | Offshore | $95 | 3–4 months | $46K–61K |
-| Automation Tester | 1 | Offshore | $110 | 3–4 months | $53K–70K |
-| DevOps / SRE | 1 | Offshore | $140 | 2.5–3 months | $56K–67K |
-| **Total** | **10 FTEs** | **3 on / 7 off** | | **6–9 months** | **$905K–1.18M CAD** |
+| Sr Backend Developer | 2 | Offshore | $72 | 5–6 months | $115K–138K |
+| Sr Mobile Developer | 2 | Offshore | $72 | 5–6 months | $115K–138K |
+| Functional Tester | 1 | Offshore | $72 | 3–4 months | $35K–46K |
+| Automation Tester | 1 | Offshore | $72 | 3–4 months | $35K–46K |
+| DevOps / SRE | 1 | Offshore | $72 | 2.5–3 months | $29K–35K |
+| **Total** | **10 FTEs** | **3 on / 7 off** | | **6–9 months** | **$663K–890K CAD** |
 
 ### 6.3 EPAM EliteA Agentic AI SDLC Estimate (CAD)
 
@@ -232,7 +232,7 @@ EliteA is EPAM's proprietary agentic AI platform that orchestrates the full SDLC
 - AI agents handle ~70% of boilerplate code, tests, and documentation
 - Human engineers focus on architecture, integration, edge cases, and review
 - Onshore rates (CAD/h): DM $200, BA $160, SA $190
-- Offshore rates (CAD/h): Sr Dev $130, QA $95–110, DevOps $140
+- Offshore rates (CAD/h): All resources $72
 - Team: 3 onshore (DM, BA, SA) + 2 offshore engineers + AI agent cluster
 - Parallel workstreams: backend + mobile + QA run concurrently
 
@@ -241,15 +241,15 @@ EliteA is EPAM's proprietary agentic AI platform that orchestrates the full SDLC
 | Delivery Manager | 1 | Onshore | $200 | 15 weeks | $120K |
 | Business Analyst | 1 (PT) | Onshore | $160 | 4 weeks | $26K |
 | Solution Architect | 1 | Onshore | $190 | 6 weeks | $46K |
-| Sr Full-Stack Engineer | 1 | Offshore | $130 | 12 weeks | $62K |
-| Sr Mobile Engineer | 1 | Offshore | $130 | 10 weeks | $52K |
+| Sr Full-Stack Engineer | 1 | Offshore | $72 | 12 weeks | $35K |
+| Sr Mobile Engineer | 1 | Offshore | $72 | 10 weeks | $29K |
 | AI Agent Cluster (Dev) | 5–8 agents | AI | — | 4–6 weeks | $45K |
 | AI Agent Cluster (QA) | 2–3 agents | AI | — | 2–3 weeks | $20K |
-| Human QA Reviewer | 1 (PT) | Offshore | $100 | 5 weeks | $20K |
-| DevOps (human + AI) | 0.5 + AI | Offshore | $140 | 3 weeks | $17K |
-| **Total** | **5 humans + AI** | **3 on / 2 off** | | **8–15 weeks** | **$408K CAD** |
+| Human QA Reviewer | 1 (PT) | Offshore | $72 | 5 weeks | $14K |
+| DevOps (human + AI) | 0.5 + AI | Offshore | $72 | 3 weeks | $9K |
+| **Total** | **5 humans + AI** | **3 on / 2 off** | | **8–15 weeks** | **$344K CAD** |
 
-**Savings vs. traditional:** ~$500K–770K CAD cost reduction (55–65%) and 4+ months faster (~50% timeline reduction).
+**Savings vs. traditional:** ~$320K–550K CAD cost reduction (48–61%) and 4+ months faster (~50% timeline reduction).
 
 ### 6.4 ROI Analysis (Moderate Scenario — EliteA Build, CAD)
 
@@ -258,9 +258,9 @@ EliteA is EPAM's proprietary agentic AI platform that orchestrates the full SDLC
 | Year 1 incremental revenue | $189.5M CAD |
 | Assumed gross margin (blended) | ~35% |
 | Year 1 incremental gross profit | ~$66.3M CAD |
-| EliteA build investment | ~$408K CAD |
+| EliteA build investment | ~$344K CAD |
 | **Payback period** | **< 1 day after launch** |
-| **Year 1 ROI** | **~16,150%** |
+| **Year 1 ROI** | **~19,270%** |
 
 ---
 
@@ -312,7 +312,7 @@ The Mobile Wishlist feature addresses a clear gap in CTC's digital experience. W
 
 **We recommend proceeding from POC to production build**, targeting a pilot launch at 50 Canadian Tire locations within 6 months, with full rollout across all banners within 12 months.
 
-The estimated **$190M in incremental annual revenue** against a **$1.8M build investment** represents one of the highest-ROI digital features available to CTC today.
+The estimated **$190M in incremental annual revenue** against a **$344K EliteA build investment** represents one of the highest-ROI digital features available to CTC today.
 
 ---
 
