@@ -17,7 +17,9 @@ This proposal outlines a **Mobile Wishlist** feature that enables customers to c
 
 ## 1. Current State — CTC Revenue Landscape
 
-### 1.1 Consolidated Revenue (FY 2024 Estimated)
+### 1.1 Consolidated Revenue (FY 2024)
+
+> **Sources:** CTC Q4 2024 Earnings Release (Feb 2025); CTC 2024 Annual Information Form (SEDAR+); CTC 2024 Annual Report. Party City: CTC acquisition announcement ($174.4M, Aug 2019, CBC). PartSource: ZoomInfo/Growjo estimates. Store counts: CTC 2024 AIF.
 
 | Metric | Value |
 |--------|-------|
@@ -34,6 +36,8 @@ This proposal outlines a **Mobile Wishlist** feature that enables customers to c
 | **SportChek / Sports Experts** | ~$2.2B | ~185 | $70–90 |
 | **Mark's / L'Équipeur** | ~$1.4B | ~385 | $55–75 |
 | **Helly Hansen** | ~$1.0B | ~65 (+ wholesale) | N/A (wholesale-heavy) |
+| **Party City Canada** | ~$175M | ~69 (expanding) | $30–50 |
+| **PartSource** | ~$76M | ~95 | $50–80 |
 | **CT Financial Services** | ~$1.9B | — | — |
 
 ### 1.3 Digital & Loyalty Ecosystem
@@ -71,7 +75,7 @@ Wishlist features are proven revenue drivers across retail e-commerce:
 | **No barcode-to-wishlist in-store** | In-store discovery cannot bridge to digital purchase intent |
 | **No gift sharing via mobile** | Major seasonal revenue (Christmas, birthdays) lacks a digital enabler |
 | **Triangle data underutilized** | 16M members generate purchase data but not intent/aspiration data |
-| **Cross-banner potential untapped** | A wishlist could span CT + SportChek + Mark's in a unified experience |
+| **Cross-banner potential untapped** | A wishlist could span CT + SportChek + Mark's + Party City + PartSource in a unified experience |
 
 ---
 
@@ -144,11 +148,13 @@ Applying the moderate scenario proportionally to banner revenue and e-commerce p
 
 | Banner | Current Revenue | E-comm Penetration | Wishlist Uplift Est. | Notes |
 |--------|----------------|-------------------|---------------------|-------|
-| **Canadian Tire** | $9.8B | ~15% | **$115M** | Largest user base, broadest catalog, strongest barcode scan use case |
-| **SportChek** | $2.2B | ~18% | **$38M** | Higher AOV, strong gift-giving category (sports equipment) |
-| **Mark's** | $1.4B | ~12% | **$22M** | Workwear wishlists, seasonal apparel gifting |
-| **Helly Hansen** | $1.0B | ~25% (DTC) | **$14.5M** | Premium outdoor gear — high wishlist affinity, global DTC |
-| **Total** | **$14.4B** | | **$189.5M** | |
+| **Canadian Tire** | $9.8B | ~15% | **$112M** | Largest user base, broadest catalog, strongest barcode scan use case |
+| **SportChek** | $2.2B | ~18% | **$36M** | Higher AOV, strong gift-giving category (sports equipment) |
+| **Mark's** | $1.4B | ~12% | **$21M** | Workwear wishlists, seasonal apparel gifting |
+| **Helly Hansen** | $1.0B | ~25% (DTC) | **$14M** | Premium outdoor gear — high wishlist affinity, global DTC |
+| **Party City Canada** | $175M | ~8% | **$4M** | Celebration wishlists — birthday/holiday party planning, seasonal peak alignment |
+| **PartSource** | $76M | ~5% (BOPIS) | **$2.5M** | Automotive parts wishlists — save parts for scheduled maintenance, share with mechanic |
+| **Total** | **$14.65B** | | **$189.5M** | |
 
 ---
 

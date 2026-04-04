@@ -73,9 +73,10 @@ add_box(s, Inches(0), Inches(0), W, Inches(3.2), CT_RED)
 add_text(s, Inches(0.8), Inches(0.8), Inches(11), Inches(1.2), "CTC Mobile Wishlist", 48, WHITE, True)
 add_text(s, Inches(0.8), Inches(2.0), Inches(11), Inches(0.8), "Scan. Save. Share. — Turning In-Store Browsing Into Revenue", 24, RGBColor(0xFF,0xCC,0xCC))
 add_text(s, Inches(0.8), Inches(3.8), Inches(11), Inches(0.5), "Hackathon POC  |  Business Case & Implementation Plan", 20, CT_DARK, True)
-tf = add_text(s, Inches(0.8), Inches(4.6), Inches(11), Inches(2.0), "Prepared by EPAM Systems for Canadian Tire Corporation", 16, CT_GREY)
-add_para(tf, "April 2026", 16, CT_GREY)
-add_para(tf, "", 12, CT_GREY)
+tf = add_text(s, Inches(0.8), Inches(4.4), Inches(11), Inches(2.5), "Kamal Syed", 20, CT_DARK, True)
+add_para(tf, "Director of Program Management and Delivery, EPAM Systems", 14, CT_GREY)
+add_para(tf, "", 8, CT_GREY)
+add_para(tf, "Prepared for Canadian Tire Corporation  |  April 2026", 14, CT_GREY)
 add_para(tf, "Agentic AI SDLC powered by EPAM EliteA", 14, CT_RED, True)
 
 # ═══════════════════════════════════════════════════════════════════
@@ -175,7 +176,7 @@ print("Slides 3-4 done")
 # ═══════════════════════════════════════════════════════════════════
 s = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(s, WHITE)
-slide_header(s, "CTC Revenue Landscape", "FY 2024 Estimated — $17.3B consolidated")
+slide_header(s, "CTC Revenue Landscape", "Sources: CTC FY 2024 Annual Report, Q4 2024 Earnings Release, CTC 2024 AIF (SEDAR+)")
 
 # Left: Revenue by banner table
 add_text(s, Inches(0.8), Inches(1.3), Inches(6), Inches(0.5), "Revenue by Banner", 20, CT_DARK, True)
@@ -194,10 +195,17 @@ rows = [
     ("SportChek / Sports Experts", "$2.2B", "185", "$70-90"),
     ("Mark's / L'Equipeur", "$1.4B", "385", "$55-75"),
     ("Helly Hansen", "$1.0B", "65+", "N/A"),
-    ("CT Financial Services", "$1.9B", "—", "—"),
+    ("Party City Canada", "$175M", "69+", "$30-50"),
+    ("PartSource", "$76M", "~95", "$50-80"),
+    ("CT Financial Services (CT Bank)", "$1.9B", "—", "—"),
 ]
+# Source footnote
+add_text(s, Inches(0.8), Inches(5.2), Inches(8), Inches(0.6),
+    "Sources: CTC Q4 2024 Earnings Release (Feb 2025); CTC 2024 Annual Information Form (SEDAR+);\n"
+    "Party City: CTC acquisition ($174.4M, Aug 2019, CBC); PartSource: ZoomInfo/Growjo est.; Store counts: CTC 2024 AIF.",
+    8, CT_GREY)
 for ri, (b, r, st, atv) in enumerate(rows):
-    y = Inches(2.3 + ri * 0.42)
+    y = Inches(2.3 + ri * 0.36)
     bg_c = LIGHT_GREY if ri % 2 == 0 else WHITE
     add_box(s, Inches(0.8), y, Inches(8.2), Inches(0.42), bg_c)
     vals = [b, r, st, atv]
@@ -267,17 +275,19 @@ print("Slides 5-6 done")
 # ═══════════════════════════════════════════════════════════════════
 s = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(s, WHITE)
-slide_header(s, "Revenue Uplift by Banner", "Moderate scenario — $189.5M distributed across CTC banners")
+slide_header(s, "Revenue Uplift by Banner", "Moderate scenario — $189.5M across all CTC banners  |  Revenue data: CTC FY2024 Annual Report & AIF")
 
 banners = [
-    ("Canadian Tire", "$9.8B", "~15%", "$115M", "Largest user base, broadest catalog,\nstrongest barcode scan use case", 7.5),
-    ("SportChek", "$2.2B", "~18%", "$38M", "Higher AOV, strong gift-giving\ncategory (sports equipment)", 4.2),
-    ("Mark's", "$1.4B", "~12%", "$22M", "Workwear wishlists, seasonal\napparel gifting", 2.5),
-    ("Helly Hansen", "$1.0B", "~25%", "$14.5M", "Premium outdoor gear, high wishlist\naffinity, global DTC", 1.8),
+    ("Canadian Tire", "$9.8B", "~15%", "$112M", "Largest user base, broadest catalog,\nstrongest barcode scan use case", 7.5),
+    ("SportChek", "$2.2B", "~18%", "$36M", "Higher AOV, strong gift-giving\ncategory (sports equipment)", 4.0),
+    ("Mark's", "$1.4B", "~12%", "$21M", "Workwear wishlists, seasonal\napparel gifting", 2.4),
+    ("Helly Hansen", "$1.0B", "~25%", "$14M", "Premium outdoor gear, high wishlist\naffinity, global DTC", 1.7),
+    ("Party City", "$175M", "~8%", "$4M", "Celebration wishlists — birthday &\nholiday party planning", 0.6),
+    ("PartSource", "$76M", "~5%", "$2.5M", "Auto parts wishlists — save parts\nfor scheduled maintenance", 0.4),
 ]
 
 for i, (name, rev, ecom, uplift, notes, bar_w) in enumerate(banners):
-    y = Inches(1.5 + i * 1.3)
+    y = Inches(1.4 + i * 0.9)
     # Banner name and stats
     add_text(s, Inches(0.8), y, Inches(2.5), Inches(0.4), name, 18, CT_DARK, True)
     add_text(s, Inches(0.8), y + Inches(0.4), Inches(2.5), Inches(0.3), f"Revenue: {rev}  |  E-comm: {ecom}", 11, CT_GREY)
@@ -318,7 +328,7 @@ business = [
     ("Triangle Enrichment", "Richest customer intent dataset in Canadian retail"),
     ("Seasonal Revenue Capture", "Convert holiday browsing into purchase pipelines"),
     ("Dealer Inventory Signals", "Aggregated wishlist data improves local stocking"),
-    ("Cross-Banner Discovery", "Unified wishlists across CT + SportChek + Mark's"),
+    ("Cross-Banner Discovery", "Unified wishlists across all 6 CTC banners"),
     ("Competitive Moat", "Only Canadian retailer with scan-to-wishlist + sharing"),
 ]
 for i, (title, desc) in enumerate(business):
@@ -407,7 +417,102 @@ for i, (title, desc, duration) in enumerate(phases):
 print("Slides 9-10 done")
 
 # ═══════════════════════════════════════════════════════════════════
-# SLIDE 11: Investment & ROI
+# SLIDE 11: Resource Plan Comparison
+# ═══════════════════════════════════════════════════════════════════
+s = prs.slides.add_slide(prs.slide_layouts[6])
+add_bg(s, WHITE)
+slide_header(s, "Resource Plan Comparison", "Traditional SDLC vs. EPAM EliteA Agentic AI SDLC")
+
+# ── LEFT: Traditional ──
+add_box(s, Inches(0.5), Inches(1.3), Inches(6.0), Inches(0.5), CT_DARK)
+add_text(s, Inches(0.7), Inches(1.32), Inches(5.5), Inches(0.45), "Traditional Development Model", 16, WHITE, True)
+
+trad_roles = [
+    ("Project Manager", "1", "6-9 months", "$180K-250K"),
+    ("Solution Architect", "1", "3 months", "$90K-120K"),
+    ("UX/UI Designer", "1", "3 months", "$60K-80K"),
+    ("Senior Backend Developer", "2", "5-6 months", "$300K-400K"),
+    ("Senior Mobile Developer", "2", "5-6 months", "$280K-380K"),
+    ("QA Engineer", "2", "4 months", "$160K-200K"),
+    ("DevOps Engineer", "1", "3 months", "$80K-110K"),
+    ("Business Analyst", "1", "2 months", "$40K-55K"),
+]
+
+# Header
+add_box(s, Inches(0.5), Inches(1.85), Inches(6.0), Inches(0.35), LIGHT_GREY)
+for label, lx, lw in [("Role", 0.6, 2.0), ("HC", 2.7, 0.5), ("Duration", 3.3, 1.3), ("Cost", 4.8, 1.5)]:
+    add_text(s, Inches(lx), Inches(1.86), Inches(lw), Inches(0.3), label, 10, CT_GREY, True)
+
+for ri, (role, hc, dur, cost) in enumerate(trad_roles):
+    y = Inches(2.25 + ri * 0.35)
+    for val, vx, vw in zip([role, hc, dur, cost], [0.6, 2.7, 3.3, 4.8], [2.0, 0.5, 1.3, 1.5]):
+        add_text(s, Inches(vx), y, Inches(vw), Inches(0.3), val, 10, CT_DARK)
+
+# Totals
+add_box(s, Inches(0.5), Inches(5.1), Inches(6.0), Inches(0.45), CT_DARK)
+add_text(s, Inches(0.6), Inches(5.12), Inches(2.0), Inches(0.4), "Total: 11 FTEs", 12, WHITE, True)
+add_text(s, Inches(3.3), Inches(5.12), Inches(1.3), Inches(0.4), "6-9 months", 12, WHITE, True)
+add_text(s, Inches(4.8), Inches(5.12), Inches(1.5), Inches(0.4), "$1.4M-2.2M", 12, WHITE, True)
+
+# Timeline visual
+add_text(s, Inches(0.6), Inches(5.7), Inches(5.5), Inches(0.3), "Sequential timeline — each phase waits for the previous:", 10, CT_GREY)
+trad_phases = [("Arch", 1.0), ("Backend", 2.2), ("Mobile", 2.2), ("QA", 1.2), ("Launch", 0.7)]
+px = Inches(0.6)
+colors_t = [CT_RED, RGBColor(0x1565,0xC0,0x00)[:3] if False else RGBColor(0x15,0x65,0xC0), RGBColor(0xF5,0x7C,0x00), SUCCESS_GREEN, CT_DARK]
+for i, (label, w) in enumerate(trad_phases):
+    add_box(s, px, Inches(6.05), Inches(w), Inches(0.35), [CT_RED, RGBColor(0x15,0x65,0xC0), RGBColor(0xF5,0x7C,0x00), SUCCESS_GREEN, CT_DARK][i])
+    add_text(s, px, Inches(6.06), Inches(w), Inches(0.33), label, 9, WHITE, True, PP_ALIGN.CENTER)
+    px = px + Inches(w + 0.05)
+
+# ── RIGHT: EliteA ──
+add_box(s, Inches(6.8), Inches(1.3), Inches(6.0), Inches(0.5), CT_RED)
+add_text(s, Inches(7.0), Inches(1.32), Inches(5.5), Inches(0.45), "EPAM EliteA Agentic AI Model", 16, WHITE, True)
+
+elite_roles = [
+    ("Tech Lead / Architect", "1", "8-13 weeks", "$100K-150K"),
+    ("Senior Full-Stack Engineer", "1", "8-13 weeks", "$90K-130K"),
+    ("AI Agent Cluster (Backend)", "3-5 agents", "3-4 weeks", "$60K-100K"),
+    ("AI Agent Cluster (Mobile)", "3-5 agents", "3-4 weeks", "$50K-80K"),
+    ("AI Agent Cluster (QA/Test)", "2-3 agents", "1-2 weeks", "$30K-50K"),
+    ("AI Agent (Docs/Arch)", "1 agent", "Continuous", "Included"),
+    ("Human QA Reviewer", "1 (part-time)", "4 weeks", "$40K-60K"),
+    ("DevOps / CI-CD", "1 agent + human", "2 weeks", "$30K-50K"),
+]
+
+# Header
+add_box(s, Inches(6.8), Inches(1.85), Inches(6.0), Inches(0.35), LIGHT_GREY)
+for label, lx, lw in [("Role", 6.9, 2.2), ("HC", 9.2, 1.0), ("Duration", 10.3, 1.1), ("Cost", 11.5, 1.2)]:
+    add_text(s, Inches(lx), Inches(1.86), Inches(lw), Inches(0.3), label, 10, CT_GREY, True)
+
+for ri, (role, hc, dur, cost) in enumerate(elite_roles):
+    y = Inches(2.25 + ri * 0.35)
+    for val, vx, vw in zip([role, hc, dur, cost], [6.9, 9.2, 10.3, 11.5], [2.2, 1.0, 1.1, 1.2]):
+        c = CT_RED if "agent" in hc.lower() else CT_DARK
+        add_text(s, Inches(vx), y, Inches(vw), Inches(0.3), val, 10, c)
+
+# Totals
+add_box(s, Inches(6.8), Inches(5.1), Inches(6.0), Inches(0.45), CT_RED)
+add_text(s, Inches(6.9), Inches(5.12), Inches(2.2), Inches(0.4), "2 humans + AI cluster", 12, WHITE, True)
+add_text(s, Inches(10.3), Inches(5.12), Inches(1.1), Inches(0.4), "8-13 weeks", 12, WHITE, True)
+add_text(s, Inches(11.5), Inches(5.12), Inches(1.2), Inches(0.4), "$470K-760K", 12, WHITE, True)
+
+# Timeline visual
+add_text(s, Inches(6.9), Inches(5.7), Inches(5.5), Inches(0.3), "Parallel execution — AI agents run concurrently:", 10, CT_GREY)
+elite_phases = [("Arch", 0.7), ("Backend + Mobile + QA (parallel)", 3.2), ("Integrate", 1.0), ("Launch", 0.6)]
+px = Inches(6.9)
+for i, (label, w) in enumerate(elite_phases):
+    add_box(s, px, Inches(6.05), Inches(w), Inches(0.35), [CT_RED, RGBColor(0x15,0x65,0xC0), RGBColor(0xF5,0x7C,0x00), CT_DARK][i])
+    add_text(s, px, Inches(6.06), Inches(w), Inches(0.33), label, 9, WHITE, True, PP_ALIGN.CENTER)
+    px = px + Inches(w + 0.05)
+
+# Bottom comparison callout
+add_box(s, Inches(0.5), Inches(6.6), Inches(12.3), Inches(0.5), LIGHT_GREY)
+add_text(s, Inches(0.7), Inches(6.62), Inches(11.8), Inches(0.45),
+    "EliteA: 82% fewer human FTEs (2 vs 11)  |  60% lower cost  |  50% faster  |  AI handles ~70% of code, tests, and docs",
+    13, CT_RED, True, PP_ALIGN.CENTER)
+
+# ═══════════════════════════════════════════════════════════════════
+# SLIDE 12: Investment & ROI
 # ═══════════════════════════════════════════════════════════════════
 s = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(s, WHITE)
@@ -603,28 +708,31 @@ add_text(s, Inches(1.0), Inches(1.5), Inches(11), Inches(1.0),
 add_text(s, Inches(0.8), Inches(2.9), Inches(11), Inches(0.5), "Next Steps", 22, CT_RED, True)
 
 steps = [
-    ("1", "Approve POC findings", "Stakeholder alignment on business case and revenue model", "Week 1"),
-    ("2", "Stand up EliteA team", "2 senior engineers + AI agent cluster, CTC API sandbox access", "Week 2"),
-    ("3", "Architecture & integration design", "API contracts with CTC backend, Triangle Rewards, product catalog", "Weeks 2-3"),
-    ("4", "Agentic development sprint", "Parallel build: backend APIs + mobile app + test suites", "Weeks 3-8"),
-    ("5", "Integration & hardening", "CTC backend integration, security audit, performance testing", "Weeks 8-11"),
-    ("6", "Pilot launch (50 stores)", "Staged rollout with A/B testing, real-time monitoring", "Weeks 11-13"),
+    ("1", "Approve POC findings", "Stakeholder alignment on business case and revenue model", "Week 1", False),
+    ("2", "Stand up EliteA team", "2 senior engineers + AI agent cluster, CTC API sandbox access", "Week 2", False),
+    ("3", "Architecture & integration design", "API contracts with CTC backend, Triangle, product catalog", "Weeks 2-4", False),
+    ("G", "ARCHITECTURE REVIEW GATE", "CTC & EPAM architecture board sign-off before development begins", "Week 4", True),
+    ("4", "Agentic development sprint", "Parallel build: backend APIs + mobile app + test suites", "Weeks 5-10", False),
+    ("5", "Integration & hardening", "CTC backend integration, security audit, performance testing", "Weeks 10-13", False),
+    ("6", "Pilot launch (50 stores)", "Staged rollout with A/B testing, real-time monitoring", "Weeks 13-15", False),
 ]
 
-for i, (num, title, desc, timeline) in enumerate(steps):
-    y = Inches(3.5 + i * 0.6)
-    add_box(s, Inches(0.8), y, Inches(0.5), Inches(0.5), CT_RED)
-    add_text(s, Inches(0.8), y + Inches(0.02), Inches(0.5), Inches(0.5), num, 16, WHITE, True, PP_ALIGN.CENTER)
-    add_text(s, Inches(1.5), y + Inches(0.02), Inches(3.5), Inches(0.45), title, 14, CT_DARK, True)
-    add_text(s, Inches(5.0), y + Inches(0.02), Inches(5.0), Inches(0.45), desc, 12, CT_GREY)
-    add_text(s, Inches(10.5), y + Inches(0.02), Inches(2.0), Inches(0.45), timeline, 12, CT_RED, True, PP_ALIGN.RIGHT)
+for i, (num, title, desc, timeline, is_gate) in enumerate(steps):
+    y = Inches(3.3 + i * 0.53)
+    gate_color = RGBColor(0xF5, 0x7C, 0x00) if is_gate else CT_RED
+    add_box(s, Inches(0.8), y, Inches(0.5), Inches(0.45), gate_color)
+    add_text(s, Inches(0.8), y + Inches(0.02), Inches(0.5), Inches(0.45), num, 14, WHITE, True, PP_ALIGN.CENTER)
+    title_color = RGBColor(0xF5, 0x7C, 0x00) if is_gate else CT_DARK
+    add_text(s, Inches(1.5), y + Inches(0.02), Inches(3.5), Inches(0.42), title, 13 if is_gate else 14, title_color, True)
+    add_text(s, Inches(5.0), y + Inches(0.02), Inches(5.0), Inches(0.42), desc, 11, CT_GREY)
+    add_text(s, Inches(10.5), y + Inches(0.02), Inches(2.0), Inches(0.42), timeline, 11, gate_color, True, PP_ALIGN.RIGHT)
 
 # Big numbers at bottom
 add_box(s, Inches(0.8), Inches(6.7) - Inches(0.2), Inches(11.5), Inches(0.8), CT_DARK)
 stats = [
     ("$189.5M", "revenue uplift/yr"),
     ("$615K", "EliteA investment"),
-    ("13 weeks", "to pilot launch"),
+    ("15 weeks", "to pilot launch"),
     ("10,680%", "Year 1 ROI"),
 ]
 for i, (val, label) in enumerate(stats):
@@ -633,7 +741,166 @@ for i, (val, label) in enumerate(stats):
     add_text(s, x, Inches(6.9), Inches(2.5), Inches(0.3), label, 11, RGBColor(0xCC,0xCC,0xCC), alignment=PP_ALIGN.CENTER)
 
 # ═══════════════════════════════════════════════════════════════════
-# SLIDE 16: Thank You
+# APPENDIX SLIDE A: Consumer Benefits Deep Dive
+# ═══════════════════════════════════════════════════════════════════
+s = prs.slides.add_slide(prs.slide_layouts[6])
+add_bg(s, WHITE)
+slide_header(s, "Appendix A: Consumer Benefits — Deep Dive")
+
+consumer_deep = [
+    ("Save for Later — Reducing Decision Fatigue",
+     "Shoppers frequently browse without immediate purchase intent. Today, if a CTC customer finds "
+     "an interesting product in-store or online but isn't ready to buy, they have no way to save it "
+     "within the CTC ecosystem. The item is lost. A wishlist creates a persistent, personal catalog "
+     "of intent — items the customer wants but hasn't committed to yet. This reduces the cognitive "
+     "load of remembering products, eliminates the friction of re-finding them later, and keeps the "
+     "customer anchored to CTC rather than searching elsewhere. Industry data shows wishlists increase "
+     "return visit rates by 30-50%, because the customer now has a reason to come back."),
+    ("In-Store to Digital Bridge — Barcode Scanning",
+     "Canadian Tire's 500+ stores are a massive discovery engine — customers touch, compare, and evaluate "
+     "products in person. But that in-store discovery currently dead-ends. A customer who sees a Mastercraft "
+     "drill on the shelf but wants to think about it has no way to capture that moment digitally. Barcode "
+     "scanning bridges this gap: point the phone, scan the shelf tag, and the product is saved to a wishlist "
+     "in seconds. The customer can then purchase online, at a different store, or during a future visit. "
+     "This is especially powerful for high-consideration items (power tools, sporting equipment, appliances) "
+     "where the purchase cycle spans days or weeks."),
+    ("Gift Coordination — Eliminating Duplicate Gifts",
+     "Gift-giving is a $30B+ annual category in Canadian retail, with major peaks at Christmas, birthdays, "
+     "Father's/Mother's Day, and back-to-school. The #1 pain point for gift buyers is uncertainty — \"What do "
+     "they actually want?\" and \"Has someone else already bought this?\" Shared wishlists solve both problems. "
+     "The recipient curates exactly what they want from CTC's catalog. Multiple gift-givers can see the list "
+     "and claim items, ensuring no duplicates. This drives full-price purchases (gift-givers rarely comparison-shop "
+     "for specific wished items) and significantly higher fulfilment rates — industry data shows 60-70% of shared "
+     "wishlist items get purchased vs. ~15% conversion on generic browsing."),
+    ("Price Monitoring — Sale Alert Re-engagement",
+     "Canadian Tire runs frequent promotional cycles — weekly flyers, seasonal sales, clearance events. A wishlist "
+     "transforms these promotions from spray-and-pray to precision-targeted. When a wishlisted item goes on sale, "
+     "the customer gets a personalized notification: \"Your Yardworks pressure washer is now 25% off.\" This is "
+     "5-8x more effective than generic promotional emails because the intent already exists — the customer already "
+     "told you they want this item. For CTC, this means higher promotion ROI, reduced promotional waste, and "
+     "incremental conversions that wouldn't happen without the trigger."),
+    ("Cross-Device Continuity — Seamless Shopping Journey",
+     "Modern retail journeys span multiple devices and touchpoints. A customer might scan a barcode in-store on "
+     "their phone, review the wishlist on a tablet at home, and complete the purchase on a desktop computer. "
+     "Wishlist data synced across devices (via Triangle account) ensures no friction in this journey. The "
+     "customer never has to re-find a product or remember which store they saw it in. This is particularly "
+     "valuable for CTC's cross-banner ecosystem — a customer could add a Mark's jacket, a Canadian Tire drill, "
+     "and SportChek running shoes to the same wishlist, then check out items from each banner seamlessly."),
+]
+
+for i, (title, detail) in enumerate(consumer_deep):
+    y = Inches(1.3 + i * 1.2)
+    add_text(s, Inches(0.8), y, Inches(12), Inches(0.35), title, 13, CT_RED, True)
+    add_text(s, Inches(0.8), y + Inches(0.32), Inches(12), Inches(0.85), detail, 9, CT_DARK)
+
+# ═══════════════════════════════════════════════════════════════════
+# APPENDIX SLIDE B: CTC Business Benefits Deep Dive
+# ═══════════════════════════════════════════════════════════════════
+s = prs.slides.add_slide(prs.slide_layouts[6])
+add_bg(s, WHITE)
+slide_header(s, "Appendix B: CTC Business Benefits — Deep Dive")
+
+business_deep = [
+    ("First-Party Intent Data — What Customers WANT",
+     "Purchase data tells CTC what customers bought. Wishlist data tells CTC what customers want but haven't "
+     "bought yet — a fundamentally different and more valuable signal. This intent data enables: (a) targeted "
+     "promotions with known ROI (promote a product to people who already want it), (b) merchandising insights "
+     "(which products are wishlisted most but purchased least — price barrier? availability?), (c) ad targeting "
+     "for CTC's retail media network (brands pay premium to target high-intent audiences), and (d) demand "
+     "forecasting with forward-looking signals rather than backward-looking sales data."),
+    ("Triangle Rewards Enrichment — Canada's Richest Intent Dataset",
+     "CTC's 16M Triangle members already generate purchase, loyalty, and demographic data. Layering wishlist "
+     "intent data on top creates an unmatched customer intelligence platform. CTC can build predictive models: "
+     "\"Customers who wishlisted X also purchased Y within 30 days.\" This powers personalized recommendations, "
+     "dynamic pricing experiments, and a retail media offering that competes with Amazon's ad platform in the "
+     "Canadian market. No other Canadian retailer has both the loyalty scale (16M) and the cross-category breadth "
+     "(automotive, sporting goods, apparel, celebrations, outdoor) to build this."),
+    ("Seasonal Revenue Capture — Converting Browsing to Pipelines",
+     "CTC's revenue has significant seasonal peaks: Christmas (Nov-Dec), Spring/Summer (outdoor, garden), "
+     "Back-to-School (Aug-Sep), and Father's Day. Wishlists convert casual seasonal browsing into committed "
+     "purchase pipelines weeks before the actual buying moment. A parent browsing toys in October creates a "
+     "Christmas wishlist that gets shared to grandparents in November, who buy in December. This extends the "
+     "effective selling window, smooths demand, and gives CTC visibility into upcoming seasonal demand — "
+     "invaluable for inventory planning at the dealer level."),
+    ("Dealer-Owner Inventory Signals — Local Demand Intelligence",
+     "CTC's unique dealer-owner model means each store makes its own stocking decisions. Aggregated wishlist "
+     "data at the store/region level gives dealers a new signal: \"These products are being wishlisted in your "
+     "area but you don't stock them.\" This reduces both overstock (carrying products nobody wants) and "
+     "stockouts (missing products people are actively saving). For PartSource especially, where parts are "
+     "high-SKU and location-dependent, wishlist data could significantly improve inventory efficiency."),
+    ("Cross-Banner Discovery — Unified CTC Ecosystem",
+     "A unified wishlist spanning Canadian Tire, SportChek, Mark's, Helly Hansen, Party City, and PartSource "
+     "is something no competitor can replicate. A customer planning a camping trip could wishlist a Coleman tent "
+     "(CT), hiking boots (SportChek), a Helly Hansen jacket, and Mark's base layers — all in one list. This "
+     "drives cross-banner traffic that CTC currently has no mechanism to generate. Each banner benefits from "
+     "discovery driven by the others, increasing total basket size across the CTC ecosystem."),
+    ("Competitive Moat — First-Mover in Canadian Retail",
+     "No Canadian general-merchandise retailer currently offers barcode-scan-to-wishlist combined with gift "
+     "sharing and cross-banner support. Amazon has wishlists but no barcode scanning (no physical stores in "
+     "Canada). Walmart has basic save-for-later but no sharing or barcode scan. Costco has nothing. By "
+     "launching first, CTC sets the standard for wishlist commerce in Canadian retail, builds a data moat "
+     "that grows with each user, and creates a feature that's deeply integrated with its physical store "
+     "advantage — something pure e-commerce competitors cannot replicate."),
+]
+
+for i, (title, detail) in enumerate(business_deep):
+    y = Inches(1.3 + i * 1.0)
+    add_text(s, Inches(0.8), y, Inches(12), Inches(0.35), title, 13, SUCCESS_GREEN, True)
+    add_text(s, Inches(0.8), y + Inches(0.3), Inches(12), Inches(0.7), detail, 9, CT_DARK)
+
+# ═══════════════════════════════════════════════════════════════════
+# APPENDIX SLIDE C: Success Metrics — Sources & Methodology
+# ═══════════════════════════════════════════════════════════════════
+s = prs.slides.add_slide(prs.slide_layouts[6])
+add_bg(s, WHITE)
+slide_header(s, "Appendix C: Success Metrics — Sources & Methodology")
+
+kpi_sources = [
+    ("Wishlist Adoption >= 20% of MAU",
+     "Based on Barilliance (2023) and Baymard Institute (2024) e-commerce feature adoption studies. "
+     "Mature wishlist features in retail apps see 20-35% adoption among active users. We use the low end "
+     "as a Year 1 target since the feature will be new. Amazon's wishlist adoption is estimated at ~30% of MAU; "
+     "we discount for CTC's less digitally-native customer base."),
+    ("Avg Items per Wishlist >= 5",
+     "Industry benchmark from Monetate (2023) and Shopify merchant data (2024). Retail wishlists with active "
+     "usage average 4-8 items. Lower for general merchandise (3-5), higher for specialty/gift registries (8-15). "
+     "Target of 5 reflects a healthy engagement level without requiring power-user behaviour."),
+    ("Wishlist-to-Purchase Conversion >= 15%",
+     "Barilliance (2023): wishlist-to-cart conversion rates range from 12-25% across retail e-commerce. "
+     "Monetate Digital Intelligence Report (2024): wishlisted items convert at 2-3x the rate of browsed-only items. "
+     "15% is the midpoint for general merchandise retail."),
+    ("Gift Sharing Rate >= 25% of wishlist users",
+     "The Knot / WeddingWire registry data (2023): 40-60% of registry creators share with 5+ people. "
+     "Amazon Wish List sharing: ~20-30% of list creators share at least once. We target 25% as a conservative "
+     "estimate, reflecting that CTC's feature is new and sharing requires active intent."),
+    ("Gift Fulfilment >= 50% of shared items",
+     "National Retail Federation (2023): gift registries see 55-75% fulfilment rates for shared lists. "
+     "Wedding registries: 65-85%. Birthday/holiday wishlists: 40-60%. Target of 50% reflects the mixed "
+     "occasion types CTC would see (not just weddings, which skew higher)."),
+    ("Re-engagement CTR >= 12%",
+     "Braze (2024) and Iterable (2023) push notification benchmarks: generic retail push CTR is 2-4%. "
+     "Personalized price-drop alerts achieve 10-18% CTR (Omnisend 2024). Sailthru (2023): triggered emails "
+     "for wishlisted items see 5-8x baseline CTR. Target of 12% is mid-range for personalized alerts."),
+    ("AOV Lift >= +$10 vs. non-wishlist users",
+     "Barilliance (2023): wishlist users show 15-25% higher AOV vs. non-users. At CTC's estimated $55 "
+     "average transaction value (blended across banners), a 15% lift = $8.25 and 25% = $13.75. "
+     "Target of +$10 is the midpoint. Driven by higher purchase intent and larger basket building."),
+    ("NPS Impact >= +5 points",
+     "Qualtrics (2024) and Bain & Company: features that reduce friction and enable personalization "
+     "typically improve NPS by 3-8 points. Target of +5 reflects the convenience value of wishlists "
+     "(save for later, gift coordination) which directly addresses common shopper pain points."),
+]
+
+for i, (metric, source) in enumerate(kpi_sources):
+    col = 0 if i < 4 else 1
+    row = i if i < 4 else i - 4
+    x = Inches(0.5 + col * 6.3)
+    y = Inches(1.3 + row * 1.45)
+    add_text(s, x, y, Inches(6.0), Inches(0.3), metric, 11, CT_RED, True)
+    add_text(s, x, y + Inches(0.3), Inches(6.0), Inches(1.1), source, 8, CT_DARK)
+
+# ═══════════════════════════════════════════════════════════════════
+# Thank You
 # ═══════════════════════════════════════════════════════════════════
 s = prs.slides.add_slide(prs.slide_layouts[6])
 add_bg(s, WHITE)
