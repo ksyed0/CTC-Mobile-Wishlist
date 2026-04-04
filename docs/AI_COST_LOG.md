@@ -15,3 +15,5 @@
 | 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 380087 | 11141 | 5386911 | 3.2080 |
 | 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 385706 | 11146 | 5632183 | 3.3027 |
 | 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | claude/install-plan-visualizer-09PFc | 386408 | 11234 | 5893992 | 3.3852 |
+| 2026-04-03 | e2497d5f-8a53-4561-9cf3-705a800d8fc0 | feature/US-0000-business-case-deck | 493237 | 137939 | 10686990 | 7.1243 |
+| 2026-04-04 | 2d8bef1e-e3e6-403b-8dab-8c2b51a518df | feature/US-0000-business-case-deck | 690698 | 120235 | 10709542 | 7.6059 |
