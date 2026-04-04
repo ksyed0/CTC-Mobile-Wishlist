@@ -2,7 +2,7 @@
 
 > **Date:** Monday, April 7, 2026
 > **Duration:** 8 hours (9:00 AM – 5:00 PM ET)
-> **Platform:** Claude Code with EPAM EliteA agentic AI workflow
+> **Platform:** Platform-agnostic (Claude Code, OpenAI Codex, Google Gemini, Aider) — see `orchestrator/spawn.js`
 > **Branch:** `claude/install-plan-visualizer-09PFc`
 
 ---

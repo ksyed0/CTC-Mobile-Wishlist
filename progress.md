@@ -40,8 +40,76 @@
 - Added test/test:coverage npm script aliases for CI
 - Merged PR #2 to develop
 
+## Session 4 — 2026-04-04
+### What Was Done
+
+**Documentation & Agent Optimization (BUG-0001 – BUG-0024)**
+- Reviewed all agent docs, architecture, and tooling — logged 24 bugs
+- Fixed AsyncStorage key conflict (global `wishlists` key, filter by ownerId)
+- Added Palette agent spawn point in Phase 3
+- Added Phase Exit Criteria table and Error Handling SOP to Conductor
+- Standardized context passing with structured template
+- Clarified AC ownership (Compass vs Sentinel)
+- Added 4 missing test cases (TC-0037 – TC-0040)
+- Added real-vs-simulated scope table and deployment strategy
+- Populated ROLLBACK.md
+- Added device compatibility matrix (iPhone 17 Pro Max, Pixel 10 Pro XL)
+
+**SDLC Dashboard Enhancements**
+- Light/dark mode toggle with localStorage persistence across 5s auto-refresh
+- WCAG contrast fixes for both themes
+- Responsive layout: 5 CSS breakpoints (phone portrait/landscape, tablet portrait/landscape, small phone)
+- About modal with team image, attribution, and GitHub repo link
+- Agent avatars (circular headshots from composite image) with emoji fallback
+- Active agent spotlight banner with gradient overlay
+- Stories grouped by epic
+- Rebranded from EliteA to Claude Code
+- Cross-link to Plan Visualizer in footer
+
+**File Restructuring**
+- Created `src/` directory structure (app, components, services, types, theme, assets, hooks, contexts)
+- Added Expo/React Native entries to .gitignore
+- Added testPathIgnorePatterns to jest.config.js
+- Added Expo convenience scripts to package.json (start, android, ios)
+
+**Face Detection Avatar System (tracking.js)**
+- Built `tools/process-avatars.js` — extracts 9 agent headshots from composite team-grid.png
+- Viola-Jones face detection via tracking.js with Node.js shim
+- Configurable padding multiplier, grid fallback, NMS merge
+- Integrated into build pipeline: `npm run avatars`
+- Dashboard fallback chain: headshot → full image → emoji
+
+**Orchestration Loop Safety (BUG-0025 – BUG-0030)**
+- Retry state tracking with progress.md log format
+- Concrete escalation workflow (pause, BLOCKED status, resume protocol)
+- BLOCK recovery protocol (Conductor + Lens coordination)
+- Parallel agent failure coordination rules
+- 90-min hard phase timeout with force-cut-scope action
+- Explicit BLOCK vs REQUEST CHANGES threshold criteria for Lens
+
+**Platform-Agnostic Orchestration (BUG-0031)**
+- Created `orchestrator/` adapter layer
+- Adapters: Claude Code, OpenAI Codex, Google Gemini, Aider (open-source)
+- `spawn.js` CLI: --agent, --list-platforms, --print-all
+- Auto-fallback to Claude Code when requested CLI not installed
+- Updated DM_AGENT.md and README.md with multi-platform instructions
+
+**Cross-Platform Compatibility**
+- Added `.gitattributes` for consistent line endings and binary markers
+- Case-insensitive file lookup in process-avatars.js (handles Windows)
+- All image references enforce lowercase filenames
+
+### Stats
+- 31 bugs logged (BUG-0001 – BUG-0031), all fixed
+- 215 tests passing, 90.5% coverage
+- 39 files changed, ~2,800 lines added
+
 ### Next Steps (Monday Hackathon)
-1. Run `npm run dashboard:watch` and open `docs/dashboard.html`
-2. Start Conductor: `claude "Read docs/agents/DM_AGENT.md for your instructions..."`
-3. Conductor orchestrates all 9 agents through 6 BLAST phases
-4. Demo app + live dashboard + business case deck
+1. Drop agent images into `docs/agents/images/` (see README for naming convention)
+2. Run `npm run build` to extract headshots and generate dashboards
+3. Run `npm run dashboard:watch` and open `docs/dashboard.html`
+4. Start Conductor on your platform of choice:
+   - Claude Code: `claude "Read docs/agents/DM_AGENT.md for your instructions..."`
+   - Or any platform: `node orchestrator/spawn.js --agent Conductor`
+5. Conductor orchestrates all 9 agents through 6 BLAST phases
+6. Demo app + live dashboard + business case deck

@@ -14,7 +14,7 @@ Built as a **hackathon POC** using React Native + Expo with TypeScript, powered 
 | **Data** | AsyncStorage with local mock data (POC) |
 | **Platform** | iOS + Android |
 | **Brand** | Canadian Tire (#D52B1E), system fonts, 4px grid |
-| **Agents** | 9 specialized AI agents via Claude Code |
+| **Agents** | 9 specialized AI agents, platform-agnostic (Claude Code, Codex, Gemini, Aider) |
 
 ### Key Features (POC)
 - Browse product catalog with category filters and search
@@ -194,25 +194,53 @@ CTC-Mobile-Wishlist/
 │       └── aider.js                   # Aider (open-source, any model)
 ├── scripts/
 │   └── generate-pptx.py              # PowerPoint deck generator
-└── tools/
-    ├── generate-plan.js               # PlanVisualizer generator
-    ├── generate-dashboard.js          # SDLC dashboard generator
-    └── capture-cost.js                # AI cost capture hook
+├── tools/
+│   ├── generate-plan.js               # PlanVisualizer generator
+│   ├── generate-dashboard.js          # SDLC dashboard generator
+│   ├── process-avatars.js             # Face detection avatar extraction
+│   └── capture-cost.js                # AI cost capture hook
+├── tests/
+│   ├── unit/                          # 215 unit tests (Jest)
+│   └── fixtures/                      # Test fixture data
+└── .gitattributes                     # Cross-platform line endings + binary markers
 ```
 
 ---
 
-## PlanVisualizer Dashboard
+## Dashboards & Tooling
 
-This project uses the [PlanVisualizer](https://github.com/ksyed0/PlanVisualizer) dashboard to track progress:
+Two dashboards track project health in real time:
+
+| Dashboard | File | Generator | Content |
+|-----------|------|-----------|---------|
+| **SDLC Dashboard** | `docs/dashboard.html` | `tools/generate-dashboard.js` | Agent status, phases, stories by epic, progress |
+| **Plan Visualizer** | `docs/plan-status.html` | `tools/generate-plan.js` | Release plan, test cases, bugs, cost tracking |
 
 ```bash
-npm run plan:generate    # Generate the dashboard
-npm test                 # Run tests
+npm run build            # Full pipeline: avatars → plan → dashboard
+npm run avatars          # Extract agent headshots from team-grid.png
+npm run plan:generate    # Generate Plan Visualizer
+npm run dashboard        # Generate SDLC Dashboard
+npm run dashboard:watch  # Watch mode (auto-regenerate on status changes)
+npm test                 # Run 215 unit tests
 npm run test:coverage    # Run tests with coverage report
 ```
 
-The dashboard parses `RELEASE_PLAN.md`, `TEST_CASES.md`, `BUGS.md`, `AI_COST_LOG.md`, and `coverage-summary.json` to provide a real-time view of project health.
+### SDLC Dashboard Features
+- Light/dark mode toggle (persists across 5-second auto-refresh)
+- Responsive layout for phones, tablets, and desktop
+- Agent avatars with face-detection extraction from composite team image
+- Active agent spotlight banner
+- Stories grouped by epic
+- About modal with team image
+
+### Agent Avatar System
+Drop images into `docs/agents/images/` (all lowercase filenames):
+- `team-grid.png` — Composite image (5 top row, 4 bottom row) for headshot extraction
+- `conductor.png`, `compass.png`, etc. — Individual landscape images for spotlight view
+- `team.png` — Full team image for About popup
+
+Run `npm run avatars` to extract headshots via tracking.js face detection (Viola-Jones). Configurable padding: `npm run avatars -- --padding 2.0`
 
 ---
 
@@ -221,9 +249,9 @@ The dashboard parses `RELEASE_PLAN.md`, `TEST_CASES.md`, `BUGS.md`, `AI_COST_LOG
 | Metric | Value |
 |--------|-------|
 | Year 1 incremental revenue | $189.5M CAD |
-| EliteA build investment | $344K CAD |
+| Agentic AI build investment | $344K CAD |
 | Year 1 ROI | 19,270% |
-| Timeline (EliteA) | 8–15 weeks |
+| Timeline (Agentic AI SDLC) | 8–15 weeks |
 | Savings vs. traditional SDLC | $320K–550K CAD (48–61%) |
 
 See `docs/BUSINESS_PLAN.md` and `docs/CTC_Mobile_Wishlist_Business_Case.pptx` for the full analysis.
