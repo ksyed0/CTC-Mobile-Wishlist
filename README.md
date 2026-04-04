@@ -177,7 +177,8 @@ CTC-Mobile-Wishlist/
 │   ├── DESIGN_SYSTEM.md               # CTC brand, components, spacing
 │   └── DIAGRAMS.md                    # Mermaid architecture diagrams
 ├── docs/
-│   ├── AGENT_PLAN.md                  # Agent orchestration plan & timeline
+│   ├── AGENT_PLAN.md                  # Generic orchestration framework (reusable)
+│   ├── HACKATHON_PLAN.md              # CTC hackathon agent roster, timeline, prompts
 │   ├── BUSINESS_PLAN.md               # Revenue model, resource plan, ROI
 │   ├── RELEASE_PLAN.md                # 6 epics, 13 stories, 21 tasks, 40 ACs
 │   ├── TEST_CASES.md                  # 40 test cases (TC-0001 – TC-0040)
