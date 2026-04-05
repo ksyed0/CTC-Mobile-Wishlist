@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product, Category } from '../types/product';
 import { productService } from '../services/productService';
 
@@ -29,17 +23,12 @@ export function ProductProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const filteredProducts = selectedCategory
-    ? products.filter((p) => p.category === selectedCategory)
-    : products;
+  const filteredProducts = selectedCategory ? products.filter((p) => p.category === selectedCategory) : products;
 
   async function load() {
     setIsLoading(true);
     try {
-      const [prods, cats] = await Promise.all([
-        productService.getProducts(),
-        productService.getCategories(),
-      ]);
+      const [prods, cats] = await Promise.all([productService.getProducts(), productService.getCategories()]);
       setProducts(prods);
       setCategories(cats);
     } catch (error) {

@@ -13,9 +13,7 @@ import { Product } from '../types/product';
  * @returns         Total price rounded to two decimal places.
  */
 export function getTotalPrice(wishlist: Wishlist, products: Product[]): number {
-  const productMap = new Map<string, number>(
-    products.map((p) => [p.id, p.price])
-  );
+  const productMap = new Map<string, number>(products.map((p) => [p.id, p.price]));
 
   const raw = wishlist.items.reduce((sum, item) => {
     const price = productMap.get(item.productId) ?? 0;

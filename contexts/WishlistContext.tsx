@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  ReactNode,
-} from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { Wishlist, SharedContact } from '../types/wishlist';
 import { wishlistService } from '../services/wishlistService';
 import { useAuth } from './AuthContext';
@@ -73,53 +66,36 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   async function addItem(wishlistId: string, productId: string): Promise<void> {
     const updated = await wishlistService.addItem(wishlistId, productId);
     if (updated) {
-      setWishlists((prev) =>
-        prev.map((w) => (w.id === wishlistId ? updated : w))
-      );
+      setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? updated : w)));
     }
   }
 
   async function removeItem(wishlistId: string, productId: string): Promise<void> {
     const updated = await wishlistService.removeItem(wishlistId, productId);
     if (updated) {
-      setWishlists((prev) =>
-        prev.map((w) => (w.id === wishlistId ? updated : w))
-      );
+      setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? updated : w)));
     }
   }
 
-  async function shareWishlist(
-    wishlistId: string,
-    contacts: SharedContact[]
-  ): Promise<void> {
+  async function shareWishlist(wishlistId: string, contacts: SharedContact[]): Promise<void> {
     const updated = await wishlistService.shareWishlist(wishlistId, contacts);
     if (updated) {
-      setWishlists((prev) =>
-        prev.map((w) => (w.id === wishlistId ? updated : w))
-      );
+      setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? updated : w)));
     }
   }
 
   async function claimItem(wishlistId: string, productId: string): Promise<void> {
     if (!currentUser) return;
-    const updated = await wishlistService.claimItem(
-      wishlistId,
-      productId,
-      currentUser.id
-    );
+    const updated = await wishlistService.claimItem(wishlistId, productId, currentUser.id);
     if (updated) {
-      setSharedWishlists((prev) =>
-        prev.map((w) => (w.id === wishlistId ? updated : w))
-      );
+      setSharedWishlists((prev) => prev.map((w) => (w.id === wishlistId ? updated : w)));
     }
   }
 
   async function unclaimItem(wishlistId: string, productId: string): Promise<void> {
     const updated = await wishlistService.unclaimItem(wishlistId, productId);
     if (updated) {
-      setSharedWishlists((prev) =>
-        prev.map((w) => (w.id === wishlistId ? updated : w))
-      );
+      setSharedWishlists((prev) => prev.map((w) => (w.id === wishlistId ? updated : w)));
     }
   }
 

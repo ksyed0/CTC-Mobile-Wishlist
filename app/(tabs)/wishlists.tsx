@@ -35,9 +35,7 @@ export default function WishlistsScreen() {
       <View style={styles.centered}>
         <MaterialIcons name="favorite-border" size={48} color={colors.textLight} />
         <Text style={styles.guestTitle}>Sign in to view wishlists</Text>
-        <Text style={styles.guestSubtitle}>
-          Create an account or sign in to save and share your wishlists.
-        </Text>
+        <Text style={styles.guestSubtitle}>Create an account or sign in to save and share your wishlists.</Text>
       </View>
     );
   }
@@ -87,9 +85,7 @@ export default function WishlistsScreen() {
             sections={sections}
             keyExtractor={(item) => item.id}
             contentContainerStyle={styles.list}
-            renderSectionHeader={({ section }) => (
-              <Text style={styles.sectionHeader}>{section.title}</Text>
-            )}
+            renderSectionHeader={({ section }) => <Text style={styles.sectionHeader}>{section.title}</Text>}
             renderItem={({ item, section }) => (
               <WishlistCard
                 wishlist={item}
@@ -134,11 +130,7 @@ export default function WishlistsScreen() {
         animationType="slide"
         onRequestClose={() => setShowCreateModal(false)}
       >
-        <TouchableOpacity
-          style={styles.modalBackdrop}
-          activeOpacity={1}
-          onPress={() => setShowCreateModal(false)}
-        >
+        <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setShowCreateModal(false)}>
           <View style={styles.modalSheet}>
             <Text style={styles.modalTitle}>New Wishlist</Text>
             <TextInput
@@ -156,6 +148,8 @@ export default function WishlistsScreen() {
               onPress={handleCreate}
               disabled={!newName.trim() || isCreating}
               activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Create wishlist"
             >
               {isCreating ? (
                 <ActivityIndicator color={colors.white} />
@@ -165,7 +159,12 @@ export default function WishlistsScreen() {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.cancelButton}
-              onPress={() => { setShowCreateModal(false); setNewName(''); }}
+              onPress={() => {
+                setShowCreateModal(false);
+                setNewName('');
+              }}
+              accessibilityRole="button"
+              accessibilityLabel="Cancel"
             >
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>

@@ -9,11 +9,7 @@ interface PriceTagProps {
   style?: object;
 }
 
-export const PriceTag = memo(function PriceTag({
-  price,
-  size = 'md',
-  style,
-}: PriceTagProps) {
+export const PriceTag = memo(function PriceTag({ price, size = 'md', style }: PriceTagProps) {
   return (
     <Text style={[styles.price, styles[size], style]} accessibilityLabel={`$${price.toFixed(2)}`}>
       ${price.toFixed(2)}

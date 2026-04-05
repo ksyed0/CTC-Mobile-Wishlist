@@ -10,7 +10,7 @@
 EPIC-0001: Project Scaffolding & Mock Data Layer
 Description: Set up the Expo project with navigation, theming, and local mock data for products and users
 Release Target: MVP
-Status: Planned
+Status: Done
 Dependencies: None
 ```
 
@@ -18,7 +18,7 @@ Dependencies: None
 US-0001 (EPIC-0001): As a developer, I want an Expo project scaffold with tab navigation and Canadian Tire theming, so that all screens have a consistent structure.
 Priority: High
 Estimate: M
-Status: Planned
+Status: Done
 Branch: feature/US-0001-expo-scaffold
 Dependencies: None
 Acceptance Criteria:
@@ -59,7 +59,7 @@ Notes: Canadian Tire red #D52B1E as primary, system fonts
 US-0002 (EPIC-0001): As a developer, I want a local mock data layer with products and user profiles, so that the app can function without a backend.
 Priority: High
 Estimate: M
-Status: Planned
+Status: Done
 Branch: feature/US-0002-mock-data
 Dependencies: US-0001
 Acceptance Criteria:
@@ -104,7 +104,7 @@ Notes: Abstract behind service interface for future swapability
 EPIC-0002: Product Catalog Browsing
 Description: Allow users to browse, search, and view products from the mock catalog
 Release Target: MVP
-Status: Planned
+Status: Done
 Dependencies: EPIC-0001
 ```
 
@@ -156,7 +156,7 @@ Notes: Image placeholder, price, stock badge, wishlist picker modal, duplicate g
 US-0005 (EPIC-0002): As a shopper, I want to search products by name, so that I can quickly find a specific item.
 Priority: Medium
 Estimate: S
-Status: Planned
+Status: Done
 Branch: feature/US-0005-product-search
 Dependencies: US-0003
 Acceptance Criteria:
@@ -181,7 +181,7 @@ Notes: BUG-0086 fix — TextInput search bar above category chips; filters filte
 EPIC-0003: Barcode Scanning
 Description: Enable users to scan physical product barcodes in-store and add them to wishlists
 Release Target: MVP
-Status: Planned
+Status: Done
 Dependencies: EPIC-0001
 ```
 
@@ -197,6 +197,7 @@ Acceptance Criteria:
   - [ ] AC-0018: Scanning a recognized barcode navigates to the matching product detail screen
   - [ ] AC-0019: Scanning an unrecognized barcode shows a "Product not found" message
   - [ ] AC-0020: Camera permission is requested gracefully with an explanation
+  - [ ] AC-0041: getByBarcode returns the matching product for a known barcode
 ```
 
 ```
@@ -225,7 +226,7 @@ Notes: productService.getByBarcode() wired in scan.tsx; recent scans saved to As
 EPIC-0004: Wishlist Management
 Description: Allow users to create, view, edit, and manage multiple wishlists with product items
 Release Target: MVP
-Status: Planned
+Status: Done
 Dependencies: EPIC-0001, EPIC-0002
 ```
 
@@ -271,6 +272,7 @@ Acceptance Criteria:
   - [ ] AC-0024: Wishlist detail screen shows all items with image, name, and price
   - [ ] AC-0025: Swipe-to-delete or a remove button removes an item from the wishlist
   - [ ] AC-0026: Empty wishlist shows a friendly empty state with a prompt to add items
+  - [ ] AC-0042: addItem does not add a duplicate product to the wishlist
 ```
 
 ```
@@ -310,7 +312,7 @@ Notes: getTotalPrice() from wishlistUtils.ts wired in wishlist/[id].tsx footer
 EPIC-0005: Wishlist Sharing & Fulfillment
 Description: Enable users to share wishlists with phone contacts and let recipients claim items they want to buy
 Release Target: MVP
-Status: Planned
+Status: Done
 Dependencies: EPIC-0004
 ```
 
@@ -397,7 +399,7 @@ Notes: claimItem/unclaimItem via useWishlists(); "I'll Get This" button; unclaim
 EPIC-0006: Mock Authentication
 Description: Simulate login and anonymous browsing modes without real auth infrastructure
 Release Target: MVP
-Status: Planned
+Status: Done
 Dependencies: EPIC-0001
 ```
 

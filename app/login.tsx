@@ -44,11 +44,11 @@ export default function LoginScreen() {
               style={styles.userCard}
               onPress={() => handleLogin(item)}
               activeOpacity={0.75}
+              accessibilityRole="button"
+              accessibilityLabel={`Sign in as ${item.name}`}
             >
               <View style={styles.avatar}>
-                <Text style={styles.avatarText}>
-                  {item.name.charAt(0).toUpperCase()}
-                </Text>
+                <Text style={styles.avatarText}>{item.name.charAt(0).toUpperCase()}</Text>
               </View>
               <View style={styles.userInfo}>
                 <Text style={styles.userName}>{item.name}</Text>
@@ -63,13 +63,13 @@ export default function LoginScreen() {
           style={styles.guestButton}
           onPress={handleGuest}
           activeOpacity={0.75}
+          accessibilityRole="button"
+          accessibilityLabel="Continue as guest"
         >
           <Text style={styles.guestButtonText}>Continue as Guest</Text>
         </TouchableOpacity>
 
-        <Text style={styles.disclaimer}>
-          This is a demo app. No real authentication is performed.
-        </Text>
+        <Text style={styles.disclaimer}>This is a demo app. No real authentication is performed.</Text>
       </View>
     </View>
   );

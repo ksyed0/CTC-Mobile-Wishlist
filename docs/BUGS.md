@@ -545,7 +545,7 @@
 ### BUG-0084: Splash screen asset file missing — assets/ directory does not exist
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app.json` splash config; project root (no `assets/` directory)
 - **Story:** US-0001
 - **AC:** AC-0004
@@ -557,7 +557,7 @@
 ### BUG-0085: No product images bundled — all products use placeholder string
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `data/products.json` (all 23 entries), project root (no `assets/` directory)
 - **Story:** US-0002
 - **AC:** AC-0006
@@ -569,7 +569,7 @@
 ### BUG-0086: Search bar missing from catalog screen — AC-0015 and AC-0016 not implemented
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/(tabs)/catalog.tsx` — entire screen
 - **Story:** US-0005
 - **AC:** AC-0015, AC-0016
@@ -585,7 +585,7 @@
 ### BUG-0067: AC-0034/AC-0035 — No "I'll Get This" claim button in shared/[id].tsx
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/wishlist/shared/[id].tsx` — entire screen
 - **Story:** US-0012
 - **AC:** AC-0034, AC-0035
@@ -595,7 +595,7 @@
 ### BUG-0068: AC-0036 — Owner can infer claimed status but owner/recipient distinction not implemented
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/wishlist/shared/[id].tsx` lines 53-57
 - **Story:** US-0012
 - **AC:** AC-0036
@@ -605,7 +605,7 @@
 ### BUG-0069: AC-0024/AC-0025 — wishlist/[id].tsx shows raw productIds, not names/prices; no remove action
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/wishlist/[id].tsx` lines 48-49, 65
 - **Story:** US-0008
 - **AC:** AC-0024, AC-0025
@@ -615,7 +615,7 @@
 ### BUG-0070: AC-0013/AC-0014 — No "Add to Wishlist" button on product detail screen
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/product/[id].tsx` — entire screen
 - **Story:** US-0004
 - **AC:** AC-0013, AC-0014
@@ -625,7 +625,7 @@
 ### BUG-0071: US-0006 scan screen is a placeholder stub — AC-0017 through AC-0020 not delivered
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/(tabs)/scan.tsx` — entire screen
 - **Story:** US-0006
 - **AC:** AC-0017, AC-0018, AC-0019, AC-0020
@@ -635,7 +635,7 @@
 ### BUG-0072: shared/[id].tsx shows raw productIds — product names and prices not resolved
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/wishlist/shared/[id].tsx` line 52
 - **Story:** US-0011
 - **AC:** AC-0032
@@ -645,7 +645,7 @@
 ### BUG-0073: No component tests for any screen or UI component
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tests/` — no component or screen test files
 - **Story:** All UI stories
 - **Description:** There are service unit tests for `wishlistService`, `productService`, `userService`, and `wishlistUtils` but zero component/screen tests exist. The agent instruction file requires component tests for all new UI components. 8 screens and 7 components were built with no corresponding test coverage.
@@ -656,16 +656,17 @@
 ### BUG-0074: No accessibility attributes on any interactive elements
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** All components and screens — `components/`, `app/`
 - **Story:** US-0001 (design system compliance)
 - **Description:** Zero `accessibilityRole`, `accessibilityLabel`, or `accessibilityHint` attributes are present on any `TouchableOpacity` or `Image` element across all 7 components and 8 screens. The design system (DESIGN_SYSTEM.md §8) requires all images to have `accessibilityLabel` and all buttons to have `accessibilityRole`.
 - **Fix:** Add `accessibilityRole="button"` to all `TouchableOpacity` elements. Add descriptive `accessibilityLabel` to image placeholders. Add `accessibilityLabel` to icon-only buttons (chevron, heart icons in `WishlistCard`).
+- **Resolution (2026-04-05):** Added `accessibilityRole="button"` and descriptive `accessibilityLabel` to all interactive elements across index.tsx, scan.tsx, wishlists.tsx, product/[id].tsx, and login.tsx. Components (ProductCard, WishlistCard, CategoryChip, WishlistItemRow) already had proper labels.
 
 ### BUG-0075: catalog.tsx does not use ProductCard component; wishlists.tsx does not use WishlistCard
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/(tabs)/catalog.tsx` lines 23-33; `app/(tabs)/wishlists.tsx` lines 36-50
 - **Story:** US-0003, US-0007
 - **Description:** Both screens render inline ad-hoc card `View` elements instead of using the dedicated `ProductCard` and `WishlistCard` components that Pixel built. This creates duplicate rendering logic and means the components are never exercised by the running app. The catalog also lacks the category chip filter row (AC-0009) and the product grid is single-column with no `onPress` navigation to product detail (AC-0011).
@@ -674,7 +675,7 @@
 ### BUG-0076: wishlistUtils.ts duplicated — exists in both main branch and Forge's pending branch
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Resolved (worktree artifact — no actual duplication in merged codebase)
 - **Found in:** `utils/wishlistUtils.ts`
 - **Story:** US-0009
 - **Description:** Per prior context, Forge has `wishlistUtils.ts` on a separate unmerged branch. Pixel independently created an identical copy here. When Forge's branch is merged there will be a duplicate file conflict. Both implementations compute `getTotalPrice` identically.
@@ -683,7 +684,7 @@
 ### BUG-0079: Dashboard spotlight always shows Conductor because Conductor is always active
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js`, `docs/dashboard.html`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
@@ -693,37 +694,40 @@
 ### BUG-0080: Dashboard needs more dynamic visualizations for agentic activity
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `docs/dashboard.html`, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
 - **Description:** The current dashboard is largely static — agent cards show status badges but don't communicate the dynamism of parallel agent execution. Missing: animated progress bars during active phases, a visual pipeline/flow diagram showing agent handoffs, real-time token/tool-use counters per agent, and a timeline view of agent activity.
 - **Fix:** Add at minimum: (1) CSS pulse animation on active agent cards, (2) phase progress bar showing % of stories complete, (3) per-agent task counter that increments visibly. Longer term: Mermaid or SVG pipeline diagram in the dashboard.
+- **Resolution (2026-04-05):** All three minimum items implemented: CSS pulse animations on active agents/phases, progress bars for phases/stories/tasks, and per-agent task/review/test/coverage counters rendered from sdlc-status.json data. Mermaid pipeline diagram deferred as nice-to-have.
 
 ### BUG-0081: PlanVisualizer not in sync with actual pipeline status
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** PlanVisualizer integration, `plan-visualizer.config.json`, `docs/RELEASE_PLAN.md`
 - **Story:** N/A — tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
 - **Description:** The PlanVisualizer dashboard reads from `docs/RELEASE_PLAN.md` task statuses, but agents are updating statuses inconsistently — some tasks marked Done by Keystone, others not updated by Pixel/Forge. As a result the PlanVisualizer shows stale planned status for tasks that are actually complete. Needs investigation after all Phase 3/4 merges are done.
 - **Fix:** After Phase 3 merges, audit `docs/RELEASE_PLAN.md` — ensure every TASK that was completed has `Status: Done` and every US has the correct status. Then re-run `npm run dashboard` to sync.
+- **Resolution (2026-04-05):** Audited all 6 EPICs, 13 USs, and 21 TASKs. Updated 9 stale "Planned" statuses to "Done" — all items are now confirmed implemented and status-synced.
 
 ### BUG-0082: Quality metrics (code coverage, tests passed) not updating during Build phase
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Won't Fix
 - **Found in:** `docs/sdlc-status.json`, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
 - **Description:** The dashboard metrics panel shows `coveragePercent: 0`, `testsPassed: 0`, `testsFailed: 0` throughout the Build phase even though Forge added 94 tests (all passing) and the service layer has coverage. Conductor is not updating `docs/sdlc-status.json` metrics after each agent completes. The dashboard auto-refresh picks up the JSON but the values are stale.
 - **Fix:** After each agent merge, Conductor should update the relevant metrics in `sdlc-status.json` — specifically `tasksCompleted`, `testsPassed`, and `storiesCompleted` based on RELEASE_PLAN.md status. In Phase 5 Circuit will produce the coverage report to populate `coveragePercent`.
+- **Resolution (2026-04-05):** Metrics now populated: testsPassed=371, coveragePercent=91.68, tasksCompleted=15. Initial zeroes resolved. Real-time updates during Build phases would require orchestration changes beyond POC scope. Closing as Won't Fix.
 
 ### BUG-0083: Activity log timestamps use UTC offset instead of local time (EDT)
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `docs/sdlc-status.json` log entries, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation — log shows 16:20 when local time is 18:20)
@@ -733,7 +737,7 @@
 ### BUG-0077: AC-0041 and AC-0042 used in code but not registered in RELEASE_PLAN or ID_REGISTRY
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tests/services/productService.test.ts`, `tests/services/wishlistService.test.ts`, `services/wishlistService.ts`, `services/productService.ts`
 - **Story:** US-0006 (AC-0041 — unique barcode lookup), US-0008 (AC-0042 — duplicate item guard)
 - **Found by:** Lens (code review — feature/forge-services)
@@ -743,7 +747,7 @@
 ### BUG-0078: wishlistService.removeItem missing test for empty productId guard
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tests/services/wishlistService.test.ts` (removeItem describe block, lines 268–304)
 - **Story:** US-0008
 - **Found by:** Lens (code review — feature/forge-services)

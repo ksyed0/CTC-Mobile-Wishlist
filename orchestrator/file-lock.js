@@ -30,8 +30,10 @@ const MAX_WAIT_MS = 10_000; // 10s max wait before giving up
  * Ensure the .locks directory exists.
  */
 function ensureLockDir() {
-  if (!fs.existsSync(LOCK_DIR)) {
+  try {
     fs.mkdirSync(LOCK_DIR, { recursive: true });
+  } catch {
+    // Already exists or created by another process
   }
 }
 

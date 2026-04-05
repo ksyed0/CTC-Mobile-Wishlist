@@ -53,20 +53,14 @@ export const WishlistItemRow = memo(function WishlistItemRow({
           {productName ?? item.productId}
         </Text>
         {productPrice !== undefined ? (
-          <Text style={[styles.price, isClaimed && styles.priceClaimed]}>
-            ${productPrice.toFixed(2)}
-          </Text>
+          <Text style={[styles.price, isClaimed && styles.priceClaimed]}>${productPrice.toFixed(2)}</Text>
         ) : null}
 
         {isClaimed ? (
           <View style={styles.claimedRow}>
             <MaterialIcons name="check-circle" size={14} color={colors.success} />
             <Text style={styles.claimedText}>
-              {isOwner
-                ? 'Claimed'
-                : claimerName
-                  ? `Claimed by ${claimerName}`
-                  : 'Claimed'}
+              {isOwner ? 'Claimed' : claimerName ? `Claimed by ${claimerName}` : 'Claimed'}
             </Text>
           </View>
         ) : showClaimButton ? (

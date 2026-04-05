@@ -230,6 +230,9 @@ function generateHTML(status) {
   .agent-role { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
   .agent-status { font-size: 11px; padding: 2px 8px; border-radius: 10px; display: inline-block; }
   .agent-task { font-size: 10px; color: var(--text-secondary); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .agent-counters { display: flex; gap: 8px; margin-top: 4px; }
+  .agent-counter { font-size: 10px; color: var(--text-muted); }
+  .agent-counter strong { color: var(--text-secondary); font-weight: 700; }
 
   /* Story table */
   .story-list { display: flex; flex-direction: column; gap: 10px; }
@@ -519,6 +522,18 @@ ${Object.entries(agents)
           <div class="agent-role">${roles[name] || name}</div>
           <div class="agent-status" style="background: ${statusBg}; color: ${statusColor}">${agent.status}</div>
           ${agent.currentTask ? `<div class="agent-task">${agent.currentTask}</div>` : ''}
+          ${(() => {
+            const counters = [];
+            if (agent.tasksCompleted)
+              counters.push(`<span class="agent-counter">✓ <strong>${agent.tasksCompleted}</strong> tasks</span>`);
+            if (agent.reviewsCompleted)
+              counters.push(`<span class="agent-counter">🔍 <strong>${agent.reviewsCompleted}</strong> reviews</span>`);
+            if (agent.testsPassed)
+              counters.push(`<span class="agent-counter">🧪 <strong>${agent.testsPassed}</strong> tests</span>`);
+            if (agent.coveragePercent)
+              counters.push(`<span class="agent-counter">📊 <strong>${agent.coveragePercent}%</strong> cov</span>`);
+            return counters.length ? `<div class="agent-counters">${counters.join('')}</div>` : '';
+          })()}
         </div>
       </div>`;
   })
@@ -566,7 +581,7 @@ ${storyRows}
 
 <!-- Activity Log -->
 <div class="card" style="margin-top: 24px">
-  <h2>Activity Log</h2>
+  <h2>Activity Log <span id="tz-label" style="font-size: 11px; font-weight: 400; color: var(--text-muted)"></span></h2>
   <div class="log-scroll">
 ${
   log.length > 0
@@ -625,8 +640,12 @@ function updateToggleButton(theme) {
   if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
   updateToggleButton(saved);
 })();
-// BUG-0083: Convert stored HH:MM log times (written as local clock) to browser local time display
+// BUG-0083: Convert stored HH:MM UTC log times to browser local time with timezone indicator
 (function() {
+  var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  var tzShort = new Date().toLocaleTimeString([], { timeZoneName: 'short' }).split(' ').pop();
+  var tzLabel = document.getElementById('tz-label');
+  if (tzLabel) tzLabel.textContent = '(times shown in ' + (tzShort || tz || 'local') + ')';
   document.querySelectorAll('[data-utc-time]').forEach(function(el) {
     var t = el.getAttribute('data-utc-time');
     if (!t || !t.includes(':')) return;
@@ -634,10 +653,8 @@ function updateToggleButton(theme) {
     var h = parseInt(parts[0], 10);
     var m = parseInt(parts[1], 10);
     if (isNaN(h) || isNaN(m)) return;
-    // Timestamps are stored as local wall-clock time at time of writing.
-    // Re-display using the browser's locale for consistent formatting.
     var d = new Date();
-    d.setHours(h, m, 0, 0);
+    d.setUTCHours(h, m, 0, 0);
     el.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   });
 })();

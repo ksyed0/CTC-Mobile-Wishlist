@@ -25,9 +25,7 @@ const AsyncStorage = {
     AsyncStorage.removeItem.mockClear();
     AsyncStorage.clear.mockClear();
     // Re-bind implementations after mock.mockClear() resets call counts only
-    AsyncStorage.getItem.mockImplementation((key) =>
-      Promise.resolve(store[key] ?? null)
-    );
+    AsyncStorage.getItem.mockImplementation((key) => Promise.resolve(store[key] ?? null));
     AsyncStorage.setItem.mockImplementation((key, value) => {
       store[key] = value;
       return Promise.resolve();

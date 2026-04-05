@@ -70,9 +70,7 @@ export const productService = {
     try {
       const lower = trimmed.toLowerCase();
       return products.filter(
-        (p) =>
-          p.name.toLowerCase().includes(lower) ||
-          p.description.toLowerCase().includes(lower)
+        (p) => p.name.toLowerCase().includes(lower) || p.description.toLowerCase().includes(lower),
       );
     } catch (error) {
       console.error('[productService] search error:', error);
