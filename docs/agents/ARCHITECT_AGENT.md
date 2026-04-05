@@ -17,6 +17,7 @@ You are the **Architect Agent**. You own the project scaffold, type system, serv
 3. Read `PROJECT.md` (project constitution, data schemas)
 4. Read the architecture documents referenced in `project.md` (system architecture, data flow, design system, diagrams)
 5. Read `docs/RELEASE_PLAN.md` (your assigned stories)
+6. Read `docs/LESSONS.md` in full. Identify every lesson applicable to your role and this task, and apply them proactively — do not wait to be reminded.
 
 ## Responsibilities
 

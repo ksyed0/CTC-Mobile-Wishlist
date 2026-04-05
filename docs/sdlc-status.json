@@ -115,7 +115,12 @@
     "US-0010": { "status": "Complete", "title": "Share wishlist", "epic": "EPIC-0005" },
     "US-0011": { "status": "Complete", "title": "View shared wishlist", "epic": "EPIC-0005" },
     "US-0012": { "status": "Complete", "title": "Claim items on shared wishlist", "epic": "EPIC-0005" },
-    "US-0013": { "status": "Complete", "title": "Mock auth / user switcher", "epic": "EPIC-0006" }
+    "US-0013": { "status": "Complete", "title": "Mock auth / user switcher", "epic": "EPIC-0006" },
+    "US-0014": {
+      "status": "Backlog",
+      "title": "Lesson 'Applies to' field for faster agent scanning",
+      "epic": "Tooling"
+    }
   },
   "metrics": {
     "storiesCompleted": 13,
@@ -128,8 +133,8 @@
     "tcsPassed": 40,
     "tcsFailed": 0,
     "tcsTotal": 40,
-    "bugsOpen": 12,
-    "bugsFixed": 84,
+    "bugsOpen": 4,
+    "bugsFixed": 95,
     "coveragePercent": 91.68,
     "reviewsApproved": 4,
     "reviewsBlocked": 0

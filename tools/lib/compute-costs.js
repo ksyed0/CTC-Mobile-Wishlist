@@ -12,6 +12,8 @@ function attributeAICosts(stories, costByBranch) {
     totalInput = 0,
     totalOutput = 0;
 
+  // First pass: exact branch-name match
+  let matchedCost = 0;
   for (const story of stories) {
     const match = story.branch ? costByBranch[story.branch] : null;
     result[story.id] = match
@@ -22,14 +24,26 @@ function attributeAICosts(stories, costByBranch) {
           sessions: match.sessions,
         }
       : { costUsd: 0, inputTokens: 0, outputTokens: 0, sessions: 0 };
+    matchedCost += result[story.id].costUsd;
   }
 
-  // _totals includes ALL branches (linked and unlinked) for a complete AI spend figure.
-  // Individual story/bug attributions above reflect only matched branches.
-  for (const v of Object.values(costByBranch)) {
+  // _totals includes ALL real branches (est/* branches are estimated bug costs,
+  // excluded here so they don't inflate the story-level total).
+  for (const [branch, v] of Object.entries(costByBranch)) {
+    if (branch.startsWith('est/')) continue;
     totalCost += v.costUsd;
     totalInput += v.inputTokens;
     totalOutput += v.outputTokens;
+  }
+
+  // Second pass: distribute unattributed cost proportionally across all stories
+  // so the chart never shows all-zero bars when branches don't follow US-XXXX naming.
+  const unattributed = parseFloat((totalCost - matchedCost).toFixed(6));
+  if (unattributed > 0 && stories.length > 0) {
+    const perStory = unattributed / stories.length;
+    for (const story of stories) {
+      result[story.id].costUsd = parseFloat((result[story.id].costUsd + perStory).toFixed(6));
+    }
   }
 
   result._totals = {
@@ -50,12 +64,13 @@ function attributeBugCosts(bugs, costByBranch) {
     const match = bug.fixBranch ? costByBranch[bug.fixBranch] : null;
     const estimated = bug.estimatedCostUsd || 0;
     if (match) {
+      const isEstimatedBranch = (bug.fixBranch || '').startsWith('est/');
       result[bug.id] = {
         costUsd: match.costUsd,
-        inputTokens: match.inputTokens,
-        outputTokens: match.outputTokens,
-        sessions: match.sessions,
-        isEstimated: false,
+        inputTokens: isEstimatedBranch ? 0 : match.inputTokens,
+        outputTokens: isEstimatedBranch ? 0 : match.outputTokens,
+        sessions: isEstimatedBranch ? 0 : match.sessions,
+        isEstimated: isEstimatedBranch,
       };
       totalCost += match.costUsd;
       totalInput += match.inputTokens;

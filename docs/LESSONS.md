@@ -1,6 +1,6 @@
 # Lessons — CTC-Mobile-Wishlist
 
-<!-- Distilled from 88 bugs (BUG-0001–BUG-0088) across Sessions 4–8. -->
+<!-- Distilled from 101 bugs (BUG-0001–BUG-0097) across Sessions 4–9. -->
 
 ---
 
@@ -202,4 +202,73 @@ _Lock directory removal in the release() function could fail silently, leaving s
 **Bugs:** BUG-0082, BUG-0087, BUG-0088
 **Lesson:** Any metric that can be computed from an existing artifact (bug count from `BUGS.md`, story status from `RELEASE_PLAN.md`, coverage from `coverage-summary.json`) should be computed live by the dashboard generator rather than cached in a secondary state file. Secondary state files require a synchronisation discipline that breaks under parallel writes, branch isolation, and human error. Reserve the state file for data that has no other canonical home: agent task descriptions, phase timestamps, the activity event log.
 _`sdlc-status.json` duplicated bug counts, story statuses, and coverage percentages that already existed in other files. When those files were updated (agents adding bugs, Circuit generating coverage) the state file fell behind, producing visibly wrong dashboard numbers._
+**Date:** 2026-04-04
+
+---
+
+## L-0023 — The Expo Native Layer Is a Separate Artifact System — Changes Don't Propagate Automatically
+
+**Bugs:** BUG-0090, BUG-0091, BUG-0092, BUG-0093, BUG-0094
+**Lesson:** An Expo project has two independent artifact layers: (1) the JavaScript/Metro layer (`package.json`, `app/`, `assets/`) and (2) the native layer (`ios/`, `android/`, CocoaPods, xcassets). Changes to the JS layer do not propagate to the native layer automatically. Treat each layer as having its own lock file and cache:
+
+- Always set `"main": "expo-router/entry"` in `package.json` for file-based routing projects — without it, Expo falls back to the legacy `AppEntry.js` which expects `App.tsx`.
+- Never leave scaffold placeholder directories (`.gitkeep` under `src/app/`) that can hijack framework directory resolution. expo-router v4 checks `src/app` before `app` — an empty directory there takes over as route root.
+- Delete `ios/Podfile.lock` and `ios/Pods/` whenever `react-native` version changes in `package.json`. The lock file pins native prebuilt XCFrameworks; mismatched API versions produce cryptic Swift compile errors.
+- Run `expo prebuild` (or manually copy to xcassets) whenever source assets change. Xcode DerivedData caches compiled xcassets — clear it too.
+- iOS app icons must be RGB mode, exactly 1024×1024px. Alpha channels cause silent rejection of the entire icon set with a misleading "did not have any applicable content" error.
+  _All five bugs were discovered only on the first real iOS simulator run, hours after the app was "complete". None were caught by Jest or TypeScript._
+  **Date:** 2026-04-04
+
+---
+
+## L-0024 — Run a Scaffold Completeness Check Before Any Build Agent Writes Feature Code
+
+**Bugs:** BUG-0084, BUG-0085, BUG-0086, BUG-0091
+**Lesson:** Before spawning build agents, the orchestrator must verify that the scaffold is complete: (1) every directory referenced in `app.json`, `package.json`, and config files actually exists; (2) all required asset files (`icon.png`, `splash.png`, `adaptive-icon.png`, `favicon.png`) are present and meet platform specifications; (3) every user story has at least one acceptance criterion defined; (4) any component or service referenced in another agent's task description exists as at least an empty file. A missing directory or placeholder string in mock data discovered in Phase 5 costs far more to fix than a pre-build checklist.
+_The `assets/` directory didn't exist when build agents started. All 23 products had `"image": "placeholder"`. A search bar required by AC-0015/AC-0016 was never created. All three were found only during Phase 5 testing._
+**Date:** 2026-04-04
+
+---
+
+## L-0025 — Register Acceptance Criteria in the Plan Before Any Code References Them
+
+**Bugs:** BUG-0008, BUG-0077
+**Lesson:** An AC is only a real contract when it exists in `RELEASE_PLAN.md` and the ID*REGISTRY. If a build agent references `AC-0041` in a code comment or test annotation, that AC must already be formally defined under its user story — not filed afterward. The reverse order (code first, plan second) means: (1) the plan is perpetually behind reality, (2) test cases and ACs can't be properly linked, and (3) the reviewer has no baseline to check against. Similarly, every AC should have at least one test case mapped to it before the story is marked Done.
+\_Forge referenced AC-0041 and AC-0042 in service code and tests before they existed in RELEASE_PLAN.md. Four other ACs had no test cases mapped to them.*
+**Date:** 2026-04-04
+
+---
+
+## L-0026 — Build Agents Must Enumerate Existing Components Before Writing New Code
+
+**Bugs:** BUG-0075, BUG-0076
+**Lesson:** Before writing any screen or utility, a build agent must enumerate the current `components/` and `utils/` directories. If `ProductCard`, `WishlistCard`, or `wishlistUtils.ts` already exists, use it — don't re-implement equivalent logic inline. Two failure modes occur when agents don't check: (1) screens contain duplicated ad-hoc card markup that diverges from the actual component, meaning the built component is never exercised; (2) parallel agents create identical utility files on separate branches that conflict at merge time. Add an explicit "check for existing components" step to the build agent's task checklist before any screen is created.
+_`catalog.tsx` duplicated `ProductCard` card markup inline instead of importing `<ProductCard>`. `wishlistUtils.ts` was independently created by two agents on separate branches._
+**Date:** 2026-04-04
+
+---
+
+## L-0027 — Write Component and Screen Tests at Creation Time, Not as a Separate Later Phase
+
+**Bugs:** BUG-0073, BUG-0078
+**Lesson:** The moment a component or screen is created, its test file should be created alongside it — not deferred to a dedicated testing phase. Service tests can be separated (they require no rendering infrastructure) but UI tests require React Native Testing Library setup that is much harder to retrofit: mocking navigation, context providers, and async state requires intimate knowledge of how the component was wired up, which fades rapidly after the build agent's session ends. Each component file should have a corresponding `.test.tsx` that at minimum: (1) renders without crashing, (2) checks key visible text/elements, and (3) asserts press handlers are called. Missing one test branch is also caught here — the `removeItem` empty-productId guard existed in code but wasn't tested until Lens discovered it in review.
+_8 screens and 7 components were built with zero render tests. Service tests existed; screen/component tests were deferred to a later phase that never ran._
+**Date:** 2026-04-04
+
+---
+
+## L-0028 — Add Accessibility Attributes at Component Creation Time — Never Retrofit
+
+**Bugs:** BUG-0074, BUG-0095
+**Lesson:** Accessibility is a creation-time discipline, not a polish task. Every `TouchableOpacity` needs `accessibilityRole="button"` and a descriptive `accessibilityLabel`. Every `Image` or icon-only button needs an `accessibilityLabel`. Navigation stack screens need `headerBackTitle` explicitly set — framework defaults (`(tabs)`) are file-system segment names, not human-readable labels. Retrofitting accessibility requires re-reading every interactive element across all screens; doing it at component creation costs seconds per component. Add an accessibility checklist to the build agent's component template: `[ ] accessibilityRole, [ ] accessibilityLabel, [ ] headerBackTitle for stack screens`.
+_Zero accessibility attributes existed on any of 7 components and 8 screens after Phase 3. Back button showed "(tabs)" because no `headerBackTitle` was set on any stack screen. Both were fixed only in a post-pipeline polish session._
+**Date:** 2026-04-04
+
+---
+
+## L-0029 — Tooling Must Degrade Visibly, Not Silently, When Attribution or Mapping Fails
+
+**Bugs:** BUG-0089, BUG-0096, BUG-0097
+**Lesson:** When a tooling pipeline can't match input data to expected patterns — branch names that don't follow the expected convention, cross-references that resolve to nothing, sections with no content — it must produce a visible fallback, not a silent zero or hidden UI. Three concrete rules: (1) When cost attribution finds no matching stories, distribute the total proportionally rather than showing empty bars; (2) When collapsible UI sections are generated, default to expanded so content is immediately visible — collapsed-by-default requires the user to discover the interaction model before seeing any data; (3) When a cross-reference (bug→lesson, lesson→epic) resolves to nothing, show "—" or "No Epic" as a labelled placeholder, not an empty cell or missing row.
+_The AI cost chart showed $0 bars despite $299 in the header because branches didn't match `feature/US-XXXX-*`. The Hierarchy, Bugs, and Costs tab column views appeared empty because all sections started collapsed._
 **Date:** 2026-04-04

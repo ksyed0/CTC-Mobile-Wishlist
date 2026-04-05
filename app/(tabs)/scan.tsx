@@ -107,12 +107,19 @@ export default function ScanScreen() {
           To scan product barcodes, this app needs access to your camera. Your
           camera is only used while you are on this screen.
         </Text>
-        <TouchableOpacity style={styles.primaryButton} onPress={requestPermission}>
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={requestPermission}
+          accessibilityRole="button"
+          accessibilityLabel="Allow camera access"
+        >
           <Text style={styles.primaryButtonText}>Allow Camera Access</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.secondaryButton}
           onPress={() => setShowManual(true)}
+          accessibilityRole="button"
+          accessibilityLabel="Enter barcode manually"
         >
           <Text style={styles.secondaryButtonText}>Enter Barcode Manually</Text>
         </TouchableOpacity>
@@ -126,11 +133,14 @@ export default function ScanScreen() {
               keyboardType="number-pad"
               returnKeyType="search"
               onSubmitEditing={handleManualLookup}
+              accessibilityLabel="Barcode number input"
             />
             <TouchableOpacity
               style={[styles.primaryButton, isLookingUp && styles.buttonDisabled]}
               onPress={handleManualLookup}
               disabled={isLookingUp}
+              accessibilityRole="button"
+              accessibilityLabel="Look up barcode"
             >
               {isLookingUp ? (
                 <ActivityIndicator color={colors.white} />
@@ -189,6 +199,8 @@ export default function ScanScreen() {
             style={[styles.lookupButton, isLookingUp && styles.buttonDisabled]}
             onPress={handleManualLookup}
             disabled={isLookingUp}
+            accessibilityRole="button"
+            accessibilityLabel="Look up barcode"
           >
             {isLookingUp ? (
               <ActivityIndicator color={colors.white} size="small" />

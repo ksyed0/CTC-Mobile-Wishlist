@@ -434,3 +434,19 @@ Status: Done
 Branch: feature/US-0001-expo-scaffold
 Notes:
 ```
+
+---
+
+### Tooling & Process Enhancements
+
+```
+US-0014: As a pipeline engineer, I want each lesson in LESSONS.md to have an "Applies to" field listing relevant agent roles, so that agents can efficiently scan their lessons without reading all 29 entries.
+Priority: Low
+Estimate: XS
+Status: Backlog
+Branch: —
+Dependencies: None
+Acceptance Criteria:
+  - [ ] AC-0043: Each lesson entry in docs/LESSONS.md has an "Applies to:" line listing agent names (e.g. "Applies to: Pixel, Lens")
+  - [ ] AC-0044: Each agent's Mandatory Startup step for LESSONS.md is updated to scan for its own name rather than reading the full file
+```

@@ -515,16 +515,16 @@ All 9 demo steps now wire end-to-end:
 
 **Integration bugs found and fixed**
 
-| Bug | File | Fix |
-|-----|------|-----|
-| INT-01 (Critical) | `wishlists.tsx` | Missing "Shared With Me" section — Bob could never see Alice's list. Added `SectionList` with "My Wishlists" + "Shared With Me" sections. Shared items navigate to `/wishlist/shared/[id]`. |
-| INT-02 (Critical) | `wishlists.tsx` | No "Create Wishlist" button. Added FAB + create modal with TextInput. Without this, user had no path to create a wishlist from the UI. |
-| INT-03 (Major) | `product/[id].tsx` | "No Wishlists" Alert dead-ended the user. Now offers "Create Wishlist" action that navigates to Wishlists tab. |
-| INT-04 (Major) | `app/_layout.tsx` | First launch (no stored user) stayed at `(tabs)` as guest. Now redirects to `/login` via `useSegments` guard in `RootNavigator`. |
-| INT-05 (Major) | `wishlist/[id].tsx` | `isOwner` not computed or passed to `WishlistItemRow`. Alice would see claimer UI instead of owner "Claimed" badge. Fixed: `currentUser?.id === wishlist.ownerId` computed and passed as `isOwner` prop. |
-| INT-06 (Minor) | `scan.tsx` | Recent scans never persisted. Added `saveRecentScan()` writing to `StorageKeys.RECENT_SCANS` after each successful barcode lookup. |
-| INT-07 (Minor) | `app/(tabs)/index.tsx` | Home screen stat cards were not tappable. Made them link to Wishlists tab. Added "Recent Scans" horizontal FlatList that loads from AsyncStorage. |
-| INT-08 (Minor) | `tsconfig.json` | Missing `types: ["jest"]` + `@types/jest` not installed. TypeScript reported 200+ errors in test files. Fixed: added `types` field and ran `npm install --save-dev @types/jest`. |
+| Bug               | File                   | Fix                                                                                                                                                                                                      |
+| ----------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| INT-01 (Critical) | `wishlists.tsx`        | Missing "Shared With Me" section — Bob could never see Alice's list. Added `SectionList` with "My Wishlists" + "Shared With Me" sections. Shared items navigate to `/wishlist/shared/[id]`.              |
+| INT-02 (Critical) | `wishlists.tsx`        | No "Create Wishlist" button. Added FAB + create modal with TextInput. Without this, user had no path to create a wishlist from the UI.                                                                   |
+| INT-03 (Major)    | `product/[id].tsx`     | "No Wishlists" Alert dead-ended the user. Now offers "Create Wishlist" action that navigates to Wishlists tab.                                                                                           |
+| INT-04 (Major)    | `app/_layout.tsx`      | First launch (no stored user) stayed at `(tabs)` as guest. Now redirects to `/login` via `useSegments` guard in `RootNavigator`.                                                                         |
+| INT-05 (Major)    | `wishlist/[id].tsx`    | `isOwner` not computed or passed to `WishlistItemRow`. Alice would see claimer UI instead of owner "Claimed" badge. Fixed: `currentUser?.id === wishlist.ownerId` computed and passed as `isOwner` prop. |
+| INT-06 (Minor)    | `scan.tsx`             | Recent scans never persisted. Added `saveRecentScan()` writing to `StorageKeys.RECENT_SCANS` after each successful barcode lookup.                                                                       |
+| INT-07 (Minor)    | `app/(tabs)/index.tsx` | Home screen stat cards were not tappable. Made them link to Wishlists tab. Added "Recent Scans" horizontal FlatList that loads from AsyncStorage.                                                        |
+| INT-08 (Minor)    | `tsconfig.json`        | Missing `types: ["jest"]` + `@types/jest` not installed. TypeScript reported 200+ errors in test files. Fixed: added `types` field and ran `npm install --save-dev @types/jest`.                         |
 
 **WishlistContext user-switch verification**
 
@@ -560,24 +560,24 @@ One copy lives at `utils/wishlistUtils.ts` (root, in develop). The duplicate is 
 **Method:** Static analysis of app code on develop branch (Phase 4 complete)
 **Branch examined:** develop (feature/pixel-integration merged)
 
-| Metric           | Value  |
-| ---------------- | ------ |
-| Total Test Cases | 40     |
-| Executed         | 40     |
-| Passed           | 36     |
-| Failed           | 4      |
-| Blocked          | 0      |
-| Not Run          | 0      |
-| Pass Rate        | 90%    |
+| Metric           | Value |
+| ---------------- | ----- |
+| Total Test Cases | 40    |
+| Executed         | 40    |
+| Passed           | 36    |
+| Failed           | 4     |
+| Blocked          | 0     |
+| Not Run          | 0     |
+| Pass Rate        | 90%   |
 
 ### Failed Tests
 
-| TC ID   | Summary                                        | Bug ID   |
-| ------- | ---------------------------------------------- | -------- |
-| TC-0037 | Splash screen displays CTC branding on launch  | BUG-0084 |
+| TC ID   | Summary                                         | Bug ID   |
+| ------- | ----------------------------------------------- | -------- |
+| TC-0037 | Splash screen displays CTC branding on launch   | BUG-0084 |
 | TC-0038 | Mock product images are bundled as local assets | BUG-0085 |
-| TC-0012 | Search filters products by name in real time   | BUG-0086 |
-| TC-0040 | Search bar visible at top of catalog screen    | BUG-0086 |
+| TC-0012 | Search filters products by name in real time    | BUG-0086 |
+| TC-0040 | Search bar visible at top of catalog screen     | BUG-0086 |
 
 ### Blocked Tests
 
@@ -612,16 +612,19 @@ Agent: Pixel | Branch: `feature/polish-fixes` | Based on: `develop`
 ### Bugs Fixed
 
 **BUG-0084 (Critical) — Missing assets directory**
+
 - Created `assets/` directory at project root with four PNG placeholder files: `icon.png` (1024×1024), `adaptive-icon.png` (1024×1024), `splash.png` (1242×2688), `favicon.png` (32×32).
 - All filled with Canadian Tire red (#D52B1E) and a white triangle motif, generated via Node.js `canvas`.
 - Expo build will no longer crash on missing asset references in `app.json`.
 
 **BUG-0085 (Major) — No product images**
+
 - Updated `components/ProductCard.tsx`: when `image === "placeholder"`, renders a colored `View` with the category's initial letter instead of a broken image icon.
 - Category color map applied: Tools (red), Automotive (blue), Outdoor (green), Sports (orange), Home (purple).
 - Catalog now looks intentional and demo-ready.
 
 **BUG-0086 (Major) — Search bar missing from catalog screen**
+
 - Added `TextInput` search bar to `app/(tabs)/catalog.tsx` above the category chip row.
 - Real-time filtering via `useMemo` over `filteredProducts` — no async call needed, instant response.
 - Clear (×) button appears when query is non-empty.
@@ -629,11 +632,72 @@ Agent: Pixel | Branch: `feature/polish-fixes` | Based on: `develop`
 - AC-0015 (search bar visible) and AC-0016 (real-time name filtering) now satisfied.
 
 ### Docs Updated
+
 - `docs/BUGS.md` — BUG-0084, BUG-0085, BUG-0086 appended with Fixed status.
 - `docs/RELEASE_PLAN.md` — TASK-0009 (search bar) → Status: Done.
 
 ### Stats
+
 - TypeScript errors in source files: **0**
 - Pre-existing test mock errors in test files: 11 (unchanged, not introduced by this work)
 - Assets created: 4 PNG files
 - Files modified: `components/ProductCard.tsx`, `app/(tabs)/catalog.tsx`
+
+---
+
+## Session 12 — 2026-04-05
+
+Post-BLAST: Plan Visualizer fixes, lesson-bug linking, new lessons, AI cost estimation, and lessons integration into agent instruction files.
+
+### Plan Visualizer Fixes
+
+**BUG-0096 — Hierarchy + Costs tab column views empty**
+
+- `render-html.js`: three separate render functions each had `class="hidden"` on their epic/bug tbodies. Fixed all three: arrow `&#9654;` → `&#9660;`, removed `class="hidden"`.
+- Separately fixed Bugs tab column view (fourth independent `bugColGroups` render function, line ~1396).
+
+**Lesson-Bug Linking (all 101 bugs now show ✓ in Bugs tab Lesson column)**
+
+- `tools/lib/parse-lessons.js`: added extraction of `bugIds` from each lesson's `**Bugs:**` field.
+- `tools/generate-plan.js`: added back-fill of `bug.lessonEncoded` from LESSONS.md inverse mapping at generation time — LESSONS.md is the single source of truth.
+
+**Lesson-Epic Grouping (Lessons tab now groups under correct epics)**
+
+- Resolved by the same back-fill fix above; `lessonStoryMap` now resolves correctly.
+
+### New Lessons (L-0023–L-0029)
+
+Distilled 7 new lessons from 39 bugs not covered by any prior lesson:
+
+- **L-0023** — Expo JS and native layers are independent; native requires explicit `expo prebuild` after any asset change.
+- **L-0024** — Scaffold completeness check required before advancing from Phase 2.
+- **L-0025** — Register all ACs in RELEASE_PLAN.md before build agents reference them.
+- **L-0026** — Enumerate existing components and utils before writing new ones.
+- **L-0027** — Create `.test.tsx` alongside every component and screen file at creation time.
+- **L-0028** — Add `accessibilityRole` + `accessibilityLabel` to every interactive element at creation time.
+- **L-0029** — Tooling must degrade visibly, not silently; collapsible sections default to expanded.
+
+Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
+
+### AI Cost Estimation for Bug Fixes
+
+- Added estimated AI costs (~$100.65 total) for 93 of 97 bugs to `docs/AI_COST_LOG.md` using `est/BUG-XXXX` synthetic branch convention.
+- Added `Fix Branch: est/BUG-XXXX` to all covered bugs in `docs/BUGS.md`.
+- Modified `tools/lib/compute-costs.js`: `attributeAICosts()` now skips `est/` branches for story totals (prevents double-counting); `attributeBugCosts()` marks `est/` branch matches as `isEstimated: true`.
+- 4 open bugs (BUG-0073, 0080, 0082, 0088) correctly show $0.
+
+### Lessons Integration — Agent Instruction Files
+
+- Added `docs/LESSONS.md` dynamic read as last Mandatory Startup step in all 9 agent files: agents read the full file and self-select applicable lessons on every spawn (Option B — no hardcoded mapping, zero maintenance).
+- Extended DM_AGENT's structured spawn template with a `LESSONS:` field — instruction propagates to every spawned agent.
+- Added **US-0014** (Backlog, Low) to `docs/RELEASE_PLAN.md`: future Option A enhancement — add `Applies to:` field per lesson for faster agent scanning.
+
+### Docs Updated
+
+- `docs/LESSONS.md` — 7 new lessons (L-0023–L-0029), header updated to 101 bugs
+- `docs/BUGS.md` — BUG-0096, BUG-0097 logged and fixed; `Fix Branch: est/BUG-XXXX` added to 93 bugs
+- `docs/AI_COST_LOG.md` — 93 estimated bug fix cost entries appended
+- `docs/RELEASE_PLAN.md` — US-0014 added (Backlog); TASK-0009 search bar marked Done
+- `docs/ID_REGISTRY.md` — L → L-0030, BUG → BUG-0098, US → US-0015, AC → AC-0045
+- `docs/agents/*.md` — all 9 agent files updated with LESSONS.md Mandatory Startup step
+- `tools/lib/parse-lessons.js`, `tools/lib/compute-costs.js`, `tools/lib/render-html.js`, `tools/generate-plan.js` — bug fixes and cost attribution improvements

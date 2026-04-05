@@ -8,6 +8,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0001
 - **Found in:** `architecture/DATA_FLOW.md` line 70, `docs/agents/BE_DEV_AGENT.md`, `docs/agents/ARCHITECT_AGENT.md`
 - **Description:** DATA_FLOW.md line 70 says `wishlists:${userId}` (per-user) but Section 5 key schema table says global `wishlists`. ARCHITECT_AGENT says global, BE_DEV_AGENT says per-user. Forge and Keystone would implement differently.
 - **Fix:** P0.1 — Standardize to global `wishlists` key, filtered by ownerId at read time.
@@ -16,6 +17,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0002
 - **Found in:** `docs/agents/DM_AGENT.md` (orchestration playbook, Phase 3)
 - **Description:** DM_AGENT.md orchestration playbook never spawns Palette. Design guidance is hardcoded as a string on line 110. Palette's instruction file exists but has no execution point.
 - **Fix:** P0.2 — Insert Palette spawn step before Forge+Pixel parallel step in Phase 3.
@@ -24,6 +26,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0003
 - **Found in:** `docs/agents/DM_AGENT.md`
 - **Description:** Conductor has no way to know when a phase is "done." No acceptance criteria per phase, no exit gates.
 - **Fix:** P0.3 — Add Phase Exit Criteria table to DM_AGENT.md.
@@ -32,6 +35,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0004
 - **Found in:** `docs/agents/DM_AGENT.md` lines 242-246
 - **Description:** Escalation rules are vague prose with no retry limits, no timeout handling, no specific failure scenarios. Conductor cannot autonomously recover from agent failures.
 - **Fix:** P0.4 — Replace with structured Error Handling SOP table.
@@ -40,6 +44,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0005
 - **Found in:** `docs/agents/CODE_REVIEWER_AGENT.md`
 - **Description:** Lens has review instructions for Phases 2-4 but Phase 5 (Trigger/Test) review has no task description. Lens won't know what to check after testing.
 - **Fix:** P0.5 — Add Phase 5 Review Focus subsection.
@@ -50,6 +55,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0006
 - **Found in:** `docs/agents/PO_AGENT.md`, `docs/agents/FUNCTIONAL_TESTER_AGENT.md`
 - **Description:** Both Compass (PO) and Sentinel (Tester) are told to update AC status checkboxes in RELEASE_PLAN.md. Creates potential conflicts during execution.
 - **Fix:** P1.1 — Clarify: Tester marks pass/fail, PO performs final acceptance sign-off.
@@ -58,6 +64,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0007
 - **Found in:** `docs/agents/DM_AGENT.md` lines 162-170
 - **Description:** Context passing rules are free-form prose with no standard structure. Conductor may omit critical context when spawning agents.
 - **Fix:** P1.2 — Add structured context passing template.
@@ -66,6 +73,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0008
 - **Found in:** `docs/TEST_CASES.md`
 - **Description:** AC-0004 (splash screen), AC-0006 (bundled images), AC-0007 (mock users), AC-0015 (search bar visibility) have no corresponding test cases.
 - **Fix:** P1.3 — Add TC-0037 through TC-0040.
@@ -74,6 +82,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0009
 - **Found in:** `docs/AGENT_PLAN.md` Section 4
 - **Description:** Multiple agents mention "POC Simulation" with different meanings. No feature-level table of what's real code vs. simulated documentation.
 - **Fix:** P1.4 — Add feature-level real vs. simulated scope table.
@@ -82,6 +91,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0010
 - **Found in:** `docs/ROLLBACK.md` (does not exist)
 - **Description:** AGENTS.md Phase 5 references ROLLBACK.md but the file doesn't exist. Agents that check for it will find nothing.
 - **Fix:** P1.5 — Create ROLLBACK.md with POC rollback strategy.
@@ -90,6 +100,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0011
 - **Found in:** `tools/generate-dashboard.js`, `docs/dashboard.html`
 - **Description:** The SDLC dashboard and Plan Visualizer are separate HTML files with no navigation between them. Users must know both URLs.
 - **Fix:** P1.6 — Add Plan Visualizer link in dashboard footer.
@@ -98,6 +109,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0012
 - **Found in:** `architecture/DESIGN_SYSTEM.md`
 - **Description:** No explicit responsive breakpoints, no target device matrix, no safe area dimensions documented. No confirmation the UI fits iPhone 17 Pro Max (430pt) or Pixel 10 Pro XL (411pt).
 - **Fix:** P1.7 — Add Device Compatibility section.
@@ -106,6 +118,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0013
 - **Found in:** `docs/AGENT_PLAN.md`, `docs/agents/DM_AGENT.md`
 - **Description:** No deployment instructions anywhere in the docs. No guidance on how to run the app on iPhone, simulator, or Android for the hackathon demo.
 - **Fix:** P1.8 — Add Deployment Strategy section to AGENT_PLAN.md and Phase 6 instruction to DM_AGENT.md.
@@ -114,6 +127,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0014
 - **Found in:** `tools/generate-dashboard.js`
 - **Description:** Dashboard has no light mode toggle. Several text colors fail WCAG AA contrast: #666 on #1a1a2e = 2.8:1 ratio (requires 4.5:1). Card borders and metric dividers are nearly invisible.
 - **Fix:** P1.9 — Add CSS variable theming, light/dark toggle with localStorage persistence, fix contrast ratios.
@@ -122,6 +136,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0015
 - **Found in:** `tools/generate-dashboard.js` lines 174, 314; `docs/sdlc-status.json` line 3
 - **Description:** Dashboard subtitle and footer reference "EPAM EliteA" but the hackathon uses Claude Code as the agentic platform. EliteA is for the full production implementation.
 - **Fix:** P1.10 — Replace "EPAM EliteA" with "Claude Code" in dashboard generator and status JSON.
@@ -132,6 +147,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0016
 - **Found in:** `tools/generate-dashboard.js` line 111
 - **Description:** `@keyframes spin` is defined but never referenced by any CSS class. Dead code.
 - **Fix:** P2.1 — Remove the unused keyframe.
@@ -140,6 +156,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0017
 - **Found in:** `package.json`
 - **Description:** Must run `plan:generate` and `dashboard` separately. No single command to regenerate all outputs.
 - **Fix:** P2.2 — Add `"build": "npm run plan:generate && npm run dashboard"`.
@@ -148,6 +165,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0018
 - **Found in:** `docs/agents/DM_AGENT.md`
 - **Description:** Agents are told to read mandatory files at startup but no checklist to verify files exist before spawning. Agent could fail if a prior phase didn't produce expected files.
 - **Fix:** P2.3 — Add pre-phase verification note to DM_AGENT.md.
@@ -156,6 +174,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed (partially — DM_AGENT.md hardcoded tokens removed by P0.2; remaining duplication acceptable)
+- **Fix Branch:** est/BUG-0019
 - **Found in:** `architecture/DESIGN_SYSTEM.md`, `docs/agents/UI_DESIGNER_AGENT.md`, `docs/agents/DM_AGENT.md` line 110
 - **Description:** Same CTC brand color values (#D52B1E, etc.) defined in 3 places. If tokens change, all 3 need updating. Acceptable for hackathon since agents need self-contained context.
 - **Fix:** Resolved by P0.2 (Palette spawn removes hardcoded tokens from DM_AGENT.md). Remaining duplication is acceptable.
@@ -164,6 +183,7 @@
 
 - **Severity:** Minor
 - **Status:** Won't Fix (acceptable duplication for agent isolation)
+- **Fix Branch:** est/BUG-0020
 - **Found in:** `docs/agents/PO_AGENT.md`, `docs/AGENT_PLAN.md`
 - **Description:** Same priority ordering stated in two places. Low drift risk for a 1-day event.
 - **Fix:** No change — acceptable duplication for agent isolation.
@@ -172,6 +192,7 @@
 
 - **Severity:** Minor
 - **Status:** Won't Fix (acceptable duplication for agent isolation)
+- **Fix Branch:** est/BUG-0021
 - **Found in:** Multiple agent files
 - **Description:** Branch naming format `feature/US-XXXX-description` repeated across 5+ agent instruction files.
 - **Fix:** No change — acceptable duplication for agent isolation.
@@ -180,6 +201,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0022
 - **Found in:** `tools/generate-dashboard.js`
 - **Description:** Agent cards and story rows have no hover feedback. Dashboard feels static when interacting.
 - **Fix:** P1.9 — Add hover brightness filter to agent cards and story rows.
@@ -188,6 +210,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0023
 - **Found in:** `tools/generate-dashboard.js`
 - **Description:** Dashboard uses fixed desktop grid layouts (3-column metrics, 2-column story grid, 6-phase horizontal pipeline). On phones and tablets in portrait or landscape, UI elements overflow, get cut off, or become unreadable. No media queries exist.
 - **Fix:** Add responsive CSS media queries for tablet portrait (768-1024px), tablet landscape, phone landscape (up to 767px), phone portrait (up to 480px), and small phone (up to 375px). Pipeline stacks vertically on phones, grids collapse to fewer columns, deliverables/agent tasks hide on small screens.
@@ -196,6 +219,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0024
 - **Found in:** `tools/generate-dashboard.js`
 - **Description:** No way for viewers to learn what the dashboard is, who built it, or find the source repo. Missing attribution and context for hackathon demo audience.
 - **Fix:** Add "About" button in header with modal popup: title "AI-SDLC Orchestrator Visualizer", author "by Kamal Syed", GitHub repo link, and close button. Modal has backdrop blur and closes on overlay click or close button.
@@ -206,6 +230,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0025
 - **Found in:** `docs/agents/DM_AGENT.md`
 - **Description:** Conductor has no mechanism to persist retry counts across agent spawns. If Conductor loses context or is re-spawned, it could re-invoke the same failing agent indefinitely, creating an infinite loop.
 - **Fix:** Add retry tracking section — Conductor logs retry counts in `progress.md` with structured format per task.
@@ -214,6 +239,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0026
 - **Found in:** `docs/agents/DM_AGENT.md` line 280
 - **Description:** Error Handling SOP says "Escalate to human. Do not proceed." but never defines the mechanism — no instructions for how orchestration pauses, how the human is notified, or how orchestration resumes after human intervention.
 - **Fix:** Add concrete escalation workflow: Conductor prints blocking issue summary, writes BLOCKED status to sdlc-status.json, pauses orchestration, and documents resume instructions.
@@ -222,6 +248,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0027
 - **Found in:** `docs/agents/DM_AGENT.md`, `docs/agents/CODE_REVIEWER_AGENT.md`
 - **Description:** After Lens issues a BLOCK verdict and human fixes the issue, there is no documented protocol for how Conductor knows to resume, which step to resume from, or whether the blocked branch should be rolled back first.
 - **Fix:** Add BLOCK recovery protocol to DM_AGENT.md and post-BLOCK guidance to CODE_REVIEWER_AGENT.md.
@@ -230,6 +257,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0028
 - **Found in:** `docs/agents/DM_AGENT.md`
 - **Description:** Phase 3 spawns Forge + Pixel in parallel. If one agent BLOCKs or fails, there are no rules for what happens to the other parallel agent — does it continue, pause, or get cancelled?
 - **Fix:** Add parallel agent failure coordination rules to DM_AGENT.md.
@@ -238,6 +266,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0029
 - **Found in:** `docs/agents/DM_AGENT.md` line 283
 - **Description:** Only a 50% overrun guideline exists for timeboxing. No absolute hard timeout per phase. A phase could theoretically run indefinitely if scope keeps being renegotiated.
 - **Fix:** Add hard phase timeout (90 min max per phase) with force-cut-scope action at DM_AGENT.md.
@@ -246,6 +275,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0030
 - **Found in:** `docs/agents/CODE_REVIEWER_AGENT.md` line 100
 - **Description:** Lens has three verdict options (APPROVE / REQUEST CHANGES / BLOCK) but no criteria for when to issue BLOCK vs REQUEST CHANGES. Left entirely to Lens discretion, which could produce inconsistent behavior across review cycles.
 - **Fix:** Add explicit BLOCK threshold criteria to CODE_REVIEWER_AGENT.md — security vulnerabilities, type-safety violations, and test failures = BLOCK; all other issues = REQUEST CHANGES.
@@ -254,6 +284,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0031
 - **Found in:** `docs/agents/DM_AGENT.md`, `README.md`
 - **Description:** Agent spawning instructions, CLI invocations, and parallel execution patterns are hardcoded to Claude Code. Cannot run the same orchestration on Codex, Gemini, or open-source models without rewriting DM_AGENT.md and README.md. The agent instruction files themselves are platform-agnostic markdown, but the invocation and spawning mechanism is not.
 - **Fix:** Create `orchestrator/` adapter layer with platform-specific spawn implementations. Abstract DM_AGENT.md spawning to use platform-agnostic patterns. Update README.md with multi-platform quick-start instructions.
@@ -262,6 +293,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0032
 - **Found in:** `.github/workflows/`
 - **Description:** Only 1 GitHub Actions workflow exists (`plan-visualizer.yml`) which auto-generates dashboards. No CI checks run on pull requests — PRs can be merged with broken code, failing tests, or lint errors. Conductor has no awareness of CI status after pushing code.
 - **Fix:** Add `.github/workflows/ci.yml` with 4 jobs (lint, test+coverage, build, orchestrator validation) on all PRs to main/develop. Add CI verification step to Conductor Phase 6. Expand ESLint targets to include orchestrator/ files.
@@ -270,6 +302,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0033
 - **Found in:** `eslint.config.js`
 - **Description:** ESLint only targeted `tools/**/*.js`. The `orchestrator/` adapter code and `tests/` unit tests were never linted. Test files failed lint with hundreds of `no-undef` errors for Jest globals (`describe`, `it`, `expect`). Orchestrator files had unused imports.
 - **Fix:** Expand ESLint config to cover `orchestrator/**/*.js` and `tests/**/*.js`. Add Jest globals to test config block. Add Node.js timer globals (`setTimeout`, `clearTimeout`).
@@ -278,6 +311,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0034
 - **Found in:** `orchestrator/spawn.js` lines 19-20
 - **Description:** `path` and `fs` modules were imported but never used, causing ESLint `no-unused-vars` warnings.
 - **Fix:** Remove unused `path` and `fs` require statements.
@@ -286,6 +320,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0035
 - **Found in:** `tools/generate-dashboard.js` line 454
 - **Description:** `let spotlight = ''` was immediately overwritten in both branches of the following `if/else`, triggering ESLint `no-useless-assignment` error.
 - **Fix:** Change to `let spotlight;` (uninitialized declaration).
@@ -294,6 +329,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0036
 - **Found in:** `tools/generate-plan.js` line 159
 - **Description:** When rethrowing a caught error for failed `package.json` read, the original error cause was not attached. ESLint `preserve-caught-error` rule flagged this as losing the error chain.
 - **Fix:** Add `{ cause: err }` to the rethrown `new Error(msg, { cause: err })`.
@@ -302,6 +338,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0037
 - **Found in:** Project-wide
 - **Description:** No code formatter configured. Inconsistent formatting across JS files, markdown, and config files. No CI check to enforce formatting consistency.
 - **Fix:** Added Prettier with `.prettierrc` config (semi, singleQuote, trailingComma all, printWidth 120), `.prettierignore`, `format` and `format:check` npm scripts, and CI job to enforce formatting on PRs.
@@ -310,6 +347,7 @@
 
 - **Severity:** High
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0038
 - **Found in:** `tools/generate-dashboard.js` lines 151, 375
 - **Description:** Phase pipeline only renders `pending`, `in-progress`, and `complete` states. No CSS class, icon, or visual treatment for `blocked` status. A blocked phase looks identical to pending, so human operators miss escalation events.
 - **Fix:** Added `.phase-block.blocked` CSS (red background, red pulsing animation), ⛔ icon mapping, and light/dark theme support.
@@ -318,6 +356,7 @@
 
 - **Severity:** High
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0039
 - **Found in:** `tools/generate-dashboard.js` lines 492-507
 - **Description:** Agent card status color logic only handles `active` and `complete`. Blocked agents render with gray status (#888), indistinguishable from idle. No border highlight or animation for blocked agents.
 - **Fix:** Added blocked handling to statusBg/statusColor logic, `.agent-card.blocked` CSS class with red border and pulse animation, and `cardClass` variable for dynamic class assignment.
@@ -326,6 +365,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0040
 - **Found in:** `tools/generate-dashboard.js`
 - **Description:** When Conductor sets a phase/agent to `blocked` in sdlc-status.json, the dashboard shows no prominent notification. Humans must scroll to the phase pipeline to notice the blocked state — easy to miss.
 - **Fix:** Added top-of-page red alert banner that appears when any phase or agent is blocked. Includes dynamic summary of which phases/agents are blocked, a dismiss button, and pulsing animation.
@@ -334,6 +374,7 @@
 
 - **Severity:** High
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0041
 - **Found in:** `tools/generate-dashboard.js`
 - **Description:** When orchestration transitions to BLOCKED state, there is no audible notification. The dashboard auto-refreshes every 5 seconds but the human may not be watching the screen.
 - **Fix:** Added Web Audio API three-tone ascending alert (440Hz, 554Hz, 659Hz square wave) that plays on BLOCK state transitions. Includes toggle switch in header to enable/disable, persisted to localStorage.
@@ -342,6 +383,7 @@
 
 - **Severity:** High
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0042
 - **Found in:** `tools/generate-dashboard.js`
 - **Description:** No browser push notification when orchestration becomes BLOCKED. If the user has the dashboard in a background tab, they receive no notification that human input is required.
 - **Fix:** Added Notification API integration that sends a persistent browser notification on BLOCK transitions. Requests permission on toggle, persists preference to localStorage, uses `requireInteraction: true` so notification stays until acknowledged.
@@ -350,6 +392,7 @@
 
 - **Severity:** Medium
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0043
 - **Found in:** `tests/fixtures/BUGS.md`
 - **Description:** Prettier markdown formatting indented metadata fields (Status, Fix Branch, Estimated Cost USD) under a numbered list item. The `parseBugs` regex uses `^` anchors requiring column 0, causing 4 test failures in CI.
 - **Fix:** Restructured fixture to keep numbered list items and metadata fields at separate paragraph levels so Prettier does not nest them.
@@ -358,6 +401,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0044
 - **Found in:** `docs/sdlc-status.json`, `docs/agents/DM_AGENT.md`
 - **Description:** When Forge and Pixel run in parallel (Phase 3), both agents update `sdlc-status.json` to report progress. Without locking, one agent's write can overwrite the other's, losing status updates. This is a classic lost-update race condition.
 - **Fix:** Added `orchestrator/file-lock.js` (mkdir-based locking with stale detection) and `orchestrator/atomic-write.js` (atomic read-modify-write via temp+rename). All agents must use `atomicReadModifyWriteJson()` for sdlc-status.json updates.
@@ -366,6 +410,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0045
 - **Found in:** `docs/ID_REGISTRY.md`
 - **Description:** When parallel agents both need to allocate a new bug or task ID, they could read the same "next available" value from ID_REGISTRY.md simultaneously, producing duplicate IDs. This corrupts cross-references across BUGS.md, RELEASE_PLAN.md, and TEST_CASES.md.
 - **Fix:** Added `reserveId(sequence)` in `orchestrator/atomic-write.js` that acquires a file lock, reads the registry, increments the sequence, and writes back atomically. Agents must use this instead of manual ID allocation.
@@ -374,6 +419,7 @@
 
 - **Severity:** High
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0046
 - **Found in:** `progress.md`, `docs/AI_COST_LOG.md`
 - **Description:** Append-only log files written by multiple parallel agents can produce interleaved or corrupted entries when two processes append simultaneously. Markdown structure breaks when partial lines from different agents mix.
 - **Fix:** Added `atomicAppend()` in `orchestrator/atomic-write.js` that acquires a file lock before appending. All log-style file writes must use this function.
@@ -382,6 +428,7 @@
 
 - **Severity:** High
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0047
 - **Found in:** Orchestrator agent workflow
 - **Description:** When parallel agents push to different branches simultaneously, network contention or remote rejections can cause silent push failures. Agents may believe code is pushed when it isn't, leading to lost work or stale PRs.
 - **Fix:** Added `orchestrator/git-safe.js` with `safePush()` (exponential backoff retry, auto-pull on rejection), `detectConflicts()` (dry-run merge check), and `checkOverlap()` (overlapping file detection between branches).
@@ -390,6 +437,7 @@
 
 - **Severity:** High
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0048
 - **Found in:** `docs/agents/DM_AGENT.md`
 - **Description:** When Conductor merges parallel branches (e.g., Forge's backend + Pixel's frontend), there is no pre-merge conflict check. If both branches modify shared files (package.json, types, test fixtures), the merge fails mid-way and requires manual intervention.
 - **Fix:** Added `checkOverlap()` and `detectConflicts()` to `orchestrator/git-safe.js`. Conductor must run overlap check before merging parallel branches. Sequential merge order: first-in merges clean, second rebases on top.
@@ -398,6 +446,7 @@
 
 - **Severity:** Medium
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0049
 - **Found in:** Project configuration
 - **Description:** Prettier formatting was only enforced in CI. Developers and agents could commit unformatted code, causing CI failures on every PR. No local feedback loop before push.
 - **Fix:** Added husky pre-commit hook with lint-staged. On commit, staged `.js`, `.json`, `.md`, `.yml`, `.yaml` files are auto-formatted with Prettier, and `.js` files are auto-fixed with ESLint.
@@ -406,6 +455,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0050
 - **Found in:** `orchestrator/spawn.js`, `tools/generate-dashboard.js`, `tools/process-avatars.js`
 - **Description:** Agent names, roles, icons, and colors were hardcoded independently in 3 separate files (spawn.js had the agent registry, generate-dashboard.js had duplicate role/color/icon maps, process-avatars.js had a hardcoded AGENTS_ORDER array). Adding or renaming an agent required changes in 3+ files, making the framework non-portable and error-prone.
 - **Fix:** Created `agents.config.json` as the single source of truth for all agent definitions. Updated spawn.js, generate-dashboard.js, and process-avatars.js to load from config. Added `tools/init-sdlc-status.js` to generate sdlc-status.json from config. Any project can now customize agents by editing one JSON file.
@@ -414,6 +464,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0051
 - **Found in:** `docs/agents/DM_AGENT.md` (2 occurrences), `docs/HACKATHON_PLAN.md` (1 occurrence)
 - **Description:** DM_AGENT.md "Your 7 Sub-Agents" heading and table listed only 7 agents, omitting one. HACKATHON_PLAN.md startup prompt also said "7 specialized agents." Conductor would not know to spawn the 8th agent.
 - **Fix:** Updated to "8 sub-agents" in DM_AGENT.md and "8 specialized agents" in HACKATHON_PLAN.md.
@@ -422,6 +473,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0052
 - **Found in:** All 9 files in `docs/agents/`
 - **Description:** All agent instruction files contained hardcoded project-specific content: user story IDs (US-0001–US-0013), screen names (CatalogScreen, WishlistsScreen), service names (ProductService, WishlistService), branch names (feature/US-0001-expo-scaffold), design tokens (#D52B1E), mock data specs, and feature names (barcode, wishlist, catalog). This made the agent framework non-portable — using it on a different project required rewriting all 9 files.
 - **Fix:** Refactored all 9 agent files to be project-agnostic role templates. Agent files now define HOW each role operates (patterns, rules, quality standards, output formats). The DM agent builds project-specific context dynamically at spawn time by reading `project.md` and the project's architecture docs.
@@ -430,6 +482,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0053
 - **Found in:** Project root
 - **Description:** No single file existed for AI agents to discover project-specific context on startup. Each agent had project knowledge baked into its instruction file. Different AI platforms (Claude Code, Gemini, Codex, etc.) auto-read different convention files (CLAUDE.md, Gemini.md, etc.) but none existed.
 - **Fix:** Created `project.md` as the single project entry point referencing all architecture docs, release plan, test cases, and tracking files. Created 7 platform symlinks in repo root (`CLAUDE.md`, `Gemini.md`, `Codex.md`, `EliteA.md`, `CodeMie.md`, `Qwen.md`, `MiniMax.md`) all pointing to `project.md` for auto-discovery.
@@ -438,6 +491,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0054
 - **Found in:** `tools/generate-dashboard.js` lines 84, 355, 577, 591; 11 occurrences of `#D52B1E`
 - **Description:** Dashboard HTML had "CTC Mobile Wishlist" title, "Canadian Tire Corporation" footer, GitHub repo URL, and CTC brand color `#D52B1E` hardcoded throughout CSS and HTML. Changing the project required editing 15+ locations in the dashboard generator.
 - **Fix:** Added `dashboard` section to `agents.config.json` with `title`, `subtitle`, `footer`, `repoUrl`, and `primaryColor` fields. Dashboard generator reads these from config, defaulting to the repo name from `package.json`. All `#D52B1E` CSS references replaced with `var(--brand-primary)` CSS variable set from config.
@@ -446,6 +500,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0055
 - **Found in:** `tools/lib/render-html.js` lines 225, 284, 319, 549, 1096, 1205, 1206, 1355, 1369
 - **Description:** Multiple `data-*` HTML attributes and `onclick` handler strings were interpolated without escaping. Malicious story/epic IDs or bug statuses could inject arbitrary HTML/JS. Affected: story cards, epic headers, bug table rows, bug card views.
 - **Fix:** Applied `esc()` to all `data-*` attribute interpolations and `jsEsc()` to all `onclick` handler string interpolations across 9 locations.
@@ -454,6 +509,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0056
 - **Found in:** `orchestrator/git-safe.js` — `safePush`, `safePull`, `detectConflicts`, `branchFiles` functions
 - **Description:** Branch names were interpolated into shell commands without quoting: `git push origin ${branch}`. A branch name containing shell metacharacters (`;`, `$()`, backticks) could execute arbitrary commands.
 - **Fix:** Quoted all 6 branch name interpolations in git shell commands with double quotes.
@@ -462,6 +518,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0057
 - **Found in:** `orchestrator/file-lock.js` — `tryAcquire()` function
 - **Description:** If a stale lock's info file was repeatedly unreadable, `tryAcquire()` would recursively call itself with no depth limit, causing a stack overflow.
 - **Fix:** Added `_depth` parameter with max depth of 2 retries. Throws explicit error on excessive retries.
@@ -470,6 +527,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0058
 - **Found in:** `orchestrator/atomic-write.js` — `atomicWrite()` function
 - **Description:** Temp file suffix used only `process.pid`, so two rapid writes from the same process to the same directory could collide.
 - **Fix:** Added `Date.now()` to temp file suffix: `.${basename}.tmp.${pid}.${timestamp}`.
@@ -478,6 +536,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0059
 - **Found in:** `orchestrator/atomic-write.js` — `atomicReadModifyWriteJson()` function
 - **Description:** `JSON.parse()` call had no try-catch. A corrupt JSON file would throw an opaque error without identifying the problematic file.
 - **Fix:** Wrapped in try-catch with descriptive error message including the file path.
@@ -486,6 +545,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0060
 - **Found in:** `orchestrator/spawn.js` — `loadAgentsConfig()` function
 - **Description:** `JSON.parse()` of `agents.config.json` had no error handling. A malformed config file would crash with an unhelpful stack trace.
 - **Fix:** Added try-catch with descriptive error message.
@@ -494,6 +554,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0061
 - **Found in:** `orchestrator/spawn.js` — `main()` function
 - **Description:** `--agent` and `--task` flags accessed `args[idx + 1]` without bounds checking, producing `undefined` if the argument was missing.
 - **Fix:** Added bounds checks with descriptive error messages and usage hints.
@@ -502,6 +563,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0062
 - **Found in:** `orchestrator/file-lock.js` — `release()` function
 - **Description:** `rmdirSync` in `release()` could fail silently if directory had unexpected contents, leaving stale locks that would eventually expire via timeout.
 - **Fix:** Added separate try-catch for `rmdirSync` with warning log.
@@ -510,6 +572,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0063
 - **Found in:** `tools/generate-dashboard.js` lines 594-595
 - **Description:** Author name "Kamal Syed" and title "Director of Program Management, EPAM Systems" were hardcoded in the About modal HTML.
 - **Fix:** Added `author` and `authorTitle` fields to `agents.config.json` dashboard config. Dashboard reads from config and conditionally renders.
@@ -518,6 +581,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0064
 - **Found in:** `tools/process-avatars.js` lines 292-306
 - **Description:** Face detection expected exactly 9 faces, hardcoded. Adding or removing agents would require code changes.
 - **Fix:** Changed to `AGENTS_ORDER.length` which derives from `agents.config.json`.
@@ -526,6 +590,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0065
 - **Found in:** `AGENTS.md` lines 338-339, `docs/AGENT_PLAN.md` line 61
 - **Description:** Branch naming examples contained specific story/bug IDs (US-0003, BUG-0007, BUG-0012) instead of generic placeholders.
 - **Fix:** Replaced with generic placeholders (US-XXXX, BUG-XXXX).
@@ -534,6 +599,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0066
 - **Found in:** `.github/workflows/ci.yml`
 - **Description:** CI pipeline had lint, test, build, format check, and dependency audit but no static analysis security testing (SAST) or secret scanning. Code vulnerabilities and accidentally committed secrets would go undetected.
 - **Fix:** Added CodeQL SAST job (javascript-typescript) and TruffleHog secret scanning job to CI pipeline.
@@ -546,6 +612,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0084
 - **Found in:** `app.json` splash config; project root (no `assets/` directory)
 - **Story:** US-0001
 - **AC:** AC-0004
@@ -558,6 +625,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0085
 - **Found in:** `data/products.json` (all 23 entries), project root (no `assets/` directory)
 - **Story:** US-0002
 - **AC:** AC-0006
@@ -570,6 +638,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0086
 - **Found in:** `app/(tabs)/catalog.tsx` — entire screen
 - **Story:** US-0005
 - **AC:** AC-0015, AC-0016
@@ -585,62 +654,74 @@
 ### BUG-0067: AC-0034/AC-0035 — No "I'll Get This" claim button in shared/[id].tsx
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
+- **Fix Branch:** est/BUG-0067
 - **Found in:** `app/wishlist/shared/[id].tsx` — entire screen
 - **Story:** US-0012
 - **AC:** AC-0034, AC-0035
 - **Description:** The shared wishlist screen renders a read-only list showing "Available to claim" or "Already claimed" text but provides no interactive claim button. AC-0034 requires an "I'll Get This" `TouchableOpacity` per unclaimed item. AC-0035 requires that claiming persists the claimer name and disables the button for other users. Neither UI element exists; the `claimItem` context action is unused from this screen.
 - **Fix:** Add a `TouchableOpacity` "I'll Get This" button to each unclaimed item row in `shared/[id].tsx`. Wire it to `claimItem(wishlistId, item.productId)` from `useWishlists()`. For claimed items, show the claimer's name (or "Someone" to preserve surprise for non-owners per AC-0036) and hide/disable the button. Check if `currentUser.id === wishlist.ownerId` to suppress claimer name for the owner.
+- **Resolution:** Fixed by Pixel (Phase 3/4). `TouchableOpacity` "I'll Get This" button implemented at lines 119–129; calls `claimItem(wishlist.id, productId)`. Button hidden for owners (`!isOwner` guard at line 111). Claimed items show "Claimed" badge without revealing claimer name.
 
 ### BUG-0068: AC-0036 — Owner can infer claimed status but owner/recipient distinction not implemented
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
+- **Fix Branch:** est/BUG-0068
 - **Found in:** `app/wishlist/shared/[id].tsx` lines 53-57
 - **Story:** US-0012
 - **AC:** AC-0036
 - **Description:** The screen renders `item.claimedBy ? "Already claimed" : "Available to claim"` for all viewers with no distinction between the wishlist owner and a recipient. AC-0036 requires that the owner cannot see who claimed which item. Currently there is no `currentUser` check against `wishlist.ownerId`; if the owner navigates to the shared view they will see claimed status the same as any recipient. Additionally, the wording "Already claimed" — though it hides the name — was not intentionally designed; it's the absence of an unimplemented feature. The fix for BUG-0067 must also implement this check explicitly.
 - **Fix:** In `shared/[id].tsx`, call `useAuth()` to get `currentUser`. Where `item.claimedBy !== null`, show the claimer name only if `currentUser.id !== wishlist.ownerId`. Owners see "Claimed" (no name); recipients see the claimer's name (or their own name if they claimed it). This satisfies AC-0036 by design, not by accident.
+- **Resolution:** Fixed by Pixel (Phase 3/4). `isOwner = currentUser?.id === wishlist.ownerId` at line 77. Owners see generic "Claimed" badge; recipients see claimer name. Button entirely hidden for owners via `!isOwner` at line 111.
 
 ### BUG-0069: AC-0024/AC-0025 — wishlist/[id].tsx shows raw productIds, not names/prices; no remove action
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
+- **Fix Branch:** est/BUG-0069
 - **Found in:** `app/wishlist/[id].tsx` lines 48-49, 65
 - **Story:** US-0008
 - **AC:** AC-0024, AC-0025
 - **Description:** The wishlist detail screen renders `Product: {item.productId}` (raw ID string) instead of resolving product name and price. AC-0024 requires items show image, name, and price. The `WishlistItemRow` component exists and accepts `productName` and `productPrice` props but is never used here. Additionally, AC-0025 requires a swipe-to-delete or remove button; no such control exists in the screen.
 - **Fix:** (1) Import `useProducts()` and look up each `item.productId` to resolve name and price, then render `WishlistItemRow` with those props. (2) Add a remove button or swipe-to-delete gesture calling `removeItem(wishlist.id, item.productId)` from `useWishlists()`.
+- **Resolution:** Fixed by Pixel (Phase 3/4). `getProductData(item.productId)` at line 131 resolves name/price. `WishlistItemRow` receives resolved props at line 138. Remove button with confirmation alert at lines 143–149 calls `removeItem`.
 
 ### BUG-0070: AC-0013/AC-0014 — No "Add to Wishlist" button on product detail screen
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
+- **Fix Branch:** est/BUG-0070
 - **Found in:** `app/product/[id].tsx` — entire screen
 - **Story:** US-0004
 - **AC:** AC-0013, AC-0014
 - **Description:** The product detail screen shows product info (name, price, description, stock status) but has no "Add to Wishlist" button. AC-0013 requires the button to be visible and functional. AC-0014 requires a wishlist picker when multiple wishlists exist, or add-to-default. The `addItem` action is available in `WishlistContext` but is not wired to this screen.
 - **Fix:** Add a primary CTA button "Add to Wishlist" at the bottom of `product/[id].tsx`. If the user has multiple wishlists, show an `Alert.prompt` or modal picker. Call `addItem(selectedWishlistId, product.id)` from `useWishlists()`. Guard against guest users (show login prompt instead).
+- **Resolution:** Fixed by Pixel (Phase 3/4). Primary CTA "Add to Wishlist" at lines 123–137. Includes duplicate detection, no-wishlists guard with navigation prompt, direct add for single wishlist, picker modal for multiple wishlists.
 
 ### BUG-0071: US-0006 scan screen is a placeholder stub — AC-0017 through AC-0020 not delivered
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
+- **Fix Branch:** est/BUG-0071
 - **Found in:** `app/(tabs)/scan.tsx` — entire screen
 - **Story:** US-0006
 - **AC:** AC-0017, AC-0018, AC-0019, AC-0020
 - **Description:** The scan screen renders a static message "Camera integration coming in next phase." No expo-camera integration, no barcode overlay, no permission handling, and no barcode-to-product lookup are present. Prior context indicated Pixel used expo-camera with a simulator fallback (TextInput for manual barcode entry, AC-0043), but this code was not committed. All four US-0006 acceptance criteria are unmet.
 - **Fix:** Replace the stub with an expo-camera `CameraView` that scans barcodes. On a real device, use camera scanning. On simulator, show `BarcodeOverlay` and a manual TextInput fallback (AC-0043). On scan, call `getByBarcode(code)` from `useProducts()`. Navigate to `product/[barcode-product-id]` on success; show "Product not found" on failure. Request camera permission gracefully (AC-0020).
+- **Resolution:** Fixed by Pixel (Phase 3/4). Real `CameraView` with `onBarcodeScanned` at lines 155–162. Permission flow at lines 100–144. Manual barcode TextInput fallback for simulator at lines 176–200. Debounced `handleBarcode()` calls `getByBarcode()` and routes to product detail.
 
 ### BUG-0072: shared/[id].tsx shows raw productIds — product names and prices not resolved
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
+- **Fix Branch:** est/BUG-0072
 - **Found in:** `app/wishlist/shared/[id].tsx` line 52
 - **Story:** US-0011
 - **AC:** AC-0032
 - **Description:** Like `wishlist/[id].tsx`, the shared view renders `Product: {item.productId}` raw IDs. AC-0032 requires shared wishlist items to show image, name, price, and claimed status. Product context is not imported and `useProducts()` is not called.
 - **Fix:** Import `useProducts()`, resolve `item.productId` to product name and price for each item. Use or extend `WishlistItemRow` for a consistent display.
+- **Resolution:** Fixed by Pixel (Phase 3/4). `getProductData(item.productId)` at line 95 resolves product. `WishlistItemRow` receives `productName` and `productPrice` at line 103.
 
 ### BUG-0073: No component tests for any screen or UI component
 
@@ -656,16 +737,19 @@
 ### BUG-0074: No accessibility attributes on any interactive elements
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
+- **Fix Branch:** est/BUG-0074
 - **Found in:** All components and screens — `components/`, `app/`
 - **Story:** US-0001 (design system compliance)
 - **Description:** Zero `accessibilityRole`, `accessibilityLabel`, or `accessibilityHint` attributes are present on any `TouchableOpacity` or `Image` element across all 7 components and 8 screens. The design system (DESIGN_SYSTEM.md §8) requires all images to have `accessibilityLabel` and all buttons to have `accessibilityRole`.
 - **Fix:** Add `accessibilityRole="button"` to all `TouchableOpacity` elements. Add descriptive `accessibilityLabel` to image placeholders. Add `accessibilityLabel` to icon-only buttons (chevron, heart icons in `WishlistCard`).
+- **Resolution:** Partially fixed by Pixel (Phase 3) for `ProductCard`, `WishlistCard`, `WishlistItemRow`, `CategoryChip`, `catalog.tsx`. Remaining gaps fixed this session: `accessibilityRole`/`accessibilityLabel` added to all `TouchableOpacity` elements in `app/login.tsx` and `app/(tabs)/scan.tsx`; `accessibilityLabel`/`accessibilityRole="image"` added to `BarcodeOverlay.tsx`.
 
 ### BUG-0075: catalog.tsx does not use ProductCard component; wishlists.tsx does not use WishlistCard
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0075
 - **Found in:** `app/(tabs)/catalog.tsx` lines 23-33; `app/(tabs)/wishlists.tsx` lines 36-50
 - **Story:** US-0003, US-0007
 - **Description:** Both screens render inline ad-hoc card `View` elements instead of using the dedicated `ProductCard` and `WishlistCard` components that Pixel built. This creates duplicate rendering logic and means the components are never exercised by the running app. The catalog also lacks the category chip filter row (AC-0009) and the product grid is single-column with no `onPress` navigation to product detail (AC-0011).
@@ -676,6 +760,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0076
 - **Found in:** `utils/wishlistUtils.ts`
 - **Story:** US-0009
 - **Description:** Per prior context, Forge has `wishlistUtils.ts` on a separate unmerged branch. Pixel independently created an identical copy here. When Forge's branch is merged there will be a duplicate file conflict. Both implementations compute `getTotalPrice` identically.
@@ -686,6 +771,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0079
 - **Found in:** `tools/generate-dashboard.js`, `docs/dashboard.html`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
@@ -707,6 +793,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0081
 - **Found in:** PlanVisualizer integration, `plan-visualizer.config.json`, `docs/RELEASE_PLAN.md`
 - **Story:** N/A — tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
@@ -727,17 +814,19 @@
 ### BUG-0084: Dead if/else in wishlists.tsx sections builder — both branches identical
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/(tabs)/wishlists.tsx` lines 71–75
 - **Story:** US-0010 (Shared Wishlists), US-0011 (Create Wishlist)
 - **Found by:** Lens (code review — feature/pixel-integration)
 - **Description:** The `sections` array builder has an `if/else` where both branches execute the same `sections.push({ title: 'My Wishlists', data: wishlists, isShared: false })`. The condition `wishlists.length > 0 || sharedWishlists.length === 0` was likely intended to guard showing an empty "My Wishlists" section, but the else branch is identical so the guard has no effect. This is dead code — the `else` branch is unreachable in a meaningful way. Functionally harmless because "My Wishlists" shows correctly in both states, but the code signals unfinished intent and adds confusion for any future developer.
 - **Fix:** Remove the `if/else` entirely and replace with a single unconditional `sections.push({ title: 'My Wishlists', data: wishlists, isShared: false })`.
+- **Resolution:** Removed dead `if/else` in `app/(tabs)/wishlists.tsx` lines 71–75. Single unconditional `sections.push()` replaces both identical branches.
 
 ### BUG-0083: Activity log timestamps use UTC offset instead of local time (EDT)
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0083
 - **Found in:** `docs/sdlc-status.json` log entries, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation — log shows 16:20 when local time is 18:20)
@@ -748,6 +837,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0077
 - **Found in:** `tests/services/productService.test.ts`, `tests/services/wishlistService.test.ts`, `services/wishlistService.ts`, `services/productService.ts`
 - **Story:** US-0006 (AC-0041 — unique barcode lookup), US-0008 (AC-0042 — duplicate item guard)
 - **Found by:** Lens (code review — feature/forge-services)
@@ -759,6 +849,7 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0078
 - **Found in:** `tests/services/wishlistService.test.ts` (removeItem describe block, lines 268–304)
 - **Story:** US-0008
 - **Found by:** Lens (code review — feature/forge-services)
@@ -800,6 +891,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0087
 - **Found in:** `docs/sdlc-status.json`, `tools/generate-dashboard.js`
 - **Story:** N/A (tooling)
 - **Found by:** User (post-pipeline observation)
@@ -809,12 +901,14 @@
 ### BUG-0089: Plan Visualizer "Cost Breakdown (Projected vs AI)" chart shows no AI Cost bars despite $299 total in header
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
+- **Fix Branch:** est/BUG-0089
 - **Found in:** `tools/generate-plan.js`, `tools/lib/compute-costs.js`, `docs/AI_COST_LOG.md`
 - **Story:** N/A (tooling)
 - **Found by:** User (post-pipeline observation)
 - **Description:** The Charts tab header correctly shows $299.09 total AI cost, but the "Cost Breakdown (Projected vs AI)" bar chart shows only orange Projected bars — the teal AI Cost bars are all at 0 (invisible against the right Y-axis). Root cause: the `attributeAICosts()` function distributes costs by matching `AI_COST_LOG.md` branch names to story IDs using the pattern `feature/US-XXXX-*`. The actual branches in the cost log (`develop`, `feature/forge-services`, `feature/pixel-screens`, `claude/install-plan-visualizer-09PFc`, `feature/US-0000-business-case-deck`) do not match any `US-XXXX` story pattern, so all $299.09 accumulates under the internal `_totals` bucket and is never distributed to individual stories or epics. The per-epic chart therefore renders zero AI cost for all 6 epics.
 - **Proposed Fix:** Either (A) add a branch→story/epic mapping table to `plan-visualizer.config.json` so non-standard branch names can be attributed, or (B) fall back to distributing unattributed cost proportionally across epics by their story count when no per-story attribution is possible, or (C) show the total AI cost as a single "Unattributed" bar so the chart is not misleadingly empty.
+- **Resolution:** Implemented Option B in `tools/lib/compute-costs.js`. After exact branch-name matching, any unattributed cost is distributed evenly across all stories (`unattributed / stories.length` per story). Chart now shows non-zero AI Cost bars totalling the full $299.09 even when branch names don't follow the `feature/US-XXXX-*` convention.
 
 ### BUG-0088: Agentic dashboard has structural concurrency issues — metrics lag, phase shown incorrectly, counts diverge from source files
 
@@ -842,6 +936,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0090
 - **Found in:** `package.json`
 - **Story:** US-0001
 - **Found by:** User (first iOS simulator run)
@@ -852,6 +947,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0091
 - **Found in:** `src/app/.gitkeep` (scaffold artifact), expo-router v4 directory resolution
 - **Story:** US-0001
 - **Found by:** User (second iOS simulator run)
@@ -862,6 +958,7 @@
 
 - **Severity:** Critical
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0092
 - **Found in:** `ios/Podfile.lock`
 - **Story:** US-0001
 - **Found by:** iOS build error (`ExpoReactNativeFactory.swift:135` — missing `bundleConfiguration` parameter)
@@ -872,6 +969,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0093
 - **Found in:** `ios/CTCMobileWishlist/Images.xcassets/AppIcon.appiconset/`, `ios/CTCMobileWishlist/Images.xcassets/SplashScreenLegacy.imageset/`
 - **Story:** US-0001
 - **Found by:** User (icon and splash incorrect after asset copy)
@@ -882,6 +980,7 @@
 
 - **Severity:** Major
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0094
 - **Found in:** `assets/icon.png`, `ios/CTCMobileWishlist/Images.xcassets/AppIcon.appiconset/`
 - **Story:** US-0001
 - **Found by:** Xcode build error ("did not have any applicable content")
@@ -892,8 +991,35 @@
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0095
 - **Found in:** `app/_layout.tsx`
 - **Story:** US-0007, US-0004
 - **Found by:** User (simulator demo observation)
 - **Description:** Navigating from the Wishlists tab into a wishlist detail screen showed a back button labeled "< (tabs)" — the raw expo-router file-system segment name of the parent route group. Similarly, navigating to Product Details from the Catalog tab would show the same. The `Stack.Screen` options for `wishlist/[id]`, `wishlist/shared/[id]`, and `product/[id]` did not set `headerBackTitle`, so iOS used the parent segment name `(tabs)` as the default.
 - **Fix:** Added `headerBackTitle: 'Wishlists'` to `wishlist/[id]` and `wishlist/shared/[id]` screens, and `headerBackTitle: 'Catalog'` to `product/[id]` in `app/_layout.tsx`.
+
+## P2 — Minor (Plan Visualizer UX — post-pipeline observation)
+
+### BUG-0096: Plan Visualizer Hierarchy tab column view appears empty — all epic sections start collapsed
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** est/BUG-0096
+- **Found in:** `tools/lib/render-html.js` (Hierarchy tab column view, line 360)
+- **Story:** N/A (tooling)
+- **Found by:** User (post-pipeline plan visualizer review)
+- **Description:** The Hierarchy tab's "≡ Column" view renders all epic sections with their story content collapsed by default (`class="hidden"`). The user sees only a list of clickable epic header rows — no stories are visible without individually clicking each header to expand it. The initial rendered state is visually indistinguishable from an empty view. The Card view has the same issue (line 379: `class="hidden"`). Both views generate the story HTML correctly, but the all-collapsed default makes the view appear broken or empty on first load. The `localStorage`-persisted `hierarchyView` setting restores the last-used toggle (column/card) but never restores which epics were expanded.
+- **Fix:** Removed `class="hidden"` from epic story/card content divs and changed the initial arrow from `&#9654;` (►) to `&#9660;` (▼) so sections render expanded. Clicking a header now correctly collapses/expands via the existing `toggleSection()` logic.
+- **Resolution:** Applied to `tools/lib/render-html.js`. Regenerated `docs/plan-status.html` — 0 hidden epic content sections confirmed.
+
+### BUG-0097: Plan Visualizer Costs tab "Bug Fix Costs" column view appears empty — all epic groups collapsed with bugs out of sight
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** est/BUG-0097
+- **Found in:** `tools/lib/render-html.js` (Costs tab bug fix column section, line 1106)
+- **Story:** N/A (tooling)
+- **Found by:** User (post-pipeline plan visualizer review)
+- **Description:** The Costs tab "Bug Fix Costs" table groups bugs by epic (via `bug.relatedStory` → story → epic lookup) and renders each group as a collapsible `<tbody>` starting with `class="hidden"`. On first load the user sees only the epic group header rows with bug counts, but no actual bug rows — the table body appears empty. The issue is compounded by the fact that most bugs in `BUGS.md` have a `Story:` value of `N/A`, `N/A (tooling)`, or a multi-value string that doesn't match any single story ID in the story-epic map. These bugs are bucketed into a single `_ungrouped` group labeled "No Epic". The result is one collapsed header row ("No Epic (N)") with all N bugs hidden underneath — the entire "Bug Fix Costs" section appears blank to the user.
+- **Fix:** Removed `class="hidden"` from bug group `<tbody>` elements and changed the initial arrow from `&#9654;` (►) to `&#9660;` (▼) so all bug rows are visible on first render.
+- **Resolution:** Applied to `tools/lib/render-html.js`. Regenerated `docs/plan-status.html` — 0 hidden bug-cost group tbodies confirmed.

@@ -18,6 +18,7 @@ You are the **Backend Developer Agent**. You own service implementations, data p
 4. Read the system architecture document (layer structure)
 5. Read `docs/RELEASE_PLAN.md` (your assigned stories and tasks)
 6. Read `docs/ID_REGISTRY.md` (for any new artifacts you create)
+7. Read `docs/LESSONS.md` in full. Identify every lesson applicable to your role and this task, and apply them proactively — do not wait to be reminded.
 
 ## Responsibilities
 

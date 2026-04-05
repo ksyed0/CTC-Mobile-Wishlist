@@ -350,14 +350,14 @@ function renderHierarchyTab(data) {
       ({ epic, accent, epicProjected, storyRows }) => `
     <div class="epic-block mb-4 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden" style="border-left:4px solid ${accent.border}">
       <div class="px-4 py-3 flex flex-wrap items-center gap-3 cursor-pointer select-none" style="background:${accent.bg}" onclick="toggleSection('epic-stories-${jsEsc(epic.id)}','epic-arrow-${jsEsc(epic.id)}')">
-        <span id="epic-arrow-${esc(epic.id)}" class="text-slate-400 text-xs w-3 flex-shrink-0">&#9654;</span>
+        <span id="epic-arrow-${esc(epic.id)}" class="text-slate-400 text-xs w-3 flex-shrink-0">&#9660;</span>
         <span class="font-mono text-xs font-bold uppercase tracking-widest" style="color:${accent.border}">${epic.id}</span>
         ${badge(epic.status)}
         <span class="font-semibold dark:text-slate-100">${esc(epic.title)}</span>
         <span class="text-xs text-slate-500">${esc(epic.releaseTarget)}</span>
         <span class="ml-auto text-sm text-slate-500">${usd(epicProjected)} projected</span>
       </div>
-      <div id="epic-stories-${epic.id}" class="hidden">${storyRows || '<p class="text-slate-500 dark:text-slate-400 text-sm px-4 py-2">No stories yet.</p>'}</div>
+      <div id="epic-stories-${epic.id}">${storyRows || '<p class="text-slate-500 dark:text-slate-400 text-sm px-4 py-2">No stories yet.</p>'}</div>
     </div>`,
     )
     .join('');
@@ -368,7 +368,7 @@ function renderHierarchyTab(data) {
     <div class="mb-8">
       <div class="epic-block border border-slate-200 dark:border-slate-700 rounded-t-lg px-4 py-3 mb-0 cursor-pointer select-none" style="border-left:4px solid ${accent.border};background:${accent.bg}" onclick="toggleSection('epic-cards-${jsEsc(epic.id)}','epic-card-arrow-${jsEsc(epic.id)}')">
         <div class="flex flex-wrap items-center gap-3">
-          <span id="epic-card-arrow-${esc(epic.id)}" class="text-slate-400 text-xs w-3 flex-shrink-0">&#9654;</span>
+          <span id="epic-card-arrow-${esc(epic.id)}" class="text-slate-400 text-xs w-3 flex-shrink-0">&#9660;</span>
           <span class="font-mono text-xs font-bold uppercase tracking-widest" style="color:${accent.border}">${epic.id}</span>
           ${badge(epic.status)}
           <span class="font-semibold dark:text-slate-100">${esc(epic.title)}</span>
@@ -376,7 +376,7 @@ function renderHierarchyTab(data) {
           <span class="ml-auto text-sm text-slate-500">${usd(epicProjected)} projected</span>
         </div>
       </div>
-      <div id="epic-cards-${epic.id}" class="border border-t-0 border-slate-200 dark:border-slate-700 rounded-b-lg p-3 hidden">
+      <div id="epic-cards-${epic.id}" class="border border-t-0 border-slate-200 dark:border-slate-700 rounded-b-lg p-3">
         ${
           storyCards
             ? `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">${storyCards}</div>`
@@ -1095,7 +1095,7 @@ function renderCostsTab(data, options = {}) {
       return `<tbody>
     <tr class="border-t-2 border-slate-300 dark:border-slate-600 cursor-pointer select-none bug-epic-header" data-epic="${esc(epicId)}" style="background:${accent.bg}" onclick="toggleSection('${jsEsc(bceid)}','${jsEsc(bceid)}-arrow')">
       <td colspan="6" class="px-3 py-2">
-        <span id="${bceid}-arrow" class="text-slate-400 text-xs mr-2">&#9654;</span>
+        <span id="${bceid}-arrow" class="text-slate-400 text-xs mr-2">&#9660;</span>
         <span class="font-mono text-xs font-bold" style="color:${accent.border}">${label}</span>
         <span class="ml-2 text-xs text-slate-500 bug-count">(${bugs.length})</span>
       </td>
@@ -1103,7 +1103,7 @@ function renderCostsTab(data, options = {}) {
       <td class="px-3 py-2 text-right text-sm font-medium text-teal-700 dark:text-teal-400">${usd(epicAI)}</td>
       <td class="px-3 py-2 text-right text-xs text-slate-500 tokens-col">${fmtNum(epicIn)} / ${fmtNum(epicOut)}</td>
     </tr>
-    </tbody><tbody id="${bceid}" class="hidden">${bugRows}</tbody>`;
+    </tbody><tbody id="${bceid}">${bugRows}</tbody>`;
     })
     .join('');
 
@@ -1393,12 +1393,12 @@ function renderBugsTab(data) {
       return `<tbody>
     <tr class="border-t-2 border-slate-300 dark:border-slate-600 cursor-pointer select-none bug-epic-header" data-epic="${epicId}" style="background:${accent.bg}" onclick="toggleSection('${beid}','${beid}-arrow')">
       <td colspan="7" class="px-3 py-2">
-        <span id="${beid}-arrow" class="text-slate-400 text-xs mr-2">&#9654;</span>
+        <span id="${beid}-arrow" class="text-slate-400 text-xs mr-2">&#9660;</span>
         <span class="font-mono text-xs font-bold" style="color:${accent.border}">${label}</span>
         <span class="ml-2 text-xs text-slate-500 bug-count">(${bugs.length})</span>
       </td>
     </tr>
-    </tbody><tbody id="${beid}" class="hidden">${bugs.map(renderBugRow).join('')}</tbody>`;
+    </tbody><tbody id="${beid}">${bugs.map(renderBugRow).join('')}</tbody>`;
     })
     .join('');
 
