@@ -811,10 +811,11 @@
 - **Description:** The dashboard metrics panel shows `coveragePercent: 0`, `testsPassed: 0`, `testsFailed: 0` throughout the Build phase even though Forge added 94 tests (all passing) and the service layer has coverage. Conductor is not updating `docs/sdlc-status.json` metrics after each agent completes. The dashboard auto-refresh picks up the JSON but the values are stale.
 - **Fix:** After each agent merge, Conductor should update the relevant metrics in `sdlc-status.json` — specifically `tasksCompleted`, `testsPassed`, and `storiesCompleted` based on RELEASE_PLAN.md status. In Phase 5 Circuit will produce the coverage report to populate `coveragePercent`.
 
-### BUG-0084: Dead if/else in wishlists.tsx sections builder — both branches identical
+### BUG-0098: Dead if/else in wishlists.tsx sections builder — both branches identical
 
 - **Severity:** Minor
 - **Status:** Fixed
+- **Fix Branch:** est/BUG-0098
 - **Found in:** `app/(tabs)/wishlists.tsx` lines 71–75
 - **Story:** US-0010 (Shared Wishlists), US-0011 (Create Wishlist)
 - **Found by:** Lens (code review — feature/pixel-integration)
@@ -856,36 +857,6 @@
 - **Description:** `wishlistService.removeItem` validates both `wishlistId` and `productId` as non-empty strings and throws if either is falsy. The test suite covers the `wishlistId` empty guard (line 299) but has no test for `productId` empty string throwing `productId must be a non-empty string`. This leaves a validation branch untested.
 - **Fix:** Add a test case to the `removeItem` describe block: `it('throws when productId is empty')` asserting `wishlistService.removeItem('wl-001', '')` rejects with `/productId must be a non-empty string/`.
 - **Resolution:** Test already exists. `tests/services/wishlistService.test.ts` line 419: `it('throws when productId is empty', ...)` asserts `rejects.toThrow(/productId must be a non-empty string/)` against `removeItem`. Bug was filed before Forge's full test suite was committed; never closed at merge time.
-
-### BUG-0084: Missing assets directory — app cannot build
-
-- **Severity:** Critical
-- **Status:** Fixed
-- **Found in:** `app.json`, project root
-- **Story:** N/A — build infrastructure
-- **Found by:** Sentinel (Phase 5 testing)
-- **Description:** `app.json` references `./assets/splash.png`, `./assets/icon.png`, `./assets/adaptive-icon.png`, and `./assets/favicon.png` but the `assets/` directory at project root did not exist. Only `src/assets/` existed with unrelated files. This caused `npx expo export` to crash on missing assets, blocking any build.
-- **Fix:** Created `assets/` directory with valid PNG placeholder files: `icon.png` (1024×1024), `adaptive-icon.png` (1024×1024), `splash.png` (1242×2688), `favicon.png` (32×32). All are solid Canadian Tire red (#D52B1E) with a white triangle motif, generated programmatically via Node.js canvas. Branch: `feature/polish-fixes`.
-
-### BUG-0085: No product images — broken image references in catalog
-
-- **Severity:** Major
-- **Status:** Fixed
-- **Found in:** `components/ProductCard.tsx`
-- **Story:** US-0002
-- **Found by:** Sentinel (Phase 5 testing)
-- **Description:** All 23 products have `image: "placeholder"` string. The existing `imagePlaceholder` style rendered a generic grey box with a `MaterialIcons` image icon, making the catalog look broken rather than intentional.
-- **Fix:** Updated `ProductCard.tsx` to render a colored `View` with the category's initial letter when `image === "placeholder"`. Category color map: Tools → #D52B1E (CTC red), Automotive → #1565C0, Outdoor → #2E7D32, Sports → #F57C00, Home → #6A1B9A. All colors use theme tokens where possible. Branch: `feature/polish-fixes`.
-
-### BUG-0086: Search bar missing from catalog screen
-
-- **Severity:** Major
-- **Status:** Fixed
-- **Found in:** `app/(tabs)/catalog.tsx`
-- **Story:** US-0005
-- **Found by:** Sentinel (Phase 5 testing — AC-0015, AC-0016 failing)
-- **Description:** AC-0015 requires a search bar visible at the top of the catalog screen. AC-0016 requires real-time filtering by product name. Neither was implemented — the catalog only had category chips with no text search capability.
-- **Fix:** Added a `TextInput` search bar above the category chip row in `catalog.tsx`. Search state held in `useState`; `displayedProducts` computed via `useMemo` filtering `filteredProducts` by case-insensitive name match. Clear (×) button shown when text is present. Styled with theme tokens (white background, border, rounded corners). Empty state message adapts to show the search query when no results found. Branch: `feature/polish-fixes`.
 
 ### BUG-0087: Agentic dashboard resets to initial state — shows 0/6 phases, "Waiting for Conductor to activate agents"
 
