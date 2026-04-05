@@ -53,28 +53,18 @@ describe('getTotalPrice', () => {
   });
 
   it('AC-0027: returns the price of a single item', () => {
-    const total = getTotalPrice(
-      makeWishlist(['prod-1']),
-      [makeProduct('prod-1', 29.99)]
-    );
+    const total = getTotalPrice(makeWishlist(['prod-1']), [makeProduct('prod-1', 29.99)]);
     expect(total).toBe(29.99);
   });
 
   it('AC-0027: sums prices of multiple items', () => {
-    const products = [
-      makeProduct('prod-1', 89.99),
-      makeProduct('prod-2', 24.99),
-      makeProduct('prod-3', 14.99),
-    ];
+    const products = [makeProduct('prod-1', 89.99), makeProduct('prod-2', 24.99), makeProduct('prod-3', 14.99)];
     const total = getTotalPrice(makeWishlist(['prod-1', 'prod-2', 'prod-3']), products);
     expect(total).toBe(129.97);
   });
 
   it('returns 0 for a product that is not in the catalogue', () => {
-    const total = getTotalPrice(
-      makeWishlist(['prod-unknown']),
-      [makeProduct('prod-1', 100)]
-    );
+    const total = getTotalPrice(makeWishlist(['prod-unknown']), [makeProduct('prod-1', 100)]);
     expect(total).toBe(0);
   });
 
@@ -97,10 +87,7 @@ describe('getTotalPrice', () => {
   });
 
   it('works correctly with real product data values (Mastercraft Drill + Screwdriver)', () => {
-    const products = [
-      makeProduct('prod-001', 89.99),
-      makeProduct('prod-002', 24.99),
-    ];
+    const products = [makeProduct('prod-001', 89.99), makeProduct('prod-002', 24.99)];
     const total = getTotalPrice(makeWishlist(['prod-001', 'prod-002']), products);
     expect(total).toBe(114.98);
   });

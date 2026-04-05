@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '../types/user';
 import { userService } from '../services/userService';
 
@@ -29,10 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function init() {
       try {
-        const [user, users] = await Promise.all([
-          userService.getCurrentUser(),
-          userService.getMockUsers(),
-        ]);
+        const [user, users] = await Promise.all([userService.getCurrentUser(), userService.getMockUsers()]);
         setMockUsers(users);
         setCurrentUser(user);
         setIsGuest(user?.id === 'guest' || user === null);

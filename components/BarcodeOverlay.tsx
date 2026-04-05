@@ -13,9 +13,7 @@ const CORNER_THICKNESS = 3;
 const FRAME_WIDTH = 250;
 const FRAME_HEIGHT = 250;
 
-export const BarcodeOverlay = memo(function BarcodeOverlay({
-  isScanning = false,
-}: BarcodeOverlayProps) {
+export const BarcodeOverlay = memo(function BarcodeOverlay({ isScanning = false }: BarcodeOverlayProps) {
   return (
     <View
       style={styles.container}
@@ -31,14 +29,10 @@ export const BarcodeOverlay = memo(function BarcodeOverlay({
         <View style={[styles.corner, styles.bottomRight]} />
 
         {/* Scan line animation hint */}
-        {isScanning ? (
-          <View style={styles.scanLine} />
-        ) : null}
+        {isScanning ? <View style={styles.scanLine} /> : null}
       </View>
 
-      <Text style={styles.hint}>
-        {isScanning ? 'Scanning…' : 'Point camera at barcode'}
-      </Text>
+      <Text style={styles.hint}>{isScanning ? 'Scanning…' : 'Point camera at barcode'}</Text>
     </View>
   );
 });

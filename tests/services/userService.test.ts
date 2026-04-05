@@ -135,15 +135,11 @@ describe('userService.setCurrentUser', () => {
   });
 
   it('throws when userId is empty string', async () => {
-    await expect(userService.setCurrentUser('')).rejects.toThrow(
-      /userId must be a non-empty string/
-    );
+    await expect(userService.setCurrentUser('')).rejects.toThrow(/userId must be a non-empty string/);
   });
 
   it('throws when userId is whitespace only', async () => {
-    await expect(userService.setCurrentUser('   ')).rejects.toThrow(
-      /userId must be a non-empty string/
-    );
+    await expect(userService.setCurrentUser('   ')).rejects.toThrow(/userId must be a non-empty string/);
   });
 });
 

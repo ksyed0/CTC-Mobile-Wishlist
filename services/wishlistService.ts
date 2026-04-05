@@ -45,9 +45,7 @@ export const wishlistService = {
       throw new Error('[wishlistService] getSharedWishlists: userId must be a non-empty string');
     }
     const all = await loadWishlists();
-    return all.filter((w) =>
-      w.sharedWith.some((s) => s.contactId === userId)
-    );
+    return all.filter((w) => w.sharedWith.some((s) => s.contactId === userId));
   },
 
   /**
@@ -172,10 +170,7 @@ export const wishlistService = {
    * Already-shared contacts are silently de-duplicated.
    * Returns null when the wishlistId is not found.
    */
-  async shareWishlist(
-    wishlistId: string,
-    contacts: SharedContact[]
-  ): Promise<Wishlist | null> {
+  async shareWishlist(wishlistId: string, contacts: SharedContact[]): Promise<Wishlist | null> {
     if (!wishlistId || typeof wishlistId !== 'string' || wishlistId.trim() === '') {
       throw new Error('[wishlistService] shareWishlist: wishlistId must be a non-empty string');
     }
@@ -207,11 +202,7 @@ export const wishlistService = {
    * items are left unchanged so a second caller cannot override a claim.
    * Returns null when the wishlistId is not found.
    */
-  async claimItem(
-    wishlistId: string,
-    productId: string,
-    claimerId: string
-  ): Promise<Wishlist | null> {
+  async claimItem(wishlistId: string, productId: string, claimerId: string): Promise<Wishlist | null> {
     if (!wishlistId || typeof wishlistId !== 'string' || wishlistId.trim() === '') {
       throw new Error('[wishlistService] claimItem: wishlistId must be a non-empty string');
     }
@@ -230,9 +221,7 @@ export const wishlistService = {
     const updated: Wishlist = {
       ...wishlist,
       items: wishlist.items.map((item) =>
-        item.productId === productId && item.claimedBy === null
-          ? { ...item, claimedBy: claimerId }
-          : item
+        item.productId === productId && item.claimedBy === null ? { ...item, claimedBy: claimerId } : item,
       ),
     };
     const updatedAll = [...all];
@@ -245,10 +234,7 @@ export const wishlistService = {
    * Remove a claim from a wishlist item (US-0012).
    * Returns null when the wishlistId is not found.
    */
-  async unclaimItem(
-    wishlistId: string,
-    productId: string
-  ): Promise<Wishlist | null> {
+  async unclaimItem(wishlistId: string, productId: string): Promise<Wishlist | null> {
     if (!wishlistId || typeof wishlistId !== 'string' || wishlistId.trim() === '') {
       throw new Error('[wishlistService] unclaimItem: wishlistId must be a non-empty string');
     }
@@ -263,9 +249,7 @@ export const wishlistService = {
     const wishlist = all[idx];
     const updated: Wishlist = {
       ...wishlist,
-      items: wishlist.items.map((item) =>
-        item.productId === productId ? { ...item, claimedBy: null } : item
-      ),
+      items: wishlist.items.map((item) => (item.productId === productId ? { ...item, claimedBy: null } : item)),
     };
     const updatedAll = [...all];
     updatedAll[idx] = updated;
