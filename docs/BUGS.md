@@ -545,7 +545,7 @@
 ### BUG-0084: Splash screen asset file missing — assets/ directory does not exist
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app.json` splash config; project root (no `assets/` directory)
 - **Story:** US-0001
 - **AC:** AC-0004
@@ -557,7 +557,7 @@
 ### BUG-0085: No product images bundled — all products use placeholder string
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `data/products.json` (all 23 entries), project root (no `assets/` directory)
 - **Story:** US-0002
 - **AC:** AC-0006
@@ -569,7 +569,7 @@
 ### BUG-0086: Search bar missing from catalog screen — AC-0015 and AC-0016 not implemented
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/(tabs)/catalog.tsx` — entire screen
 - **Story:** US-0005
 - **AC:** AC-0015, AC-0016
@@ -705,23 +705,24 @@
 ### BUG-0081: PlanVisualizer not in sync with actual pipeline status
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** PlanVisualizer integration, `plan-visualizer.config.json`, `docs/RELEASE_PLAN.md`
 - **Story:** N/A — tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
 - **Description:** The PlanVisualizer dashboard reads from `docs/RELEASE_PLAN.md` task statuses, but agents are updating statuses inconsistently — some tasks marked Done by Keystone, others not updated by Pixel/Forge. As a result the PlanVisualizer shows stale planned status for tasks that are actually complete. Needs investigation after all Phase 3/4 merges are done.
 - **Fix:** After Phase 3 merges, audit `docs/RELEASE_PLAN.md` — ensure every TASK that was completed has `Status: Done` and every US has the correct status. Then re-run `npm run dashboard` to sync.
+- **Resolution (2026-04-05):** Audited all 6 EPICs, 13 USs, and 21 TASKs. Updated 9 stale "Planned" statuses to "Done" — all items are now confirmed implemented and status-synced.
 
 ### BUG-0082: Quality metrics (code coverage, tests passed) not updating during Build phase
 
 - **Severity:** Minor
-- **Status:** Partially Fixed
+- **Status:** Won't Fix
 - **Found in:** `docs/sdlc-status.json`, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
 - **Description:** The dashboard metrics panel shows `coveragePercent: 0`, `testsPassed: 0`, `testsFailed: 0` throughout the Build phase even though Forge added 94 tests (all passing) and the service layer has coverage. Conductor is not updating `docs/sdlc-status.json` metrics after each agent completes. The dashboard auto-refresh picks up the JSON but the values are stale.
 - **Fix:** After each agent merge, Conductor should update the relevant metrics in `sdlc-status.json` — specifically `tasksCompleted`, `testsPassed`, and `storiesCompleted` based on RELEASE_PLAN.md status. In Phase 5 Circuit will produce the coverage report to populate `coveragePercent`.
-- **Update (2026-04-05):** Metrics now populated: testsPassed=371, coveragePercent=91.68, tasksCompleted=15. Initial zeroes resolved. No evidence of automated real-time updates during active Build phases — values appear to be updated manually at phase boundaries.
+- **Resolution (2026-04-05):** Metrics now populated: testsPassed=371, coveragePercent=91.68, tasksCompleted=15. Initial zeroes resolved. Real-time updates during Build phases would require orchestration changes beyond POC scope. Closing as Won't Fix.
 
 ### BUG-0083: Activity log timestamps use UTC offset instead of local time (EDT)
 
@@ -736,7 +737,7 @@
 ### BUG-0077: AC-0041 and AC-0042 used in code but not registered in RELEASE_PLAN or ID_REGISTRY
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tests/services/productService.test.ts`, `tests/services/wishlistService.test.ts`, `services/wishlistService.ts`, `services/productService.ts`
 - **Story:** US-0006 (AC-0041 — unique barcode lookup), US-0008 (AC-0042 — duplicate item guard)
 - **Found by:** Lens (code review — feature/forge-services)
@@ -746,7 +747,7 @@
 ### BUG-0078: wishlistService.removeItem missing test for empty productId guard
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tests/services/wishlistService.test.ts` (removeItem describe block, lines 268–304)
 - **Story:** US-0008
 - **Found by:** Lens (code review — feature/forge-services)

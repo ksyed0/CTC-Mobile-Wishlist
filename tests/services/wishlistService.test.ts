@@ -301,6 +301,12 @@ describe('wishlistService.removeItem', () => {
       /wishlistId must be a non-empty string/
     );
   });
+
+  it('throws when productId is empty', async () => {
+    await expect(wishlistService.removeItem('wl-001', '')).rejects.toThrow(
+      /productId must be a non-empty string/
+    );
+  });
 });
 
 // ---------------------------------------------------------------------------
