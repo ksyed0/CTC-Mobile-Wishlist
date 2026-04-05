@@ -55,6 +55,14 @@ Launch each agent using the agentic platform's spawning mechanism. Always includ
 > See `orchestrator/spawn.js` for spawn commands per platform.
 > Set `ORCHESTRATOR_PLATFORM` env var: `claude-code` (default), `codex`, `gemini`, `aider`.
 
+### Worktree Isolation (Required for All Agents)
+
+**Always spawn agents with `isolation: "worktree"`** (Claude Code Agent tool parameter). This gives each agent its own isolated copy of the repository on a temporary branch, preventing agents from corrupting each other's working directories or staging areas.
+
+- The worktree is automatically cleaned up if the agent makes no changes
+- If the agent makes changes, the worktree path and branch are returned — merge that branch when done
+- This is especially critical for parallel agents (Phase 3, Phase 5) but apply it to all spawns for consistency
+
 ### Spawn Pattern
 
 ```
@@ -69,21 +77,23 @@ Prompt to agent:
 
 **Platform-specific spawning:**
 
-- **Claude Code:** Use the Agent tool to spawn sub-agents within a session
+- **Claude Code:** Use the Agent tool with `isolation: "worktree"` to spawn sub-agents within a session
 - **Codex / Gemini / Aider:** Open a new terminal session per agent with the prompt above
 
 ### Parallel Spawning
 
 For phases with parallel work, launch multiple agents simultaneously:
 
-- **Claude Code:** Include multiple Agent tool calls in a single message
+- **Claude Code:** Include multiple Agent tool calls (each with `isolation: "worktree"`) in a single message — agents run concurrently in isolated worktrees
 - **Codex / Gemini / Aider:** Open separate terminal sessions and run agents concurrently
 
 ```
 Phase 3 example — launch Backend Dev and Frontend Dev simultaneously:
-  Agent 1: Backend Dev — "Implement services and mock data..."
-  Agent 2: Frontend Dev — "Build screens and components..."
+  Agent 1: Backend Dev — isolation: "worktree", "Implement services and mock data..."
+  Agent 2: Frontend Dev — isolation: "worktree", "Build screens and components..."
 ```
+
+After both complete, merge their returned branches sequentially into the target branch.
 
 ## Orchestration Playbook
 
@@ -197,6 +207,8 @@ INSTRUCTION FILE: [path from agents.config.json]
 TASK: [Specific deliverable in one sentence]
 STORIES: [story IDs from release plan]
 BRANCH: [branch name to work on]
+WORKTREE: yes — this agent runs in an isolated git worktree. Commit and push your branch
+  when done. The Conductor will merge the returned branch into the target branch.
 PRIOR CONTEXT:
   - [Agent] completed [what] on branch [name]
   - Key files: [path1], [path2]
@@ -359,29 +371,28 @@ Each phase has a **90-minute hard timeout** measured from when the first agent i
 
 ### Concurrency Safety for Shared Files
 
-Multiple agents may run in parallel (e.g., Backend Dev + Frontend Dev in Phase 3). Shared files require concurrency-safe access to prevent race conditions, data corruption, and lost writes.
+Because all agents run in isolated git worktrees, they write to their own working directory and cannot corrupt each other's files on disk. Most race conditions are eliminated by design.
 
-**Critical shared files:**
+The remaining risk is at **merge time** — when two worktree branches both modified the same file. Handle this at merge time, not spawn time:
 
-| File                    | Risk                                             | Mitigation                                          |
-| ----------------------- | ------------------------------------------------ | --------------------------------------------------- |
-| `docs/sdlc-status.json` | Lost updates from parallel agents                | Use `atomicReadModifyWriteJson()` for all writes    |
-| `progress.md`           | Interleaved log entries                          | Use `atomicAppend()` for all appends                |
-| `docs/BUGS.md`          | Duplicate bug IDs when parallel agents find bugs | Use `reserveId('BUG')` before writing               |
-| `docs/ID_REGISTRY.md`   | Sequence collision on parallel ID allocation     | Always use `reserveId()` — never manually increment |
-| `docs/AI_COST_LOG.md`   | Interleaved cost entries                         | Use `atomicAppend()` for all entries                |
+| File                    | Merge-time risk                        | Mitigation                                                     |
+| ----------------------- | -------------------------------------- | -------------------------------------------------------------- |
+| `docs/sdlc-status.json` | Conflicting JSON edits                 | Merge branches sequentially; use `atomicReadModifyWriteJson()` |
+| `progress.md`           | Interleaved log entries                | Append-only — accept both sides; keep all entries              |
+| `docs/BUGS.md`          | Duplicate bug IDs from parallel agents | After merge, scan for duplicate IDs and renumber if needed     |
+| `docs/ID_REGISTRY.md`   | Sequence collision                     | Merge sequentially; increment registry once after both merges  |
+| `docs/AI_COST_LOG.md`   | Both agents appended rows              | Append-only — keep all rows from both sides                    |
+
+**Before merging parallel branches:** Run `checkOverlap(branchA, branchB)` to identify overlapping file edits. If files overlap, merge branches sequentially (first-in merges clean, second rebases on top).
+
+**Git push safety:** Always use `safePush(branch)` instead of raw `git push`. It retries on network errors (exponential backoff, 4 attempts) and auto-pulls on rejection.
 
 **Concurrency utilities** (in `orchestrator/`):
 
 ```javascript
 const { atomicReadModifyWriteJson, atomicAppend, reserveId } = require('./orchestrator/atomic-write');
 const { safePush, detectConflicts, checkOverlap } = require('./orchestrator/git-safe');
-const { withLock } = require('./orchestrator/file-lock');
 ```
-
-**Git push safety:** Always use `safePush(branch)` instead of raw `git push`. It retries on network errors (exponential backoff, 4 attempts) and auto-pulls on rejection.
-
-**Before merging parallel branches:** Run `checkOverlap(branchA, branchB)` to identify overlapping file edits. If files overlap, merge branches sequentially (first-in merges clean, second rebases on top).
 
 ## Rules
 
