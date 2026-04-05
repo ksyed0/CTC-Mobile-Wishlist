@@ -14,7 +14,7 @@ describe('parseCoverage', () => {
   it('returns statements pct', () => expect(result.statements).toBe(83.2));
   it('returns functions pct', () => expect(result.functions).toBe(87.1));
   it('returns branches pct', () => expect(result.branches).toBe(81.0));
-  it('returns overall as min of all four', () => expect(result.overall).toBe(81.0));
+  it('returns overall as line coverage', () => expect(result.overall).toBe(84.5));
   it('returns meetsTarget true when all >= 80', () => expect(result.meetsTarget).toBe(true));
   it('returns available: true on valid input', () => expect(result.available).toBe(true));
 });

@@ -138,8 +138,8 @@ describe('productService.search', () => {
   });
 
   it('handles mixed-case query correctly', async () => {
-    const lower = await productService.search('yeti');
-    const upper = await productService.search('YETI');
+    const lower = await productService.search('woods');
+    const upper = await productService.search('WOODS');
     expect(lower).toEqual(upper);
     expect(lower.length).toBeGreaterThan(0);
   });
