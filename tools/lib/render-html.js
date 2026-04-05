@@ -1014,7 +1014,7 @@ function renderCostsTab(data, options = {}) {
   const allBugCosts = data.bugs.map(
     (b) => (data.costs._bugs && data.costs._bugs[b.id]) || { costUsd: 0, inputTokens: 0, outputTokens: 0 },
   );
-  const bugTotalAI = allBugCosts.reduce((s, bc) => s + (bc.isEstimated ? 0 : bc.costUsd || 0), 0);
+  const bugTotalAI = allBugCosts.reduce((s, bc) => s + (bc.costUsd || 0), 0);
   const bugTotalProjected = allBugCosts.reduce((s, bc) => s + (bc.projectedUsd || 0), 0);
   const bugTotalIn = allBugCosts.reduce((s, bc) => s + (bc.isEstimated ? 0 : bc.inputTokens || 0), 0);
   const bugTotalOut = allBugCosts.reduce((s, bc) => s + (bc.isEstimated ? 0 : bc.outputTokens || 0), 0);
@@ -1053,11 +1053,7 @@ function renderCostsTab(data, options = {}) {
         0,
       );
       const epicAI = bugs.reduce(
-        (s, b) =>
-          s +
-          (data.costs._bugs && data.costs._bugs[b.id] && !data.costs._bugs[b.id].isEstimated
-            ? data.costs._bugs[b.id].costUsd || 0
-            : 0),
+        (s, b) => s + ((data.costs._bugs && data.costs._bugs[b.id] && data.costs._bugs[b.id].costUsd) || 0),
         0,
       );
       const epicIn = bugs.reduce(
@@ -1087,7 +1083,7 @@ function renderCostsTab(data, options = {}) {
         <td class="px-3 py-2 text-xs text-slate-500">${esc(bug.relatedStory || '—')}</td>
         <td class="px-3 py-2 text-xs text-slate-500">${esc(bug.fixBranch || '—')}</td>
         <td class="px-3 py-2 text-right text-sm dark:text-slate-200">${bc.projectedUsd > 0 ? usd(bc.projectedUsd) : '—'}</td>
-        <td class="px-3 py-2 text-right text-sm text-teal-700 dark:text-teal-400">${bc.isEstimated ? '—' : usd(bc.costUsd)}</td>
+        <td class="px-3 py-2 text-right text-sm text-teal-700 dark:text-teal-400">${bc.costUsd > 0 ? (bc.isEstimated ? `<span title="Estimated cost">≈${usd(bc.costUsd)}</span>` : usd(bc.costUsd)) : '—'}</td>
         <td class="px-3 py-2 text-right text-xs text-slate-500 tokens-col">${bc.isEstimated ? '—' : `${fmtNum(bc.inputTokens)} / ${fmtNum(bc.outputTokens)}`}</td>
       </tr>`;
         })
