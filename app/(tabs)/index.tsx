@@ -88,6 +88,7 @@ export default function HomeScreen() {
             onPress={handleLogin}
             activeOpacity={0.8}
             accessibilityRole="button"
+            accessibilityLabel="Sign in to your account"
           >
             <Text style={styles.signInButtonText}>Sign In</Text>
           </TouchableOpacity>
@@ -102,6 +103,7 @@ export default function HomeScreen() {
             onPress={handleMyWishlists}
             activeOpacity={0.8}
             accessibilityRole="button"
+            accessibilityLabel="View wishlists"
           >
             {wishlistsLoading ? (
               <ActivityIndicator size="small" color={colors.primary} />
@@ -115,6 +117,7 @@ export default function HomeScreen() {
             onPress={handleMyWishlists}
             activeOpacity={0.8}
             accessibilityRole="button"
+            accessibilityLabel="View saved items"
           >
             {wishlistsLoading ? (
               <ActivityIndicator size="small" color={colors.primary} />
@@ -130,6 +133,7 @@ export default function HomeScreen() {
             onPress={handleMyWishlists}
             activeOpacity={0.8}
             accessibilityRole="button"
+            accessibilityLabel="View shared wishlists"
           >
             {wishlistsLoading ? (
               <ActivityIndicator size="small" color={colors.primary} />
@@ -151,6 +155,7 @@ export default function HomeScreen() {
         onPress={handleBrowseCatalog}
         activeOpacity={0.8}
         accessibilityRole="button"
+        accessibilityLabel="Browse catalog, explore products by category"
       >
         <View style={styles.ctaIcon}>
           <MaterialIcons name="grid-view" size={24} color={colors.primary} />
@@ -167,6 +172,7 @@ export default function HomeScreen() {
         onPress={handleScan}
         activeOpacity={0.8}
         accessibilityRole="button"
+        accessibilityLabel="Scan item, scan a barcode in-store"
       >
         <View style={styles.ctaIcon}>
           <MaterialIcons name="qr-code-scanner" size={24} color={colors.primary} />
@@ -183,6 +189,7 @@ export default function HomeScreen() {
         onPress={isGuest ? handleLogin : handleMyWishlists}
         activeOpacity={0.8}
         accessibilityRole="button"
+        accessibilityLabel={isGuest ? 'Sign in to view wishlists' : 'My wishlists, view and manage your wishlists'}
       >
         <View style={styles.ctaIcon}>
           <MaterialIcons

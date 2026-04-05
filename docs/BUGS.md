@@ -656,12 +656,12 @@
 ### BUG-0074: No accessibility attributes on any interactive elements
 
 - **Severity:** Minor
-- **Status:** Partially Fixed
+- **Status:** Fixed
 - **Found in:** All components and screens — `components/`, `app/`
 - **Story:** US-0001 (design system compliance)
 - **Description:** Zero `accessibilityRole`, `accessibilityLabel`, or `accessibilityHint` attributes are present on any `TouchableOpacity` or `Image` element across all 7 components and 8 screens. The design system (DESIGN_SYSTEM.md §8) requires all images to have `accessibilityLabel` and all buttons to have `accessibilityRole`.
 - **Fix:** Add `accessibilityRole="button"` to all `TouchableOpacity` elements. Add descriptive `accessibilityLabel` to image placeholders. Add `accessibilityLabel` to icon-only buttons (chevron, heart icons in `WishlistCard`).
-- **Update (2026-04-05):** `accessibilityRole="button"` now present on 17+ elements across ProductCard, WishlistCard, CategoryChip, and all screens. Remaining gap: some elements still missing descriptive `accessibilityLabel` and `accessibilityHint` attributes.
+- **Resolution (2026-04-05):** Added `accessibilityRole="button"` and descriptive `accessibilityLabel` to all interactive elements across index.tsx, scan.tsx, wishlists.tsx, product/[id].tsx, and login.tsx. Components (ProductCard, WishlistCard, CategoryChip, WishlistItemRow) already had proper labels.
 
 ### BUG-0075: catalog.tsx does not use ProductCard component; wishlists.tsx does not use WishlistCard
 
@@ -694,13 +694,13 @@
 ### BUG-0080: Dashboard needs more dynamic visualizations for agentic activity
 
 - **Severity:** Minor
-- **Status:** Partially Fixed
+- **Status:** Fixed
 - **Found in:** `docs/dashboard.html`, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
 - **Description:** The current dashboard is largely static — agent cards show status badges but don't communicate the dynamism of parallel agent execution. Missing: animated progress bars during active phases, a visual pipeline/flow diagram showing agent handoffs, real-time token/tool-use counters per agent, and a timeline view of agent activity.
 - **Fix:** Add at minimum: (1) CSS pulse animation on active agent cards, (2) phase progress bar showing % of stories complete, (3) per-agent task counter that increments visibly. Longer term: Mermaid or SVG pipeline diagram in the dashboard.
-- **Update (2026-04-05):** CSS pulse animations on active agent cards and in-progress phases are implemented. Progress bars showing % complete for phases, stories, and tasks are present. Still missing: dynamic per-agent task counters that increment visibly, and Mermaid/SVG pipeline diagram.
+- **Resolution (2026-04-05):** All three minimum items implemented: CSS pulse animations on active agents/phases, progress bars for phases/stories/tasks, and per-agent task/review/test/coverage counters rendered from sdlc-status.json data. Mermaid pipeline diagram deferred as nice-to-have.
 
 ### BUG-0081: PlanVisualizer not in sync with actual pipeline status
 
@@ -727,7 +727,7 @@
 ### BUG-0083: Activity log timestamps use UTC offset instead of local time (EDT)
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `docs/sdlc-status.json` log entries, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation — log shows 16:20 when local time is 18:20)

@@ -156,6 +156,8 @@ export default function WishlistsScreen() {
               onPress={handleCreate}
               disabled={!newName.trim() || isCreating}
               activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Create wishlist"
             >
               {isCreating ? (
                 <ActivityIndicator color={colors.white} />
@@ -166,6 +168,8 @@ export default function WishlistsScreen() {
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={() => { setShowCreateModal(false); setNewName(''); }}
+              accessibilityRole="button"
+              accessibilityLabel="Cancel"
             >
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>

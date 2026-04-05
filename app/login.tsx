@@ -44,6 +44,8 @@ export default function LoginScreen() {
               style={styles.userCard}
               onPress={() => handleLogin(item)}
               activeOpacity={0.75}
+              accessibilityRole="button"
+              accessibilityLabel={`Sign in as ${item.name}`}
             >
               <View style={styles.avatar}>
                 <Text style={styles.avatarText}>
@@ -63,6 +65,8 @@ export default function LoginScreen() {
           style={styles.guestButton}
           onPress={handleGuest}
           activeOpacity={0.75}
+          accessibilityRole="button"
+          accessibilityLabel="Continue as guest"
         >
           <Text style={styles.guestButtonText}>Continue as Guest</Text>
         </TouchableOpacity>

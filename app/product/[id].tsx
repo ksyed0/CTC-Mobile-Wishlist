@@ -125,6 +125,8 @@ export default function ProductDetailScreen() {
             onPress={handleAddToWishlist}
             disabled={isAdding}
             activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel="Add to wishlist"
           >
             {isAdding ? (
               <ActivityIndicator color={colors.white} size="small" />
@@ -162,6 +164,8 @@ export default function ProductDetailScreen() {
                 <TouchableOpacity
                   style={styles.wishlistOption}
                   onPress={() => addToWishlist(item)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Add to ${item.name}`}
                 >
                   <MaterialIcons name="favorite" size={20} color={colors.primary} />
                   <View style={styles.wishlistOptionInfo}>
@@ -178,6 +182,8 @@ export default function ProductDetailScreen() {
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={() => setShowPicker(false)}
+              accessibilityRole="button"
+              accessibilityLabel="Cancel"
             >
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
