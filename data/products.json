@@ -15,7 +15,7 @@
     "name": "Mastercraft Screwdriver Set, 10-pc",
     "description": "Comfort-grip screwdriver set with magnetic tips. Includes Phillips, Robertson, and flathead drivers with durable handles.",
     "price": 24.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/fixing/tools/manual-fastening/0573544/mastercraft-10-piece-screwdriver-set-8341354c-69ce-4298-accf-34f4508fd0dd-jpgrendition.jpg",
     "category": "cat-tools",
     "inStock": true
   },
@@ -25,7 +25,7 @@
     "name": "Mastercraft 14A Circular Saw with Laser, 7-1/4-in",
     "description": "14-amp circular saw with laser guide and two carbide-tipped blades. 5,500 RPM, bevel adjustment 0-45°, max cutting depth 2-1/2\" at 90°.",
     "price": 129.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/fixing/tools/portable-power-tools/1994701/mc-14a-circ-saw-with-2-bonus-blades-12583424-aafe-4d0c-85c4-a0579f06f28e-jpgrendition.jpg",
     "category": "cat-tools",
     "inStock": true
   },
@@ -35,7 +35,7 @@
     "name": "Mastercraft Tape Measure, 25-ft",
     "description": "Heavy-duty 25-ft tape measure with durable casing, nylon-coated blade, built-in belt clip, and rubber grip handle.",
     "price": 14.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/fixing/tools/cutting-measuring/0577062/mastercraft-25-foot-tape-measure-e1773fdc-529a-40d8-8840-eac90e5b956c-jpgrendition.jpg",
     "category": "cat-tools",
     "inStock": true
   },
@@ -45,7 +45,7 @@
     "name": "Mastercraft 2A Random Orbit Sander, 5-in",
     "description": "5-inch random orbit sander with dust collector. 12,500 OPM for aggressive sanding and swirl-free finish. Sealed ON/OFF rocker switch.",
     "price": 59.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/fixing/tools/portable-power-tools/0548392/mastercraft-2a-random-orbit-sander-2208bd2b-abbe-4f64-a308-9d6f5533534c-jpgrendition.jpg",
     "category": "cat-tools",
     "inStock": false
   },
@@ -55,7 +55,7 @@
     "name": "MotoMaster Eliminator PowerBox 800A Jump Starter",
     "description": "1600 peak amp portable jump starter and power pack with built-in 600W inverter, USB charging ports, and LED flashlight. Starts vehicles up to 8 cylinders.",
     "price": 119.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/automotive/light-auto-parts/auto-battery-accessories/0112014/motomaster-eliminator-1600a-600w-power-box-c15b649a-15ad-4a25-b1e5-31675df329ff-jpgrendition.jpg",
     "category": "cat-automotive",
     "inStock": true
   },
@@ -65,7 +65,7 @@
     "name": "MotoMaster 5W30 Synthetic Engine Oil, 5-L",
     "description": "Full synthetic 5W-30 motor oil, 5L jug. Developed with Shell Technology for complete engine protection in all temperatures.",
     "price": 34.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/automotive/auto-maintenance/oil-pcmo-/0288715/formula-1-synthetic-5w30-motor-oil-jug-2a21bbab-861d-4332-ae23-bbba71f814ad-jpgrendition.jpg",
     "category": "cat-automotive",
     "inStock": true
   },
