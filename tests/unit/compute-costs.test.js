@@ -25,12 +25,12 @@ describe('attributeAICosts', () => {
 
   it('attributes cost to matching story by branch', () => {
     const result = attributeAICosts(stories, costByBranch);
-    expect(result['US-0001'].costUsd).toBeCloseTo(0.47);
+    expect(result['US-0001'].costUsd).toBeCloseTo(0.68);
   });
 
-  it('story with no branch gets 0 cost', () => {
+  it('story with no branch gets share of unattributed cost', () => {
     const result = attributeAICosts(stories, costByBranch);
-    expect(result['US-0002'].costUsd).toBe(0);
+    expect(result['US-0002'].costUsd).toBeCloseTo(0.21);
   });
 
   it('returns totalAiCost across all branches', () => {
