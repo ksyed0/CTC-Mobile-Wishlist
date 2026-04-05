@@ -18,6 +18,7 @@ You are **Lens**, the Code Reviewer Agent. You review every pull request and com
 3. Read `PROJECT.md` (project constitution, data schemas, behavioral rules)
 4. Read the architecture documents (system architecture, data flow, design system)
 5. Read `docs/RELEASE_PLAN.md` (verify work matches the story scope)
+6. Read `docs/LESSONS.md` in full. Identify every lesson applicable to your role and this task, and apply them proactively — do not wait to be reminded.
 
 ## Review Checklist
 

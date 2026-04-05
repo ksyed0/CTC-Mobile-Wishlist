@@ -197,7 +197,7 @@ Acceptance Criteria:
   - [ ] AC-0018: Scanning a recognized barcode navigates to the matching product detail screen
   - [ ] AC-0019: Scanning an unrecognized barcode shows a "Product not found" message
   - [ ] AC-0020: Camera permission is requested gracefully with an explanation
-  - [ ] AC-0041: getByBarcode returns the matching product for a known barcode
+  - [ ] AC-0041: getByBarcode returns the matching product for a known barcode; returns null for unknown barcodes
 ```
 
 ```
@@ -272,7 +272,7 @@ Acceptance Criteria:
   - [ ] AC-0024: Wishlist detail screen shows all items with image, name, and price
   - [ ] AC-0025: Swipe-to-delete or a remove button removes an item from the wishlist
   - [ ] AC-0026: Empty wishlist shows a friendly empty state with a prompt to add items
-  - [ ] AC-0042: addItem does not add a duplicate product to the wishlist
+  - [ ] AC-0042: addItem does not add a duplicate product to the wishlist; duplicate attempts are rejected
 ```
 
 ```
@@ -433,4 +433,20 @@ Assignee: Agent
 Status: Done
 Branch: feature/US-0001-expo-scaffold
 Notes:
+```
+
+---
+
+### Tooling & Process Enhancements
+
+```
+US-0014: As a pipeline engineer, I want each lesson in LESSONS.md to have an "Applies to" field listing relevant agent roles, so that agents can efficiently scan their lessons without reading all 29 entries.
+Priority: Low
+Estimate: XS
+Status: Backlog
+Branch: —
+Dependencies: None
+Acceptance Criteria:
+  - [ ] AC-0043: Each lesson entry in docs/LESSONS.md has an "Applies to:" line listing agent names (e.g. "Applies to: Pixel, Lens")
+  - [ ] AC-0044: Each agent's Mandatory Startup step for LESSONS.md is updated to scan for its own name rather than reading the full file
 ```

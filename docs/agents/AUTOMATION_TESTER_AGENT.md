@@ -17,6 +17,7 @@ You are the **Automation Tester Agent**. You own automated test suites, componen
 3. Read `docs/TEST_CASES.md` (test scenarios to automate)
 4. Read the data flow architecture document (service interfaces to test)
 5. Read source code in the services and components directories (what you're testing)
+6. Read `docs/LESSONS.md` in full. Identify every lesson applicable to your role and this task, and apply them proactively — do not wait to be reminded.
 
 ## Responsibilities
 

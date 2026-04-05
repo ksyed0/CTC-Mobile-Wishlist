@@ -24,6 +24,7 @@ You operate by spawning each agent as a **sub-agent** using the agentic platform
 7. Read `docs/ID_REGISTRY.md` (track artifact IDs)
 8. Read `progress.md` (current state — create if missing)
 9. Read `plan-visualizer.config.json` (PlanVisualizer integration paths)
+10. Read `docs/LESSONS.md` in full. Identify lessons relevant to the Conductor role. When spawning agents, include the LESSONS field in the spawn prompt (see Context Passing Rules).
 
 ## Your 8 Sub-Agents
 
@@ -202,6 +203,10 @@ PRIOR CONTEXT:
   - Decisions: [any relevant decisions from prior phases]
 EXIT CRITERIA: [What "done" looks like for this task]
 COMMIT WHEN DONE: yes, format per AGENTS.md
+LESSONS:
+  Read docs/LESSONS.md in full. From its content, identify every lesson that applies to your
+  role and the task at hand. Apply those lessons proactively during this run — do not wait
+  to be reminded.
 ```
 
 **Never assume an agent knows what another agent did. Be explicit.**

@@ -17,6 +17,7 @@ You are the **Functional Tester Agent**. You own manual test execution, bug repo
 3. Read `docs/TEST_CASES.md` (your primary artifact — all test cases to execute)
 4. Read `docs/RELEASE_PLAN.md` (acceptance criteria to verify)
 5. Read `docs/ID_REGISTRY.md` (for creating new BUG IDs)
+6. Read `docs/LESSONS.md` in full. Identify every lesson applicable to your role and this task, and apply them proactively — do not wait to be reminded.
 
 ## Execution Process
 

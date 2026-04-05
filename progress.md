@@ -642,3 +642,62 @@ Agent: Pixel | Branch: `feature/polish-fixes` | Based on: `develop`
 - Pre-existing test mock errors in test files: 11 (unchanged, not introduced by this work)
 - Assets created: 4 PNG files
 - Files modified: `components/ProductCard.tsx`, `app/(tabs)/catalog.tsx`
+
+---
+
+## Session 12 — 2026-04-05
+
+Post-BLAST: Plan Visualizer fixes, lesson-bug linking, new lessons, AI cost estimation, and lessons integration into agent instruction files.
+
+### Plan Visualizer Fixes
+
+**BUG-0096 — Hierarchy + Costs tab column views empty**
+
+- `render-html.js`: three separate render functions each had `class="hidden"` on their epic/bug tbodies. Fixed all three: arrow `&#9654;` → `&#9660;`, removed `class="hidden"`.
+- Separately fixed Bugs tab column view (fourth independent `bugColGroups` render function, line ~1396).
+
+**Lesson-Bug Linking (all 101 bugs now show ✓ in Bugs tab Lesson column)**
+
+- `tools/lib/parse-lessons.js`: added extraction of `bugIds` from each lesson's `**Bugs:**` field.
+- `tools/generate-plan.js`: added back-fill of `bug.lessonEncoded` from LESSONS.md inverse mapping at generation time — LESSONS.md is the single source of truth.
+
+**Lesson-Epic Grouping (Lessons tab now groups under correct epics)**
+
+- Resolved by the same back-fill fix above; `lessonStoryMap` now resolves correctly.
+
+### New Lessons (L-0023–L-0029)
+
+Distilled 7 new lessons from 39 bugs not covered by any prior lesson:
+
+- **L-0023** — Expo JS and native layers are independent; native requires explicit `expo prebuild` after any asset change.
+- **L-0024** — Scaffold completeness check required before advancing from Phase 2.
+- **L-0025** — Register all ACs in RELEASE_PLAN.md before build agents reference them.
+- **L-0026** — Enumerate existing components and utils before writing new ones.
+- **L-0027** — Create `.test.tsx` alongside every component and screen file at creation time.
+- **L-0028** — Add `accessibilityRole` + `accessibilityLabel` to every interactive element at creation time.
+- **L-0029** — Tooling must degrade visibly, not silently; collapsible sections default to expanded.
+
+Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
+
+### AI Cost Estimation for Bug Fixes
+
+- Added estimated AI costs (~$100.65 total) for 93 of 97 bugs to `docs/AI_COST_LOG.md` using `est/BUG-XXXX` synthetic branch convention.
+- Added `Fix Branch: est/BUG-XXXX` to all covered bugs in `docs/BUGS.md`.
+- Modified `tools/lib/compute-costs.js`: `attributeAICosts()` now skips `est/` branches for story totals (prevents double-counting); `attributeBugCosts()` marks `est/` branch matches as `isEstimated: true`.
+- 4 open bugs (BUG-0073, 0080, 0082, 0088) correctly show $0.
+
+### Lessons Integration — Agent Instruction Files
+
+- Added `docs/LESSONS.md` dynamic read as last Mandatory Startup step in all 9 agent files: agents read the full file and self-select applicable lessons on every spawn (Option B — no hardcoded mapping, zero maintenance).
+- Extended DM_AGENT's structured spawn template with a `LESSONS:` field — instruction propagates to every spawned agent.
+- Added **US-0014** (Backlog, Low) to `docs/RELEASE_PLAN.md`: future Option A enhancement — add `Applies to:` field per lesson for faster agent scanning.
+
+### Docs Updated
+
+- `docs/LESSONS.md` — 7 new lessons (L-0023–L-0029), header updated to 101 bugs
+- `docs/BUGS.md` — BUG-0096, BUG-0097 logged and fixed; `Fix Branch: est/BUG-XXXX` added to 93 bugs
+- `docs/AI_COST_LOG.md` — 93 estimated bug fix cost entries appended
+- `docs/RELEASE_PLAN.md` — US-0014 added (Backlog); TASK-0009 search bar marked Done
+- `docs/ID_REGISTRY.md` — L → L-0030, BUG → BUG-0098, US → US-0015, AC → AC-0045
+- `docs/agents/*.md` — all 9 agent files updated with LESSONS.md Mandatory Startup step
+- `tools/lib/parse-lessons.js`, `tools/lib/compute-costs.js`, `tools/lib/render-html.js`, `tools/generate-plan.js` — bug fixes and cost attribution improvements

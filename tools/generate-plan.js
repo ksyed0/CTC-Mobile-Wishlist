@@ -136,6 +136,21 @@ function main() {
   const recentActivity = parseRecentActivity(readFile(config.progress.path), 5);
   const lessons = parseLessons(readFile(config.docs.lessons));
 
+  // Back-fill lessonEncoded on bugs using LESSONS.md **Bugs:** as source of truth.
+  // parse-bugs reads this field from BUGS.md which has no Lesson Encoded entries,
+  // so we derive it here from the inverse mapping in LESSONS.md.
+  const bugToLesson = {};
+  for (const lesson of lessons) {
+    for (const bugId of lesson.bugIds || []) {
+      if (!bugToLesson[bugId]) bugToLesson[bugId] = lesson.id;
+    }
+  }
+  for (const bug of bugs) {
+    if (!bug.lessonEncoded && bugToLesson[bug.id]) {
+      bug.lessonEncoded = `Yes — ${bugToLesson[bug.id]}`;
+    }
+  }
+
   const aiAttribution = attributeAICosts(stories, costByBranch);
   const avgTokens = calculateAvgTokensPerEstimate({
     stories,

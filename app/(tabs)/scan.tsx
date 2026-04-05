@@ -104,8 +104,8 @@ export default function ScanScreen() {
         <MaterialIcons name="camera-alt" size={64} color={colors.textLight} />
         <Text style={styles.permissionTitle}>Camera Access Required</Text>
         <Text style={styles.permissionBody}>
-          To scan product barcodes, this app needs access to your camera. Your camera is only used while you are on this
-          screen.
+          To scan product barcodes, this app needs access to your camera. Your
+          camera is only used while you are on this screen.
         </Text>
         <TouchableOpacity
           style={styles.primaryButton}
@@ -133,6 +133,7 @@ export default function ScanScreen() {
               keyboardType="number-pad"
               returnKeyType="search"
               onSubmitEditing={handleManualLookup}
+              accessibilityLabel="Barcode number input"
             />
             <TouchableOpacity
               style={[styles.primaryButton, isLookingUp && styles.buttonDisabled]}
@@ -155,7 +156,10 @@ export default function ScanScreen() {
 
   // Camera available — show scanner
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
       {/* Camera viewfinder */}
       <View style={styles.cameraContainer}>
         <CameraView
@@ -196,7 +200,7 @@ export default function ScanScreen() {
             onPress={handleManualLookup}
             disabled={isLookingUp}
             accessibilityRole="button"
-            accessibilityLabel="Search barcode"
+            accessibilityLabel="Look up barcode"
           >
             {isLookingUp ? (
               <ActivityIndicator color={colors.white} size="small" />

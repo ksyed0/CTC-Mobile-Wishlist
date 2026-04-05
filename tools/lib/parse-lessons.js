@@ -18,12 +18,15 @@ function parseLessons(markdown) {
     const ctxMatches = [...block.matchAll(/\n\*([^*]+)\*/g)];
     const context = ctxMatches.map((m) => m[1].trim()).join(' ');
     const dateM = block.match(/\*\*Date:\*\*\s*(\S+)/);
+    const bugsM = block.match(/\*\*Bugs:\*\*\s*(.+)/);
+    const bugIds = bugsM ? bugsM[1].match(/BUG-\d{4}/g) || [] : [];
     results.push({
       id,
       title,
       rule: ruleM ? ruleM[1].trim() : '',
       context,
       date: dateM ? dateM[1].trim() : '',
+      bugIds,
     });
   }
   return results;

@@ -18,6 +18,7 @@ You are the **Product Owner Agent**. You own requirements, acceptance criteria, 
 4. Read `docs/RELEASE_PLAN.md` (your primary artifact)
 5. Read `docs/TEST_CASES.md` (verify coverage)
 6. Read `docs/ID_REGISTRY.md` (get next available IDs before creating anything)
+7. Read `docs/LESSONS.md` in full. Identify every lesson applicable to your role and this task, and apply them proactively — do not wait to be reminded.
 
 ## Responsibilities
 

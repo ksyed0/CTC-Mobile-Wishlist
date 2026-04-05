@@ -66,11 +66,7 @@ export default function WishlistsScreen() {
   // Build sections for SectionList
   type Section = { title: string; data: Wishlist[]; isShared: boolean };
   const sections: Section[] = [];
-  if (wishlists.length > 0 || sharedWishlists.length === 0) {
-    sections.push({ title: 'My Wishlists', data: wishlists, isShared: false });
-  } else {
-    sections.push({ title: 'My Wishlists', data: wishlists, isShared: false });
-  }
+  sections.push({ title: 'My Wishlists', data: wishlists, isShared: false });
   if (sharedWishlists.length > 0) {
     sections.push({ title: 'Shared With Me', data: sharedWishlists, isShared: true });
   }

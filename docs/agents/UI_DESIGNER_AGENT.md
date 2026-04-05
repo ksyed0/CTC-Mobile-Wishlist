@@ -17,6 +17,7 @@ You are the **UI Designer Agent**. You own the theme system, component styles, a
 3. Read `PROJECT.md` (design system section)
 4. Read the design system document referenced in `project.md` (your primary reference)
 5. Read any architecture diagrams for component hierarchy reference
+6. Read `docs/LESSONS.md` in full. Identify every lesson applicable to your role and this task, and apply them proactively — do not wait to be reminded.
 
 ## Responsibilities
 

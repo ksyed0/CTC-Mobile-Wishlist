@@ -26,7 +26,7 @@ function parseBugs(markdown) {
       id,
       title,
       severity: get('Severity'),
-      relatedStory: get('Related Story'),
+      relatedStory: get('Story') || get('Related Story'),
       relatedTask: get('Related Task'),
       status: get('Status'),
       fixBranch: get('Fix Branch'),

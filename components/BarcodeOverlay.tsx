@@ -15,7 +15,12 @@ const FRAME_HEIGHT = 250;
 
 export const BarcodeOverlay = memo(function BarcodeOverlay({ isScanning = false }: BarcodeOverlayProps) {
   return (
-    <View style={styles.container} pointerEvents="none">
+    <View
+      style={styles.container}
+      pointerEvents="none"
+      accessibilityLabel={isScanning ? 'Scanning barcode' : 'Point camera at barcode'}
+      accessibilityRole="image"
+    >
       <View style={styles.frame}>
         {/* Corner markers */}
         <View style={[styles.corner, styles.topLeft]} />
