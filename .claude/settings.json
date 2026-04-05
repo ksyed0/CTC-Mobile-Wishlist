@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node tools/capture-cost.js"
+            "command": "node /Users/Kamal_Syed/Projects/CTC-Mobile-Wishlist/tools/capture-cost.js"
           }
         ]
       }

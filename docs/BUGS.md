@@ -994,3 +994,163 @@
 - **Description:** The Costs tab "Bug Fix Costs" table groups bugs by epic (via `bug.relatedStory` → story → epic lookup) and renders each group as a collapsible `<tbody>` starting with `class="hidden"`. On first load the user sees only the epic group header rows with bug counts, but no actual bug rows — the table body appears empty. The issue is compounded by the fact that most bugs in `BUGS.md` have a `Story:` value of `N/A`, `N/A (tooling)`, or a multi-value string that doesn't match any single story ID in the story-epic map. These bugs are bucketed into a single `_ungrouped` group labeled "No Epic". The result is one collapsed header row ("No Epic (N)") with all N bugs hidden underneath — the entire "Bug Fix Costs" section appears blank to the user.
 - **Fix:** Removed `class="hidden"` from bug group `<tbody>` elements and changed the initial arrow from `&#9654;` (►) to `&#9660;` (▼) so all bug rows are visible on first render.
 - **Resolution:** Applied to `tools/lib/render-html.js`. Regenerated `docs/plan-status.html` — 0 hidden bug-cost group tbodies confirmed.
+
+## P2 — Minor (Product Detail screen — demo observation 2026-04-05)
+
+### BUG-0099: Product detail screen always shows image placeholder — never renders product image
+
+- **Severity:** Minor
+- **Status:** Open
+- **Fix Branch:** —
+- **Found in:** `app/product/[id].tsx` (lines 103–105)
+- **Story:** US-0004
+- **Found by:** User (simulator demo observation)
+- **Description:** The product detail screen renders a static grey placeholder (`<View style={styles.imagePlaceholder}>` + `<MaterialIcons name="image">`) regardless of whether `product.image` contains a valid URL. No `<Image>` component is rendered. The catalog screen (`app/(tabs)/catalog.tsx`) correctly renders product images using the same URL source, confirming the URLs are valid. The detail screen simply never wires `product.image` into an `<Image>` tag.
+- **Fix:** Replace the `imagePlaceholder` `<View>` with an `<Image source={{ uri: product.image }}>` component (same dimensions: width `100%`, height 260). Add an `onError` handler that falls back to the existing placeholder icon for any load failures.
+
+### BUG-0100: Product detail screen has no mock "Add to Cart" button
+
+- **Severity:** Minor
+- **Status:** Open
+- **Fix Branch:** —
+- **Found in:** `app/product/[id].tsx` (lines 113–130)
+- **Story:** US-0004
+- **Found by:** User (simulator demo observation)
+- **Description:** The product detail screen shows only an "Add to Wishlist" CTA. For a retail POC demo, a mock "Add to Cart" button is expected — it reinforces the Canadian Tire shopping context even if it takes no real action. The button should be visually present but non-functional (shows a brief confirmation toast/alert on tap, e.g. "Added to cart!").
+- **Fix:** Add a secondary "Add to Cart" button below "Add to Wishlist". Style it as an outlined/secondary button (white background, red border, red text) to visually differentiate it from the primary CTA. `onPress` shows `Alert.alert('Added to Cart', '"<product.name>" has been added to your cart.')`.
+
+### BUG-0101: "Add to Wishlist" skips picker when user has exactly one wishlist — should always show wishlist selector
+
+- **Severity:** Minor
+- **Status:** Open
+- **Fix Branch:** —
+- **Found in:** `app/product/[id].tsx` (lines 77–80, `handleAddToWishlist`)
+- **Story:** US-0004
+- **Found by:** User (simulator demo observation)
+- **Description:** The wishlist picker modal (`setShowPicker(true)`) is only triggered when the user has 2 or more wishlists. When exactly one wishlist exists, the product is silently added to it without any user confirmation or choice. For a demo where multiple wishlists are a core feature, users never see the picker unless they have already created a second wishlist — making the multi-wishlist capability invisible. The picker modal UI (lines 135–172) is fully built and functional; it simply is never shown in the single-wishlist case.
+- **Fix:** Remove the `wishlists.length === 1` shortcut. Always call `setShowPicker(true)` when at least one wishlist exists. The only special case that should remain is the zero-wishlists prompt to create one first.
+
+  ```ts
+  // Before
+  if (wishlists.length === 1) {
+    addToWishlist(wishlists[0]);
+  } else {
+    setShowPicker(true);
+  }
+
+  // After
+  setShowPicker(true);
+  ```
+
+### BUG-0102: Wishlist detail screen shows image placeholder for all items — productImage prop never passed to WishlistItemRow
+
+- **Severity:** Minor
+- **Status:** Open
+- **Fix Branch:** —
+- **Found in:** `app/wishlist/[id].tsx` (lines 113–121, `renderItem` inside FlatList)
+- **Story:** US-0008
+- **Found by:** User (simulator demo observation)
+- **Description:** `WishlistItemRow` accepts a `productImage?: string` prop and correctly renders a `<Image source={{ uri: productImage }}>` when a valid URL is provided (components/WishlistItemRow.tsx:37–44). However, `wishlist/[id].tsx` resolves `product` from context but only forwards `productName` and `productPrice` to the row component — `product?.image` is never passed. All wishlist items therefore always fall through to the `imagePlaceholder` branch and show the grey icon regardless of whether a valid image URL exists on the product.
+- **Fix:** Add `productImage={product?.image}` to the `<WishlistItemRow>` call in `wishlist/[id].tsx`.
+
+  ```tsx
+  // Before
+  <WishlistItemRow
+    productName={productName}
+    productPrice={product?.price}
+    ...
+  />
+
+  // After
+  <WishlistItemRow
+    productName={productName}
+    productPrice={product?.price}
+    productImage={product?.image}
+    ...
+  />
+  ```
+
+### BUG-0103: Wishlist total footer clipped by iPhone home indicator — missing safe area bottom inset
+
+- **Severity:** Minor
+- **Status:** Open
+- **Fix Branch:** —
+- **Found in:** `app/wishlist/[id].tsx` (styles.footer, line 254–263)
+- **Story:** US-0009
+- **Found by:** User (simulator demo observation)
+- **Description:** The total footer row ("Total / $X.XX") uses `paddingVertical: spacing.md` but applies no bottom safe area inset. On iPhones with a home indicator bar, the footer sits flush against the bottom edge of the screen and the content is visually cut off behind the system UI. `react-native-safe-area-context` is already installed in the project.
+- **Fix:** Use `useSafeAreaInsets` to add the device's bottom inset to the footer's bottom padding.
+
+  ```tsx
+  // At top of component
+  import { useSafeAreaInsets } from 'react-native-safe-area-context';
+  const insets = useSafeAreaInsets();
+
+  // In footer style (inline or via dynamic style)
+  <View style={[styles.footer, { paddingBottom: spacing.md + insets.bottom }]}>
+  ```
+
+  This ensures the footer content clears the home indicator on all iPhone models while remaining flush on devices without one (insets.bottom === 0).
+
+## P2 — Minor (Demo UX — user observation 2026-04-05)
+
+### BUG-0104: No logout / switch-user button in the app header — blocks demo user switching
+
+- **Severity:** Minor
+- **Status:** Open
+- **Fix Branch:** —
+- **Found in:** `app/(tabs)/_layout.tsx` (no `headerRight` defined on any tab screen)
+- **Story:** US-0013
+- **Found by:** User (demo observation)
+- **Description:** There is no way to log out or switch users from within the app during a demo. `AuthContext` already exposes a `logout(): Promise<void>` function (contexts/AuthContext.tsx:54) and `useAuth()` hook (line 82), but neither is surfaced in the UI. The tab layout defines no `headerRight` on any screen. For the demo, presenters need to switch between mock user profiles to show different wishlist states.
+- **Fix:** Add a logout icon button to `headerRight` on the Home tab screen in `app/(tabs)/_layout.tsx`. The component must be a client component that calls `useAuth()`.
+
+  ```tsx
+  // app/(tabs)/_layout.tsx
+  import { TouchableOpacity } from 'react-native';
+  import { useAuth } from '../../contexts/AuthContext';
+
+  function LogoutButton() {
+    const { logout } = useAuth();
+    return (
+      <TouchableOpacity onPress={logout} style={{ marginRight: 12 }} accessibilityLabel="Log out">
+        <MaterialIcons name="logout" size={22} color={colors.white} />
+      </TouchableOpacity>
+    );
+  }
+
+  // On the Home Tabs.Screen:
+  options={{
+    title: 'Home',
+    headerRight: () => <LogoutButton />,
+    tabBarIcon: ...
+  }}
+  ```
+
+  `logout()` clears AsyncStorage session and navigates to the login screen via the existing auth guard in `app/_layout.tsx`.
+
+### BUG-0105: Create Wishlist modal — keyboard obscures name input field on iOS
+
+- **Severity:** Minor
+- **Status:** Open
+- **Fix Branch:** —
+- **Found in:** `app/(tabs)/wishlists.tsx` (lines 123–169, create wishlist Modal)
+- **Story:** US-0007
+- **Found by:** User (simulator demo observation)
+- **Description:** The "New Wishlist" modal slides up from the bottom (`animationType="slide"`, `justifyContent: 'flex-end'`). When `autoFocus` fires on the `TextInput` and the iOS keyboard appears, the keyboard renders on top of the modal sheet rather than pushing it up, hiding the name input and Create button entirely. No `KeyboardAvoidingView` wraps the modal content.
+- **Fix:** Wrap the `<View style={styles.modalSheet}>` in a `KeyboardAvoidingView` with `behavior="padding"` on iOS so the sheet lifts above the keyboard.
+
+  ```tsx
+  import { ..., KeyboardAvoidingView, Platform } from 'react-native';
+
+  // Replace the inner TouchableOpacity child:
+  <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setShowCreateModal(false)}>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <View style={styles.modalSheet}>
+        {/* existing content unchanged */}
+      </View>
+    </KeyboardAvoidingView>
+  </TouchableOpacity>
+  ```
+
+  `KeyboardAvoidingView` is imported from `react-native` (already used elsewhere in the project) — no new dependencies required.

@@ -218,6 +218,42 @@ Branch: feature/pixel-integration
 Notes: productService.getByBarcode() wired in scan.tsx; recent scans saved to AsyncStorage
 ```
 
+```
+US-0015 (EPIC-0003): As a demo presenter, I want the scan screen to show a tappable product catalog when running on a simulator, so that I can demonstrate the scan flow without a physical device or real barcode.
+Priority: High
+Estimate: M
+Status: Pending
+Branch: feature/US-0015-simulator-scan-mock
+Dependencies: US-0006
+Spec: docs/superpowers/specs/2026-04-05-simulator-scan-mock-design.md
+Plan: docs/superpowers/plans/2026-04-05-simulator-scan-mock.md
+Acceptance Criteria:
+  - [ ] AC-0045: On a physical device, scan screen behaves exactly as before (camera + live barcode scanning)
+  - [ ] AC-0046: On a simulator (Device.isDevice === false), the camera view is replaced with a scrollable WebView rendering data/product-catalog-print.html
+  - [ ] AC-0047: Each product card in the WebView is tappable; tapping fires handleBarcode() with the card's barcode string
+  - [ ] AC-0048: A simulator-mode banner is shown at the top of the scan screen
+```
+
+```
+TASK-0022 (US-0015): Build SimulatorScanView component — WebView loading product-catalog-print.html with injected tap-to-scan click handlers
+Type: Dev
+Assignee: Agent
+Status: Pending
+Branch: feature/US-0015-simulator-scan-mock
+Plan: docs/superpowers/plans/2026-04-05-simulator-scan-mock.md — Tasks 1, 2, 3
+Notes: extractBarcodeFromMeta reads barcode from .card-meta text; expo-asset + expo-file-system load HTML; tap handler script injected before </body>; new deps: expo-device, react-native-webview, expo-asset, expo-file-system
+```
+
+```
+TASK-0023 (US-0015): Wire Device.isDevice simulator detection into scan.tsx
+Type: Dev
+Assignee: Agent
+Status: Pending
+Branch: feature/US-0015-simulator-scan-mock
+Plan: docs/superpowers/plans/2026-04-05-simulator-scan-mock.md — Tasks 4, 5
+Notes: isSimulator = !Device.isDevice evaluated at module level; renders SimulatorScanView in place of CameraView+BarcodeOverlay on simulators; physical device path unchanged; metro.config.js required to bundle .html asset
+```
+
 ---
 
 ### Epic 4: Wishlist Management
