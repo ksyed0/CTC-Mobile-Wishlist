@@ -1,14 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-  Alert,
-  Modal,
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Wishlist } from '../../types/wishlist';
@@ -45,23 +36,19 @@ export default function WishlistDetailScreen() {
 
   // AC-0025: confirm before removing
   function handleRemove(productId: string, productName: string) {
-    Alert.alert(
-      'Remove Item',
-      `Remove "${productName}" from this wishlist?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Remove',
-          style: 'destructive',
-          onPress: async () => {
-            if (!wishlist) return;
-            await removeItem(wishlist.id, productId);
-            const updated = await getWishlistById(wishlist.id);
-            setWishlist(updated);
-          },
+    Alert.alert('Remove Item', `Remove "${productName}" from this wishlist?`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Remove',
+        style: 'destructive',
+        onPress: async () => {
+          if (!wishlist) return;
+          await removeItem(wishlist.id, productId);
+          const updated = await getWishlistById(wishlist.id);
+          setWishlist(updated);
         },
-      ],
-    );
+      },
+    ]);
   }
 
   // AC-0028/44: share with a mock user
@@ -112,10 +99,7 @@ export default function WishlistDetailScreen() {
               {wishlist.items.length} item{wishlist.items.length !== 1 ? 's' : ''}
             </Text>
           </View>
-          <TouchableOpacity
-            style={styles.shareButton}
-            onPress={() => setShowShareModal(true)}
-          >
+          <TouchableOpacity style={styles.shareButton} onPress={() => setShowShareModal(true)}>
             <MaterialIcons name="share" size={20} color={colors.primary} />
             <Text style={styles.shareButtonText}>Share</Text>
           </TouchableOpacity>
@@ -124,9 +108,7 @@ export default function WishlistDetailScreen() {
         <FlatList
           data={wishlist.items}
           keyExtractor={(item) => item.productId}
-          contentContainerStyle={
-            wishlist.items.length === 0 ? styles.listEmpty : styles.list
-          }
+          contentContainerStyle={wishlist.items.length === 0 ? styles.listEmpty : styles.list}
           renderItem={({ item }) => {
             const product = getProductData(item.productId);
             const productName = product?.name ?? item.productId;
@@ -140,10 +122,7 @@ export default function WishlistDetailScreen() {
                   isOwner={isOwner}
                 />
                 {/* Remove button (AC-0025) */}
-                <TouchableOpacity
-                  style={styles.removeButton}
-                  onPress={() => handleRemove(item.productId, productName)}
-                >
+                <TouchableOpacity style={styles.removeButton} onPress={() => handleRemove(item.productId, productName)}>
                   <MaterialIcons name="delete-outline" size={18} color={colors.error} />
                   <Text style={styles.removeButtonText}>Remove</Text>
                 </TouchableOpacity>
@@ -170,26 +149,13 @@ export default function WishlistDetailScreen() {
       </View>
 
       {/* AC-0028/44: Share modal with mock users */}
-      <Modal
-        visible={showShareModal}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setShowShareModal(false)}
-      >
-        <TouchableOpacity
-          style={styles.modalBackdrop}
-          activeOpacity={1}
-          onPress={() => setShowShareModal(false)}
-        >
+      <Modal visible={showShareModal} transparent animationType="slide" onRequestClose={() => setShowShareModal(false)}>
+        <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setShowShareModal(false)}>
           <View style={styles.modalSheet}>
             <Text style={styles.modalTitle}>Share Wishlist</Text>
-            <Text style={styles.modalSubtitle}>
-              Choose someone to share "{wishlist.name}" with
-            </Text>
+            <Text style={styles.modalSubtitle}>Choose someone to share "{wishlist.name}" with</Text>
             {mockUsers.map((user) => {
-              const alreadyShared = wishlist.sharedWith.some(
-                (s) => s.contactId === user.id,
-              );
+              const alreadyShared = wishlist.sharedWith.some((s) => s.contactId === user.id);
               return (
                 <TouchableOpacity
                   key={user.id}
@@ -197,24 +163,13 @@ export default function WishlistDetailScreen() {
                   onPress={() => !alreadyShared && handleShare(user.id, user.name)}
                   disabled={alreadyShared}
                 >
-                  <MaterialIcons
-                    name="person"
-                    size={24}
-                    color={alreadyShared ? colors.textLight : colors.primary}
-                  />
-                  <Text style={[styles.userName, alreadyShared && styles.userNameShared]}>
-                    {user.name}
-                  </Text>
-                  {alreadyShared && (
-                    <Text style={styles.sharedBadge}>Shared</Text>
-                  )}
+                  <MaterialIcons name="person" size={24} color={alreadyShared ? colors.textLight : colors.primary} />
+                  <Text style={[styles.userName, alreadyShared && styles.userNameShared]}>{user.name}</Text>
+                  {alreadyShared && <Text style={styles.sharedBadge}>Shared</Text>}
                 </TouchableOpacity>
               );
             })}
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={() => setShowShareModal(false)}
-            >
+            <TouchableOpacity style={styles.cancelButton} onPress={() => setShowShareModal(false)}>
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>

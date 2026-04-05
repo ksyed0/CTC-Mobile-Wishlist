@@ -11,11 +11,7 @@ interface CategoryChipProps {
   onPress: () => void;
 }
 
-export const CategoryChip = memo(function CategoryChip({
-  category,
-  isSelected,
-  onPress,
-}: CategoryChipProps) {
+export const CategoryChip = memo(function CategoryChip({ category, isSelected, onPress }: CategoryChipProps) {
   return (
     <TouchableOpacity
       style={[styles.chip, isSelected ? styles.chipSelected : styles.chipInactive]}
@@ -25,9 +21,7 @@ export const CategoryChip = memo(function CategoryChip({
       accessibilityState={{ selected: isSelected }}
       accessibilityLabel={category.name}
     >
-      <Text style={[styles.label, isSelected ? styles.labelSelected : styles.labelInactive]}>
-        {category.name}
-      </Text>
+      <Text style={[styles.label, isSelected ? styles.labelSelected : styles.labelInactive]}>{category.name}</Text>
     </TouchableOpacity>
   );
 });

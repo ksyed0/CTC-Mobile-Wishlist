@@ -62,15 +62,11 @@ describe('productService.getProductById', () => {
   });
 
   it('throws when id is an empty string', async () => {
-    await expect(productService.getProductById('')).rejects.toThrow(
-      /id must be a non-empty string/
-    );
+    await expect(productService.getProductById('')).rejects.toThrow(/id must be a non-empty string/);
   });
 
   it('throws when id is whitespace only', async () => {
-    await expect(productService.getProductById('   ')).rejects.toThrow(
-      /id must be a non-empty string/
-    );
+    await expect(productService.getProductById('   ')).rejects.toThrow(/id must be a non-empty string/);
   });
 });
 
@@ -103,15 +99,11 @@ describe('productService.getByBarcode', () => {
   });
 
   it('throws when barcode is an empty string', async () => {
-    await expect(productService.getByBarcode('')).rejects.toThrow(
-      /barcode must be a non-empty string/
-    );
+    await expect(productService.getByBarcode('')).rejects.toThrow(/barcode must be a non-empty string/);
   });
 
   it('throws when barcode is whitespace only', async () => {
-    await expect(productService.getByBarcode('   ')).rejects.toThrow(
-      /barcode must be a non-empty string/
-    );
+    await expect(productService.getByBarcode('   ')).rejects.toThrow(/barcode must be a non-empty string/);
   });
 });
 
@@ -122,9 +114,7 @@ describe('productService.search', () => {
   it('finds products matching name (case-insensitive)', async () => {
     const result = await productService.search('mastercraft');
     expect(result.length).toBeGreaterThan(0);
-    result.forEach((p) =>
-      expect(p.name.toLowerCase()).toContain('mastercraft')
-    );
+    result.forEach((p) => expect(p.name.toLowerCase()).toContain('mastercraft'));
   });
 
   it('finds products matching description', async () => {

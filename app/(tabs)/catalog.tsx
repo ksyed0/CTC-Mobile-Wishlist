@@ -1,13 +1,5 @@
 import { useState, useMemo } from 'react';
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  ScrollView,
-} from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useProducts } from '../../contexts/ProductContext';
@@ -20,13 +12,7 @@ import { typography } from '../../theme/typography';
 
 export default function CatalogScreen() {
   const router = useRouter();
-  const {
-    filteredProducts,
-    categories,
-    isLoading,
-    selectedCategory,
-    setSelectedCategory,
-  } = useProducts();
+  const { filteredProducts, categories, isLoading, selectedCategory, setSelectedCategory } = useProducts();
 
   /* BUG-0086: Search state — filter locally for real-time response */
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,9 +20,7 @@ export default function CatalogScreen() {
   const displayedProducts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return filteredProducts;
-    return filteredProducts.filter((p) =>
-      p.name.toLowerCase().includes(query)
-    );
+    return filteredProducts.filter((p) => p.name.toLowerCase().includes(query));
   }, [filteredProducts, searchQuery]);
 
   if (isLoading) {
@@ -79,11 +63,7 @@ export default function CatalogScreen() {
 
       {/* Category chip row */}
       <View style={styles.chipBar}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.chipScroll}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipScroll}>
           {/* "All" pseudo-chip */}
           <CategoryChip
             category={{ id: '__all__', name: 'All', icon: '' }}
@@ -105,15 +85,8 @@ export default function CatalogScreen() {
       <FlatList
         data={displayedProducts}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={
-          displayedProducts.length === 0 ? styles.listEmpty : styles.list
-        }
-        renderItem={({ item }) => (
-          <ProductCard
-            product={item}
-            onPress={() => router.push(`/product/${item.id}`)}
-          />
-        )}
+        contentContainerStyle={displayedProducts.length === 0 ? styles.listEmpty : styles.list}
+        renderItem={({ item }) => <ProductCard product={item} onPress={() => router.push(`/product/${item.id}`)} />}
         ListEmptyComponent={
           <EmptyState
             icon="search-off"

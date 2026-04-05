@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Wishlist } from '../../../types/wishlist';
@@ -88,9 +80,7 @@ export default function SharedWishlistScreen() {
       <FlatList
         data={wishlist.items}
         keyExtractor={(item) => item.productId}
-        contentContainerStyle={
-          wishlist.items.length === 0 ? styles.listEmpty : styles.list
-        }
+        contentContainerStyle={wishlist.items.length === 0 ? styles.listEmpty : styles.list}
         renderItem={({ item }) => {
           const product = getProductData(item.productId);
           const productName = product?.name ?? item.productId;
@@ -100,11 +90,7 @@ export default function SharedWishlistScreen() {
           return (
             <View style={[styles.itemWrapper, isClaimed && styles.itemWrapperClaimed]}>
               {/* Resolved product name, image placeholder, price (AC-0067/68/72) */}
-              <WishlistItemRow
-                item={item}
-                productName={productName}
-                productPrice={product?.price}
-              />
+              <WishlistItemRow item={item} productName={productName} productPrice={product?.price} />
 
               {/* AC-0033: show "Claimed" badge — NOT who claimed it */}
               {/* AC-0036: owner sees no claim buttons; guests see "I'll Get This" */}
@@ -134,11 +120,7 @@ export default function SharedWishlistScreen() {
           );
         }}
         ListEmptyComponent={
-          <EmptyState
-            icon="card-giftcard"
-            title="Nothing here yet"
-            subtitle="This wishlist has no items yet."
-          />
+          <EmptyState icon="card-giftcard" title="Nothing here yet" subtitle="This wishlist has no items yet." />
         }
       />
     </View>

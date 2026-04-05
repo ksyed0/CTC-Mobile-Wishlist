@@ -44,10 +44,7 @@ export default function ProductDetailScreen() {
     // AC-0042: duplicate guard
     const alreadyIn = wishlist.items.some((i) => i.productId === product.id);
     if (alreadyIn) {
-      Alert.alert(
-        'Already in Wishlist',
-        `"${product.name}" is already in "${wishlist.name}".`,
-      );
+      Alert.alert('Already in Wishlist', `"${product.name}" is already in "${wishlist.name}".`);
       setShowPicker(false);
       return;
     }
@@ -67,17 +64,13 @@ export default function ProductDetailScreen() {
   function handleAddToWishlist() {
     // AC-0013: no wishlists → prompt to create one first, offer navigation
     if (wishlists.length === 0) {
-      Alert.alert(
-        'No Wishlists',
-        'Create a wishlist first, then come back to add this product.',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Create Wishlist',
-            onPress: () => router.push('/(tabs)/wishlists'),
-          },
-        ],
-      );
+      Alert.alert('No Wishlists', 'Create a wishlist first, then come back to add this product.', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Create Wishlist',
+          onPress: () => router.push('/(tabs)/wishlists'),
+        },
+      ]);
       return;
     }
     // AC-0014: one wishlist → add directly; multiple → show picker
@@ -113,9 +106,7 @@ export default function ProductDetailScreen() {
         <View style={styles.details}>
           <Text style={styles.name}>{product.name}</Text>
           <Text style={styles.price}>${product.price.toFixed(2)}</Text>
-          <Text style={styles.stockStatus}>
-            {product.inStock ? 'In Stock' : 'Out of Stock'}
-          </Text>
+          <Text style={styles.stockStatus}>{product.inStock ? 'In Stock' : 'Out of Stock'}</Text>
           <Text style={styles.description}>{product.description}</Text>
           <Text style={styles.barcode}>Barcode: {product.barcode}</Text>
 
@@ -141,22 +132,11 @@ export default function ProductDetailScreen() {
       </ScrollView>
 
       {/* Wishlist picker modal — shown when user has multiple wishlists */}
-      <Modal
-        visible={showPicker}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setShowPicker(false)}
-      >
-        <TouchableOpacity
-          style={styles.modalBackdrop}
-          activeOpacity={1}
-          onPress={() => setShowPicker(false)}
-        >
+      <Modal visible={showPicker} transparent animationType="slide" onRequestClose={() => setShowPicker(false)}>
+        <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setShowPicker(false)}>
           <View style={styles.modalSheet}>
             <Text style={styles.modalTitle}>Add to Wishlist</Text>
-            <Text style={styles.modalSubtitle}>
-              Choose which wishlist to add "{product.name}"
-            </Text>
+            <Text style={styles.modalSubtitle}>Choose which wishlist to add "{product.name}"</Text>
             <FlatList
               data={wishlists}
               keyExtractor={(item) => item.id}

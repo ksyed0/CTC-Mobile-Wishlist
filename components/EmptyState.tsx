@@ -12,25 +12,14 @@ interface EmptyStateProps {
   onCta?: () => void;
 }
 
-export function EmptyState({
-  icon = 'inbox',
-  title,
-  subtitle,
-  ctaLabel,
-  onCta,
-}: EmptyStateProps) {
+export function EmptyState({ icon = 'inbox', title, subtitle, ctaLabel, onCta }: EmptyStateProps) {
   return (
     <View style={styles.container}>
       <MaterialIcons name={icon} size={64} color={colors.textLight} />
       <Text style={styles.title}>{title}</Text>
       {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
       {ctaLabel && onCta ? (
-        <TouchableOpacity
-          style={styles.ctaButton}
-          onPress={onCta}
-          activeOpacity={0.8}
-          accessibilityRole="button"
-        >
+        <TouchableOpacity style={styles.ctaButton} onPress={onCta} activeOpacity={0.8} accessibilityRole="button">
           <Text style={styles.ctaText}>{ctaLabel}</Text>
         </TouchableOpacity>
       ) : null}

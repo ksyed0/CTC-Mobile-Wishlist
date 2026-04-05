@@ -8,7 +8,7 @@ import { typography } from '../theme/typography';
 
 /** BUG-0085: Category color map for placeholder views */
 const CATEGORY_COLORS: Record<string, string> = {
-  Tools: colors.primary,       // #D52B1E
+  Tools: colors.primary, // #D52B1E
   Automotive: '#1565C0',
   Outdoor: '#2E7D32',
   Sports: '#F57C00',
@@ -29,11 +29,7 @@ interface ProductCardProps {
   onAddToWishlist?: () => void;
 }
 
-export const ProductCard = memo(function ProductCard({
-  product,
-  onPress,
-  onAddToWishlist,
-}: ProductCardProps) {
+export const ProductCard = memo(function ProductCard({ product, onPress, onAddToWishlist }: ProductCardProps) {
   return (
     <TouchableOpacity
       style={styles.card}
@@ -52,15 +48,8 @@ export const ProductCard = memo(function ProductCard({
           />
         ) : (
           /* BUG-0085: Render a colored category placeholder instead of broken image */
-          <View
-            style={[
-              styles.imagePlaceholder,
-              { backgroundColor: getCategoryColor(product.category) },
-            ]}
-          >
-            <Text style={styles.categoryInitial}>
-              {getCategoryInitial(product.category)}
-            </Text>
+          <View style={[styles.imagePlaceholder, { backgroundColor: getCategoryColor(product.category) }]}>
+            <Text style={styles.categoryInitial}>{getCategoryInitial(product.category)}</Text>
           </View>
         )}
         {!product.inStock ? (
@@ -90,12 +79,7 @@ export const ProductCard = memo(function ProductCard({
               size={14}
               color={product.inStock ? colors.primary : colors.textLight}
             />
-            <Text
-              style={[
-                styles.addButtonText,
-                !product.inStock && styles.addButtonTextDisabled,
-              ]}
-            >
+            <Text style={[styles.addButtonText, !product.inStock && styles.addButtonTextDisabled]}>
               Add to Wishlist
             </Text>
           </TouchableOpacity>

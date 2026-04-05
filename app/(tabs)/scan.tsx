@@ -104,10 +104,15 @@ export default function ScanScreen() {
         <MaterialIcons name="camera-alt" size={64} color={colors.textLight} />
         <Text style={styles.permissionTitle}>Camera Access Required</Text>
         <Text style={styles.permissionBody}>
-          To scan product barcodes, this app needs access to your camera. Your
-          camera is only used while you are on this screen.
+          To scan product barcodes, this app needs access to your camera. Your camera is only used while you are on this
+          screen.
         </Text>
-        <TouchableOpacity style={styles.primaryButton} onPress={requestPermission} accessibilityRole="button" accessibilityLabel="Allow camera access">
+        <TouchableOpacity
+          style={styles.primaryButton}
+          onPress={requestPermission}
+          accessibilityRole="button"
+          accessibilityLabel="Allow camera access"
+        >
           <Text style={styles.primaryButtonText}>Allow Camera Access</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -150,10 +155,7 @@ export default function ScanScreen() {
 
   // Camera available — show scanner
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       {/* Camera viewfinder */}
       <View style={styles.cameraContainer}>
         <CameraView

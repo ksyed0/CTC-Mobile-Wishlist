@@ -1,13 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-  FlatList,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import { router } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
@@ -55,11 +47,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      showsVerticalScrollIndicator={false}
-    >
+    <ScrollView style={styles.container} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
       {/* Hero Banner */}
       <View style={styles.heroBanner}>
         <Text style={styles.heroTitle}>Canadian Tire</Text>
@@ -67,9 +55,7 @@ export default function HomeScreen() {
         {isGuest ? (
           <Text style={styles.heroWelcome}>Browsing as Guest</Text>
         ) : (
-          <Text style={styles.heroWelcome}>
-            Welcome back, {currentUser?.name ?? ''}!
-          </Text>
+          <Text style={styles.heroWelcome}>Welcome back, {currentUser?.name ?? ''}!</Text>
         )}
       </View>
 
@@ -79,9 +65,7 @@ export default function HomeScreen() {
           <MaterialIcons name="account-circle" size={32} color={colors.primary} />
           <View style={styles.guestCardText}>
             <Text style={styles.guestCardTitle}>Sign in to save wishlists</Text>
-            <Text style={styles.guestCardSubtitle}>
-              Create and share wishlists with family and friends.
-            </Text>
+            <Text style={styles.guestCardSubtitle}>Create and share wishlists with family and friends.</Text>
           </View>
           <TouchableOpacity
             style={styles.signInButton}
@@ -122,9 +106,7 @@ export default function HomeScreen() {
             {wishlistsLoading ? (
               <ActivityIndicator size="small" color={colors.primary} />
             ) : (
-              <Text style={styles.statValue}>
-                {wishlists.reduce((sum, w) => sum + w.items.length, 0)}
-              </Text>
+              <Text style={styles.statValue}>{wishlists.reduce((sum, w) => sum + w.items.length, 0)}</Text>
             )}
             <Text style={styles.statLabel}>Items Saved</Text>
           </TouchableOpacity>
@@ -138,9 +120,7 @@ export default function HomeScreen() {
             {wishlistsLoading ? (
               <ActivityIndicator size="small" color={colors.primary} />
             ) : (
-              <Text style={styles.statValue}>
-                {wishlists.filter((w) => w.sharedWith.length > 0).length}
-              </Text>
+              <Text style={styles.statValue}>{wishlists.filter((w) => w.sharedWith.length > 0).length}</Text>
             )}
             <Text style={styles.statLabel}>Shared</Text>
           </TouchableOpacity>
@@ -192,16 +172,10 @@ export default function HomeScreen() {
         accessibilityLabel={isGuest ? 'Sign in to view wishlists' : 'My wishlists, view and manage your wishlists'}
       >
         <View style={styles.ctaIcon}>
-          <MaterialIcons
-            name="favorite"
-            size={24}
-            color={isGuest ? colors.textLight : colors.primary}
-          />
+          <MaterialIcons name="favorite" size={24} color={isGuest ? colors.textLight : colors.primary} />
         </View>
         <View style={styles.ctaTextContainer}>
-          <Text style={[styles.ctaTitle, isGuest ? styles.ctaTitleDisabled : null]}>
-            My Wishlists
-          </Text>
+          <Text style={[styles.ctaTitle, isGuest ? styles.ctaTitleDisabled : null]}>My Wishlists</Text>
           <Text style={styles.ctaSubtitle}>
             {isGuest ? 'Sign in to view wishlists' : 'View and manage your wishlists'}
           </Text>

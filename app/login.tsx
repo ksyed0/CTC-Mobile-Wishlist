@@ -48,9 +48,7 @@ export default function LoginScreen() {
               accessibilityLabel={`Sign in as ${item.name}`}
             >
               <View style={styles.avatar}>
-                <Text style={styles.avatarText}>
-                  {item.name.charAt(0).toUpperCase()}
-                </Text>
+                <Text style={styles.avatarText}>{item.name.charAt(0).toUpperCase()}</Text>
               </View>
               <View style={styles.userInfo}>
                 <Text style={styles.userName}>{item.name}</Text>
@@ -71,9 +69,7 @@ export default function LoginScreen() {
           <Text style={styles.guestButtonText}>Continue as Guest</Text>
         </TouchableOpacity>
 
-        <Text style={styles.disclaimer}>
-          This is a demo app. No real authentication is performed.
-        </Text>
+        <Text style={styles.disclaimer}>This is a demo app. No real authentication is performed.</Text>
       </View>
     </View>
   );

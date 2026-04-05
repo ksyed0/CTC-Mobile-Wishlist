@@ -12,11 +12,7 @@ interface WishlistCardProps {
   isShared?: boolean;
 }
 
-export const WishlistCard = memo(function WishlistCard({
-  wishlist,
-  onPress,
-  isShared = false,
-}: WishlistCardProps) {
+export const WishlistCard = memo(function WishlistCard({ wishlist, onPress, isShared = false }: WishlistCardProps) {
   const itemCount = wishlist.items.length;
   const sharedCount = wishlist.sharedWith.length;
 
@@ -32,11 +28,7 @@ export const WishlistCard = memo(function WishlistCard({
       accessibilityLabel={`${wishlist.name}, ${itemCount} items`}
     >
       <View style={styles.iconContainer}>
-        <MaterialIcons
-          name={isShared ? 'people' : 'favorite'}
-          size={26}
-          color={colors.primary}
-        />
+        <MaterialIcons name={isShared ? 'people' : 'favorite'} size={26} color={colors.primary} />
       </View>
 
       <View style={styles.info}>

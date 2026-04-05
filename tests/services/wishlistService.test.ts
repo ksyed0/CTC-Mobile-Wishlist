@@ -77,9 +77,7 @@ describe('wishlistService.getWishlists', () => {
   });
 
   it('throws when userId is empty', async () => {
-    await expect(wishlistService.getWishlists('')).rejects.toThrow(
-      /userId must be a non-empty string/
-    );
+    await expect(wishlistService.getWishlists('')).rejects.toThrow(/userId must be a non-empty string/);
   });
 });
 
@@ -111,9 +109,7 @@ describe('wishlistService.getSharedWishlists', () => {
   });
 
   it('throws when userId is empty', async () => {
-    await expect(wishlistService.getSharedWishlists('')).rejects.toThrow(
-      /userId must be a non-empty string/
-    );
+    await expect(wishlistService.getSharedWishlists('')).rejects.toThrow(/userId must be a non-empty string/);
   });
 });
 
@@ -136,9 +132,7 @@ describe('wishlistService.getWishlistById', () => {
   });
 
   it('throws when id is empty', async () => {
-    await expect(wishlistService.getWishlistById('')).rejects.toThrow(
-      /id must be a non-empty string/
-    );
+    await expect(wishlistService.getWishlistById('')).rejects.toThrow(/id must be a non-empty string/);
   });
 });
 
@@ -169,15 +163,11 @@ describe('wishlistService.createWishlist', () => {
   });
 
   it('throws when name is empty', async () => {
-    await expect(wishlistService.createWishlist('', 'user-001')).rejects.toThrow(
-      /name must be a non-empty string/
-    );
+    await expect(wishlistService.createWishlist('', 'user-001')).rejects.toThrow(/name must be a non-empty string/);
   });
 
   it('throws when ownerId is empty', async () => {
-    await expect(wishlistService.createWishlist('List', '')).rejects.toThrow(
-      /ownerId must be a non-empty string/
-    );
+    await expect(wishlistService.createWishlist('List', '')).rejects.toThrow(/ownerId must be a non-empty string/);
   });
 });
 
@@ -186,10 +176,7 @@ describe('wishlistService.createWishlist', () => {
 // ---------------------------------------------------------------------------
 describe('wishlistService.deleteWishlist', () => {
   it('removes the wishlist from storage', async () => {
-    await seedWishlists([
-      makeWishlist({ id: 'wl-del' }),
-      makeWishlist({ id: 'wl-keep' }),
-    ]);
+    await seedWishlists([makeWishlist({ id: 'wl-del' }), makeWishlist({ id: 'wl-keep' })]);
     await wishlistService.deleteWishlist('wl-del');
     const remaining = await wishlistService.getWishlistById('wl-del');
     expect(remaining).toBeNull();
@@ -197,17 +184,13 @@ describe('wishlistService.deleteWishlist', () => {
 
   it('is a no-op when the id does not exist', async () => {
     await seedWishlists([makeWishlist({ id: 'wl-stay' })]);
-    await expect(
-      wishlistService.deleteWishlist('wl-not-exist')
-    ).resolves.toBeUndefined();
+    await expect(wishlistService.deleteWishlist('wl-not-exist')).resolves.toBeUndefined();
     const result = await wishlistService.getWishlistById('wl-stay');
     expect(result).not.toBeNull();
   });
 
   it('throws when id is empty', async () => {
-    await expect(wishlistService.deleteWishlist('')).rejects.toThrow(
-      /id must be a non-empty string/
-    );
+    await expect(wishlistService.deleteWishlist('')).rejects.toThrow(/id must be a non-empty string/);
   });
 });
 
@@ -230,9 +213,7 @@ describe('wishlistService.addItem', () => {
     await seedWishlists([
       makeWishlist({
         id: 'wl-dup',
-        items: [
-          { productId: 'prod-001', addedAt: '2026-01-01T00:00:00.000Z', claimedBy: null, note: null },
-        ],
+        items: [{ productId: 'prod-001', addedAt: '2026-01-01T00:00:00.000Z', claimedBy: null, note: null }],
       }),
     ]);
     const result = await wishlistService.addItem('wl-dup', 'prod-001');
@@ -252,15 +233,11 @@ describe('wishlistService.addItem', () => {
   });
 
   it('throws when wishlistId is empty', async () => {
-    await expect(wishlistService.addItem('', 'prod-001')).rejects.toThrow(
-      /wishlistId must be a non-empty string/
-    );
+    await expect(wishlistService.addItem('', 'prod-001')).rejects.toThrow(/wishlistId must be a non-empty string/);
   });
 
   it('throws when productId is empty', async () => {
-    await expect(wishlistService.addItem('wl-001', '')).rejects.toThrow(
-      /productId must be a non-empty string/
-    );
+    await expect(wishlistService.addItem('wl-001', '')).rejects.toThrow(/productId must be a non-empty string/);
   });
 });
 
@@ -297,15 +274,11 @@ describe('wishlistService.removeItem', () => {
   });
 
   it('throws when wishlistId is empty', async () => {
-    await expect(wishlistService.removeItem('', 'prod-001')).rejects.toThrow(
-      /wishlistId must be a non-empty string/
-    );
+    await expect(wishlistService.removeItem('', 'prod-001')).rejects.toThrow(/wishlistId must be a non-empty string/);
   });
 
   it('throws when productId is empty', async () => {
-    await expect(wishlistService.removeItem('wl-001', '')).rejects.toThrow(
-      /productId must be a non-empty string/
-    );
+    await expect(wishlistService.removeItem('wl-001', '')).rejects.toThrow(/productId must be a non-empty string/);
   });
 });
 
@@ -335,9 +308,7 @@ describe('wishlistService.shareWishlist', () => {
   });
 
   it('does not duplicate contacts already in sharedWith', async () => {
-    await seedWishlists([
-      makeWishlist({ id: 'wl-share-dup', sharedWith: [bob] }),
-    ]);
+    await seedWishlists([makeWishlist({ id: 'wl-share-dup', sharedWith: [bob] })]);
     const result = await wishlistService.shareWishlist('wl-share-dup', [bob, carol]);
     expect(result).not.toBeNull();
     // bob was already there; only carol is new
@@ -357,15 +328,13 @@ describe('wishlistService.shareWishlist', () => {
   });
 
   it('throws when wishlistId is empty', async () => {
-    await expect(wishlistService.shareWishlist('', [bob])).rejects.toThrow(
-      /wishlistId must be a non-empty string/
-    );
+    await expect(wishlistService.shareWishlist('', [bob])).rejects.toThrow(/wishlistId must be a non-empty string/);
   });
 
   it('throws when contacts is not an array', async () => {
-    await expect(
-      wishlistService.shareWishlist('wl-x', null as unknown as SharedContact[])
-    ).rejects.toThrow(/contacts must be an array/);
+    await expect(wishlistService.shareWishlist('wl-x', null as unknown as SharedContact[])).rejects.toThrow(
+      /contacts must be an array/,
+    );
   });
 });
 
@@ -377,9 +346,7 @@ describe('wishlistService.claimItem', () => {
     await seedWishlists([
       makeWishlist({
         id: 'wl-claim',
-        items: [
-          { productId: 'prod-001', addedAt: '2026-01-01T00:00:00.000Z', claimedBy: null, note: null },
-        ],
+        items: [{ productId: 'prod-001', addedAt: '2026-01-01T00:00:00.000Z', claimedBy: null, note: null }],
       }),
     ]);
     const result = await wishlistService.claimItem('wl-claim', 'prod-001', 'user-002');
@@ -401,11 +368,7 @@ describe('wishlistService.claimItem', () => {
         ],
       }),
     ]);
-    const result = await wishlistService.claimItem(
-      'wl-already-claimed',
-      'prod-001',
-      'user-003'
-    );
+    const result = await wishlistService.claimItem('wl-already-claimed', 'prod-001', 'user-003');
     expect(result).not.toBeNull();
     // Original claimer must remain
     expect(result!.items[0].claimedBy).toBe('user-002');
@@ -417,21 +380,21 @@ describe('wishlistService.claimItem', () => {
   });
 
   it('throws when wishlistId is empty', async () => {
-    await expect(
-      wishlistService.claimItem('', 'prod-001', 'user-002')
-    ).rejects.toThrow(/wishlistId must be a non-empty string/);
+    await expect(wishlistService.claimItem('', 'prod-001', 'user-002')).rejects.toThrow(
+      /wishlistId must be a non-empty string/,
+    );
   });
 
   it('throws when productId is empty', async () => {
-    await expect(
-      wishlistService.claimItem('wl-1', '', 'user-002')
-    ).rejects.toThrow(/productId must be a non-empty string/);
+    await expect(wishlistService.claimItem('wl-1', '', 'user-002')).rejects.toThrow(
+      /productId must be a non-empty string/,
+    );
   });
 
   it('throws when claimerId is empty', async () => {
-    await expect(
-      wishlistService.claimItem('wl-1', 'prod-001', '')
-    ).rejects.toThrow(/claimerId must be a non-empty string/);
+    await expect(wishlistService.claimItem('wl-1', 'prod-001', '')).rejects.toThrow(
+      /claimerId must be a non-empty string/,
+    );
   });
 });
 
@@ -478,7 +441,12 @@ describe('wishlistService error paths', () => {
 
   it('shareWishlist returns null when storage read throws', async () => {
     AsyncStorage.getItem.mockRejectedValueOnce(new Error('storage read error'));
-    const bob = { contactId: 'user-002', contactName: 'Bob', phone: '416-555-0102', sharedAt: '2026-01-02T00:00:00.000Z' };
+    const bob = {
+      contactId: 'user-002',
+      contactName: 'Bob',
+      phone: '416-555-0102',
+      sharedAt: '2026-01-02T00:00:00.000Z',
+    };
     const result = await wishlistService.shareWishlist('wl-any', [bob]);
     expect(result).toBeNull();
   });
@@ -523,9 +491,7 @@ describe('wishlistService.unclaimItem', () => {
     await seedWishlists([
       makeWishlist({
         id: 'wl-not-claimed',
-        items: [
-          { productId: 'prod-001', addedAt: '2026-01-01T00:00:00.000Z', claimedBy: null, note: null },
-        ],
+        items: [{ productId: 'prod-001', addedAt: '2026-01-01T00:00:00.000Z', claimedBy: null, note: null }],
       }),
     ]);
     const result = await wishlistService.unclaimItem('wl-not-claimed', 'prod-001');
@@ -538,14 +504,10 @@ describe('wishlistService.unclaimItem', () => {
   });
 
   it('throws when wishlistId is empty', async () => {
-    await expect(wishlistService.unclaimItem('', 'prod-001')).rejects.toThrow(
-      /wishlistId must be a non-empty string/
-    );
+    await expect(wishlistService.unclaimItem('', 'prod-001')).rejects.toThrow(/wishlistId must be a non-empty string/);
   });
 
   it('throws when productId is empty', async () => {
-    await expect(wishlistService.unclaimItem('wl-1', '')).rejects.toThrow(
-      /productId must be a non-empty string/
-    );
+    await expect(wishlistService.unclaimItem('wl-1', '')).rejects.toThrow(/productId must be a non-empty string/);
   });
 });
