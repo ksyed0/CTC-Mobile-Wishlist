@@ -725,3 +725,23 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 
 - **Execute US-0015** via `superpowers:subagent-driven-development` using `docs/superpowers/plans/2026-04-05-simulator-scan-mock.md`
 - Plan is self-contained: install 4 deps, create metro.config.js, build SimulatorScanView, wire into scan.tsx, update RELEASE_PLAN
+
+### Session Continuation — 2026-04-05 (context compaction)
+
+**Dashboard Alert System (BUG-0106)**
+
+- Added `localStorage`-based state change detection to `tools/generate-dashboard.js`: each generated page embeds `DASH_SNAPSHOT` JSON; on load, compares against previous snapshot to detect phase completions, blocked agents, pipeline finish, new bug spikes
+- Audio alerts via Web Audio API: ascending ding (normal), 3-pulse square alarm (urgent) — no sound files needed
+- Browser `Notification` API integration with 🔔 Alerts button in dashboard header
+- Created `docs/alert-test.html` — standalone test page for audio tones and browser notifications
+
+**Docs & Cleanup**
+
+- `docs/sdlc-status.json` — Phase 7 "Demo Polish" added as in-progress; US-0015 added as Pending; metrics updated (storiesTotal 14, tasksTotal 23, bugsOpen 11); session log entries added
+- `PROJECT.md` removed from git (duplicate of `project.md` — same physical file on case-insensitive macOS fs)
+- `docs/BUGS.md` — BUG-0106 logged; ID_REGISTRY advanced to BUG-0107
+
+### Ready for Next Session
+
+- **Execute US-0015** via `superpowers:subagent-driven-development` using `docs/superpowers/plans/2026-04-05-simulator-scan-mock.md`
+- **Fix BUG-0099–0105** (product image, add-to-cart, wishlist picker, wishlist image, safe area footer, logout button, keyboard modal) — all have exact fix code in `docs/BUGS.md`
