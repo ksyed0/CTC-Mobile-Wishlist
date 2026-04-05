@@ -30,7 +30,7 @@
 
 | Layer            | Technology                         | Reason                                             |
 | ---------------- | ---------------------------------- | -------------------------------------------------- |
-| Framework        | React Native + Expo (SDK 52)       | Single codebase, iOS + Android, fast POC iteration |
+| Framework        | React Native + Expo (SDK 55)       | Single codebase, iOS + Android, fast POC iteration |
 | Language         | TypeScript                         | Type safety, better DX                             |
 | Navigation       | Expo Router                        | File-based routing, simple setup                   |
 | Barcode Scanning | expo-camera / expo-barcode-scanner | Native barcode scanning, no config                 |
@@ -113,3 +113,23 @@
 ## Maintenance Log
 
 _Updated during Phase 5 — Trigger._
+
+## Tooling & Scripts
+
+- `npm run plan:generate` / `npm run plan:watch` — regenerate PlanVisualizer dashboard (`docs/plan-status.html`)
+- `npm run dashboard` / `npm run dashboard:watch` — regenerate SDLC agent dashboard (`docs/dashboard.html`)
+- `npx expo install <pkg>` — always use instead of `npm install` for Expo packages (resolves SDK-compatible versions)
+
+## Testing
+
+- Tests live in `tests/` (not `__tests__/`); run with `npm test -- --watchAll=false`
+- No React renderer installed — write pure logic/contract tests, not render tests
+
+## Codebase Gotchas
+
+- `parse-release-plan.js` requires `(EPIC-XXXX)` in US story headers to count them; US-0014 lacks this and is intentionally excluded
+- `data/product-catalog-print.html`: `.card-meta` barcode text is authoritative (matches `products.json`); rendered JsBarcode SVG values differ for some products
+- No `metro.config.js` exists — must create one to bundle non-standard asset extensions (e.g. `.html` files)
+- Simulator detection: use `Device.isDevice` from `expo-device`, not `__DEV__` (`__DEV__` is true on real devices in debug builds)
+- Playwright MCP blocks `file://` protocol — serve local HTML via `python3 -m http.server <port>` instead
+- `.claude/settings.json` Stop hook uses absolute path for `tools/capture-cost.js` — if changed back to relative, it breaks when session CWD shifts away from project root
