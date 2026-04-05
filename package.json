@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CTC Mobile Wishlist",
   "private": true,
+  "main": "expo-router/entry",
   "scripts": {
     "test": "jest --watchAll=false",
     "test:coverage": "jest --watchAll=false --coverage",
@@ -30,7 +31,6 @@
     "@eslint/js": "10.0.1",
     "@types/jest": "^30.0.0",
     "@types/react": "^19.2.14",
-    "@types/react-native": "^0.72.8",
     "canvas": "^3.2.3",
     "eslint": "10.0.3",
     "husky": "^9.1.7",
@@ -42,15 +42,18 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^15.1.1",
-    "@react-native-async-storage/async-storage": "^3.0.2",
+    "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "^55.0.11",
     "expo-camera": "~55.0.13",
+    "expo-constants": "~55.0.11",
+    "expo-font": "~55.0.6",
+    "expo-linking": "~55.0.11",
     "expo-router": "^55.0.10",
     "expo-splash-screen": "^55.0.15",
     "expo-status-bar": "^55.0.5",
-    "react": "^19.2.4",
-    "react-native": "^0.84.1",
-    "react-native-safe-area-context": "^5.7.0",
-    "react-native-screens": "^4.24.0"
+    "react": "19.2.0",
+    "react-native": "0.83.4",
+    "react-native-safe-area-context": "~5.6.2",
+    "react-native-screens": "~4.23.0"
   }
 }

@@ -545,7 +545,7 @@
 ### BUG-0084: Splash screen asset file missing — assets/ directory does not exist
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app.json` splash config; project root (no `assets/` directory)
 - **Story:** US-0001
 - **AC:** AC-0004
@@ -557,7 +557,7 @@
 ### BUG-0085: No product images bundled — all products use placeholder string
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `data/products.json` (all 23 entries), project root (no `assets/` directory)
 - **Story:** US-0002
 - **AC:** AC-0006
@@ -569,7 +569,7 @@
 ### BUG-0086: Search bar missing from catalog screen — AC-0015 and AC-0016 not implemented
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/(tabs)/catalog.tsx` — entire screen
 - **Story:** US-0005
 - **AC:** AC-0015, AC-0016
@@ -665,30 +665,33 @@
 ### BUG-0075: catalog.tsx does not use ProductCard component; wishlists.tsx does not use WishlistCard
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/(tabs)/catalog.tsx` lines 23-33; `app/(tabs)/wishlists.tsx` lines 36-50
 - **Story:** US-0003, US-0007
 - **Description:** Both screens render inline ad-hoc card `View` elements instead of using the dedicated `ProductCard` and `WishlistCard` components that Pixel built. This creates duplicate rendering logic and means the components are never exercised by the running app. The catalog also lacks the category chip filter row (AC-0009) and the product grid is single-column with no `onPress` navigation to product detail (AC-0011).
 - **Fix:** Replace inline card rendering in `catalog.tsx` with `<ProductCard product={item} onPress={() => router.push(\`/product/${item.id}\`)} />`. Replace inline rendering in `wishlists.tsx` with `<WishlistCard wishlist={item} onPress={() => router.push(\`/wishlist/${item.id}\`)} />`. Add a horizontal `FlatList`of`CategoryChip` components above the product list.
+- **Resolution:** Fixed by Pixel during Phase 3 re-review. `catalog.tsx` uses `<ProductCard>` with `onPress` navigation to `/product/${item.id}` and `<CategoryChip>` for category filters. `wishlists.tsx` uses `<WishlistCard>` with correct `isShared` and `onPress` props via SectionList. Bug was not closed at fix time due to BUG-0088 (agents on isolated branches cannot write back to shared files).
 
 ### BUG-0076: wishlistUtils.ts duplicated — exists in both main branch and Forge's pending branch
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `utils/wishlistUtils.ts`
 - **Story:** US-0009
 - **Description:** Per prior context, Forge has `wishlistUtils.ts` on a separate unmerged branch. Pixel independently created an identical copy here. When Forge's branch is merged there will be a duplicate file conflict. Both implementations compute `getTotalPrice` identically.
 - **Fix:** When merging Forge's branch, verify both files are identical, keep one copy, and delete the duplicate. Pixel's version in `utils/wishlistUtils.ts` is well-written and should be retained. Coordinate merge order to resolve without conflict.
+- **Resolution:** Fixed at merge time. Only one canonical copy of `utils/wishlistUtils.ts` exists on `main`. Copies under `.claude/worktrees/` are isolated worktree dev environments, not repo duplicates. No conflict occurred during merge.
 
 ### BUG-0079: Dashboard spotlight always shows Conductor because Conductor is always active
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js`, `docs/dashboard.html`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
 - **Description:** The "Active Agent Spotlight" banner always highlights Conductor because Conductor's status is permanently set to "active" throughout the entire pipeline. This means the spotlight never rotates to show the agent actually doing work (Forge, Pixel, etc.), making it misleading. Need an alternative approach — e.g., spotlight the most recently active non-Conductor agent, or show the agent that changed status most recently, or display Conductor only when no other agent is active.
 - **Fix:** In `generate-dashboard.js`, update spotlight selection logic: pick the non-Conductor agent with `status === "active"` first; fall back to Conductor only if no other agent is active.
+- **Resolution:** Fixed in `tools/generate-dashboard.js`. Spotlight now selects the first non-orchestrator agent with `status === "active"`; falls back to Conductor only when no other agent is active.
 
 ### BUG-0080: Dashboard needs more dynamic visualizations for agentic activity
 
@@ -703,12 +706,13 @@
 ### BUG-0081: PlanVisualizer not in sync with actual pipeline status
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** PlanVisualizer integration, `plan-visualizer.config.json`, `docs/RELEASE_PLAN.md`
 - **Story:** N/A — tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
 - **Description:** The PlanVisualizer dashboard reads from `docs/RELEASE_PLAN.md` task statuses, but agents are updating statuses inconsistently — some tasks marked Done by Keystone, others not updated by Pixel/Forge. As a result the PlanVisualizer shows stale planned status for tasks that are actually complete. Needs investigation after all Phase 3/4 merges are done.
 - **Fix:** After Phase 3 merges, audit `docs/RELEASE_PLAN.md` — ensure every TASK that was completed has `Status: Done` and every US has the correct status. Then re-run `npm run dashboard` to sync.
+- **Resolution:** Fixed this session. All 6 EPICs, all 13 user stories (including US-0001, US-0002, US-0005), and all 21 tasks updated to `Status: Done` in `docs/RELEASE_PLAN.md`. `parse-bugs.js` field-name mismatch corrected (`"Story"` lookup). `parse-coverage.js` fixed to use line coverage (91.68%) as primary metric. TC-0037/0038/0012/0040 updated to Pass. `npm run plan:generate` now shows 6/6 epics Done, 13/13 stories Done, 40/40 TCs Pass, 91.68% coverage.
 
 ### BUG-0082: Quality metrics (code coverage, tests passed) not updating during Build phase
 
@@ -723,7 +727,7 @@
 ### BUG-0083: Activity log timestamps use UTC offset instead of local time (EDT)
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `docs/sdlc-status.json` log entries, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation — log shows 16:20 when local time is 18:20)
@@ -733,22 +737,24 @@
 ### BUG-0077: AC-0041 and AC-0042 used in code but not registered in RELEASE_PLAN or ID_REGISTRY
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tests/services/productService.test.ts`, `tests/services/wishlistService.test.ts`, `services/wishlistService.ts`, `services/productService.ts`
 - **Story:** US-0006 (AC-0041 — unique barcode lookup), US-0008 (AC-0042 — duplicate item guard)
 - **Found by:** Lens (code review — feature/forge-services)
 - **Description:** Forge references AC-0041 (unique barcode lookup) and AC-0042 (duplicate item guard) in service code comments and test annotations. However, neither AC is formally defined in `docs/RELEASE_PLAN.md` under its user story. The ID_REGISTRY still shows `AC | AC-0041 | AC-0040`, meaning AC-0041 is "next available" — not assigned. AC-0042 is entirely untracked. Any reader of the release plan cannot trace these acceptance criteria.
 - **Fix:** Add AC-0041 under US-0006 in RELEASE_PLAN.md ("getByBarcode returns the matching product for a known barcode"), add AC-0042 under US-0008 ("addItem does not add a duplicate product to the wishlist"), and update ID_REGISTRY to `AC | AC-0043 | AC-0042`.
+- **Resolution:** AC-0041 added under US-0006 in `docs/RELEASE_PLAN.md`. AC-0042 added under US-0008. ID_REGISTRY updated: `AC | AC-0043 | AC-0042`.
 
 ### BUG-0078: wishlistService.removeItem missing test for empty productId guard
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tests/services/wishlistService.test.ts` (removeItem describe block, lines 268–304)
 - **Story:** US-0008
 - **Found by:** Lens (code review — feature/forge-services)
 - **Description:** `wishlistService.removeItem` validates both `wishlistId` and `productId` as non-empty strings and throws if either is falsy. The test suite covers the `wishlistId` empty guard (line 299) but has no test for `productId` empty string throwing `productId must be a non-empty string`. This leaves a validation branch untested.
 - **Fix:** Add a test case to the `removeItem` describe block: `it('throws when productId is empty')` asserting `wishlistService.removeItem('wl-001', '')` rejects with `/productId must be a non-empty string/`.
+- **Resolution:** Test already exists. `tests/services/wishlistService.test.ts` line 419: `it('throws when productId is empty', ...)` asserts `rejects.toThrow(/productId must be a non-empty string/)` against `removeItem`. Bug was filed before Forge's full test suite was committed; never closed at merge time.
 
 ### BUG-0084: Missing assets directory — app cannot build
 
@@ -779,3 +785,105 @@
 - **Found by:** Sentinel (Phase 5 testing — AC-0015, AC-0016 failing)
 - **Description:** AC-0015 requires a search bar visible at the top of the catalog screen. AC-0016 requires real-time filtering by product name. Neither was implemented — the catalog only had category chips with no text search capability.
 - **Fix:** Added a `TextInput` search bar above the category chip row in `catalog.tsx`. Search state held in `useState`; `displayedProducts` computed via `useMemo` filtering `filteredProducts` by case-insensitive name match. Clear (×) button shown when text is present. Styled with theme tokens (white background, border, rounded corners). Empty state message adapts to show the search query when no results found. Branch: `feature/polish-fixes`.
+
+### BUG-0087: Agentic dashboard resets to initial state — shows 0/6 phases, "Waiting for Conductor to activate agents"
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `docs/sdlc-status.json`, `tools/generate-dashboard.js`
+- **Story:** N/A (tooling)
+- **Found by:** User (post-pipeline observation)
+- **Description:** After the full 6-phase BLAST pipeline completed, the Agentic dashboard reverted to an initial/empty state: Phases Complete 0/6, Stories Done 0/13, Tasks Done 0/21, Tests Passed 0, Code Coverage 0%, all agents showing "idle", all stories showing "Planned", and the Agent Status panel displaying "Waiting for Conductor to activate agents...". Root cause: `sdlc-status.json` on the `main` branch was never updated past Phase 3 (Build) — Phases 4 (Integrate), 5 (Test), and 6 (Polish) completion were not written back. Additionally, the `claude/install-plan-visualizer-09PFc` branch contains a completely fresh sdlc-status.json (currentPhase: 0, all zeros) predating the pipeline, so running the dashboard on that branch always shows the reset state.
+- **Fix:** Update `sdlc-status.json` on `main` to reflect the final pipeline state: currentPhase 6, all 6 phases complete, all agents done, correct final metrics (13/13 stories, 371 tests, 91.68% coverage). Ensure any active branch that serves the dashboard is rebased or cherry-picks the corrected status file.
+
+### BUG-0089: Plan Visualizer "Cost Breakdown (Projected vs AI)" chart shows no AI Cost bars despite $299 total in header
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `tools/generate-plan.js`, `tools/lib/compute-costs.js`, `docs/AI_COST_LOG.md`
+- **Story:** N/A (tooling)
+- **Found by:** User (post-pipeline observation)
+- **Description:** The Charts tab header correctly shows $299.09 total AI cost, but the "Cost Breakdown (Projected vs AI)" bar chart shows only orange Projected bars — the teal AI Cost bars are all at 0 (invisible against the right Y-axis). Root cause: the `attributeAICosts()` function distributes costs by matching `AI_COST_LOG.md` branch names to story IDs using the pattern `feature/US-XXXX-*`. The actual branches in the cost log (`develop`, `feature/forge-services`, `feature/pixel-screens`, `claude/install-plan-visualizer-09PFc`, `feature/US-0000-business-case-deck`) do not match any `US-XXXX` story pattern, so all $299.09 accumulates under the internal `_totals` bucket and is never distributed to individual stories or epics. The per-epic chart therefore renders zero AI cost for all 6 epics.
+- **Proposed Fix:** Either (A) add a branch→story/epic mapping table to `plan-visualizer.config.json` so non-standard branch names can be attributed, or (B) fall back to distributing unattributed cost proportionally across epics by their story count when no per-story attribution is possible, or (C) show the total AI cost as a single "Unattributed" bar so the chart is not misleadingly empty.
+
+### BUG-0088: Agentic dashboard has structural concurrency issues — metrics lag, phase shown incorrectly, counts diverge from source files
+
+- **Severity:** Major
+- **Status:** Open
+- **Found in:** `docs/sdlc-status.json`, `docs/agents/DM_AGENT.md` (orchestration model)
+- **Story:** N/A (tooling / orchestration architecture)
+- **Found by:** User (post-pipeline observation)
+- **Description:** The dashboard suffers from a fundamental concurrency problem rooted in the parallel-branch agent model. Each agent runs in an isolated git worktree on its own feature branch, so any writes to `sdlc-status.json` stay on that branch and never reach the branch the dashboard reads from. This causes several observable symptoms:
+  1. **Phase shown incorrectly** — dashboard shows Phase 2 or 3 while Phase 6 is actively running, because the main/develop branch sdlc-status.json was never updated by the sub-agents.
+  2. **Bug count mismatch** — `docs/BUGS.md` accumulates new entries across branches, but `sdlc-status.json` `bugsFixed`/`bugsOpen` metrics are only updated manually by Conductor at merge time and fall behind the real count.
+  3. **Metrics batch-update at the end** — because the file is only reconciled at merge time, the dashboard appears static for hours then jumps to a near-complete state, rather than progressing incrementally.
+  4. **Agent status stale** — parallel agents (Forge + Pixel running simultaneously) each write their own agent status updates to their own branch; the dashboard on develop only ever sees the last merged branch's view.
+- **Proposed Fixes (in order of preference):**
+  - **Option A — Sequential agents on a single branch:** Run each agent sequentially on `develop` without worktree isolation. Each agent commits its sdlc-status.json update directly to develop before the next agent starts. Dashboard always reads the live state. Trade-off: no parallelism, but dashboard is always accurate.
+  - **Option B — Shared status file outside git:** Store `sdlc-status.json` outside the repo (e.g., a local SQLite file, a temp JSON at a fixed absolute path, or a small local HTTP server) that all worktrees read/write via absolute path. Dashboard polls this shared file. Trade-off: requires setup but preserves parallel agent execution.
+  - **Option C — Conductor writes status on merge:** Keep current model but require Conductor to recount `docs/BUGS.md` and update all metrics in sdlc-status.json immediately after every `git merge`. This fixes the batch-update symptom but not the within-phase lag.
+  - **Option D — Dashboard reads directly from source files:** Instead of sdlc-status.json, have generate-dashboard.js parse `docs/BUGS.md` for bug counts, `docs/RELEASE_PLAN.md` for story/task statuses, and `docs/coverage/coverage-summary.json` for coverage. sdlc-status.json becomes append-only event log only. This eliminates the sync problem for derived metrics.
+
+---
+
+## P2 — iOS Build & Runtime (Post-pipeline simulator run)
+
+### BUG-0090: Missing `"main": "expo-router/entry"` in package.json — app crashed on launch with "Unable to resolve module ../../App"
+
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `package.json`
+- **Story:** US-0001
+- **Found by:** User (first iOS simulator run)
+- **Description:** The app crashed immediately on launch with `Unable to resolve module ../../App from node_modules/expo/AppEntry.js`. Without `"main": "expo-router/entry"` in `package.json`, Expo falls back to its legacy entry point (`expo/AppEntry.js`) which expects a root-level `App.tsx`. expo-router projects use file-based routing with no `App.tsx` — the entry must point to `expo-router/entry`.
+- **Fix:** Added `"main": "expo-router/entry"` to `package.json`.
+
+### BUG-0091: Empty `src/app/.gitkeep` scaffold dir causes expo-router v4 to show "Welcome to Expo" onboarding instead of app routes
+
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `src/app/.gitkeep` (scaffold artifact), expo-router v4 directory resolution
+- **Story:** US-0001
+- **Found by:** User (second iOS simulator run)
+- **Description:** expo-router v4 (SDK 55) changed its route root resolution order — it checks `src/app` before `app`. The initial project scaffold created `src/app/.gitkeep` as a placeholder. This empty directory was detected by expo-router's `getRouterDirectory()`, which selected `src/app` as the route root. Since `src/app` was empty, expo-router rendered its built-in onboarding screen ("Start by creating a file in the src/app directory") instead of the real app routes in `app/`.
+- **Fix:** Deleted `src/app/` (contained only `.gitkeep`). expo-router now correctly falls back to `app/` as the route root.
+
+### BUG-0092: Stale `Podfile.lock` pinned `React-Core-prebuilt@0.84.1` after react-native downgrade to 0.83.4 — Swift API mismatch
+
+- **Severity:** Critical
+- **Status:** Fixed
+- **Found in:** `ios/Podfile.lock`
+- **Story:** US-0001
+- **Found by:** iOS build error (`ExpoReactNativeFactory.swift:135` — missing `bundleConfiguration` parameter)
+- **Description:** After downgrading `react-native` from `0.84.1` to `0.83.4` in `package.json`, the `Podfile.lock` was not deleted. It still pinned `React-Core-prebuilt (0.84.1)`. The 0.84.1 prebuilt XCFramework introduced a breaking API change — `viewWithModuleName:` now requires a `bundleConfiguration:` parameter and `devMenuConfiguration:` became non-nullable. expo SDK 55's `ExpoReactNativeFactory.swift` was written against the 0.83.4 API (no `bundleConfiguration`, nullable `devMenuConfiguration`), causing a Swift compile error.
+- **Fix:** Deleted `ios/Podfile.lock` and `ios/Pods/`, then re-ran `pod install`. CocoaPods resolved `React-Core-prebuilt (0.83.4)` whose XCFramework headers match the expo SDK 55 Swift code.
+
+### BUG-0093: Native iOS xcassets (icon and splash) not updated when `assets/` source files are changed — requires `expo prebuild` to sync
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `ios/CTCMobileWishlist/Images.xcassets/AppIcon.appiconset/`, `ios/CTCMobileWishlist/Images.xcassets/SplashScreenLegacy.imageset/`
+- **Story:** US-0001
+- **Found by:** User (icon and splash incorrect after asset copy)
+- **Description:** Changing `assets/icon.png` and `assets/splash.png` has no effect on a native iOS build. Expo's two-layer asset system requires `expo prebuild` to process `assets/` and write the results into the native iOS xcassets. Without running prebuild, the xcassets retained the original placeholder images (34KB each) that were generated during initial scaffold — an old Canadian Tire triangle icon and a generic splash. The app icon displayed the wrong triangle graphic on the simulator springboard; the splash screen showed a different image.
+- **Fix:** Manually copied the correct CTC-branded assets directly into the native xcassets: `assets/icon.png` → `AppIcon.appiconset/App-Icon-1024x1024@1x.png`, `assets/splash.png` → `SplashScreenLegacy.imageset/image.png|@2x|@3x`. Also deleted Xcode DerivedData to force the xcasset processor to recompile the images.
+
+### BUG-0094: App icon rejected by Xcode — RGBA with alpha channel and incorrect size (2048×2048 instead of 1024×1024)
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Found in:** `assets/icon.png`, `ios/CTCMobileWishlist/Images.xcassets/AppIcon.appiconset/`
+- **Story:** US-0001
+- **Found by:** Xcode build error ("did not have any applicable content")
+- **Description:** After copying `assets/icon.png` into the native xcassets, the Xcode build failed with: `The stickers icon set, app icon set, or icon stack named "AppIcon" did not have any applicable content.` The icon file was RGBA mode (alpha channel present) at 2048×2048 pixels. iOS requires app icons to be exactly 1024×1024 and must not have an alpha channel — presence of an alpha channel causes the xcassets compiler to silently reject the entire icon set.
+- **Fix:** Used Pillow to convert the icon: `Image.open(...).convert('RGB').resize((1024, 1024), Image.LANCZOS)`. The resulting RGB-mode 1024×1024 PNG was written to the xcassets and the build succeeded.
+
+### BUG-0095: Back button on Wishlist and Product Detail screens shows "(tabs)" instead of a readable label
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Found in:** `app/_layout.tsx`
+- **Story:** US-0007, US-0004
+- **Found by:** User (simulator demo observation)
+- **Description:** Navigating from the Wishlists tab into a wishlist detail screen showed a back button labeled "< (tabs)" — the raw expo-router file-system segment name of the parent route group. Similarly, navigating to Product Details from the Catalog tab would show the same. The `Stack.Screen` options for `wishlist/[id]`, `wishlist/shared/[id]`, and `product/[id]` did not set `headerBackTitle`, so iOS used the parent segment name `(tabs)` as the default.
+- **Fix:** Added `headerBackTitle: 'Wishlists'` to `wishlist/[id]` and `wishlist/shared/[id]` screens, and `headerBackTitle: 'Catalog'` to `product/[id]` in `app/_layout.tsx`.

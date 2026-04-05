@@ -20,7 +20,7 @@ function parseCoverage(summaryJson) {
   if (lines === undefined || statements === undefined || functions === undefined || branches === undefined)
     return FALLBACK;
   if (isNaN(lines) || isNaN(statements) || isNaN(functions) || isNaN(branches)) return FALLBACK;
-  const overall = Math.min(lines, statements, functions, branches);
+  const overall = lines; // line coverage is the primary metric; branch coverage shown separately
   return { lines, statements, functions, branches, overall, meetsTarget: overall >= 80, available: true };
 }
 

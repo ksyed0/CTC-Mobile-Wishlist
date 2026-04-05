@@ -93,8 +93,10 @@ function generateHTML(status) {
     'in-progress': '#F57C00',
   };
 
-  const phasePercent =
-    phases.length > 0 ? Math.round((phases.filter((p) => p.status === 'complete').length / phases.length) * 100) : 0;
+  const phasesComplete = phases.filter((p) => p.status === 'complete').length;
+  const pipelineComplete = phasesComplete === phases.length && phases.length > 0;
+
+  const phasePercent = phases.length > 0 ? Math.round((phasesComplete / phases.length) * 100) : 0;
 
   const storyPercent =
     metrics.storiesTotal > 0 ? Math.round((metrics.storiesCompleted / metrics.storiesTotal) * 100) : 0;
@@ -393,6 +395,19 @@ function generateHTML(status) {
 
 <div class="container">
 
+${
+  pipelineComplete
+    ? `<!-- Pipeline Complete Banner -->
+<div style="background: linear-gradient(135deg, #1a3a2a 0%, #0d2b1a 100%); border: 1px solid #2d6a4f; border-left: 4px solid #34A853; border-radius: 8px; padding: 14px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px;">
+  <span style="font-size: 28px;">🎉</span>
+  <div>
+    <div style="color: #34A853; font-size: 16px; font-weight: 700; letter-spacing: 0.5px;">PIPELINE COMPLETE — v1.0.0-poc</div>
+    <div style="color: #aaa; font-size: 12px; margin-top: 2px;">All ${phases.length} phases complete · ${metrics.storiesCompleted}/${metrics.storiesTotal} stories · ${metrics.testsPassed} tests passing · ${metrics.coveragePercent}% coverage · ${metrics.bugsFixed} bugs fixed</div>
+  </div>
+</div>`
+    : ''
+}
+
 <!-- Phase Pipeline -->
 <div class="pipeline">
 ${phases
@@ -551,8 +566,21 @@ ${(() => {
         </div>`;
         })
         .join('\n');
+      const epicStoryStatuses = epicStories.map((s) => s.status);
+      const epicDone = epicStoryStatuses.every((s) => s === 'Complete' || s === 'Done');
+      const epicInProgress = !epicDone && epicStoryStatuses.some((s) => s === 'In Progress');
+      const epicStatus = epicDone ? 'Complete' : epicInProgress ? 'In Progress' : 'Planned';
+      const epicStatusColor = epicDone ? '#34A853' : epicInProgress ? '#F57C00' : '#888';
+      const epicStatusBg = epicDone
+        ? 'rgba(52,168,83,0.15)'
+        : epicInProgress
+          ? 'rgba(245,124,0,0.15)'
+          : 'rgba(136,136,136,0.15)';
       return `      <div class="epic-group">
-        <div class="epic-header"><span class="epic-id">${epicId}</span> ${epicName}</div>
+        <div class="epic-header">
+          <span class="epic-id">${epicId}</span> ${epicName}
+          <span style="margin-left:8px; font-size:10px; padding:2px 8px; border-radius:10px; background:${epicStatusBg}; color:${epicStatusColor}; font-weight:600;">${epicStatus}</span>
+        </div>
         <div class="epic-stories">
 ${storyRows}
         </div>
@@ -576,7 +604,7 @@ ${
         .map((entry) => {
           const agentColor = agentColors[entry.agent] || '#888';
           return `    <div class="log-entry">
-      <span class="log-time" data-utc-time="${entry.time || ''}">${entry.time || ''}</span>
+      <span class="log-time" data-log-time="${entry.time || ''}">${entry.time || ''}</span>
       <span class="log-agent" style="color: ${agentColor}">${entry.agent || 'System'}</span>
       ${entry.message || ''}
     </div>`;
@@ -625,20 +653,20 @@ function updateToggleButton(theme) {
   if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
   updateToggleButton(saved);
 })();
-// BUG-0083: Convert stored HH:MM log times (written as local clock) to browser local time display
+// BUG-0083/0088: Log times are stored as local wall-clock HH:MM (24h).
+// Convert to 12-hour format using simple arithmetic — no Date/timezone manipulation
+// to avoid UTC drift across environments.
 (function() {
-  document.querySelectorAll('[data-utc-time]').forEach(function(el) {
-    var t = el.getAttribute('data-utc-time');
+  document.querySelectorAll('[data-log-time]').forEach(function(el) {
+    var t = el.getAttribute('data-log-time');
     if (!t || !t.includes(':')) return;
     var parts = t.split(':');
     var h = parseInt(parts[0], 10);
     var m = parseInt(parts[1], 10);
     if (isNaN(h) || isNaN(m)) return;
-    // Timestamps are stored as local wall-clock time at time of writing.
-    // Re-display using the browser's locale for consistent formatting.
-    var d = new Date();
-    d.setHours(h, m, 0, 0);
-    el.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    var ampm = h >= 12 ? 'PM' : 'AM';
+    var h12 = h % 12 || 12;
+    el.textContent = h12 + ':' + ('0' + m).slice(-2) + ' ' + ampm;
   });
 })();
 </script>

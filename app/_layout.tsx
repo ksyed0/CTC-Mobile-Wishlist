@@ -44,6 +44,7 @@ function RootNavigator() {
           name="product/[id]"
           options={{
             title: 'Product Details',
+            headerBackTitle: 'Catalog',
             headerStyle: { backgroundColor: colors.primary },
             headerTintColor: colors.white,
           }}
@@ -52,6 +53,7 @@ function RootNavigator() {
           name="wishlist/[id]"
           options={{
             title: 'Wishlist',
+            headerBackTitle: 'Wishlists',
             headerStyle: { backgroundColor: colors.primary },
             headerTintColor: colors.white,
           }}
@@ -60,6 +62,7 @@ function RootNavigator() {
           name="wishlist/shared/[id]"
           options={{
             title: 'Shared Wishlist',
+            headerBackTitle: 'Wishlists',
             headerStyle: { backgroundColor: colors.primary },
             headerTintColor: colors.white,
           }}

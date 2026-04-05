@@ -1,6 +1,6 @@
 # Lessons — CTC-Mobile-Wishlist
 
-<!-- Distilled from 66 bugs (BUG-0001–BUG-0066) across Sessions 4–7. -->
+<!-- Distilled from 88 bugs (BUG-0001–BUG-0088) across Sessions 4–8. -->
 
 ---
 
@@ -180,4 +180,26 @@ _The code reviewer had three verdicts (APPROVE / REQUEST CHANGES / BLOCK) but no
 **Bugs:** BUG-0062
 **Lesson:** Cleanup operations (file deletion, lock release, temp directory removal) should log warnings on failure rather than silently swallowing errors. A logged warning costs nothing during normal operation but saves significant debugging time.
 _Lock directory removal in the release() function could fail silently, leaving stale lock directories._
+**Date:** 2026-04-04
+
+---
+
+## L-0021 — Parallel Agents Must Not Share Mutable State Through Git Branches
+
+**Bugs:** BUG-0087, BUG-0088
+**Lesson:** When agents run in isolated git worktrees on separate branches, any file they write to is invisible to other branches until a merge. A shared "status" or "metrics" file placed inside the repo becomes N divergent copies — one per branch — and the dashboard or orchestrator reading from `main`/`develop` sees a frozen snapshot of the last merged state, not the live state. Three viable patterns, in order of implementation cost:
+
+1. **Sequential agents on one branch** — simplest; eliminates all concurrency; dashboard always accurate. Use when parallelism isn't the bottleneck.
+2. **Shared file outside the repo** — a fixed absolute path (e.g., `/tmp/pipeline-status.json` or a local SQLite DB) that all worktrees read/write directly. Requires atomic writes (file locking or WAL-mode SQLite) but preserves true parallelism.
+3. **Derive metrics from source files at read time** — dashboard reads `docs/BUGS.md`, `docs/RELEASE_PLAN.md`, coverage JSON directly. The status file becomes append-only event log. No sync required because the source files are each agent's actual work output, not a redundant copy.
+   _Parallel agents (Forge + Pixel + Circuit) each wrote sdlc-status.json updates to their own branches. The develop/main branch never received those updates in real time — only at merge time, hours later. The dashboard showed Phase 2 state while Phase 6 was running._
+   **Date:** 2026-04-04
+
+---
+
+## L-0022 — Derive Dashboard Metrics From Source Files, Not a Separate Sync File
+
+**Bugs:** BUG-0082, BUG-0087, BUG-0088
+**Lesson:** Any metric that can be computed from an existing artifact (bug count from `BUGS.md`, story status from `RELEASE_PLAN.md`, coverage from `coverage-summary.json`) should be computed live by the dashboard generator rather than cached in a secondary state file. Secondary state files require a synchronisation discipline that breaks under parallel writes, branch isolation, and human error. Reserve the state file for data that has no other canonical home: agent task descriptions, phase timestamps, the activity event log.
+_`sdlc-status.json` duplicated bug counts, story statuses, and coverage percentages that already existed in other files. When those files were updated (agents adding bugs, Circuit generating coverage) the state file fell behind, producing visibly wrong dashboard numbers._
 **Date:** 2026-04-04
