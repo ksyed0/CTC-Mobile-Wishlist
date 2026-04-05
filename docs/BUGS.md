@@ -585,7 +585,7 @@
 ### BUG-0067: AC-0034/AC-0035 — No "I'll Get This" claim button in shared/[id].tsx
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/wishlist/shared/[id].tsx` — entire screen
 - **Story:** US-0012
 - **AC:** AC-0034, AC-0035
@@ -595,7 +595,7 @@
 ### BUG-0068: AC-0036 — Owner can infer claimed status but owner/recipient distinction not implemented
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/wishlist/shared/[id].tsx` lines 53-57
 - **Story:** US-0012
 - **AC:** AC-0036
@@ -605,7 +605,7 @@
 ### BUG-0069: AC-0024/AC-0025 — wishlist/[id].tsx shows raw productIds, not names/prices; no remove action
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/wishlist/[id].tsx` lines 48-49, 65
 - **Story:** US-0008
 - **AC:** AC-0024, AC-0025
@@ -615,7 +615,7 @@
 ### BUG-0070: AC-0013/AC-0014 — No "Add to Wishlist" button on product detail screen
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/product/[id].tsx` — entire screen
 - **Story:** US-0004
 - **AC:** AC-0013, AC-0014
@@ -625,7 +625,7 @@
 ### BUG-0071: US-0006 scan screen is a placeholder stub — AC-0017 through AC-0020 not delivered
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/(tabs)/scan.tsx` — entire screen
 - **Story:** US-0006
 - **AC:** AC-0017, AC-0018, AC-0019, AC-0020
@@ -635,7 +635,7 @@
 ### BUG-0072: shared/[id].tsx shows raw productIds — product names and prices not resolved
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/wishlist/shared/[id].tsx` line 52
 - **Story:** US-0011
 - **AC:** AC-0032
@@ -645,7 +645,7 @@
 ### BUG-0073: No component tests for any screen or UI component
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tests/` — no component or screen test files
 - **Story:** All UI stories
 - **Description:** There are service unit tests for `wishlistService`, `productService`, `userService`, and `wishlistUtils` but zero component/screen tests exist. The agent instruction file requires component tests for all new UI components. 8 screens and 7 components were built with no corresponding test coverage.
@@ -656,16 +656,17 @@
 ### BUG-0074: No accessibility attributes on any interactive elements
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Partially Fixed
 - **Found in:** All components and screens — `components/`, `app/`
 - **Story:** US-0001 (design system compliance)
 - **Description:** Zero `accessibilityRole`, `accessibilityLabel`, or `accessibilityHint` attributes are present on any `TouchableOpacity` or `Image` element across all 7 components and 8 screens. The design system (DESIGN_SYSTEM.md §8) requires all images to have `accessibilityLabel` and all buttons to have `accessibilityRole`.
 - **Fix:** Add `accessibilityRole="button"` to all `TouchableOpacity` elements. Add descriptive `accessibilityLabel` to image placeholders. Add `accessibilityLabel` to icon-only buttons (chevron, heart icons in `WishlistCard`).
+- **Update (2026-04-05):** `accessibilityRole="button"` now present on 17+ elements across ProductCard, WishlistCard, CategoryChip, and all screens. Remaining gap: some elements still missing descriptive `accessibilityLabel` and `accessibilityHint` attributes.
 
 ### BUG-0075: catalog.tsx does not use ProductCard component; wishlists.tsx does not use WishlistCard
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `app/(tabs)/catalog.tsx` lines 23-33; `app/(tabs)/wishlists.tsx` lines 36-50
 - **Story:** US-0003, US-0007
 - **Description:** Both screens render inline ad-hoc card `View` elements instead of using the dedicated `ProductCard` and `WishlistCard` components that Pixel built. This creates duplicate rendering logic and means the components are never exercised by the running app. The catalog also lacks the category chip filter row (AC-0009) and the product grid is single-column with no `onPress` navigation to product detail (AC-0011).
@@ -674,7 +675,7 @@
 ### BUG-0076: wishlistUtils.ts duplicated — exists in both main branch and Forge's pending branch
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Resolved (worktree artifact — no actual duplication in merged codebase)
 - **Found in:** `utils/wishlistUtils.ts`
 - **Story:** US-0009
 - **Description:** Per prior context, Forge has `wishlistUtils.ts` on a separate unmerged branch. Pixel independently created an identical copy here. When Forge's branch is merged there will be a duplicate file conflict. Both implementations compute `getTotalPrice` identically.
@@ -683,7 +684,7 @@
 ### BUG-0079: Dashboard spotlight always shows Conductor because Conductor is always active
 
 - **Severity:** Major
-- **Status:** Open
+- **Status:** Fixed
 - **Found in:** `tools/generate-dashboard.js`, `docs/dashboard.html`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
@@ -693,12 +694,13 @@
 ### BUG-0080: Dashboard needs more dynamic visualizations for agentic activity
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Partially Fixed
 - **Found in:** `docs/dashboard.html`, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
 - **Description:** The current dashboard is largely static — agent cards show status badges but don't communicate the dynamism of parallel agent execution. Missing: animated progress bars during active phases, a visual pipeline/flow diagram showing agent handoffs, real-time token/tool-use counters per agent, and a timeline view of agent activity.
 - **Fix:** Add at minimum: (1) CSS pulse animation on active agent cards, (2) phase progress bar showing % of stories complete, (3) per-agent task counter that increments visibly. Longer term: Mermaid or SVG pipeline diagram in the dashboard.
+- **Update (2026-04-05):** CSS pulse animations on active agent cards and in-progress phases are implemented. Progress bars showing % complete for phases, stories, and tasks are present. Still missing: dynamic per-agent task counters that increment visibly, and Mermaid/SVG pipeline diagram.
 
 ### BUG-0081: PlanVisualizer not in sync with actual pipeline status
 
@@ -713,12 +715,13 @@
 ### BUG-0082: Quality metrics (code coverage, tests passed) not updating during Build phase
 
 - **Severity:** Minor
-- **Status:** Open
+- **Status:** Partially Fixed
 - **Found in:** `docs/sdlc-status.json`, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
 - **Description:** The dashboard metrics panel shows `coveragePercent: 0`, `testsPassed: 0`, `testsFailed: 0` throughout the Build phase even though Forge added 94 tests (all passing) and the service layer has coverage. Conductor is not updating `docs/sdlc-status.json` metrics after each agent completes. The dashboard auto-refresh picks up the JSON but the values are stale.
 - **Fix:** After each agent merge, Conductor should update the relevant metrics in `sdlc-status.json` — specifically `tasksCompleted`, `testsPassed`, and `storiesCompleted` based on RELEASE_PLAN.md status. In Phase 5 Circuit will produce the coverage report to populate `coveragePercent`.
+- **Update (2026-04-05):** Metrics now populated: testsPassed=371, coveragePercent=91.68, tasksCompleted=15. Initial zeroes resolved. No evidence of automated real-time updates during active Build phases — values appear to be updated manually at phase boundaries.
 
 ### BUG-0083: Activity log timestamps use UTC offset instead of local time (EDT)
 
