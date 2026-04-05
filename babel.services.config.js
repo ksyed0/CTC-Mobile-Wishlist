@@ -1,7 +1,7 @@
 // Babel config for transpiling TypeScript service tests via babel-jest.
 // Uses only packages that are already installed (no @babel/preset-env required).
 module.exports = {
-  presets: ['@babel/preset-typescript'],
+  presets: ['@babel/preset-typescript', ['@babel/preset-react', { runtime: 'automatic' }]],
   plugins: [
     '@babel/plugin-transform-modules-commonjs',
     '@babel/plugin-transform-class-properties',
