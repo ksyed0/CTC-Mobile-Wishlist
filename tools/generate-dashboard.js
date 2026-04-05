@@ -385,6 +385,7 @@ function generateHTML(status) {
   </div>
   <div class="controls">
     <button class="btn-header" onclick="document.getElementById('about-modal').classList.add('open')">ℹ️ About</button>
+    <button id="notif-btn" class="btn-header" onclick="requestAlerts()">🔔 Alerts</button>
     <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
     <div class="clock">
       <div class="time">${now}</div>
@@ -669,6 +670,128 @@ function updateToggleButton(theme) {
     el.textContent = h12 + ':' + ('0' + m).slice(-2) + ' ' + ampm;
   });
 })();
+
+// ── Dashboard Alert System ────────────────────────────────────────────────────
+// Detects state changes across page refreshes using localStorage, then plays
+// a Web Audio tone and fires a browser Notification when attention is needed.
+var DASH_SNAPSHOT = ${JSON.stringify({
+    currentPhase: status.currentPhase,
+    bugsOpen: metrics.bugsOpen,
+    agentStatuses: Object.fromEntries(Object.entries(agents).map(([k, v]) => [k, v.status])),
+    phaseStatuses: phases.map((p) => ({ id: p.id, status: p.status })),
+    pipelineComplete: phasesComplete === phases.length && phases.length > 0,
+  })};
+
+function playBeep(frequency, duration, type) {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type || 'sine';
+    osc.frequency.value = frequency || 880;
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (duration || 0.5));
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + (duration || 0.5));
+  } catch(e) {}
+}
+
+function sendNotification(title, body) {
+  if (Notification && Notification.permission === 'granted') {
+    new Notification(title, { body: body, icon: '' });
+  }
+}
+
+function requestAlerts() {
+  if (!('Notification' in window)) {
+    alert('Browser notifications not supported. Audio alerts will still play.');
+    return;
+  }
+  Notification.requestPermission().then(function(perm) {
+    var btn = document.getElementById('notif-btn');
+    if (perm === 'granted') {
+      if (btn) { btn.textContent = '🔔 On'; btn.style.borderColor = '#34A853'; }
+      localStorage.setItem('dashboard-notif', 'granted');
+      playBeep(660, 0.2);
+      setTimeout(function() { playBeep(880, 0.3); }, 220);
+    } else {
+      if (btn) { btn.textContent = '🔕 Denied'; }
+      localStorage.setItem('dashboard-notif', 'denied');
+    }
+  });
+}
+
+(function() {
+  // Restore button state
+  var perm = localStorage.getItem('dashboard-notif');
+  var btn = document.getElementById('notif-btn');
+  if (perm === 'granted' && btn) { btn.textContent = '🔔 On'; btn.style.borderColor = '#34A853'; }
+  if (perm === 'denied' && btn) { btn.textContent = '🔕 Off'; }
+
+  var prevRaw = localStorage.getItem('dashboard-prev-snapshot');
+  var curr = DASH_SNAPSHOT;
+
+  // Always save current as baseline for next refresh
+  localStorage.setItem('dashboard-prev-snapshot', JSON.stringify(curr));
+
+  if (!prevRaw) return; // first visit — no comparison yet
+  var prev;
+  try { prev = JSON.parse(prevRaw); } catch(e) { return; }
+
+  var alerts = [];
+
+  // Phase completion (a phase just became complete)
+  if (curr.phaseStatuses && prev.phaseStatuses) {
+    curr.phaseStatuses.forEach(function(p) {
+      var old = prev.phaseStatuses.find(function(x) { return x.id === p.id; });
+      if (old && old.status !== 'complete' && p.status === 'complete') {
+        alerts.push({ title: 'Phase ' + p.id + ' Complete', body: 'Phase ' + p.id + ' just finished — ready for your review.', urgent: false });
+      }
+    });
+  }
+
+  // Agent blocked or needs review
+  if (curr.agentStatuses && prev.agentStatuses) {
+    Object.keys(curr.agentStatuses).forEach(function(agent) {
+      var newStatus = curr.agentStatuses[agent];
+      var oldStatus = prev.agentStatuses[agent];
+      if (oldStatus !== newStatus && (newStatus === 'blocked' || newStatus === 'needs-review')) {
+        alerts.push({ title: agent + ' Needs Attention', body: agent + ' status changed to: ' + newStatus, urgent: true });
+      }
+    });
+  }
+
+  // Pipeline just completed
+  if (!prev.pipelineComplete && curr.pipelineComplete) {
+    alerts.push({ title: 'Pipeline Complete!', body: 'All phases done — pipeline finished. Return to terminal.', urgent: false });
+  }
+
+  // New bugs opened
+  if (typeof prev.bugsOpen === 'number' && typeof curr.bugsOpen === 'number' && curr.bugsOpen > prev.bugsOpen) {
+    var delta = curr.bugsOpen - prev.bugsOpen;
+    alerts.push({ title: delta + ' New Bug' + (delta > 1 ? 's' : '') + ' Opened', body: 'Bugs open: ' + curr.bugsOpen + '. Your attention may be needed.', urgent: false });
+  }
+
+  if (alerts.length === 0) return;
+
+  var hasUrgent = alerts.some(function(a) { return a.urgent; });
+
+  // Play audio: urgent = two-tone alarm, normal = single ding
+  if (hasUrgent) {
+    playBeep(440, 0.25, 'square');
+    setTimeout(function() { playBeep(880, 0.25, 'square'); }, 280);
+    setTimeout(function() { playBeep(440, 0.25, 'square'); }, 560);
+  } else {
+    playBeep(880, 0.3);
+    setTimeout(function() { playBeep(1046, 0.4); }, 350);
+  }
+
+  // Browser notifications
+  alerts.forEach(function(a) { sendNotification(a.title, a.body); });
+})();
+// ─────────────────────────────────────────────────────────────────────────────
 </script>
 
 </body>

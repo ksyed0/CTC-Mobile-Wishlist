@@ -1154,3 +1154,15 @@
   ```
 
   `KeyboardAvoidingView` is imported from `react-native` (already used elsewhere in the project) — no new dependencies required.
+
+---
+
+### BUG-0106: Dashboard shows no audio/notification alert when pipeline state changes — user has no signal to return to terminal
+
+- **Status:** Fixed
+- **Severity:** Medium
+- **Found in:** `tools/generate-dashboard.js` (dashboard HTML generation)
+- **Story:** Tooling
+- **Found by:** User (demo prep observation)
+- **Description:** The agentic SDLC dashboard auto-refreshes every 5 seconds but gives no audio or notification signal when pipeline phases complete, agents become blocked, or bugs are opened. Users stepping away from the terminal have no way to know when their attention is required.
+- **Fix:** Added a `localStorage`-based state change detection system. Each generated page embeds a `DASH_SNAPSHOT` JSON object with current phase, bug count, agent statuses, and pipeline completion state. On page load, the snapshot is compared to the previous render stored in `localStorage`. When a meaningful change is detected (phase completes, agent blocked, pipeline finishes, new bugs opened), the system plays a Web Audio API tone and fires a browser `Notification`. A "🔔 Alerts" button in the header lets users grant notification permission. No new dependencies — uses only built-in browser APIs.

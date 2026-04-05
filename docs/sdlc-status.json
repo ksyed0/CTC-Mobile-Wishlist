@@ -60,6 +60,15 @@
       "completedAt": "2026-04-04T23:15:00",
       "agents": ["All"],
       "deliverables": ["Bug fixes", "Demo prep", "Final merge"]
+    },
+    {
+      "id": 7,
+      "name": "Demo Polish",
+      "status": "in-progress",
+      "startedAt": "2026-04-05T18:00:00",
+      "completedAt": null,
+      "agents": ["Pixel", "Lens"],
+      "deliverables": ["Simulator scan mock", "Product image fixes", "UI polish", "Demo bug fixes"]
     }
   ],
   "agents": {
@@ -120,20 +129,25 @@
       "status": "Backlog",
       "title": "Lesson 'Applies to' field for faster agent scanning",
       "epic": "Tooling"
+    },
+    "US-0015": {
+      "status": "Pending",
+      "title": "Simulator scan mock — tappable catalog WebView",
+      "epic": "EPIC-0003"
     }
   },
   "metrics": {
     "storiesCompleted": 13,
-    "storiesTotal": 13,
+    "storiesTotal": 14,
     "tasksCompleted": 21,
-    "tasksTotal": 21,
+    "tasksTotal": 23,
     "testsPassed": 371,
     "testsFailed": 0,
     "testsTotal": 371,
     "tcsPassed": 40,
     "tcsFailed": 0,
     "tcsTotal": 40,
-    "bugsOpen": 4,
+    "bugsOpen": 11,
     "bugsFixed": 95,
     "coveragePercent": 91.68,
     "reviewsApproved": 4,
@@ -193,6 +207,26 @@
       "agent": "Conductor",
       "message": "BUG-0084 assets created, BUG-0085 image placeholders, BUG-0086 search bar — all fixed"
     },
-    { "time": "23:15", "agent": "Conductor", "message": "Phase 6 complete. v1.0.0-poc merged to main. Pipeline done." }
+    { "time": "23:15", "agent": "Conductor", "message": "Phase 6 complete. v1.0.0-poc merged to main. Pipeline done." },
+    {
+      "time": "18:00",
+      "agent": "Conductor",
+      "message": "Phase 7: Demo Polish started — US-0015 simulator scan mock + demo bug triage"
+    },
+    {
+      "time": "18:30",
+      "agent": "Pixel",
+      "message": "US-0015 spec + plan written — SimulatorScanView, metro config, 4 new deps"
+    },
+    {
+      "time": "18:45",
+      "agent": "Lens",
+      "message": "7 new bugs logged (BUG-0099–BUG-0105) — product image, add-to-cart, wishlist picker, safe area, logout, keyboard"
+    },
+    {
+      "time": "19:00",
+      "agent": "Conductor",
+      "message": "RELEASE_PLAN.md updated — US-0015, TASK-0022/0023 added to Epic 3 with Spec/Plan refs"
+    }
   ]
 }
