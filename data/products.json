@@ -75,7 +75,7 @@
     "name": "MotoMaster Heavy-Duty Floor Jack & Stands Combo, 3-Ton",
     "description": "3-ton hydraulic floor jack with jack stands combo. Automatic bypass prevents over-pumping, heavy-duty steel frame with baked enamel finish.",
     "price": 89.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/automotive/auto-maintenance/auto-shop-equipment-supplies/2996001/3t-truck-suv-floor-jack-stand-combo-2d90ce53-830c-4abd-9386-958a3461fd69-jpgrendition.jpg",
     "category": "cat-automotive",
     "inStock": true
   },
@@ -85,7 +85,7 @@
     "name": "MotoMaster Dual Power Digital Tire Inflator",
     "description": "Digital tire inflator with auto shut-off at preset pressure. 12V DC and 120V AC power options. Programmable digital control with settings memory.",
     "price": 44.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/automotive/auto-maintenance/auto-shop-equipment-supplies/0095206/motomaster-digital-road-home-inflator-09a77d28-fb0c-4283-93ec-0a9852671a78-jpgrendition.jpg",
     "category": "cat-automotive",
     "inStock": true
   },
@@ -95,7 +95,7 @@
     "name": "MotoMaster Winter Windshield Washer Fluid, -45°C, 3.78-L",
     "description": "Winter formula windshield washer fluid rated to -45°C. Prevents frost, removes road grime, and helps remove light ice from windshield.",
     "price": 7.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/automotive/auto-maintenance/windshield-washer-fluid/0294173/motomaster-windshield-washer-fluid-with-detergent-45c-f8561f6f-0db5-4335-8c59-552f5c6ce621-jpgrendition.jpg",
     "category": "cat-automotive",
     "inStock": true
   },
@@ -105,7 +105,7 @@
     "name": "Outbound 3-Season, 6-Person Camping Dome Tent",
     "description": "6-person dome tent with full rainfly, two doors, and mesh windows for ventilation. Free-standing design for easy setup. Includes carry bag.",
     "price": 149.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/camping/tents-shelters/0765445/outbound-6-person-dome-tent-bb937409-34b1-4351-a66e-e2a4ed6270c8-jpgrendition.jpg",
     "category": "cat-outdoor",
     "inStock": true
   },
@@ -115,7 +115,7 @@
     "name": "Coleman Double-Burner 20,000 BTUs Camp Stove",
     "description": "Two-burner propane camp stove with 20,000 BTU. PerfectFlow pressure control and WindBlock panels that fold down as side tables.",
     "price": 79.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/camping/camping-living/0762012/coleman-2-burner-instant-start-camp-stove-b4468644-9803-4ece-b5dc-dfec1132edfd.png",
     "category": "cat-outdoor",
     "inStock": true
   },
@@ -125,7 +125,7 @@
     "name": "Outbound Deluxe Mummy Sleeping Bag, -7°C",
     "description": "3-season mummy sleeping bag rated to -7°C. Synthetic Quadratherm insulation, 33 x 85\", fits up to 6'9\". Full-length draft tube.",
     "price": 59.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/camping/camping-furniture/0760740/outbound-mummy-71c81cb0-6ca0-4771-9114-6bf660fcf436-jpgrendition.jpg",
     "category": "cat-outdoor",
     "inStock": true
   },
@@ -135,7 +135,7 @@
     "name": "Woods ARCTIC Roto-Moulded Cooler, 20-L",
     "description": "20-litre rotomolded cooler with thick insulation. Bear-resistant, durable construction with integrated handle. Keeps ice for days.",
     "price": 449.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/camping/hydration-coolers/0853757/woods-roto-cooler-20l-505f8738-a29d-4abd-99d3-f32de1399616-jpgrendition.jpg",
     "category": "cat-outdoor",
     "inStock": false
   },
@@ -145,7 +145,7 @@
     "name": "Outbound Wide Back Folding Camping Quad Chair",
     "description": "Oversized folding quad chair with wide back, cup holder, and carry strap. Lightweight and comfortable for camping or the backyard.",
     "price": 39.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/camping/camping-furniture/0765481/outbound-deluxe-wide-back-armchair-ae96604f-d2a6-4356-b8e2-b823c094060f-jpgrendition.jpg",
     "category": "cat-outdoor",
     "inStock": true
   },
@@ -155,7 +155,7 @@
     "name": "Outbound Men's Traverse Waterproof Hiking Boots",
     "description": "Mid-cut waterproof breathable hiking boots with EVA cushioned footbed and ankle support. Durable outsole for all terrain.",
     "price": 119.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/footwear-apparel/summer-footwear-apparel/3992361/outbound-traverse-men-s-hiker-7-2803860f-29ac-49b9-93a2-419f01cde013-jpgrendition.jpg",
     "category": "cat-outdoor",
     "inStock": true
   },
@@ -165,7 +165,7 @@
     "name": "Spalding Street Performance Outdoor Basketball, Size 7",
     "description": "Official size 7 outdoor basketball with durable rubber cover. Deep channel design for superior grip on all surfaces.",
     "price": 34.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/team-sports-and-golf/sports-equipment-accessories/1840137/spalding-platinum-basketball-size-7-b751e6a4-14ec-4d9a-a3f7-ee5b7a03c97e-jpgrendition.jpg",
     "category": "cat-sports",
     "inStock": true
   },
@@ -175,7 +175,7 @@
     "name": "CCM Ribcor 88K Senior Hockey Skates",
     "description": "Performance hockey skates with RocketFrame Quarter Package, MetaFrame Technology, and stainless steel blade. Senior sizes 7-11.5.",
     "price": 199.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/hockey/skates/4833844/ccm-ribcor-88k-hockey-skate-junior-size-1-0-d-9eb09050-3b7a-4d7e-a465-8cada26396a5-jpgrendition.jpg",
     "category": "cat-sports",
     "inStock": true
   },
@@ -185,7 +185,7 @@
     "name": "Bauer Supreme Impact Composite Hockey Stick, Senior",
     "description": "Composite hockey stick with ABS blade and mid-kick flex for powerful shots. Available in left and right, senior flex options.",
     "price": 79.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/hockey/hockey-sticks/0836639/bauer-supreme-impact-composite-stick-senior-left-cc654fc5-a2be-45af-aca0-5bb0a53f0a1c-jpgrendition.jpg",
     "category": "cat-sports",
     "inStock": true
   },
@@ -195,7 +195,7 @@
     "name": "Gaiam Reversible Yoga Mat, 6-mm",
     "description": "Non-slip 6mm thick reversible yoga mat with textured surface for stability. Non-toxic PVC, 68 x 24 inches.",
     "price": 29.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/exercise/exercise-accessories/1840600/gaiam-6mm-reversible-navy-blue-yoga-mat-8d59bc1f-06d2-4101-a787-6a498411d0f8-jpgrendition.jpg",
     "category": "cat-sports",
     "inStock": true
   },
@@ -205,7 +205,7 @@
     "name": "WA:KE Athletic Adjustable Dumbbell, 5-25-lb",
     "description": "Adjustable dumbbell, 5-25 lbs. Safety weight dial system with anti-slip metal handle. Replaces multiple pairs, saves space.",
     "price": 249.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/playing/exercise/strength/1842074/wa-ke-athletic-5-25lb-adjustable-dumbbell-8dc549aa-0c7c-4267-aa6d-8f58864fbdcb-jpgrendition.jpg",
     "category": "cat-sports",
     "inStock": false
   },
@@ -215,7 +215,7 @@
     "name": "Weber Spirit E-310 3-Burner Propane Gas BBQ",
     "description": "3-burner propane BBQ with porcelain-enameled cast-iron cooking grates. Electronic crossover ignition, flavorizer bars, built-in lid thermometer.",
     "price": 699.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/seasonal-gardening/backyard-living/outdoor-cooking/0853196/weber-spirit-3-burner-propane-bbq-a487b9c3-b7b3-47d7-8ca6-2f58f3a8283c-jpgrendition.jpg",
     "category": "cat-home",
     "inStock": true
   },
@@ -225,7 +225,7 @@
     "name": "Yardworks Heavy Duty Hose, 50-ft",
     "description": "Heavy-duty 50-ft garden hose with dual-channel kink-resistant construction and crush-resistant couplings. 5-year warranty.",
     "price": 29.99,
-    "image": "placeholder",
+    "image": "https://media-www.canadiantire.ca/product/seasonal-gardening/outdoor-tools/watering/0593305/yardworks-50-heavy-duty-garden-hose-f651aac2-7b28-44cc-b7f7-5e0dbbfe4ab8-jpgrendition.jpg",
     "category": "cat-home",
     "inStock": true
   }
