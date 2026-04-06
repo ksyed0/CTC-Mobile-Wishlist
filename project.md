@@ -112,7 +112,7 @@
 
 ## Maintenance Log
 
-_Updated during Phase 5 — Trigger._
+_Updated session 2026-04-05 — v0.5.0 released. EPIC-0007 specs + plans ready. Next: execute Plan A (US-0016–US-0019) then Plan B (US-0020–US-0024)._
 
 ## Tooling & Scripts
 
@@ -129,7 +129,7 @@ _Updated during Phase 5 — Trigger._
 
 - `parse-release-plan.js` requires `(EPIC-XXXX)` in US story headers to count them; US-0014 lacks this and is intentionally excluded
 - `data/product-catalog-print.html`: `.card-meta` barcode text is authoritative (matches `products.json`); rendered JsBarcode SVG values differ for some products
-- No `metro.config.js` exists — must create one to bundle non-standard asset extensions (e.g. `.html` files)
+- `metro.config.js` exists and bundles `.html` asset extensions (required for SimulatorScanView WebView)
 - Simulator detection: use `Device.isDevice` from `expo-device`, not `__DEV__` (`__DEV__` is true on real devices in debug builds)
 - Playwright MCP blocks `file://` protocol — serve local HTML via `python3 -m http.server <port>` instead
 - `.claude/settings.json` Stop hook uses absolute path for `tools/capture-cost.js` — if changed back to relative, it breaks when session CWD shifts away from project root

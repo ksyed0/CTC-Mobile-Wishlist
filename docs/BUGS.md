@@ -1116,6 +1116,32 @@
 - **Description:** The dashboard uses `<meta http-equiv="refresh" content="5">` to stay live during pipeline runs. This causes a full browser page reload every 5 seconds, resulting in a visible blink/flash even when no data has changed. It also resets scroll position and any expanded UI state on every cycle.
 - **Enhancement:** Replace the meta-refresh with a WebSocket or SSE (Server-Sent Events) connection so the dashboard can receive push updates from a lightweight local dev server (e.g. `ws` or Node's `http` module). Alternatively, a polling `fetch` from JavaScript against a JSON endpoint would allow DOM diffing without a full reload. This is a project-agnostic pipeline improvement relevant to any team using the SDLC dashboard tooling.
 
+### BUG-0109: ProductCard savedPill and savedPillText use hardcoded hex colors instead of theme tokens
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Fix Branch:** feature/plan-a-fixes
+- **Found in:** `components/ProductCard.tsx` (lines 197, 208)
+- **Story:** US-0017
+- **Found by:** Lens (code review)
+- **Description:** The `savedPill` style uses `backgroundColor: '#E8F5E9'` and `savedPillText` uses `color: '#2E7D32'` — both are hardcoded hex values that bypass the design-system theme tokens. The theme `colors.ts` does not expose a `successLight` or `savedBackground` token, so Pixel introduced ad-hoc colours. Per the design system compliance rule, all colours must come from `theme/colors.ts`.
+- **Fix:** Added `successLight: '#E8F5E9'` and `successDark: '#2E7D32'` tokens to `theme/colors.ts`; updated `ProductCard.tsx` to reference `colors.successLight` and `colors.successDark`.
+
+---
+
+### BUG-0110: BottomSheetInput confirm button is never visually disabled when input is empty — AC-0060 not met
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Fix Branch:** feature/plan-a-fixes
+- **Found in:** `components/BottomSheetInput.tsx` (lines 81–88), `app/wishlist/[id].tsx` (line 85)
+- **Story:** US-0019
+- **Found by:** Lens (code review)
+- **Description:** AC-0060 requires the save button to be disabled when the input is empty. The component uses a `useRef` (not `useState`) to track the current value, so the component cannot reactively re-render to toggle `disabled`. The confirm `TouchableOpacity` has no `disabled` prop and no visual disabled style. The rename handler in `wishlist/[id].tsx` does guard `!newName.trim()` so data integrity is safe, but the button appears pressable even when the field is empty, which fails the acceptance criterion.
+- **Fix:** Converted `valueRef` to `useState` in `BottomSheetInput`. Added `disabled={value.trim() === ''}` to the confirm `TouchableOpacity` and a `confirmButtonDisabled: { opacity: 0.4 }` style for visual feedback.
+
+---
+
 ### BUG-0106: Dashboard shows no audio/notification alert when pipeline state changes — user has no signal to return to terminal
 
 - **Status:** Fixed
