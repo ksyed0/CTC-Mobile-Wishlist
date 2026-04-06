@@ -1,13 +1,26 @@
 // jest.config.js
 module.exports = {
   testEnvironment: 'node',
-  testMatch: ['**/tests/unit/**/*.test.js', '**/tests/services/**/*.test.ts', '**/tests/components/**/*.test.ts'],
+  testMatch: [
+    '**/tests/unit/**/*.test.js',
+    '**/tests/services/**/*.test.ts',
+    '**/tests/components/**/*.test.ts',
+    '**/tests/components/**/*.test.tsx',
+  ],
   testPathIgnorePatterns: ['/node_modules/', '/src/'],
   transform: {
-    '^.+\\.tsx?$': ['babel-jest', { configFile: './babel.services.config.js' }],
+    // .tsx component test files: use babel config with JSX + React support
+    '^.+\\.tsx$': ['babel-jest', { configFile: './babel.components.config.js' }],
+    // .ts and .js: original services config (no JSX needed)
+    '^.+\\.(ts|js)$': ['babel-jest', { configFile: './babel.services.config.js' }],
   },
+  // Component test setup is handled inline in each .tsx test file via jest.mock()
   moduleNameMapper: {
     '^@react-native-async-storage/async-storage$': '<rootDir>/tests/services/__mocks__/async-storage.js',
+    // Mock react-native — use its built-in jest mock
+    '^react-native$': '<rootDir>/tests/__mocks__/react-native.js',
+    // Stub image imports
+    '\\.(png|jpg|jpeg|gif|svg)$': '<rootDir>/tests/__mocks__/fileMock.js',
   },
   collectCoverageFrom: ['tools/lib/**/*.js', 'services/**/*.ts', 'utils/wishlistUtils.ts'],
   coverageReporters: ['text', 'lcov', 'json-summary'],
