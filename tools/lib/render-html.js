@@ -348,7 +348,7 @@ function renderHierarchyTab(data) {
   const columnView = epicBlocks
     .map(
       ({ epic, accent, epicProjected, storyRows }) => `
-    <div class="epic-block mb-4 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden" style="border-left:4px solid ${accent.border}">
+    <div class="epic-block mb-4 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden" data-epic-status="${esc(epic.status)}" style="border-left:4px solid ${accent.border}">
       <div class="px-4 py-3 flex flex-wrap items-center gap-3 cursor-pointer select-none" style="background:${accent.bg}" onclick="toggleSection('epic-stories-${jsEsc(epic.id)}','epic-arrow-${jsEsc(epic.id)}')">
         <span id="epic-arrow-${esc(epic.id)}" class="text-slate-400 text-xs w-3 flex-shrink-0">&#9660;</span>
         <span class="font-mono text-xs font-bold uppercase tracking-widest" style="color:${accent.border}">${epic.id}</span>
@@ -1790,11 +1790,13 @@ function renderScripts(data, options = {}) {
       row.style.display = hide ? 'none' : '';
     });
     document.querySelectorAll('.epic-block').forEach(block => {
-      const visibleChildren = block.querySelectorAll('.story-row:not([style*="display: none"])');
+      // Card view: story rows live in a sibling div (epic-cards-*), not inside .epic-block
+      const wrapper = block.closest('.mb-8');
+      const searchScope = wrapper || block;
+      const visibleChildren = searchScope.querySelectorAll('.story-row:not([style*="display: none"])');
       const header = block.querySelector('div[onclick*="toggleSection"]');
       if (header) header.style.display = visibleChildren.length > 0 ? '' : 'none';
       block.style.display = visibleChildren.length > 0 ? '' : 'none';
-      const wrapper = block.closest('.mb-8');
       if (wrapper) wrapper.style.display = visibleChildren.length > 0 ? '' : 'none';
     });
     document.querySelectorAll('.ksw-swimlane').forEach(swimlane => {
@@ -1889,6 +1891,13 @@ function renderScripts(data, options = {}) {
 
     // Restore hierarchy view preference
     setHierarchyView(localStorage.getItem('hierarchyView') || 'column');
+
+    // Auto-collapse Done epics in column view
+    document.querySelectorAll('#hier-column-view .epic-block[data-epic-status="Done"]').forEach(function(block) {
+      var id = block.querySelector('[id^="epic-stories-"]');
+      var arrow = block.querySelector('[id^="epic-arrow-"]');
+      if (id && !id.classList.contains('hidden')) toggleSection(id.id, arrow && arrow.id);
+    });
 
     // Restore filter state (bug status intentionally not restored — bug status changes between sessions)
     ['f-epic','f-status','f-priority'].forEach(id => {

@@ -728,6 +728,7 @@
 - **Severity:** Major
 - **Status:** Fixed
 - **Fix Branch:** feature/BUG-0073-component-tests
+- **Estimated Cost USD:** 4.50
 - **Found in:** `tests/` — no component or screen test files
 - **Story:** All UI stories
 - **Description:** There are service unit tests for `wishlistService`, `productService`, `userService`, and `wishlistUtils` but zero component/screen tests exist. The agent instruction file requires component tests for all new UI components. 8 screens and 7 components were built with no corresponding test coverage.
@@ -785,6 +786,7 @@
 
 - **Severity:** Minor
 - **Status:** Open
+- **Estimated Cost USD:** 1.00
 - **Found in:** `docs/dashboard.html`, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
@@ -807,6 +809,7 @@
 
 - **Severity:** Minor
 - **Status:** Open
+- **Estimated Cost USD:** 0.75
 - **Found in:** `docs/sdlc-status.json`, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
@@ -887,6 +890,7 @@
 
 - **Severity:** Major
 - **Status:** Open
+- **Estimated Cost USD:** 6.00
 - **Found in:** `docs/sdlc-status.json`, `docs/agents/DM_AGENT.md` (orchestration model)
 - **Story:** N/A (tooling / orchestration architecture)
 - **Found by:** User (post-pipeline observation)
@@ -1004,6 +1008,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 1.50
 - **Found in:** `app/product/[id].tsx`
 - **Story:** US-0004
 - **Found by:** User (simulator demo observation)
@@ -1015,6 +1020,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 0.75
 - **Found in:** `app/product/[id].tsx`
 - **Story:** US-0004
 - **Found by:** User (simulator demo observation)
@@ -1026,6 +1032,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 0.75
 - **Found in:** `app/product/[id].tsx`
 - **Story:** US-0004
 - **Found by:** User (simulator demo observation)
@@ -1037,6 +1044,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 0.75
 - **Found in:** `app/wishlist/[id].tsx`
 - **Story:** US-0008
 - **Found by:** User (simulator demo observation)
@@ -1048,6 +1056,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 1.00
 - **Found in:** `app/wishlist/[id].tsx`
 - **Story:** US-0009
 - **Found by:** User (simulator demo observation)
@@ -1059,6 +1068,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 1.50
 - **Found in:** `app/(tabs)/_layout.tsx`
 - **Story:** US-0013
 - **Found by:** User (simulator demo observation)
@@ -1070,6 +1080,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 1.00
 - **Found in:** `app/(tabs)/wishlists.tsx`
 - **Story:** US-0007
 - **Found by:** User (simulator demo observation)
@@ -1080,6 +1091,7 @@
 
 - **Severity:** Medium
 - **Status:** To Do (Enhancement)
+- **Estimated Cost USD:** 2.50
 - **Found in:** `docs/sdlc-status.json` (phases array), `tools/generate-dashboard.js` (phase strip rendering)
 - **Story:** Tooling
 - **Found by:** User (observation — screenshot showing 7/8 complete when only 1 phase is active in current session)
@@ -1110,6 +1122,7 @@
 
 - **Severity:** Low
 - **Status:** Backlog (Future Enhancement)
+- **Estimated Cost USD:** 0.50
 - **Found in:** `tools/generate-dashboard.js` (line 112 — `<meta http-equiv="refresh" content="5">`)
 - **Story:** Tooling
 - **Found by:** User (observation)
@@ -1121,6 +1134,7 @@
 - **Severity:** Major
 - **Status:** Fixed
 - **Fix Branch:** feature/plan-a-fixes
+- **Estimated Cost USD:** 1.50
 - **Found in:** `components/ProductCard.tsx` (lines 197, 208)
 - **Story:** US-0017
 - **Found by:** Lens (code review)
@@ -1134,6 +1148,7 @@
 - **Severity:** Major
 - **Status:** Fixed
 - **Fix Branch:** feature/plan-a-fixes
+- **Estimated Cost USD:** 1.50
 - **Found in:** `components/BottomSheetInput.tsx` (lines 81–88), `app/wishlist/[id].tsx` (line 85)
 - **Story:** US-0019
 - **Found by:** Lens (code review)
@@ -1147,6 +1162,7 @@
 - **Severity:** Major
 - **Status:** Fixed
 - **Fix Branch:** feature/plan-b-ui
+- **Estimated Cost USD:** 2.00
 - **Found in:** `app/wishlist/[id].tsx` (lines ~210, ~311–332)
 - **Story:** US-0024
 - **Found by:** Lens (code review)
@@ -1154,7 +1170,7 @@
   1. `copyLinkButton` (line ~210) — no `accessibilityRole` or `accessibilityLabel`.
   2. Privacy picker option buttons in the modal `.map()` (lines ~311–329) — no `accessibilityRole` or `accessibilityLabel`.
   3. Privacy picker cancel button (line ~332) — no `accessibilityRole`.
-  Per L-0028 and design system rule, every `TouchableOpacity` must have `accessibilityRole="button"` and a descriptive `accessibilityLabel`. The restock and price-drop buttons in US-0022/0023 correctly include both — this inconsistency is in the US-0024 commit only.
+     Per L-0028 and design system rule, every `TouchableOpacity` must have `accessibilityRole="button"` and a descriptive `accessibilityLabel`. The restock and price-drop buttons in US-0022/0023 correctly include both — this inconsistency is in the US-0024 commit only.
 - **Fix:** Add `accessibilityRole="button"` to all three touchables. Add `accessibilityLabel="Copy link"` to copyLinkButton. Add `accessibilityLabel={option.label}` (or `\`Set privacy to \${option.label}\``) to each picker option. Add `accessibilityLabel="Cancel"` to the cancel button.
 
 ---
@@ -1164,6 +1180,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/plan-b-ui
+- **Estimated Cost USD:** 0.50
 - **Found in:** `app/wishlist/[id].tsx` (line ~602, `privacyOptionSubtitle` style)
 - **Story:** US-0024
 - **Found by:** Lens (code review)
@@ -1176,6 +1193,7 @@
 
 - **Status:** Fixed
 - **Severity:** Medium
+- **Estimated Cost USD:** 3.50
 - **Found in:** `tools/generate-dashboard.js` (dashboard HTML generation)
 - **Story:** Tooling
 - **Found by:** User (demo prep observation)
