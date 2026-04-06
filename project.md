@@ -112,7 +112,7 @@
 
 ## Maintenance Log
 
-_Updated session 2026-04-05 — v0.5.0 released. EPIC-0007 specs + plans ready. Next: execute Plan A (US-0016–US-0019) then Plan B (US-0020–US-0024)._
+_Updated session 2026-04-05 — v1.0.0 released. All 24 stories complete. EPIC-0007 (Plan A + Plan B) fully shipped. develop → pushed. No outstanding backlog._
 
 ## Tooling & Scripts
 
