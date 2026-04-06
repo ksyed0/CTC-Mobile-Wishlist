@@ -1076,6 +1076,36 @@
 - **Description:** When creating a new wishlist, tapping the name input caused the iOS keyboard to appear and slide over the modal, hiding the text field. The user could not see what they were typing.
 - **Fix:** Wrapped the modal sheet content in a `KeyboardAvoidingView` with `behavior="padding"` so the modal shifts upward when the keyboard appears.
 
+### BUG-0108: Dashboard phase pipeline accumulates across sessions — misleading progress metrics
+
+- **Severity:** Medium
+- **Status:** To Do (Enhancement)
+- **Found in:** `docs/sdlc-status.json` (phases array), `tools/generate-dashboard.js` (phase strip rendering)
+- **Story:** Tooling
+- **Found by:** User (observation — screenshot showing 7/8 complete when only 1 phase is active in current session)
+- **Description:** The `phases` array in `sdlc-status.json` grows indefinitely across sessions. The dashboard renders all phases in a single horizontal strip, so completed phases from prior sessions (Blueprint, Architect, Build, etc.) always show alongside the current session's active phase. This makes "Phases Complete: 7/8" misleading — 7 of those phases belong to previous sessions and the ratio has no meaning within the current session's context.
+- **Root cause:** `sdlc-status.json` has no concept of sessions. All phases are flat in one array, and the dashboard has no way to distinguish "current session" from "historical session" phases.
+- **Approaches considered:**
+
+  **A — Per-session reset (user's suggestion):** Add a `sessions` array to `sdlc-status.json`. Each session is `{ id, startedAt, phases: [...] }`. The dashboard shows only the current (last) session's phases and progress metrics. Previous sessions collapse into a "Session History" accordion. Metrics (phases complete, tasks done) reset per session.
+  - ✅ Clean, accurate per-session metrics
+  - ✅ Historical sessions still browsable
+  - ⚠️ Requires schema migration + dashboard rendering change
+
+  **B — Phase type tagging:** Add `"type": "sdlc" | "iteration"` to each phase. BLAST phases 1–6 are `sdlc` (run once, shown as project foundation). Any subsequent phases are `iteration` (shown in a separate "Iterations" row below). Progress metrics only count `iteration` phases for the current session.
+  - ✅ Minimal schema change
+  - ✅ Preserves the visual BLAST pipeline as a permanent reference
+  - ⚠️ Iteration phases still accumulate across sessions without session grouping
+
+  **C — Rolling current-session view (simplest):** Add `"sessionStartPhaseId"` to the root of `sdlc-status.json`. Conductor sets this to the first phase ID of each session. The dashboard renders phases before `sessionStartPhaseId` as a greyed "prior work" strip and phases from `sessionStartPhaseId` onward as the active pipeline. Metrics only count active phases.
+  - ✅ Single integer field change — minimal migration
+  - ✅ Dashboard change is CSS-level (grey vs active styling)
+  - ✅ "Phases Complete" becomes meaningful within the session
+  - ⚠️ Prior work strip can get long over many sessions
+
+- **Recommendation:** **Option C** for now (low effort, high impact on the misleading metric). Option A is the proper long-term fix if the project runs many more sessions.
+- **Fix scope:** `docs/sdlc-status.json` (add `sessionStartPhaseId`), `tools/generate-dashboard.js` (split phase strip rendering, scope metrics to session phases).
+
 ### BUG-0107: Dashboard blinks on every auto-refresh due to full-page reload architecture
 
 - **Severity:** Low
