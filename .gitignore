@@ -15,6 +15,9 @@ coverage/
 *.swo
 .history/
 
+# Superpowers brainstorming session files
+.superpowers/
+
 # Lock files (orchestrator concurrency)
 .locks/
 

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="referrer" content="no-referrer" />
+  <title>CTC Wishlist — Product Catalog</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"></script>
+  <style>
+    @page {
+      size: letter;
+      margin: 10mm;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #e8e8e8;
+    }
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none !important; margin-bottom: 0 !important; }
+    }
+
+    /* ── Page grid ── */
+    .page {
+      width: 196mm;
+      height: 257mm;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 3.5mm;
+      margin: 8mm auto;
+      background: white;
+      box-shadow: 0 2px 12px rgba(0,0,0,.18);
+      page-break-after: always;
+      overflow: hidden;
+    }
+
+    /* ── Card ── */
+    .card {
+      border: 0.6pt solid #d0d0d0;
+      border-radius: 2.5mm;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: white;
+    }
+
+    /* Header */
+    .card-header {
+      background: #CC0000;
+      color: white;
+      padding: 2mm 2.5mm 1.5mm;
+      flex-shrink: 0;
+    }
+    .card-meta {
+      font-size: 5.5pt;
+      text-transform: uppercase;
+      letter-spacing: .3pt;
+      opacity: .88;
+      margin-bottom: .8mm;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-meta .sep { margin: 0 1.5pt; opacity: .5; }
+    .card-title {
+      font-size: 7pt;
+      font-weight: 700;
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Image */
+    .card-image {
+      background: #f8f8f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5mm;
+      border-bottom: .5pt solid #eee;
+      height: 27mm;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .card-image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Body */
+    .card-body {
+      padding: 1.5mm 2.5mm 1mm;
+      border-bottom: .5pt solid #eee;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    .card-desc {
+      font-size: 6pt;
+      color: #444;
+      line-height: 1.4;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+    .card-price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1mm;
+    }
+    .card-price {
+      font-size: 12pt;
+      font-weight: 900;
+      color: #CC0000;
+      line-height: 1;
+    }
+    .card-price sup { font-size: 6pt; vertical-align: super; }
+    .card-stock {
+      font-size: 5pt;
+      font-weight: 700;
+      padding: .8mm 1.8mm;
+      border-radius: 6pt;
+      text-transform: uppercase;
+      letter-spacing: .2pt;
+    }
+    .in-stock  { background: #e6f4ea; color: #1e7e34; }
+    .out-stock { background: #fdecea; color: #c62828; }
+
+    /* Barcode */
+    .card-barcode {
+      padding: 1.5mm 2mm;
+      text-align: center;
+      background: #fafafa;
+      flex-shrink: 0;
+    }
+    .card-barcode svg { max-width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Tools<span class="sep"> | </span>prod-001<span class="sep"> | </span>062073000011</div>
+    <div class="card-title">Mastercraft 20V Max Li-Ion Cordless Drill, 1/2-in</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/fixing/tools/portable-power-tools/0543118/mastercraft-20vmax-drill-driver-kit-53e6c51b-1b07-4d41-a40b-3156282fdaa8-jpgrendition.jpg" alt="Mastercraft 20V Max Li-Ion Cordless Drill, 1/2-in" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">20V MAX lithium-ion cordless drill/driver with 2-speed gearbox, LED work light, and 24-position clutch delivering up to 330 in-lbs of torque. Includes 1.3Ah battery, charger, and carrying case.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>89<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-001"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Tools<span class="sep"> | </span>prod-002<span class="sep"> | </span>062073000022</div>
+    <div class="card-title">Mastercraft Screwdriver Set, 10-pc</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/fixing/tools/manual-fastening/0573544/mastercraft-10-piece-screwdriver-set-8341354c-69ce-4298-accf-34f4508fd0dd-jpgrendition.jpg" alt="Mastercraft Screwdriver Set, 10-pc" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Comfort-grip screwdriver set with magnetic tips. Includes Phillips, Robertson, and flathead drivers with durable handles.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>24<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-002"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Tools<span class="sep"> | </span>prod-003<span class="sep"> | </span>062073000033</div>
+    <div class="card-title">Mastercraft 14A Circular Saw with Laser, 7-1/4-in</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/fixing/tools/portable-power-tools/1994701/mc-14a-circ-saw-with-2-bonus-blades-12583424-aafe-4d0c-85c4-a0579f06f28e-jpgrendition.jpg" alt="Mastercraft 14A Circular Saw with Laser, 7-1/4-in" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">14-amp circular saw with laser guide and two carbide-tipped blades. 5,500 RPM, bevel adjustment 0-45°, max cutting depth 2-1/2" at 90°.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>129<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-003"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Tools<span class="sep"> | </span>prod-004<span class="sep"> | </span>062073000044</div>
+    <div class="card-title">Mastercraft Tape Measure, 25-ft</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/fixing/tools/cutting-measuring/0577062/mastercraft-25-foot-tape-measure-e1773fdc-529a-40d8-8840-eac90e5b956c-jpgrendition.jpg" alt="Mastercraft Tape Measure, 25-ft" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Heavy-duty 25-ft tape measure with durable casing, nylon-coated blade, built-in belt clip, and rubber grip handle.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>14<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-004"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Tools<span class="sep"> | </span>prod-005<span class="sep"> | </span>062073000055</div>
+    <div class="card-title">Mastercraft 2A Random Orbit Sander, 5-in</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/fixing/tools/portable-power-tools/0548392/mastercraft-2a-random-orbit-sander-2208bd2b-abbe-4f64-a308-9d6f5533534c-jpgrendition.jpg" alt="Mastercraft 2A Random Orbit Sander, 5-in" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">5-inch random orbit sander with dust collector. 12,500 OPM for aggressive sanding and swirl-free finish. Sealed ON/OFF rocker switch.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>59<sup>.99</sup></div>
+      <span class="card-stock out-stock">&#10005; Out of Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-005"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Automotive<span class="sep"> | </span>prod-006<span class="sep"> | </span>062073000066</div>
+    <div class="card-title">MotoMaster Eliminator PowerBox 800A Jump Starter</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/automotive/light-auto-parts/auto-battery-accessories/0112014/motomaster-eliminator-1600a-600w-power-box-c15b649a-15ad-4a25-b1e5-31675df329ff-jpgrendition.jpg" alt="MotoMaster Eliminator PowerBox 800A Jump Starter" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">1600 peak amp portable jump starter and power pack with built-in 600W inverter, USB charging ports, and LED flashlight. Starts vehicles up to 8 cylinders.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>119<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-006"></svg></div>
+</div>
+</div>
+<div class="page">
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Automotive<span class="sep"> | </span>prod-007<span class="sep"> | </span>062073000077</div>
+    <div class="card-title">MotoMaster 5W30 Synthetic Engine Oil, 5-L</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/automotive/auto-maintenance/oil-pcmo-/0288715/formula-1-synthetic-5w30-motor-oil-jug-2a21bbab-861d-4332-ae23-bbba71f814ad-jpgrendition.jpg" alt="MotoMaster 5W30 Synthetic Engine Oil, 5-L" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Full synthetic 5W-30 motor oil, 5L jug. Developed with Shell Technology for complete engine protection in all temperatures.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>34<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-007"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Automotive<span class="sep"> | </span>prod-008<span class="sep"> | </span>062073000088</div>
+    <div class="card-title">MotoMaster Heavy-Duty Floor Jack &amp; Stands Combo, 3-Ton</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/automotive/auto-maintenance/auto-shop-equipment-supplies/2996001/3t-truck-suv-floor-jack-stand-combo-2d90ce53-830c-4abd-9386-958a3461fd69-jpgrendition.jpg" alt="MotoMaster Heavy-Duty Floor Jack &amp; Stands Combo, 3-Ton" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">3-ton hydraulic floor jack with jack stands combo. Automatic bypass prevents over-pumping, heavy-duty steel frame with baked enamel finish.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>89<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-008"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Automotive<span class="sep"> | </span>prod-009<span class="sep"> | </span>062073000099</div>
+    <div class="card-title">MotoMaster Dual Power Digital Tire Inflator</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/automotive/auto-maintenance/auto-shop-equipment-supplies/0095206/motomaster-digital-road-home-inflator-09a77d28-fb0c-4283-93ec-0a9852671a78-jpgrendition.jpg" alt="MotoMaster Dual Power Digital Tire Inflator" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Digital tire inflator with auto shut-off at preset pressure. 12V DC and 120V AC power options. Programmable digital control with settings memory.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>44<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-009"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Automotive<span class="sep"> | </span>prod-010<span class="sep"> | </span>062073000100</div>
+    <div class="card-title">MotoMaster Winter Windshield Washer Fluid, -45°C, 3.78-L</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/automotive/auto-maintenance/windshield-washer-fluid/0294173/motomaster-windshield-washer-fluid-with-detergent-45c-f8561f6f-0db5-4335-8c59-552f5c6ce621-jpgrendition.jpg" alt="MotoMaster Winter Windshield Washer Fluid, -45°C, 3.78-L" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Winter formula windshield washer fluid rated to -45°C. Prevents frost, removes road grime, and helps remove light ice from windshield.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>7<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-010"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Outdoor & Camping<span class="sep"> | </span>prod-011<span class="sep"> | </span>062073000111</div>
+    <div class="card-title">Outbound 3-Season, 6-Person Camping Dome Tent</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/camping/tents-shelters/0765445/outbound-6-person-dome-tent-bb937409-34b1-4351-a66e-e2a4ed6270c8-jpgrendition.jpg" alt="Outbound 3-Season, 6-Person Camping Dome Tent" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">6-person dome tent with full rainfly, two doors, and mesh windows for ventilation. Free-standing design for easy setup. Includes carry bag.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>149<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-011"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Outdoor & Camping<span class="sep"> | </span>prod-012<span class="sep"> | </span>062073000122</div>
+    <div class="card-title">Coleman Double-Burner 20,000 BTUs Camp Stove</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/camping/camping-living/0762012/coleman-2-burner-instant-start-camp-stove-b4468644-9803-4ece-b5dc-dfec1132edfd.png" alt="Coleman Double-Burner 20,000 BTUs Camp Stove" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Two-burner propane camp stove with 20,000 BTU. PerfectFlow pressure control and WindBlock panels that fold down as side tables.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>79<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-012"></svg></div>
+</div>
+</div>
+<div class="page">
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Outdoor & Camping<span class="sep"> | </span>prod-013<span class="sep"> | </span>062073000133</div>
+    <div class="card-title">Outbound Deluxe Mummy Sleeping Bag, -7°C</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/camping/camping-furniture/0765181/recoded-to-8991971-a57c6477-a825-4ee4-aae0-0abfccef7334.png" alt="Outbound Deluxe Mummy Sleeping Bag, -7°C" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">3-season mummy sleeping bag rated to -7°C. Synthetic Quadratherm insulation, 33 x 85", fits up to 6'9". Full-length draft tube.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>59<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-013"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Outdoor & Camping<span class="sep"> | </span>prod-014<span class="sep"> | </span>062073000144</div>
+    <div class="card-title">Woods ARCTIC Roto-Moulded Cooler, 20-L</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/camping/hydration-coolers/0853757/woods-roto-cooler-20l-505f8738-a29d-4abd-99d3-f32de1399616-jpgrendition.jpg" alt="Woods ARCTIC Roto-Moulded Cooler, 20-L" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">20-litre rotomolded cooler with thick insulation. Bear-resistant, durable construction with integrated handle. Keeps ice for days.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>449<sup>.99</sup></div>
+      <span class="card-stock out-stock">&#10005; Out of Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-014"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Outdoor & Camping<span class="sep"> | </span>prod-015<span class="sep"> | </span>062073000155</div>
+    <div class="card-title">Outbound Wide Back Folding Camping Quad Chair</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/camping/camping-furniture/0765481/outbound-deluxe-wide-back-armchair-ae96604f-d2a6-4356-b8e2-b823c094060f-jpgrendition.jpg" alt="Outbound Wide Back Folding Camping Quad Chair" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Oversized folding quad chair with wide back, cup holder, and carry strap. Lightweight and comfortable for camping or the backyard.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>39<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-015"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Outdoor & Camping<span class="sep"> | </span>prod-016<span class="sep"> | </span>062073000166</div>
+    <div class="card-title">Outbound Men's Traverse Waterproof Hiking Boots</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/footwear-apparel/summer-footwear-apparel/3992361/outbound-traverse-men-s-hiker-7-2803860f-29ac-49b9-93a2-419f01cde013-jpgrendition.jpg" alt="Outbound Men's Traverse Waterproof Hiking Boots" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Mid-cut waterproof breathable hiking boots with EVA cushioned footbed and ankle support. Durable outsole for all terrain.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>119<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-016"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Sports & Fitness<span class="sep"> | </span>prod-017<span class="sep"> | </span>062073000177</div>
+    <div class="card-title">Spalding Street Performance Outdoor Basketball, Size 7</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/team-sports-and-golf/sports-equipment-accessories/1840137/spalding-platinum-basketball-size-7-b751e6a4-14ec-4d9a-a3f7-ee5b7a03c97e-jpgrendition.jpg" alt="Spalding Street Performance Outdoor Basketball, Size 7" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Official size 7 outdoor basketball with durable rubber cover. Deep channel design for superior grip on all surfaces.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>34<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-017"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Sports & Fitness<span class="sep"> | </span>prod-018<span class="sep"> | </span>062073000188</div>
+    <div class="card-title">CCM Ribcor 88K Senior Hockey Skates</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/hockey/skates/4833844/ccm-ribcor-88k-hockey-skate-junior-size-1-0-d-9eb09050-3b7a-4d7e-a465-8cada26396a5-jpgrendition.jpg" alt="CCM Ribcor 88K Senior Hockey Skates" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Performance hockey skates with RocketFrame Quarter Package, MetaFrame Technology, and stainless steel blade. Senior sizes 7-11.5.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>199<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-018"></svg></div>
+</div>
+</div>
+<div class="page">
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Sports & Fitness<span class="sep"> | </span>prod-019<span class="sep"> | </span>062073000199</div>
+    <div class="card-title">Bauer Supreme Impact Composite Hockey Stick, Senior</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/hockey/hockey-sticks/0836639/bauer-supreme-impact-composite-stick-senior-left-cc654fc5-a2be-45af-aca0-5bb0a53f0a1c-jpgrendition.jpg" alt="Bauer Supreme Impact Composite Hockey Stick, Senior" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Composite hockey stick with ABS blade and mid-kick flex for powerful shots. Available in left and right, senior flex options.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>79<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-019"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Sports & Fitness<span class="sep"> | </span>prod-020<span class="sep"> | </span>062073000200</div>
+    <div class="card-title">Gaiam Reversible Yoga Mat, 6-mm</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/exercise/exercise-accessories/1840600/gaiam-6mm-reversible-navy-blue-yoga-mat-8d59bc1f-06d2-4101-a787-6a498411d0f8-jpgrendition.jpg" alt="Gaiam Reversible Yoga Mat, 6-mm" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Non-slip 6mm thick reversible yoga mat with textured surface for stability. Non-toxic PVC, 68 x 24 inches.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>29<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-020"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Sports & Fitness<span class="sep"> | </span>prod-021<span class="sep"> | </span>062073000211</div>
+    <div class="card-title">WA:KE Athletic Adjustable Dumbbell, 5-25-lb</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/playing/exercise/strength/1842074/wa-ke-athletic-5-25lb-adjustable-dumbbell-8dc549aa-0c7c-4267-aa6d-8f58864fbdcb-jpgrendition.jpg" alt="WA:KE Athletic Adjustable Dumbbell, 5-25-lb" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Adjustable dumbbell, 5-25 lbs. Safety weight dial system with anti-slip metal handle. Replaces multiple pairs, saves space.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>249<sup>.99</sup></div>
+      <span class="card-stock out-stock">&#10005; Out of Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-021"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Home & Garden<span class="sep"> | </span>prod-022<span class="sep"> | </span>062073000222</div>
+    <div class="card-title">Weber Spirit E-310 3-Burner Propane Gas BBQ</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/seasonal-gardening/backyard-living/outdoor-cooking/0853196/weber-spirit-3-burner-propane-bbq-a487b9c3-b7b3-47d7-8ca6-2f58f3a8283c-jpgrendition.jpg" alt="Weber Spirit E-310 3-Burner Propane Gas BBQ" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">3-burner propane BBQ with porcelain-enameled cast-iron cooking grates. Electronic crossover ignition, flavorizer bars, built-in lid thermometer.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>699<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-022"></svg></div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <div class="card-meta">Home & Garden<span class="sep"> | </span>prod-023<span class="sep"> | </span>062073000233</div>
+    <div class="card-title">Yardworks Heavy Duty Hose, 50-ft</div>
+  </div>
+  <div class="card-image">
+    <img referrerpolicy="no-referrer" src="https://media-www.canadiantire.ca/product/seasonal-gardening/outdoor-tools/watering/0593305/yardworks-50-heavy-duty-garden-hose-f651aac2-7b28-44cc-b7f7-5e0dbbfe4ab8-jpgrendition.jpg" alt="Yardworks Heavy Duty Hose, 50-ft" />
+  </div>
+  <div class="card-body">
+    <div class="card-desc">Heavy-duty 50-ft garden hose with dual-channel kink-resistant construction and crush-resistant couplings. 5-year warranty.</div>
+    <div class="card-price-row">
+      <div class="card-price"><sup>$</sup>29<sup>.99</sup></div>
+      <span class="card-stock in-stock">&#10003; In Stock</span>
+    </div>
+  </div>
+  <div class="card-barcode"><svg id="bc-prod-023"></svg></div>
+</div>
+</div>
+
+<script>
+  window.onload = function() {
+    JsBarcode("#bc-prod-001", "062073000011", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-002", "062073000028", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-003", "062073000035", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-004", "062073000042", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-005", "062073000059", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-006", "062073000066", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-007", "062073000073", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-008", "062073000080", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-009", "062073000097", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-010", "062073000103", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-011", "062073000110", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-012", "062073000127", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-013", "062073000134", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-014", "062073000141", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-015", "062073000158", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-016", "062073000165", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-017", "062073000172", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-018", "062073000189", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-019", "062073000196", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-020", "062073000202", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-021", "062073000219", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-022", "062073000226", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+    JsBarcode("#bc-prod-023", "062073000233", {format:"UPC",lineColor:"#111",width:1.4,height:32,displayValue:true,fontSize:7,margin:3,background:"#fafafa"});
+  };
+</script>
+</body>
+</html>

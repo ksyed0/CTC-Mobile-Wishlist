@@ -1,7 +1,11 @@
-// Babel config for transpiling TypeScript service tests via babel-jest.
-// Uses only packages that are already installed (no @babel/preset-env required).
+// Babel config for component tests — supports JSX + TypeScript + RN transforms.
+// Uses the automatic JSX runtime so component files don't need `import React`.
+// Used by jest.config.js for *.tsx component test files.
 module.exports = {
-  presets: ['@babel/preset-typescript', ['@babel/preset-react', { runtime: 'automatic' }]],
+  presets: [
+    '@babel/preset-typescript',
+    ['@babel/preset-react', { runtime: 'automatic' }],
+  ],
   plugins: [
     '@babel/plugin-transform-modules-commonjs',
     '@babel/plugin-transform-class-properties',

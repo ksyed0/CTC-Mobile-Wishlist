@@ -10,9 +10,10 @@ interface WishlistCardProps {
   wishlist: Wishlist;
   onPress?: () => void;
   isShared?: boolean;
+  ownerName?: string;
 }
 
-export const WishlistCard = memo(function WishlistCard({ wishlist, onPress, isShared = false }: WishlistCardProps) {
+export const WishlistCard = memo(function WishlistCard({ wishlist, onPress, isShared = false, ownerName }: WishlistCardProps) {
   const itemCount = wishlist.items.length;
   const sharedCount = wishlist.sharedWith.length;
 
@@ -44,7 +45,7 @@ export const WishlistCard = memo(function WishlistCard({ wishlist, onPress, isSh
         </View>
         <Text style={styles.meta}>
           {itemCount} item{itemCount !== 1 ? 's' : ''}
-          {sharedCount > 0 ? ` · Shared with ${sharedCount}` : ''}
+          {isShared && ownerName ? ` · From ${ownerName}` : sharedCount > 0 ? ` · Shared with ${sharedCount}` : ''}
         </Text>
       </View>
 

@@ -90,7 +90,7 @@ export default function SharedWishlistScreen() {
           return (
             <View style={[styles.itemWrapper, isClaimed && styles.itemWrapperClaimed]}>
               {/* Resolved product name, image placeholder, price (AC-0067/68/72) */}
-              <WishlistItemRow item={item} productName={productName} productPrice={product?.price} />
+              <WishlistItemRow item={item} productName={productName} productPrice={product?.price} productImage={product?.image} />
 
               {/* AC-0033: show "Claimed" badge — NOT who claimed it */}
               {/* AC-0036: owner sees no claim buttons; guests see "I'll Get This" */}

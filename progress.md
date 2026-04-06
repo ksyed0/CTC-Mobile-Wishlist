@@ -701,3 +701,47 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 - `docs/ID_REGISTRY.md` — L → L-0030, BUG → BUG-0098, US → US-0015, AC → AC-0045
 - `docs/agents/*.md` — all 9 agent files updated with LESSONS.md Mandatory Startup step
 - `tools/lib/parse-lessons.js`, `tools/lib/compute-costs.js`, `tools/lib/render-html.js`, `tools/generate-plan.js` — bug fixes and cost attribution improvements
+
+## Session — 2026-04-05
+
+### What Was Done
+
+**Feature: Simulator Scan Mock (US-0015)**
+
+- Designed and specced a simulator scan mode for `app/(tabs)/scan.tsx`: on iOS/Android simulator (`Device.isDevice === false`), the camera view is replaced with a scrollable WebView rendering `data/product-catalog-print.html`; tapping any product card triggers the same `handleBarcode()` flow as a real scan
+- Verified `data/product-catalog-print.html` renders correctly in browser (product images from canadiantire.ca CDN load; EAN-13 barcodes render via JsBarcode CDN); confirmed `.card-meta` barcode text is authoritative (matches `products.json`)
+- Wrote design spec: `docs/superpowers/specs/2026-04-05-simulator-scan-mock-design.md`
+- Wrote implementation plan: `docs/superpowers/plans/2026-04-05-simulator-scan-mock.md` (6 tasks: deps install, metro config, tests, SimulatorScanView component, scan.tsx wiring, RELEASE_PLAN update)
+
+### Docs Updated
+
+- `docs/RELEASE_PLAN.md` — US-0015, TASK-0022, TASK-0023 added under Epic 3 with `Spec:` and `Plan:` pointers; EPIC-0003 status remains Done (story is Pending)
+- `docs/plan-status.html` — regenerated (now 14 stories including US-0015)
+- `docs/dashboard.html` — regenerated
+- `CLAUDE.md` — SDK version corrected (52 → 55); Tooling, Testing, and Codebase Gotchas sections added
+- `.claude/settings.json` — Stop hook path made absolute to fix CWD-shift failure
+
+### Ready for Next Session
+
+- **Execute US-0015** via `superpowers:subagent-driven-development` using `docs/superpowers/plans/2026-04-05-simulator-scan-mock.md`
+- Plan is self-contained: install 4 deps, create metro.config.js, build SimulatorScanView, wire into scan.tsx, update RELEASE_PLAN
+
+### Session Continuation — 2026-04-05 (context compaction)
+
+**Dashboard Alert System (BUG-0106)**
+
+- Added `localStorage`-based state change detection to `tools/generate-dashboard.js`: each generated page embeds `DASH_SNAPSHOT` JSON; on load, compares against previous snapshot to detect phase completions, blocked agents, pipeline finish, new bug spikes
+- Audio alerts via Web Audio API: ascending ding (normal), 3-pulse square alarm (urgent) — no sound files needed
+- Browser `Notification` API integration with 🔔 Alerts button in dashboard header
+- Created `docs/alert-test.html` — standalone test page for audio tones and browser notifications
+
+**Docs & Cleanup**
+
+- `docs/sdlc-status.json` — Phase 7 "Demo Polish" added as in-progress; US-0015 added as Pending; metrics updated (storiesTotal 14, tasksTotal 23, bugsOpen 11); session log entries added
+- `PROJECT.md` removed from git (duplicate of `project.md` — same physical file on case-insensitive macOS fs)
+- `docs/BUGS.md` — BUG-0106 logged; ID_REGISTRY advanced to BUG-0107
+
+### Ready for Next Session
+
+- **Execute US-0015** via `superpowers:subagent-driven-development` using `docs/superpowers/plans/2026-04-05-simulator-scan-mock.md`
+- **Fix BUG-0099–0105** (product image, add-to-cart, wishlist picker, wishlist image, safe area footer, logout button, keyboard modal) — all have exact fix code in `docs/BUGS.md`

@@ -10,6 +10,8 @@ import {
   Modal,
   TextInput,
   SectionList,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -25,7 +27,7 @@ import { Wishlist } from '../../types/wishlist';
 export default function WishlistsScreen() {
   const router = useRouter();
   const { wishlists, sharedWishlists, isLoading, createWishlist } = useWishlists();
-  const { isGuest } = useAuth();
+  const { isGuest, mockUsers } = useAuth();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newName, setNewName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
@@ -86,6 +88,7 @@ export default function WishlistsScreen() {
               <WishlistCard
                 wishlist={item}
                 isShared={(section as Section).isShared}
+                ownerName={(section as Section).isShared ? mockUsers.find((u) => u.id === item.ownerId)?.name : undefined}
                 onPress={() => {
                   if ((section as Section).isShared) {
                     router.push(`/wishlist/shared/${item.id}`);
@@ -127,6 +130,7 @@ export default function WishlistsScreen() {
         onRequestClose={() => setShowCreateModal(false)}
       >
         <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setShowCreateModal(false)}>
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <View style={styles.modalSheet}>
             <Text style={styles.modalTitle}>New Wishlist</Text>
             <TextInput
@@ -165,6 +169,7 @@ export default function WishlistsScreen() {
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
+          </KeyboardAvoidingView>
         </TouchableOpacity>
       </Modal>
     </>

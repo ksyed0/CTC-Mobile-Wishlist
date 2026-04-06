@@ -484,7 +484,7 @@ flowchart LR
 How Conductor orchestrates agents across BLAST phases, showing branch creation, parallel work, Lens review gates, and merge points.
 
 ```mermaid
-gitgraph
+gitGraph
     commit id: "Initial setup"
     branch develop
     checkout develop

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, FlatList, Image } from 'react-native';
 import { router } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
@@ -201,9 +201,18 @@ export default function HomeScreen() {
                 accessibilityRole="button"
                 accessibilityLabel={item.name}
               >
-                <View style={styles.recentImagePlaceholder}>
-                  <MaterialIcons name="image" size={28} color={colors.textLight} />
-                </View>
+                {item.image && item.image !== 'placeholder' ? (
+                  <Image
+                    source={{ uri: item.image }}
+                    style={styles.recentImage}
+                    resizeMode="contain"
+                    accessibilityLabel={item.name}
+                  />
+                ) : (
+                  <View style={styles.recentImagePlaceholder}>
+                    <MaterialIcons name="image" size={28} color={colors.textLight} />
+                  </View>
+                )}
                 <Text style={styles.recentName} numberOfLines={2}>
                   {item.name}
                 </Text>
@@ -390,6 +399,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 2,
     elevation: 1,
+  },
+  recentImage: {
+    width: '100%',
+    height: 80,
+    borderRadius: spacing.borderRadius.sm,
+    marginBottom: spacing.xs,
+    backgroundColor: colors.white,
   },
   recentImagePlaceholder: {
     width: '100%',

@@ -9,15 +9,34 @@ import {
   Alert,
   Modal,
   FlatList,
+  Image,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import { typography } from '../../theme/typography';
 import { Product } from '../../types/product';
 import { Wishlist } from '../../types/wishlist';
 import { useProducts } from '../../contexts/ProductContext';
 import { useWishlists } from '../../contexts/WishlistContext';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
+
+/** BUG-0099: Category color map matching ProductCard approach */
+const CATEGORY_COLORS: Record<string, string> = {
+  Tools: colors.primary,
+  Automotive: '#1565C0',
+  Outdoor: '#2E7D32',
+  Sports: '#F57C00',
+  Home: '#6A1B9A',
+};
+
+function getCategoryColor(category: string): string {
+  return CATEGORY_COLORS[category] ?? colors.textSecondary;
+}
+
+function getCategoryInitial(category: string): string {
+  return category.trim().charAt(0).toUpperCase();
+}
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -73,12 +92,8 @@ export default function ProductDetailScreen() {
       ]);
       return;
     }
-    // AC-0014: one wishlist → add directly; multiple → show picker
-    if (wishlists.length === 1) {
-      addToWishlist(wishlists[0]);
-    } else {
-      setShowPicker(true);
-    }
+    // BUG-0101: always show picker when wishlists exist (even if only one)
+    setShowPicker(true);
   }
 
   if (isLoading) {
@@ -100,8 +115,20 @@ export default function ProductDetailScreen() {
   return (
     <>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <View style={styles.imagePlaceholder}>
-          <MaterialIcons name="image" size={64} color={colors.textLight} />
+        {/* BUG-0099: render real image when available, colored category placeholder otherwise */}
+        <View style={styles.imageContainer}>
+          {product.image && product.image !== 'placeholder' ? (
+            <Image
+              source={{ uri: product.image }}
+              style={styles.productImage}
+              resizeMode="contain"
+              accessibilityLabel={product.name}
+            />
+          ) : (
+            <View style={[styles.imagePlaceholder, { backgroundColor: getCategoryColor(product.category) }]}>
+              <Text style={styles.categoryInitial}>{getCategoryInitial(product.category)}</Text>
+            </View>
+          )}
         </View>
         <View style={styles.details}>
           <Text style={styles.name}>{product.name}</Text>
@@ -127,6 +154,20 @@ export default function ProductDetailScreen() {
                 <Text style={styles.addButtonText}>Add to Wishlist</Text>
               </>
             )}
+          </TouchableOpacity>
+
+          {/* BUG-0100: mock Add to Cart secondary button */}
+          <TouchableOpacity
+            style={styles.addToCartButton}
+            onPress={() =>
+              Alert.alert('Added to Cart', `"${product.name}" has been added to your cart.`)
+            }
+            activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel="Add to cart"
+          >
+            <MaterialIcons name="shopping-cart" size={20} color={colors.primary} />
+            <Text style={styles.addToCartButtonText}>Add to Cart</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -187,12 +228,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  imagePlaceholder: {
+  imageContainer: {
     width: '100%',
-    height: 260,
-    backgroundColor: colors.border,
+    aspectRatio: 4 / 3,
+    backgroundColor: colors.white,
+  },
+  productImage: {
+    width: '100%',
+    height: '100%',
+  },
+  imagePlaceholder: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  categoryInitial: {
+    fontSize: 72,
+    fontWeight: typography.fontWeight.bold,
+    color: colors.white,
+    opacity: 0.9,
   },
   details: {
     padding: spacing.md,
@@ -245,6 +299,25 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: colors.white,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  addToCartButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.white,
+    borderRadius: spacing.borderRadius.md,
+    borderWidth: 1.5,
+    borderColor: colors.primary,
+    paddingVertical: spacing.sm + 2,
+    paddingHorizontal: spacing.lg,
+    minHeight: 48,
+    gap: spacing.sm,
+    marginTop: spacing.sm,
+  },
+  addToCartButtonText: {
+    color: colors.primary,
     fontSize: 16,
     fontWeight: '700',
   },

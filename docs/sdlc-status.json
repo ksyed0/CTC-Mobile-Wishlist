@@ -1,6 +1,6 @@
 {
   "hackathon": {
-    "name": "CTC Mobile Wishlist — Claude Code Agentic AI SDLC",
+    "name": "CTC Mobile Wishlist \u2014 Claude Code Agentic AI SDLC",
     "date": "2026-04-07",
     "startTime": "09:00",
     "endTime": "17:00"
@@ -13,8 +13,13 @@
       "status": "complete",
       "startedAt": "2026-04-04T20:00:00",
       "completedAt": "2026-04-04T20:04:00",
-      "agents": ["Compass"],
-      "deliverables": ["Prioritized backlog", "Refined ACs"]
+      "agents": [
+        "Compass"
+      ],
+      "deliverables": [
+        "Prioritized backlog",
+        "Refined ACs"
+      ]
     },
     {
       "id": 2,
@@ -22,8 +27,15 @@
       "status": "complete",
       "startedAt": "2026-04-04T20:04:00",
       "completedAt": "2026-04-04T20:20:00",
-      "agents": ["Keystone", "Lens"],
-      "deliverables": ["Project scaffold", "Types", "Service interfaces"]
+      "agents": [
+        "Keystone",
+        "Lens"
+      ],
+      "deliverables": [
+        "Project scaffold",
+        "Types",
+        "Service interfaces"
+      ]
     },
     {
       "id": 3,
@@ -31,8 +43,18 @@
       "status": "complete",
       "startedAt": "2026-04-04T20:20:00",
       "completedAt": "2026-04-04T21:46:00",
-      "agents": ["Forge", "Pixel", "Palette", "Lens"],
-      "deliverables": ["Services", "Screens", "Components", "Navigation"]
+      "agents": [
+        "Forge",
+        "Pixel",
+        "Palette",
+        "Lens"
+      ],
+      "deliverables": [
+        "Services",
+        "Screens",
+        "Components",
+        "Navigation"
+      ]
     },
     {
       "id": 4,
@@ -40,8 +62,14 @@
       "status": "complete",
       "startedAt": "2026-04-04T21:46:00",
       "completedAt": "2026-04-04T22:10:00",
-      "agents": ["Pixel", "Lens"],
-      "deliverables": ["End-to-end flows", "Service wiring"]
+      "agents": [
+        "Pixel",
+        "Lens"
+      ],
+      "deliverables": [
+        "End-to-end flows",
+        "Service wiring"
+      ]
     },
     {
       "id": 5,
@@ -49,8 +77,16 @@
       "status": "complete",
       "startedAt": "2026-04-04T22:10:00",
       "completedAt": "2026-04-04T22:45:00",
-      "agents": ["Sentinel", "Circuit", "Lens"],
-      "deliverables": ["Test results", "Jest suites", "Coverage report"]
+      "agents": [
+        "Sentinel",
+        "Circuit",
+        "Lens"
+      ],
+      "deliverables": [
+        "Test results",
+        "Jest suites",
+        "Coverage report"
+      ]
     },
     {
       "id": 6,
@@ -58,30 +94,73 @@
       "status": "complete",
       "startedAt": "2026-04-04T22:45:00",
       "completedAt": "2026-04-04T23:15:00",
-      "agents": ["All"],
-      "deliverables": ["Bug fixes", "Demo prep", "Final merge"]
+      "agents": [
+        "All"
+      ],
+      "deliverables": [
+        "Bug fixes",
+        "Demo prep",
+        "Final merge"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Demo Polish",
+      "status": "complete",
+      "startedAt": "2026-04-05T18:00:00",
+      "completedAt": "2026-04-05T20:12:00",
+      "agents": [
+        "Pixel",
+        "Lens"
+      ],
+      "deliverables": [
+        "Simulator scan mock",
+        "Product image fixes",
+        "UI polish",
+        "Demo bug fixes"
+      ]
     }
   ],
   "agents": {
     "Conductor": {
-      "status": "done",
-      "currentTask": null,
-      "tasksCompleted": 6
-    },
-    "Compass": { "status": "complete", "currentTask": null, "tasksCompleted": 1 },
-    "Keystone": { "status": "complete", "currentTask": null, "tasksCompleted": 8 },
-    "Lens": {
       "status": "complete",
+      "currentTask": "Phase 7 complete \u2014 all stories done, all priority bugs fixed",
+      "tasksCompleted": 9
+    },
+    "Compass": {
+      "status": "idle",
       "currentTask": null,
-      "tasksCompleted": 4,
-      "reviewsCompleted": 4,
+      "tasksCompleted": 1
+    },
+    "Keystone": {
+      "status": "idle",
+      "currentTask": null,
+      "tasksCompleted": 8
+    },
+    "Lens": {
+      "status": "idle",
+      "currentTask": null,
+      "tasksCompleted": 5,
+      "reviewsCompleted": 5,
       "blockers": 0
     },
-    "Palette": { "status": "complete", "currentTask": null, "tasksCompleted": 1 },
-    "Forge": { "status": "complete", "currentTask": null, "tasksCompleted": 7 },
-    "Pixel": { "status": "complete", "currentTask": null, "tasksCompleted": 12 },
-    "Sentinel": {
+    "Palette": {
+      "status": "idle",
+      "currentTask": null,
+      "tasksCompleted": 1
+    },
+    "Forge": {
+      "status": "idle",
+      "currentTask": null,
+      "tasksCompleted": 7
+    },
+    "Pixel": {
       "status": "complete",
+      "currentTask": null,
+      "tasksCompleted": 20
+    },
+    "Sentinel": {
+      "status": "idle",
       "currentTask": null,
       "tasksCompleted": 1,
       "testsPassed": 371,
@@ -90,7 +169,7 @@
     "Circuit": {
       "status": "complete",
       "currentTask": null,
-      "tasksCompleted": 1,
+      "tasksCompleted": 2,
       "coveragePercent": 91.68
     }
   },
@@ -103,61 +182,195 @@
     "EPIC-0006": "Mock Authentication"
   },
   "stories": {
-    "US-0001": { "status": "Complete", "title": "Expo scaffold with tab navigation", "epic": "EPIC-0001" },
-    "US-0002": { "status": "Complete", "title": "Local mock data layer", "epic": "EPIC-0001" },
-    "US-0003": { "status": "Complete", "title": "Catalog browsing by category", "epic": "EPIC-0002" },
-    "US-0004": { "status": "Complete", "title": "Product detail + Add to Wishlist", "epic": "EPIC-0002" },
-    "US-0005": { "status": "Complete", "title": "Product search", "epic": "EPIC-0002" },
-    "US-0006": { "status": "Complete", "title": "Barcode scanner", "epic": "EPIC-0003" },
-    "US-0007": { "status": "Complete", "title": "Create and manage wishlists", "epic": "EPIC-0004" },
-    "US-0008": { "status": "Complete", "title": "View and remove wishlist items", "epic": "EPIC-0004" },
-    "US-0009": { "status": "Complete", "title": "Wishlist total price", "epic": "EPIC-0004" },
-    "US-0010": { "status": "Complete", "title": "Share wishlist", "epic": "EPIC-0005" },
-    "US-0011": { "status": "Complete", "title": "View shared wishlist", "epic": "EPIC-0005" },
-    "US-0012": { "status": "Complete", "title": "Claim items on shared wishlist", "epic": "EPIC-0005" },
-    "US-0013": { "status": "Complete", "title": "Mock auth / user switcher", "epic": "EPIC-0006" },
+    "US-0001": {
+      "status": "Complete",
+      "title": "Expo scaffold with tab navigation",
+      "epic": "EPIC-0001"
+    },
+    "US-0002": {
+      "status": "Complete",
+      "title": "Local mock data layer",
+      "epic": "EPIC-0001"
+    },
+    "US-0003": {
+      "status": "Complete",
+      "title": "Catalog browsing by category",
+      "epic": "EPIC-0002"
+    },
+    "US-0004": {
+      "status": "Complete",
+      "title": "Product detail + Add to Wishlist",
+      "epic": "EPIC-0002"
+    },
+    "US-0005": {
+      "status": "Complete",
+      "title": "Product search",
+      "epic": "EPIC-0002"
+    },
+    "US-0006": {
+      "status": "Complete",
+      "title": "Barcode scanner",
+      "epic": "EPIC-0003"
+    },
+    "US-0007": {
+      "status": "Complete",
+      "title": "Create and manage wishlists",
+      "epic": "EPIC-0004"
+    },
+    "US-0008": {
+      "status": "Complete",
+      "title": "View and remove wishlist items",
+      "epic": "EPIC-0004"
+    },
+    "US-0009": {
+      "status": "Complete",
+      "title": "Wishlist total price",
+      "epic": "EPIC-0004"
+    },
+    "US-0010": {
+      "status": "Complete",
+      "title": "Share wishlist",
+      "epic": "EPIC-0005"
+    },
+    "US-0011": {
+      "status": "Complete",
+      "title": "View shared wishlist",
+      "epic": "EPIC-0005"
+    },
+    "US-0012": {
+      "status": "Complete",
+      "title": "Claim items on shared wishlist",
+      "epic": "EPIC-0005"
+    },
+    "US-0013": {
+      "status": "Complete",
+      "title": "Mock auth / user switcher",
+      "epic": "EPIC-0006"
+    },
     "US-0014": {
       "status": "Backlog",
       "title": "Lesson 'Applies to' field for faster agent scanning",
       "epic": "Tooling"
+    },
+    "US-0015": {
+      "status": "Complete",
+      "title": "Simulator scan mock \u2014 tappable catalog WebView",
+      "epic": "EPIC-0003"
+    },
+    "US-0016": {
+      "status": "Backlog",
+      "title": "Item notes on wishlist items",
+      "epic": "EPIC-0007"
+    },
+    "US-0017": {
+      "status": "Backlog",
+      "title": "Already-in-wishlist indicator on catalog",
+      "epic": "EPIC-0007"
+    },
+    "US-0018": {
+      "status": "Backlog",
+      "title": "Demo reset button",
+      "epic": "EPIC-0007"
+    },
+    "US-0019": {
+      "status": "Backlog",
+      "title": "Wishlist rename",
+      "epic": "EPIC-0007"
+    },
+    "US-0020": {
+      "status": "Backlog",
+      "title": "Unseen shared wishlist tab badge",
+      "epic": "EPIC-0007"
+    },
+    "US-0021": {
+      "status": "Backlog",
+      "title": "Claimer reveal toggle",
+      "epic": "EPIC-0007"
+    },
+    "US-0022": {
+      "status": "Backlog",
+      "title": "Mock restock alert button",
+      "epic": "EPIC-0007"
+    },
+    "US-0023": {
+      "status": "Backlog",
+      "title": "Mock price-drop alert button",
+      "epic": "EPIC-0007"
+    },
+    "US-0024": {
+      "status": "Backlog",
+      "title": "Wishlist privacy levels",
+      "epic": "EPIC-0007"
     }
   },
   "metrics": {
-    "storiesCompleted": 13,
-    "storiesTotal": 13,
-    "tasksCompleted": 21,
-    "tasksTotal": 21,
-    "testsPassed": 371,
+    "storiesCompleted": 14,
+    "storiesTotal": 23,
+    "tasksCompleted": 23,
+    "tasksTotal": 23,
+    "testsPassed": 436,
     "testsFailed": 0,
-    "testsTotal": 371,
+    "testsTotal": 436,
     "tcsPassed": 40,
     "tcsFailed": 0,
     "tcsTotal": 40,
-    "bugsOpen": 4,
-    "bugsFixed": 95,
+    "bugsOpen": 3,
+    "bugsFixed": 103,
     "coveragePercent": 91.68,
     "reviewsApproved": 4,
     "reviewsBlocked": 0
   },
   "log": [
-    { "time": "20:00", "agent": "Conductor", "message": "Pipeline started — Phase 1: Blueprint" },
+    {
+      "time": "20:00",
+      "agent": "Conductor",
+      "message": "Pipeline started \u2014 Phase 1: Blueprint"
+    },
     {
       "time": "20:04",
       "agent": "Compass",
-      "message": "Backlog prioritized — 13 stories ordered, 4 new ACs added (AC-0041–AC-0044)"
+      "message": "Backlog prioritized \u2014 13 stories ordered, 4 new ACs added (AC-0041\u2013AC-0044)"
     },
-    { "time": "20:04", "agent": "Conductor", "message": "Phase 1 complete. Spawning Keystone for Phase 2" },
-    { "time": "20:13", "agent": "Keystone", "message": "Scaffold complete — 35 files, 0 TS errors, branch pushed" },
-    { "time": "20:15", "agent": "Lens", "message": "REQUEST CHANGES — BUG-0067/68/69. Keystone re-spawned." },
+    {
+      "time": "20:04",
+      "agent": "Conductor",
+      "message": "Phase 1 complete. Spawning Keystone for Phase 2"
+    },
+    {
+      "time": "20:13",
+      "agent": "Keystone",
+      "message": "Scaffold complete \u2014 35 files, 0 TS errors, branch pushed"
+    },
+    {
+      "time": "20:15",
+      "agent": "Lens",
+      "message": "REQUEST CHANGES \u2014 BUG-0067/68/69. Keystone re-spawned."
+    },
     {
       "time": "20:17",
       "agent": "Keystone",
-      "message": "Fixes pushed — DATA_FLOW.md updated, theme tokens in _layout.tsx"
+      "message": "Fixes pushed \u2014 DATA_FLOW.md updated, theme tokens in _layout.tsx"
     },
-    { "time": "20:18", "agent": "Lens", "message": "APPROVE — feature/US-0001-expo-scaffold merged to develop" },
-    { "time": "20:20", "agent": "Conductor", "message": "Phase 2 complete. Spawning Forge + Pixel in parallel." },
-    { "time": "20:47", "agent": "Forge", "message": "94 service tests added, 1324 total passing — branch pushed" },
-    { "time": "21:15", "agent": "Pixel", "message": "8 screens + 7 components built, 0 TS errors — branch pushed" },
+    {
+      "time": "20:18",
+      "agent": "Lens",
+      "message": "APPROVE \u2014 feature/US-0001-expo-scaffold merged to develop"
+    },
+    {
+      "time": "20:20",
+      "agent": "Conductor",
+      "message": "Phase 2 complete. Spawning Forge + Pixel in parallel."
+    },
+    {
+      "time": "20:47",
+      "agent": "Forge",
+      "message": "94 service tests added, 1324 total passing \u2014 branch pushed"
+    },
+    {
+      "time": "21:15",
+      "agent": "Pixel",
+      "message": "8 screens + 7 components built, 0 TS errors \u2014 branch pushed"
+    },
     {
       "time": "21:20",
       "agent": "Lens",
@@ -166,33 +379,117 @@
     {
       "time": "21:45",
       "agent": "Pixel",
-      "message": "6 major bugs fixed — scan, claim, product detail, wishlist wiring. 263 tests."
+      "message": "6 major bugs fixed \u2014 scan, claim, product detail, wishlist wiring. 263 tests."
     },
-    { "time": "21:46", "agent": "Lens", "message": "APPROVE feature/pixel-screens — merged to develop" },
-    { "time": "21:46", "agent": "Conductor", "message": "Phase 3 complete. Spawning Pixel for Phase 4: Integrate." },
+    {
+      "time": "21:46",
+      "agent": "Lens",
+      "message": "APPROVE feature/pixel-screens \u2014 merged to develop"
+    },
+    {
+      "time": "21:46",
+      "agent": "Conductor",
+      "message": "Phase 3 complete. Spawning Pixel for Phase 4: Integrate."
+    },
     {
       "time": "22:10",
       "agent": "Pixel",
-      "message": "Phase 4 complete — end-to-end demo flow wired, all 9 steps verified. 0 TS errors."
+      "message": "Phase 4 complete \u2014 end-to-end demo flow wired, all 9 steps verified. 0 TS errors."
     },
-    { "time": "22:10", "agent": "Lens", "message": "APPROVE feature/pixel-integration — merged to develop" },
-    { "time": "22:10", "agent": "Conductor", "message": "Phase 4 complete. Spawning Sentinel + Circuit in parallel." },
+    {
+      "time": "22:10",
+      "agent": "Lens",
+      "message": "APPROVE feature/pixel-integration \u2014 merged to develop"
+    },
+    {
+      "time": "22:10",
+      "agent": "Conductor",
+      "message": "Phase 4 complete. Spawning Sentinel + Circuit in parallel."
+    },
     {
       "time": "22:45",
       "agent": "Sentinel",
-      "message": "Phase 5 testing complete — 36/40 TCs passing (4 blocked by BUG-0084/85/86)"
+      "message": "Phase 5 testing complete \u2014 36/40 TCs passing (4 blocked by BUG-0084/85/86)"
     },
     {
       "time": "22:45",
       "agent": "Circuit",
-      "message": "Coverage report generated — 371 tests, 91.68% line coverage"
+      "message": "Coverage report generated \u2014 371 tests, 91.68% line coverage"
     },
-    { "time": "22:45", "agent": "Conductor", "message": "Phase 5 complete. Spawning Polish phase." },
+    {
+      "time": "22:45",
+      "agent": "Conductor",
+      "message": "Phase 5 complete. Spawning Polish phase."
+    },
     {
       "time": "23:10",
       "agent": "Conductor",
-      "message": "BUG-0084 assets created, BUG-0085 image placeholders, BUG-0086 search bar — all fixed"
+      "message": "BUG-0084 assets created, BUG-0085 image placeholders, BUG-0086 search bar \u2014 all fixed"
     },
-    { "time": "23:15", "agent": "Conductor", "message": "Phase 6 complete. v1.0.0-poc merged to main. Pipeline done." }
+    {
+      "time": "23:15",
+      "agent": "Conductor",
+      "message": "Phase 6 complete. v1.0.0-poc merged to main. Pipeline done."
+    },
+    {
+      "time": "18:00",
+      "agent": "Conductor",
+      "message": "Phase 7: Demo Polish started \u2014 US-0015 simulator scan mock + demo bug triage"
+    },
+    {
+      "time": "18:30",
+      "agent": "Pixel",
+      "message": "US-0015 spec + plan written \u2014 SimulatorScanView, metro config, 4 new deps"
+    },
+    {
+      "time": "18:45",
+      "agent": "Lens",
+      "message": "7 new bugs logged (BUG-0099\u2013BUG-0105) \u2014 product image, add-to-cart, wishlist picker, safe area, logout, keyboard"
+    },
+    {
+      "time": "19:00",
+      "agent": "Conductor",
+      "message": "RELEASE_PLAN.md updated \u2014 US-0015, TASK-0022/0023 added to Epic 3 with Spec/Plan refs"
+    },
+    {
+      "time": "18:57",
+      "agent": "Conductor",
+      "message": "Phase 7 pipeline re-activated \u2014 1 pending story (US-0015), 11 open bugs (BUG-0099\u20130105 + BUG-0073)"
+    },
+    {
+      "time": "18:57",
+      "agent": "Pixel",
+      "message": "ACTIVE \u2014 implementing US-0015 (SimulatorScanView) + 7 demo polish bugs in worktree feature/US-0015-simulator-scan-mock"
+    },
+    {
+      "time": "18:58",
+      "agent": "Conductor",
+      "message": "Pipeline: Pixel \u2192 Lens review \u2192 Circuit (BUG-0073 component tests) + Forge (dashboard Option C) in parallel"
+    },
+    {
+      "time": "19:45",
+      "agent": "Lens",
+      "message": "APPROVE \u2014 feature/US-0015-simulator-scan-mock. LogoutButton wired, BUG-0099-0105 logged, categoryColors extracted."
+    },
+    {
+      "time": "19:46",
+      "agent": "Conductor",
+      "message": "Merge complete. US-0015 Done. 14/14 stories complete. Spawning Circuit for BUG-0073 component tests."
+    },
+    {
+      "time": "19:47",
+      "agent": "Circuit",
+      "message": "ACTIVE \u2014 installing @testing-library/react-native, writing component tests for 7 components."
+    },
+    {
+      "time": "20:10",
+      "agent": "Circuit",
+      "message": "59 RNTL component tests added \u2014 436 total passing. BUG-0073 Fixed."
+    },
+    {
+      "time": "20:12",
+      "agent": "Conductor",
+      "message": "Phase 7 complete. All 14 stories done. 103 bugs fixed. 436 tests passing. 3 low-priority dashboard tooling bugs deferred."
+    }
   ]
 }

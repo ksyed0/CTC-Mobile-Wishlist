@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Alert System — Test Page</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #1a1a2e;
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 32px;
+  }
+  h1 { font-size: 22px; color: #fff; letter-spacing: 0.5px; }
+  .subtitle { font-size: 13px; color: #888; margin-top: 4px; text-align: center; }
+  .card {
+    background: #16213e;
+    border: 1px solid #2a2a5a;
+    border-radius: 10px;
+    padding: 24px 28px;
+    width: 100%;
+    max-width: 520px;
+  }
+  .card h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #aaa; margin-bottom: 16px; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  button {
+    padding: 10px 18px;
+    border-radius: 7px;
+    border: 1px solid #3a3a6a;
+    background: #1a1a3e;
+    color: #e0e0e0;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  button:hover { background: #252550; border-color: #5a5aaa; }
+  button.primary { background: #D52B1E; border-color: #D52B1E; color: #fff; }
+  button.primary:hover { background: #b82318; }
+  button.green { background: #1a3a2a; border-color: #34A853; color: #34A853; }
+  button.green:hover { background: #1f4a35; }
+  .status {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: #0d0d1e;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #aaa;
+    min-height: 36px;
+    line-height: 1.5;
+  }
+  .status span { color: #e0e0e0; }
+  #notif-status { color: #F57C00; font-size: 12px; margin-top: 10px; }
+  #notif-status.granted { color: #34A853; }
+  #notif-status.denied { color: #D52B1E; }
+</style>
+</head>
+<body>
+
+<div style="text-align:center">
+  <h1>🔔 Dashboard Alert System — Test Page</h1>
+  <p class="subtitle">Test audio tones and browser notifications independently</p>
+</div>
+
+<!-- Notifications -->
+<div class="card">
+  <h2>Browser Notifications</h2>
+  <div class="btn-row">
+    <button class="primary" onclick="requestPermission()">Request Permission</button>
+    <button onclick="testNotif('Phase 3 Complete', 'Phase 3 just finished — ready for your review.')">Test: Phase Done</button>
+    <button onclick="testNotif('Pixel Needs Attention', 'Pixel status changed to: blocked')">Test: Agent Blocked</button>
+    <button onclick="testNotif('Pipeline Complete!', 'All phases done — return to terminal.')">Test: Pipeline Done</button>
+    <button onclick="testNotif('2 New Bugs Opened', 'Bugs open: 13. Your attention may be needed.')">Test: New Bugs</button>
+  </div>
+  <div id="notif-status">Permission: <span id="perm-label">unknown</span></div>
+</div>
+
+<!-- Audio tones -->
+<div class="card">
+  <h2>Audio Tones</h2>
+  <div class="btn-row">
+    <button class="green" onclick="playNormal()">▶ Normal alert (phase complete / pipeline done)</button>
+    <button onclick="playUrgent()" style="border-color:#D52B1E;color:#D52B1E;">▶ Urgent alert (agent blocked)</button>
+    <button onclick="playBeep(880, 0.2)">▶ Single ding</button>
+  </div>
+  <div class="status" id="audio-status">Click a button to play a tone.</div>
+</div>
+
+<!-- Combined -->
+<div class="card">
+  <h2>Combined — Full Alert Scenarios</h2>
+  <div class="btn-row">
+    <button onclick="scenario('phase')">Phase Complete</button>
+    <button onclick="scenario('blocked')">Agent Blocked</button>
+    <button onclick="scenario('pipeline')">Pipeline Done</button>
+    <button onclick="scenario('bugs')">New Bugs</button>
+  </div>
+  <div class="status" id="combo-status">Fires both audio + notification together.</div>
+</div>
+
+<script>
+function playBeep(frequency, duration, type) {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type || 'sine';
+    osc.frequency.value = frequency || 880;
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (duration || 0.5));
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + (duration || 0.5));
+    document.getElementById('audio-status').innerHTML = 'Playing: <span>' + frequency + ' Hz, ' + type + ', ' + duration + 's</span>';
+  } catch(e) {
+    document.getElementById('audio-status').innerHTML = '<span style="color:#D52B1E">Error: ' + e.message + '</span>';
+  }
+}
+
+function playNormal() {
+  playBeep(880, 0.3, 'sine');
+  setTimeout(function() { playBeep(1046, 0.4, 'sine'); }, 350);
+  document.getElementById('audio-status').innerHTML = 'Playing: <span>Normal — ascending ding (880 → 1046 Hz)</span>';
+}
+
+function playUrgent() {
+  playBeep(440, 0.25, 'square');
+  setTimeout(function() { playBeep(880, 0.25, 'square'); }, 280);
+  setTimeout(function() { playBeep(440, 0.25, 'square'); }, 560);
+  document.getElementById('audio-status').innerHTML = 'Playing: <span>Urgent — 3-pulse alarm (440/880/440 Hz square)</span>';
+}
+
+function updatePermLabel() {
+  var label = document.getElementById('perm-label');
+  var el = document.getElementById('notif-status');
+  if (!('Notification' in window)) {
+    label.textContent = 'not supported';
+    return;
+  }
+  label.textContent = Notification.permission;
+  el.className = Notification.permission === 'granted' ? 'granted' : Notification.permission === 'denied' ? 'denied' : '';
+}
+
+function requestPermission() {
+  if (!('Notification' in window)) {
+    document.getElementById('perm-label').textContent = 'not supported in this browser';
+    return;
+  }
+  Notification.requestPermission().then(function() { updatePermLabel(); });
+}
+
+function testNotif(title, body) {
+  if (!('Notification' in window)) {
+    document.getElementById('notif-status').innerHTML = '<span style="color:#D52B1E">Notifications not supported in this browser.</span>';
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    new Notification(title, { body: body });
+    updatePermLabel();
+    return;
+  }
+  if (Notification.permission === 'denied') {
+    document.getElementById('notif-status').innerHTML = '<span style="color:#D52B1E">Permission denied — enable notifications for this page in browser settings.</span>';
+    return;
+  }
+  // 'default' — request inline so the user gesture propagates
+  Notification.requestPermission().then(function(perm) {
+    updatePermLabel();
+    if (perm === 'granted') { new Notification(title, { body: body }); }
+  });
+}
+
+function scenario(type) {
+  var map = {
+    phase:    { title: 'Phase 3 Complete', body: 'Phase 3 just finished — ready for your review.', urgent: false },
+    blocked:  { title: 'Pixel Needs Attention', body: 'Pixel status changed to: blocked', urgent: true },
+    pipeline: { title: 'Pipeline Complete!', body: 'All phases done — return to terminal.', urgent: false },
+    bugs:     { title: '2 New Bugs Opened', body: 'Bugs open: 13. Your attention may be needed.', urgent: false }
+  };
+  var s = map[type];
+  if (!s) return;
+  if (s.urgent) { playUrgent(); } else { playNormal(); }
+  testNotif(s.title, s.body);
+  document.getElementById('combo-status').innerHTML = 'Fired: <span>' + s.title + '</span>';
+}
+
+updatePermLabel();
+</script>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product, Category } from '../types/product';
 import { productService } from '../services/productService';
+import { useAuth } from './AuthContext';
 
 interface ProductContextValue {
   products: Product[];
@@ -18,10 +19,16 @@ interface ProductContextValue {
 const ProductContext = createContext<ProductContextValue | null>(null);
 
 export function ProductProvider({ children }: { children: ReactNode }) {
+  const { currentUser } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // Reset category filter when the active user changes
+  useEffect(() => {
+    setSelectedCategory(null);
+  }, [currentUser?.id]);
 
   const filteredProducts = selectedCategory ? products.filter((p) => p.category === selectedCategory) : products;
 

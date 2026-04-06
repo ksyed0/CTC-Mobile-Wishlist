@@ -5,23 +5,7 @@ import { Product } from '../types/product';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
-
-/** BUG-0085: Category color map for placeholder views */
-const CATEGORY_COLORS: Record<string, string> = {
-  Tools: colors.primary, // #D52B1E
-  Automotive: '#1565C0',
-  Outdoor: '#2E7D32',
-  Sports: '#F57C00',
-  Home: '#6A1B9A',
-};
-
-function getCategoryColor(category: string): string {
-  return CATEGORY_COLORS[category] ?? colors.textSecondary;
-}
-
-function getCategoryInitial(category: string): string {
-  return category.trim().charAt(0).toUpperCase();
-}
+import { getCategoryColor, getCategoryInitial } from '../utils/categoryColors';
 
 interface ProductCardProps {
   product: Product;
@@ -43,7 +27,7 @@ export const ProductCard = memo(function ProductCard({ product, onPress, onAddTo
           <Image
             source={{ uri: product.image }}
             style={styles.image}
-            resizeMode="cover"
+            resizeMode="contain"
             accessibilityLabel={product.name}
           />
         ) : (
@@ -104,7 +88,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: '100%',
     aspectRatio: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.white,
     position: 'relative',
   },
   image: {

@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
+import { LogoutButton } from '../../components/LogoutButton';
 
 export default function TabLayout() {
   return (
@@ -19,6 +20,7 @@ export default function TabLayout() {
         headerTitleStyle: {
           fontWeight: '700',
         },
+        headerRight: () => <LogoutButton />,
       }}
     >
       <Tabs.Screen
