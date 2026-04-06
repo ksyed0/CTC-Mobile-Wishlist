@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Wishlist } from '../../../types/wishlist';
@@ -8,6 +8,7 @@ import { useProducts } from '../../../contexts/ProductContext';
 import { useAuth } from '../../../contexts/AuthContext';
 import { WishlistItemRow } from '../../../components/WishlistItemRow';
 import { EmptyState } from '../../../components/EmptyState';
+import { Toast, useToast } from '../../../components/Toast';
 import { colors } from '../../../theme/colors';
 import { spacing } from '../../../theme/spacing';
 
@@ -19,6 +20,7 @@ export default function SharedWishlistScreen() {
   const [wishlist, setWishlist] = useState<Wishlist | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [claimingId, setClaimingId] = useState<string | null>(null);
+  const { showToast, toast } = useToast();
 
   useEffect(() => {
     if (id) {
@@ -45,9 +47,9 @@ export default function SharedWishlistScreen() {
       await claimItem(wishlist.id, productId);
       const updated = await getWishlistById(wishlist.id);
       setWishlist(updated);
-      Alert.alert('Reserved!', `You reserved "${productName}" as a gift.`);
+      showToast(`Reserved "${productName}" as a gift`, 'success');
     } catch {
-      Alert.alert('Error', 'Could not claim item. Please try again.');
+      showToast('Could not claim item. Please try again.', 'error');
     } finally {
       setClaimingId(null);
     }
@@ -93,7 +95,6 @@ export default function SharedWishlistScreen() {
 
           return (
             <View style={[styles.itemWrapper, isClaimed && styles.itemWrapperClaimed]}>
-              {/* Resolved product name, image placeholder, price (AC-0067/68/72) */}
               <WishlistItemRow item={item} productName={productName} productPrice={product?.price} productImage={product?.image} note={item.note} />
 
               {/* AC-0033: show "Claimed" badge — NOT who claimed it */}
@@ -110,6 +111,8 @@ export default function SharedWishlistScreen() {
                       style={[styles.claimButton, isClaiming && styles.claimButtonDisabled]}
                       onPress={() => handleClaim(item.productId, productName)}
                       disabled={isClaiming}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Reserve ${productName} as a gift`}
                     >
                       {isClaiming ? (
                         <ActivityIndicator size="small" color={colors.white} />
@@ -127,6 +130,7 @@ export default function SharedWishlistScreen() {
           <EmptyState icon="card-giftcard" title="Nothing here yet" subtitle="This wishlist has no items yet." />
         }
       />
+      <Toast {...toast} />
     </View>
   );
 }

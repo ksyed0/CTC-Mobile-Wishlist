@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal, Switch } from 'react-native';
 import { BottomSheetInput } from '../../components/BottomSheetInput';
+import { Toast, useToast } from '../../components/Toast';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -27,6 +28,7 @@ export default function WishlistDetailScreen() {
   const [noteSheet, setNoteSheet] = useState<{ productId: string; currentNote: string | null } | null>(null);
   const [showRenameSheet, setShowRenameSheet] = useState(false);
   const [showPrivacySheet, setShowPrivacySheet] = useState(false);
+  const { showToast, toast } = useToast();
 
   useEffect(() => {
     if (id) {
@@ -70,7 +72,7 @@ export default function WishlistDetailScreen() {
       },
     ]);
     setShowShareModal(false);
-    Alert.alert('Shared!', `Wishlist shared with ${userName}.`);
+    showToast(`Wishlist shared with ${userName}`, 'success');
     const updated = await getWishlistById(wishlist.id);
     setWishlist(updated);
   }
@@ -109,7 +111,7 @@ export default function WishlistDetailScreen() {
   function handleCopyLink() {
     if (!wishlist) return;
     const link = `ctcwishlist://shared/${wishlist.id}`;
-    Alert.alert('Link Copied', link);
+    showToast('Link copied to clipboard', 'info');
   }
 
   if (isLoading) {
@@ -353,7 +355,7 @@ export default function WishlistDetailScreen() {
           <View style={styles.modalSheet}>
             <Text style={styles.modalTitle}>Share Wishlist</Text>
             <Text style={styles.modalSubtitle}>Choose someone to share "{wishlist.name}" with</Text>
-            {mockUsers.map((user) => {
+            {mockUsers.filter((user) => user.id !== currentUser?.id).map((user) => {
               const alreadyShared = wishlist.sharedWith.some((s) => s.contactId === user.id);
               return (
                 <TouchableOpacity
@@ -374,6 +376,7 @@ export default function WishlistDetailScreen() {
           </View>
         </TouchableOpacity>
       </Modal>
+      <Toast {...toast} />
     </>
   );
 }
