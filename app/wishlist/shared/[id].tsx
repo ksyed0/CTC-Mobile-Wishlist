@@ -13,7 +13,7 @@ import { spacing } from '../../../theme/spacing';
 
 export default function SharedWishlistScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { getWishlistById, claimItem } = useWishlists();
+  const { getWishlistById, claimItem, markWishlistSeen } = useWishlists();
   const { products } = useProducts();
   const { currentUser } = useAuth();
   const [wishlist, setWishlist] = useState<Wishlist | null>(null);
@@ -25,6 +25,10 @@ export default function SharedWishlistScreen() {
       getWishlistById(id).then((w) => {
         setWishlist(w);
         setIsLoading(false);
+        // AC-0062: mark as seen so the tab badge clears
+        if (w) {
+          markWishlistSeen(id);
+        }
       });
     }
   }, [id]);
