@@ -601,3 +601,55 @@ describe('wishlistService.resetDemoData', () => {
     expect(val).toBeNull();
   });
 });
+
+// ---------------------------------------------------------------------------
+// setShowClaimers — US-0021
+// ---------------------------------------------------------------------------
+describe('wishlistService.setShowClaimers', () => {
+  it('sets showClaimers to true', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.setShowClaimers('wl-test-001', true);
+    const updated = await wishlistService.getWishlistById('wl-test-001');
+    expect(updated?.showClaimers).toBe(true);
+  });
+
+  it('sets showClaimers to false', async () => {
+    await seedWishlists([makeWishlist({ showClaimers: true })]);
+    await wishlistService.setShowClaimers('wl-test-001', false);
+    const updated = await wishlistService.getWishlistById('wl-test-001');
+    expect(updated?.showClaimers).toBe(false);
+  });
+
+  it('does nothing when wishlist id is not found', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.setShowClaimers('nonexistent', true);
+    const wl = await wishlistService.getWishlistById('wl-test-001');
+    expect(wl?.showClaimers).toBeUndefined();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setPrivacy — US-0024
+// ---------------------------------------------------------------------------
+describe('wishlistService.setPrivacy', () => {
+  it('sets privacy to private', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.setPrivacy('wl-test-001', 'private');
+    const updated = await wishlistService.getWishlistById('wl-test-001');
+    expect(updated?.privacy).toBe('private');
+  });
+
+  it('sets privacy to public', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.setPrivacy('wl-test-001', 'public');
+    const updated = await wishlistService.getWishlistById('wl-test-001');
+    expect(updated?.privacy).toBe('public');
+  });
+
+  it('does nothing when wishlist id is not found', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.setPrivacy('nonexistent', 'private');
+    const wl = await wishlistService.getWishlistById('wl-test-001');
+    expect(wl?.privacy).toBeUndefined();
+  });
+});
