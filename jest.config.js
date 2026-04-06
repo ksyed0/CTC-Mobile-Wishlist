@@ -8,6 +8,10 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@react-native-async-storage/async-storage$': '<rootDir>/tests/services/__mocks__/async-storage.js',
+    '^react-native-webview$': '<rootDir>/tests/services/__mocks__/react-native-webview.js',
+    '^expo-asset$': '<rootDir>/tests/services/__mocks__/expo-asset.js',
+    '^expo-file-system$': '<rootDir>/tests/services/__mocks__/expo-file-system.js',
+    '^react-native$': '<rootDir>/tests/services/__mocks__/react-native.js',
   },
   collectCoverageFrom: ['tools/lib/**/*.js', 'services/**/*.ts', 'utils/wishlistUtils.ts'],
   coverageReporters: ['text', 'lcov', 'json-summary'],

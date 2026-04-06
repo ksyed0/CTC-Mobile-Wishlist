@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Wishlist } from '../../types/wishlist';
@@ -14,6 +15,7 @@ import { spacing } from '../../theme/spacing';
 
 export default function WishlistDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const insets = useSafeAreaInsets();
   const { getWishlistById, removeItem, shareWishlist } = useWishlists();
   const { products } = useProducts();
   const { mockUsers, currentUser } = useAuth();
@@ -119,6 +121,7 @@ export default function WishlistDetailScreen() {
                   item={item}
                   productName={productName}
                   productPrice={product?.price}
+                  productImage={product?.image}
                   isOwner={isOwner}
                 />
                 {/* Remove button (AC-0025) */}
@@ -139,9 +142,9 @@ export default function WishlistDetailScreen() {
           }
         />
 
-        {/* AC-0027: price total footer */}
+        {/* AC-0027: price total footer — BUG-0103: safe area bottom inset */}
         {wishlist.items.length > 0 && (
-          <View style={styles.footer}>
+          <View style={[styles.footer, { paddingBottom: spacing.md + insets.bottom }]}>
             <Text style={styles.footerLabel}>Total</Text>
             <Text style={styles.footerTotal}>${total.toFixed(2)}</Text>
           </View>

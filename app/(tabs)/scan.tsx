@@ -12,10 +12,14 @@ import {
   Platform,
 } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import * as Device from 'expo-device';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useProducts } from '../../contexts/ProductContext';
 import { BarcodeOverlay } from '../../components/BarcodeOverlay';
+import SimulatorScanView from '../../components/SimulatorScanView';
+
+const isSimulator = !Device.isDevice;
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { StorageKeys, getItem, setItem } from '../../utils/storage';
@@ -154,7 +158,11 @@ export default function ScanScreen() {
     );
   }
 
-  // Camera available — show scanner
+  // Camera available — show scanner (or simulator catalog on non-device)
+  if (isSimulator) {
+    return <SimulatorScanView onBarcodeDetected={(barcode) => handleBarcode({ data: barcode })} />;
+  }
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       {/* Camera viewfinder */}
