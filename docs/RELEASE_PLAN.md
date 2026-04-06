@@ -537,63 +537,63 @@ Plan (Plan B): docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md
 US-0016 (EPIC-0007): As a wishlist owner, I want to attach a short note to any wishlist item, so that I can give the gift buyer useful context (size, colour, variant).
 Priority: Medium
 Estimate: S
-Status: Backlog
-Branch: feature/US-0016-item-notes
+Status: Done
+Branch: feature/plan-a-ui
 Dependencies: US-0008
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-1--item-notes-us-0016
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Tasks 2, 3, 4
 Acceptance Criteria:
-  - [ ] AC-0046: Owner can tap "+ Add note" on any item to open a bottom sheet input
-  - [ ] AC-0047: Entering text and tapping Save persists the note via AsyncStorage
-  - [ ] AC-0048: The note is shown as a subtitle below the item name in both owner and shared views
-  - [ ] AC-0049: Owner can edit or clear an existing note by tapping it
+  - [x] AC-0046: Owner can tap "+ Add note" on any item to open a bottom sheet input
+  - [x] AC-0047: Entering text and tapping Save persists the note via AsyncStorage
+  - [x] AC-0048: The note is shown as a subtitle below the item name in both owner and shared views
+  - [x] AC-0049: Owner can edit or clear an existing note by tapping it
 ```
 
 ```
 US-0017 (EPIC-0007): As a shopper, I want to see which catalog products I've already saved to a wishlist, so that I don't add duplicates while browsing.
 Priority: Medium
 Estimate: S
-Status: Backlog
-Branch: feature/US-0017-saved-indicator
+Status: Done
+Branch: feature/plan-a-ui
 Dependencies: US-0007, US-0003
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-2--already-in-wishlist-indicator-us-0017
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Task 5
 Acceptance Criteria:
-  - [ ] AC-0050: Products already saved to any wishlist show a filled red heart badge on their catalog card
-  - [ ] AC-0051: Saved products show a green "✓ Saved" pill instead of the add button
-  - [ ] AC-0052: Indicator updates immediately after adding a product to a wishlist
+  - [x] AC-0050: Products already saved to any wishlist show a filled red heart badge on their catalog card
+  - [x] AC-0051: Saved products show a green "✓ Saved" pill instead of the add button
+  - [x] AC-0052: Indicator updates immediately after adding a product to a wishlist
 ```
 
 ```
 US-0018 (EPIC-0007): As a demo presenter, I want a one-tap button to reset all demo data, so that I can start fresh between live demonstrations.
 Priority: High
 Estimate: XS
-Status: Backlog
-Branch: feature/US-0018-demo-reset
+Status: Done
+Branch: feature/plan-a-ui
 Dependencies: US-0013
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-3--demo-reset-us-0018
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Tasks 2, 3, 6
 Acceptance Criteria:
-  - [ ] AC-0053: A "Reset demo data" button is visible on the login/user-select screen
-  - [ ] AC-0054: Tapping it shows a confirmation dialog before any data is deleted
-  - [ ] AC-0055: After confirming, all wishlists and recent scans are cleared from AsyncStorage
-  - [ ] AC-0056: The app remains on the login screen after reset; no navigation side effects
+  - [x] AC-0053: A "Reset demo data" button is visible on the login/user-select screen
+  - [x] AC-0054: Tapping it shows a confirmation dialog before any data is deleted
+  - [x] AC-0055: After confirming, all wishlists and recent scans are cleared from AsyncStorage
+  - [x] AC-0056: The app remains on the login screen after reset; no navigation side effects
 ```
 
 ```
 US-0019 (EPIC-0007): As a wishlist owner, I want to rename a wishlist, so that I can fix typos or change the purpose of an existing list.
 Priority: Low
 Estimate: XS
-Status: Backlog
-Branch: feature/US-0019-wishlist-rename
+Status: Done
+Branch: feature/plan-a-ui
 Dependencies: US-0007
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-4--wishlist-rename-us-0019
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Tasks 1, 2, 3, 7
 Acceptance Criteria:
-  - [ ] AC-0057: A pencil icon is visible next to the wishlist name in the detail header
-  - [ ] AC-0058: Tapping the pencil opens a pre-filled bottom sheet input
-  - [ ] AC-0059: Saving updates the wishlist name immediately in the header and list views
-  - [ ] AC-0060: The save button is disabled when the name input is empty
+  - [x] AC-0057: A pencil icon is visible next to the wishlist name in the detail header
+  - [x] AC-0058: Tapping the pencil opens a pre-filled bottom sheet input
+  - [x] AC-0059: Saving updates the wishlist name immediately in the header and list views
+  - [x] AC-0060: The save button is disabled when the name input is empty
 ```
 
 ```
