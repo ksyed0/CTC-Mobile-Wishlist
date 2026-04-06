@@ -1199,3 +1199,43 @@
 - **Found by:** User (demo prep observation)
 - **Description:** The agentic SDLC dashboard auto-refreshes every 5 seconds but gives no audio or notification signal when pipeline phases complete, agents become blocked, or bugs are opened. Users stepping away from the terminal have no way to know when their attention is required.
 - **Fix:** Added a `localStorage`-based state change detection system. Each generated page embeds a `DASH_SNAPSHOT` JSON object with current phase, bug count, agent statuses, and pipeline completion state. On page load, the snapshot is compared to the previous render stored in `localStorage`. When a meaningful change is detected (phase completes, agent blocked, pipeline finishes, new bugs opened), the system plays a Web Audio API tone and fires a browser `Notification`. A "🔔 Alerts" button in the header lets users grant notification permission. No new dependencies — uses only built-in browser APIs.
+
+---
+
+## P2 — Minor (plan visualizer tooling — found 2026-04-06)
+
+### BUG-0113: AI Cost Timeline chart inflated by est/\* estimated bug costs — diverged from header total
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** develop
+- **Estimated Cost USD:** 0.50
+- **Found in:** `tools/generate-plan.js` (`sessionTimeline` computation)
+- **Story:** N/A (tooling)
+- **Found by:** User (observation — header showed $483.63, timeline showed $573.68)
+- **Description:** `sessionTimeline` called `deduplicateSessions(costRows)` without filtering `est/*` branches. The 18 synthetic estimated-bug-cost rows (e.g. `est/BUG-0001`) — representing manual estimates injected into `AI_COST_LOG.md` for bugs without real session data — were included in the cumulative timeline, inflating it by $101.15. The header total (`_totals.costUsd`) correctly skips `est/*` branches in `aggregateCostByBranch`, causing the two metrics to diverge.
+- **Fix:** Added `.filter((row) => !row.branch.startsWith('est/'))` to the `sessionTimeline` pipeline in `generate-plan.js`. Both metrics now end at $483.63.
+
+### BUG-0114: Plan Visualizer hierarchy card view renders blank — applyFilters hides all card epics on init
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** develop
+- **Estimated Cost USD:** 1.00
+- **Found in:** `tools/lib/render-html.js` (`applyFilters` function, line ~1792)
+- **Story:** N/A (tooling)
+- **Found by:** User (observation — card view appeared blank on switching from column view)
+- **Description:** `applyFilters` queried `.story-row` children of each `.epic-block` element to determine whether to show or hide the block. In the column view, story rows are children of `.epic-block`. In the card view, the `.epic-block` is only the collapsible header; story rows live in a sibling `epic-cards-*` div. So `block.querySelectorAll('.story-row')` always returned 0 children for card view epic-blocks, causing all of them to be set to `display: none` on page load. Switching to card view showed a completely blank panel.
+- **Fix:** Changed the search scope from `block` to `wrapper.closest('.mb-8') || block` so story rows in sibling divs are found correctly for card view epic blocks.
+
+### BUG-0115: Agent Status card not fixed width — overflows grid and pushes User Stories panel offscreen
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** develop
+- **Estimated Cost USD:** 0.25
+- **Found in:** `tools/generate-dashboard.js` (`.grid-2` CSS rule)
+- **Story:** N/A (tooling)
+- **Found by:** User (screenshot — User Stories panel only partially visible at right edge)
+- **Description:** The Agents + Stories section uses `.grid-2 { grid-template-columns: 2fr 1fr }`. CSS Grid does not automatically constrain grid items below their intrinsic content width — without `min-width: 0`, items can overflow their grid column. The Agent Status card contained an `agent-grid` with 3-column `repeat(3, 1fr)` cells that had non-wrapping text, causing the left column to expand and push the User Stories card off-screen to the right.
+- **Fix:** Added `.grid-2 > * { min-width: 0; }` to force grid children to respect their column boundaries.
