@@ -20,21 +20,23 @@ Four quick-win enhancements to improve demo polish and user experience for the C
 A reusable modal bottom sheet containing a single text input. Used by both Item Notes (optional, free-text) and Wishlist Rename (required, pre-filled).
 
 **Props:**
+
 ```ts
 interface BottomSheetInputProps {
-  visible: boolean
-  title: string
-  placeholder: string
-  initialValue?: string
-  maxLength?: number
-  onConfirm: (value: string) => void
-  onCancel: () => void
-  confirmLabel?: string   // default "Save"
-  cancelLabel?: string    // default "Cancel"
+  visible: boolean;
+  title: string;
+  placeholder: string;
+  initialValue?: string;
+  maxLength?: number;
+  onConfirm: (value: string) => void;
+  onCancel: () => void;
+  confirmLabel?: string; // default "Save"
+  cancelLabel?: string; // default "Cancel"
 }
 ```
 
 **Behaviour:**
+
 - Renders as a `Modal` (transparent, animationType="slide")
 - Semi-transparent backdrop; sheet slides up from bottom with `border-top-left-radius: 16px` and `border-top-right-radius: 16px`
 - TextInput is auto-focused on open (`autoFocus`)
@@ -91,6 +93,7 @@ Show at a glance which catalog products have already been saved to any of the cu
 ### Logic
 
 In `app/(tabs)/catalog.tsx`:
+
 - Compute `savedProductIds = new Set(wishlists.flatMap(w => w.items.map(i => i.productId)))` via `useMemo`
 - Pass `isSaved={savedProductIds.has(product.id)}` prop to each `ProductCard`
 
@@ -99,11 +102,13 @@ In `app/(tabs)/catalog.tsx`:
 ### UI Changes — `components/ProductCard.tsx`
 
 **Heart badge (top-right of image):**
+
 - Always render the heart icon; when `isSaved = true`, use a filled red heart (`MaterialIcons name="favorite"`, color `#D52B1E`); when false, outline (`"favorite-border"`, color `#999`)
 - Position: absolute, top 8, right 8, on top of the image container
 - Background: small white circle (24×24) with subtle shadow for legibility
 
 **Add to Wishlist button (bottom of card):**
+
 - When `isSaved = true`: render green pill `"✓ Saved"` (background `#E8F5E9`, text `#2E7D32`, non-tappable)
 - When `isSaved = false`: render existing "Add to Wishlist" flow unchanged
 
@@ -139,6 +144,7 @@ A "Reset Demo Data" button on the Login/User-select screen (`app/login.tsx` or e
 `wishlistService.resetDemoData(): Promise<void>`
 
 Removes:
+
 - `AsyncStorage.removeItem(StorageKeys.WISHLISTS)` — all wishlists
 - `AsyncStorage.removeItem(StorageKeys.RECENT_SCANS)` — recent scan history
 - `AsyncStorage.removeItem(StorageKeys.SEEN_SHARED_IDS)` — tab badge tracking (if present)
@@ -198,19 +204,19 @@ WishlistContext exposes this as `renameWishlist(wishlistId, newName)` — update
 
 ## Files to Create
 
-| File | Purpose |
-|------|---------|
+| File                              | Purpose                             |
+| --------------------------------- | ----------------------------------- |
 | `components/BottomSheetInput.tsx` | Shared bottom sheet input primitive |
 
 ## Files to Modify
 
-| File | Change |
-|------|--------|
-| `services/wishlistService.ts` | Add `updateItemNote`, `renameWishlist`, `resetDemoData` |
-| `contexts/WishlistContext.tsx` | Expose new service methods; add `resetDemoData` |
-| `components/WishlistItemRow.tsx` | Add `note` + `onNotePress` props; render note/add-note UI |
-| `app/wishlist/[id].tsx` | Wire note editing; add pencil icon + BottomSheetInput for rename |
-| `app/wishlist/shared/[id].tsx` | Pass note to WishlistItemRow (read-only) |
-| `components/ProductCard.tsx` | Add `isSaved` prop; render heart badge + saved pill |
-| `app/(tabs)/catalog.tsx` | Compute `savedProductIds` Set; pass `isSaved` to ProductCard |
-| `app/login.tsx` (or auth screen) | Add "Reset demo data" button |
+| File                             | Change                                                           |
+| -------------------------------- | ---------------------------------------------------------------- |
+| `services/wishlistService.ts`    | Add `updateItemNote`, `renameWishlist`, `resetDemoData`          |
+| `contexts/WishlistContext.tsx`   | Expose new service methods; add `resetDemoData`                  |
+| `components/WishlistItemRow.tsx` | Add `note` + `onNotePress` props; render note/add-note UI        |
+| `app/wishlist/[id].tsx`          | Wire note editing; add pencil icon + BottomSheetInput for rename |
+| `app/wishlist/shared/[id].tsx`   | Pass note to WishlistItemRow (read-only)                         |
+| `components/ProductCard.tsx`     | Add `isSaved` prop; render heart badge + saved pill              |
+| `app/(tabs)/catalog.tsx`         | Compute `savedProductIds` Set; pass `isSaved` to ProductCard     |
+| `app/login.tsx` (or auth screen) | Add "Reset demo data" button                                     |

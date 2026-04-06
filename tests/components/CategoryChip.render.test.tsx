@@ -14,8 +14,20 @@ jest.mock('react-native', () => {
     View: makeComponent('View'),
     Text: makeComponent('Text'),
     Image: makeComponent('Image'),
-    TouchableOpacity: function TouchableOpacity({ children, onPress, testID, accessibilityLabel, accessibilityRole, accessibilityState, ...rest }: any) {
-      return React.createElement('TouchableOpacity', { testID, accessibilityLabel, accessibilityRole, accessibilityState, onPress, ...rest }, children);
+    TouchableOpacity: function TouchableOpacity({
+      children,
+      onPress,
+      testID,
+      accessibilityLabel,
+      accessibilityRole,
+      accessibilityState,
+      ...rest
+    }: any) {
+      return React.createElement(
+        'TouchableOpacity',
+        { testID, accessibilityLabel, accessibilityRole, accessibilityState, onPress, ...rest },
+        children,
+      );
     },
     StyleSheet: {
       create: (styles: any) => styles,
@@ -27,14 +39,23 @@ jest.mock('react-native', () => {
 
 jest.mock('../../theme/colors', () => ({
   colors: {
-    primary: '#D52B1E', white: '#FFFFFF', dark: '#333333',
-    textSecondary: '#666666', textLight: '#999999', background: '#F5F5F5',
-    border: '#E0E0E0', success: '#2E7D32',
+    primary: '#D52B1E',
+    white: '#FFFFFF',
+    dark: '#333333',
+    textSecondary: '#666666',
+    textLight: '#999999',
+    background: '#F5F5F5',
+    border: '#E0E0E0',
+    success: '#2E7D32',
   },
 }));
 jest.mock('../../theme/spacing', () => ({
   spacing: {
-    xs: 4, sm: 8, md: 16, lg: 24, xl: 32,
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
     borderRadius: { sm: 8, md: 12, lg: 16, full: 999 },
   },
 }));
@@ -54,55 +75,41 @@ const category: Category = { id: 'cat-tools', name: 'Tools', icon: 'build' };
 
 describe('CategoryChip — render', () => {
   it('renders without crashing', () => {
-    const { toJSON } = render(
-      <CategoryChip category={category} isSelected={false} onPress={jest.fn()} />
-    );
+    const { toJSON } = render(<CategoryChip category={category} isSelected={false} onPress={jest.fn()} />);
     expect(toJSON()).toBeTruthy();
   });
 
   it('shows the category name', () => {
-    const { getByText } = render(
-      <CategoryChip category={category} isSelected={false} onPress={jest.fn()} />
-    );
+    const { getByText } = render(<CategoryChip category={category} isSelected={false} onPress={jest.fn()} />);
     expect(getByText('Tools')).toBeTruthy();
   });
 
   it('renders with accessibilityLabel matching category name', () => {
-    const { getByLabelText } = render(
-      <CategoryChip category={category} isSelected={false} onPress={jest.fn()} />
-    );
+    const { getByLabelText } = render(<CategoryChip category={category} isSelected={false} onPress={jest.fn()} />);
     expect(getByLabelText('Tools')).toBeTruthy();
   });
 
   it('calls onPress when chip is pressed', () => {
     const onPress = jest.fn();
-    const { getByText } = render(
-      <CategoryChip category={category} isSelected={false} onPress={onPress} />
-    );
+    const { getByText } = render(<CategoryChip category={category} isSelected={false} onPress={onPress} />);
     fireEvent.press(getByText('Tools'));
     expect(onPress).toHaveBeenCalledTimes(1);
   });
 
   it('renders correctly when selected', () => {
     // Selected state should not crash or hide the label
-    const { getByText } = render(
-      <CategoryChip category={category} isSelected onPress={jest.fn()} />
-    );
+    const { getByText } = render(<CategoryChip category={category} isSelected onPress={jest.fn()} />);
     expect(getByText('Tools')).toBeTruthy();
   });
 
   it('renders correctly when not selected', () => {
-    const { getByText } = render(
-      <CategoryChip category={category} isSelected={false} onPress={jest.fn()} />
-    );
+    const { getByText } = render(<CategoryChip category={category} isSelected={false} onPress={jest.fn()} />);
     expect(getByText('Tools')).toBeTruthy();
   });
 
   it('renders different category names correctly', () => {
     const autoCat: Category = { id: 'cat-auto', name: 'Automotive', icon: 'directions-car' };
-    const { getByText } = render(
-      <CategoryChip category={autoCat} isSelected={false} onPress={jest.fn()} />
-    );
+    const { getByText } = render(<CategoryChip category={autoCat} isSelected={false} onPress={jest.fn()} />);
     expect(getByText('Automotive')).toBeTruthy();
   });
 });

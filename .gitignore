@@ -18,6 +18,15 @@ coverage/
 # Superpowers brainstorming session files
 .superpowers/
 
+# Claude Code internal directories (worktrees, session artifacts)
+.claude/worktrees/
+
+# Playwright MCP session snapshots
+.playwright-mcp/
+
+# Temporary/downloaded files
+data/*.pdf
+
 # Lock files (orchestrator concurrency)
 .locks/
 

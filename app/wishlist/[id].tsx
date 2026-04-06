@@ -1,5 +1,15 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal, Switch } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
+  Alert,
+  Modal,
+  Switch,
+} from 'react-native';
 import { BottomSheetInput } from '../../components/BottomSheetInput';
 import { Toast, useToast } from '../../components/Toast';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -19,7 +29,8 @@ import { typography } from '../../theme/typography';
 export default function WishlistDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const { getWishlistById, removeItem, shareWishlist, updateItemNote, renameWishlist, setShowClaimers, setPrivacy } = useWishlists();
+  const { getWishlistById, removeItem, shareWishlist, updateItemNote, renameWishlist, setShowClaimers, setPrivacy } =
+    useWishlists();
   const { products } = useProducts();
   const { mockUsers, currentUser } = useAuth();
   const [wishlist, setWishlist] = useState<Wishlist | null>(null);
@@ -190,8 +201,8 @@ export default function WishlistDetailScreen() {
                 (wishlist.privacy ?? 'contacts') === 'private'
                   ? 'lock'
                   : (wishlist.privacy ?? 'contacts') === 'public'
-                  ? 'link'
-                  : 'group'
+                    ? 'link'
+                    : 'group'
               }
               size={16}
               color={colors.textSecondary}
@@ -200,8 +211,8 @@ export default function WishlistDetailScreen() {
               {(wishlist.privacy ?? 'contacts') === 'private'
                 ? 'Private'
                 : (wishlist.privacy ?? 'contacts') === 'public'
-                ? 'Public link'
-                : 'Contacts only'}
+                  ? 'Public link'
+                  : 'Contacts only'}
             </Text>
             <MaterialIcons name="chevron-right" size={16} color={colors.textLight} />
           </TouchableOpacity>
@@ -300,18 +311,31 @@ export default function WishlistDetailScreen() {
         animationType="slide"
         onRequestClose={() => setShowPrivacySheet(false)}
       >
-        <TouchableOpacity
-          style={styles.modalBackdrop}
-          activeOpacity={1}
-          onPress={() => setShowPrivacySheet(false)}
-        >
+        <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setShowPrivacySheet(false)}>
           <View style={styles.modalSheet}>
             <Text style={styles.modalTitle}>Wishlist Privacy</Text>
-            {([
-              { value: 'private' as const, icon: 'lock' as const, label: 'Private', subtitle: 'Only you can see this wishlist' },
-              { value: 'contacts' as const, icon: 'group' as const, label: 'Contacts only', subtitle: 'Share with specific people' },
-              { value: 'public' as const, icon: 'link' as const, label: 'Public link', subtitle: 'Anyone with the link can view' },
-            ] as const).map((option) => {
+            {(
+              [
+                {
+                  value: 'private' as const,
+                  icon: 'lock' as const,
+                  label: 'Private',
+                  subtitle: 'Only you can see this wishlist',
+                },
+                {
+                  value: 'contacts' as const,
+                  icon: 'group' as const,
+                  label: 'Contacts only',
+                  subtitle: 'Share with specific people',
+                },
+                {
+                  value: 'public' as const,
+                  icon: 'link' as const,
+                  label: 'Public link',
+                  subtitle: 'Anyone with the link can view',
+                },
+              ] as const
+            ).map((option) => {
               const isSelected = (wishlist?.privacy ?? 'contacts') === option.value;
               return (
                 <TouchableOpacity
@@ -355,21 +379,23 @@ export default function WishlistDetailScreen() {
           <View style={styles.modalSheet}>
             <Text style={styles.modalTitle}>Share Wishlist</Text>
             <Text style={styles.modalSubtitle}>Choose someone to share "{wishlist.name}" with</Text>
-            {mockUsers.filter((user) => user.id !== currentUser?.id).map((user) => {
-              const alreadyShared = wishlist.sharedWith.some((s) => s.contactId === user.id);
-              return (
-                <TouchableOpacity
-                  key={user.id}
-                  style={[styles.userOption, alreadyShared && styles.userOptionShared]}
-                  onPress={() => !alreadyShared && handleShare(user.id, user.name)}
-                  disabled={alreadyShared}
-                >
-                  <MaterialIcons name="person" size={24} color={alreadyShared ? colors.textLight : colors.primary} />
-                  <Text style={[styles.userName, alreadyShared && styles.userNameShared]}>{user.name}</Text>
-                  {alreadyShared && <Text style={styles.sharedBadge}>Shared</Text>}
-                </TouchableOpacity>
-              );
-            })}
+            {mockUsers
+              .filter((user) => user.id !== currentUser?.id)
+              .map((user) => {
+                const alreadyShared = wishlist.sharedWith.some((s) => s.contactId === user.id);
+                return (
+                  <TouchableOpacity
+                    key={user.id}
+                    style={[styles.userOption, alreadyShared && styles.userOptionShared]}
+                    onPress={() => !alreadyShared && handleShare(user.id, user.name)}
+                    disabled={alreadyShared}
+                  >
+                    <MaterialIcons name="person" size={24} color={alreadyShared ? colors.textLight : colors.primary} />
+                    <Text style={[styles.userName, alreadyShared && styles.userNameShared]}>{user.name}</Text>
+                    {alreadyShared && <Text style={styles.sharedBadge}>Shared</Text>}
+                  </TouchableOpacity>
+                );
+              })}
             <TouchableOpacity style={styles.cancelButton} onPress={() => setShowShareModal(false)}>
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>

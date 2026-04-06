@@ -15,6 +15,7 @@
 ## Task 1: Extend Wishlist type
 
 **Files:**
+
 - Modify: `types/wishlist.ts`
 
 - [ ] **Step 1: Add `showClaimers` and `privacy` optional fields**
@@ -28,8 +29,8 @@ export interface Wishlist {
   createdAt: string;
   items: WishlistItem[];
   sharedWith: SharedContact[];
-  showClaimers?: boolean;        // US-0021 — default false when absent
-  privacy?: 'private' | 'contacts' | 'public';  // US-0024 — default 'contacts' when absent
+  showClaimers?: boolean; // US-0021 — default false when absent
+  privacy?: 'private' | 'contacts' | 'public'; // US-0024 — default 'contacts' when absent
 }
 ```
 
@@ -56,6 +57,7 @@ git commit -m "feat(US-0021,US-0024): extend Wishlist type with showClaimers and
 ## Task 2: wishlistService — setShowClaimers, setPrivacy + StorageKeys
 
 **Files:**
+
 - Modify: `utils/storage.ts`
 - Modify: `services/wishlistService.ts`
 - Modify: `tests/services/wishlistService.test.ts`
@@ -178,6 +180,7 @@ git commit -m "feat(US-0021,US-0024): add setShowClaimers and setPrivacy to wish
 ## Task 3: WishlistContext — unseenSharedCount, markWishlistSeen, new methods
 
 **Files:**
+
 - Modify: `contexts/WishlistContext.tsx`
 
 - [ ] **Step 1: Add unseenSharedCount, markWishlistSeen, setShowClaimers, setPrivacy**
@@ -297,6 +300,7 @@ git commit -m "feat(US-0020,US-0021,US-0024): add unseenSharedCount, markWishlis
 ## Task 4: Tab badge for unseen shared wishlists
 
 **Files:**
+
 - Modify: `app/(tabs)/_layout.tsx`
 - Modify: `app/wishlist/shared/[id].tsx`
 
@@ -371,6 +375,7 @@ git commit -m "feat(US-0020): tab badge shows unseen shared wishlist count; clea
 ## Task 5: Claimer Reveal toggle
 
 **Files:**
+
 - Modify: `app/wishlist/[id].tsx`
 
 - [ ] **Step 1: Add setShowClaimers to the context destructure**
@@ -387,7 +392,7 @@ Add a local toggle handler after `handleRenameSave`:
 async function handleToggleClaimers(value: boolean) {
   if (!wishlist) return;
   await setShowClaimers(wishlist.id, value);
-  setWishlist((prev) => prev ? { ...prev, showClaimers: value } : prev);
+  setWishlist((prev) => (prev ? { ...prev, showClaimers: value } : prev));
 }
 ```
 
@@ -396,23 +401,35 @@ async function handleToggleClaimers(value: boolean) {
 Add `Switch` to the React Native imports at the top of the file:
 
 ```ts
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal, Switch } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
+  Alert,
+  Modal,
+  Switch,
+} from 'react-native';
 ```
 
 Inside the header `View` (after the `headerMeta` Text and before the end of `headerText`), add:
 
 ```tsx
-{isOwner && (
-  <View style={styles.claimerToggleRow}>
-    <Text style={styles.claimerToggleLabel}>Show who claimed items</Text>
-    <Switch
-      value={wishlist.showClaimers ?? false}
-      onValueChange={handleToggleClaimers}
-      trackColor={{ false: colors.border, true: colors.primary }}
-      thumbColor={colors.white}
-    />
-  </View>
-)}
+{
+  isOwner && (
+    <View style={styles.claimerToggleRow}>
+      <Text style={styles.claimerToggleLabel}>Show who claimed items</Text>
+      <Switch
+        value={wishlist.showClaimers ?? false}
+        onValueChange={handleToggleClaimers}
+        trackColor={{ false: colors.border, true: colors.primary }}
+        thumbColor={colors.white}
+      />
+    </View>
+  );
+}
 ```
 
 Add styles:
@@ -457,9 +474,7 @@ In the `renderItem` FlatList in `app/wishlist/[id].tsx`, the `WishlistItemRow` c
 Now update `WishlistItemRow` to use `claimerName` in the owner view too. In `components/WishlistItemRow.tsx`, change the claimed text logic (around line 63):
 
 ```tsx
-<Text style={styles.claimedText}>
-  {claimerName ? `Claimed by ${claimerName}` : 'Claimed'}
-</Text>
+<Text style={styles.claimedText}>{claimerName ? `Claimed by ${claimerName}` : 'Claimed'}</Text>
 ```
 
 (Remove the `isOwner` check that was forcing "Claimed" without a name — `claimerName` is now only passed when the owner has the toggle on, so the logic is cleaner.)
@@ -484,6 +499,7 @@ git commit -m "feat(US-0021): claimer reveal toggle in wishlist header; shows co
 ## Task 6: Restock and price-drop alert buttons
 
 **Files:**
+
 - Modify: `app/product/[id].tsx`
 
 - [ ] **Step 1: Add the two alert buttons below the Add to Cart button**
@@ -491,35 +507,37 @@ git commit -m "feat(US-0021): claimer reveal toggle in wishlist header; shows co
 In `app/product/[id].tsx`, the CTAs live inside `<View style={styles.details}>`. After the `addToCartButton` TouchableOpacity closing tag (around line 171), add:
 
 ```tsx
-{/* US-0022: Restock alert — only when out of stock */}
-{!product.inStock && (
-  <TouchableOpacity
-    style={styles.alertButton}
-    onPress={() =>
-      Alert.alert('Restock Alert Set', "We'll notify you when this item is back in stock.")
-    }
-    activeOpacity={0.8}
-    accessibilityRole="button"
-    accessibilityLabel="Notify me when back in stock"
-  >
-    <MaterialIcons name="notifications-none" size={16} color={colors.textSecondary} />
-    <Text style={styles.alertButtonText}>Notify me when back in stock</Text>
-  </TouchableOpacity>
-)}
+{
+  /* US-0022: Restock alert — only when out of stock */
+}
+{
+  !product.inStock && (
+    <TouchableOpacity
+      style={styles.alertButton}
+      onPress={() => Alert.alert('Restock Alert Set', "We'll notify you when this item is back in stock.")}
+      activeOpacity={0.8}
+      accessibilityRole="button"
+      accessibilityLabel="Notify me when back in stock"
+    >
+      <MaterialIcons name="notifications-none" size={16} color={colors.textSecondary} />
+      <Text style={styles.alertButtonText}>Notify me when back in stock</Text>
+    </TouchableOpacity>
+  );
+}
 
-{/* US-0023: Price-drop alert — always visible */}
+{
+  /* US-0023: Price-drop alert — always visible */
+}
 <TouchableOpacity
   style={styles.alertButton}
-  onPress={() =>
-    Alert.alert('Price Drop Alert Set', "We'll notify you if the price drops on this item.")
-  }
+  onPress={() => Alert.alert('Price Drop Alert Set', "We'll notify you if the price drops on this item.")}
   activeOpacity={0.8}
   accessibilityRole="button"
   accessibilityLabel="Notify me if price drops"
 >
   <MaterialIcons name="trending-down" size={16} color={colors.textSecondary} />
   <Text style={styles.alertButtonText}>Notify me if price drops</Text>
-</TouchableOpacity>
+</TouchableOpacity>;
 ```
 
 Add styles (add to the existing `StyleSheet.create`):
@@ -564,6 +582,7 @@ git commit -m "feat(US-0022,US-0023): mock restock and price-drop alert buttons 
 ## Task 7: Privacy levels
 
 **Files:**
+
 - Modify: `app/wishlist/[id].tsx`
 
 This task requires `expo-clipboard` for the "Copy Link" action. Check if it's already installed:
@@ -598,7 +617,7 @@ Add the handler:
 async function handlePrivacyChange(privacy: 'private' | 'contacts' | 'public') {
   if (!wishlist) return;
   await setPrivacy(wishlist.id, privacy);
-  setWishlist((prev) => prev ? { ...prev, privacy } : prev);
+  setWishlist((prev) => (prev ? { ...prev, privacy } : prev));
   setShowPrivacySheet(false);
 }
 
@@ -615,43 +634,49 @@ async function handleCopyLink() {
 Inside the header, after the claimer toggle row (from Task 5), add:
 
 ```tsx
-{isOwner && (
-  <TouchableOpacity
-    style={styles.privacyRow}
-    onPress={() => setShowPrivacySheet(true)}
-    activeOpacity={0.7}
-    accessibilityRole="button"
-    accessibilityLabel="Change wishlist privacy"
-  >
-    <MaterialIcons
-      name={
-        (wishlist.privacy ?? 'contacts') === 'private'
-          ? 'lock'
+{
+  isOwner && (
+    <TouchableOpacity
+      style={styles.privacyRow}
+      onPress={() => setShowPrivacySheet(true)}
+      activeOpacity={0.7}
+      accessibilityRole="button"
+      accessibilityLabel="Change wishlist privacy"
+    >
+      <MaterialIcons
+        name={
+          (wishlist.privacy ?? 'contacts') === 'private'
+            ? 'lock'
+            : (wishlist.privacy ?? 'contacts') === 'public'
+              ? 'link'
+              : 'group'
+        }
+        size={16}
+        color={colors.textSecondary}
+      />
+      <Text style={styles.privacyLabel}>
+        {(wishlist.privacy ?? 'contacts') === 'private'
+          ? 'Private'
           : (wishlist.privacy ?? 'contacts') === 'public'
-          ? 'link'
-          : 'group'
-      }
-      size={16}
-      color={colors.textSecondary}
-    />
-    <Text style={styles.privacyLabel}>
-      {(wishlist.privacy ?? 'contacts') === 'private'
-        ? 'Private'
-        : (wishlist.privacy ?? 'contacts') === 'public'
-        ? 'Public link'
-        : 'Contacts only'}
-    </Text>
-    <MaterialIcons name="chevron-right" size={16} color={colors.textLight} />
-  </TouchableOpacity>
-)}
+            ? 'Public link'
+            : 'Contacts only'}
+      </Text>
+      <MaterialIcons name="chevron-right" size={16} color={colors.textLight} />
+    </TouchableOpacity>
+  );
+}
 
-{/* Public link copy button */}
-{isOwner && (wishlist.privacy ?? 'contacts') === 'public' && (
-  <TouchableOpacity style={styles.copyLinkButton} onPress={handleCopyLink} activeOpacity={0.8}>
-    <MaterialIcons name="content-copy" size={14} color={colors.primary} />
-    <Text style={styles.copyLinkText}>Copy link</Text>
-  </TouchableOpacity>
-)}
+{
+  /* Public link copy button */
+}
+{
+  isOwner && (wishlist.privacy ?? 'contacts') === 'public' && (
+    <TouchableOpacity style={styles.copyLinkButton} onPress={handleCopyLink} activeOpacity={0.8}>
+      <MaterialIcons name="content-copy" size={14} color={colors.primary} />
+      <Text style={styles.copyLinkText}>Copy link</Text>
+    </TouchableOpacity>
+  );
+}
 ```
 
 Add styles:
@@ -686,12 +711,14 @@ copyLinkText: {
 The share button is rendered around line 104. Wrap it conditionally:
 
 ```tsx
-{(wishlist.privacy ?? 'contacts') !== 'private' && (
-  <TouchableOpacity style={styles.shareButton} onPress={() => setShowShareModal(true)}>
-    <MaterialIcons name="share" size={20} color={colors.primary} />
-    <Text style={styles.shareButtonText}>Share</Text>
-  </TouchableOpacity>
-)}
+{
+  (wishlist.privacy ?? 'contacts') !== 'private' && (
+    <TouchableOpacity style={styles.shareButton} onPress={() => setShowShareModal(true)}>
+      <MaterialIcons name="share" size={20} color={colors.primary} />
+      <Text style={styles.shareButtonText}>Share</Text>
+    </TouchableOpacity>
+  );
+}
 ```
 
 - [ ] **Step 4: Add privacy picker Modal**
@@ -699,24 +726,30 @@ The share button is rendered around line 104. Wrap it conditionally:
 After the rename `BottomSheetInput`, add the privacy picker as a Modal (same bottom-sheet pattern):
 
 ```tsx
-<Modal
-  visible={showPrivacySheet}
-  transparent
-  animationType="slide"
-  onRequestClose={() => setShowPrivacySheet(false)}
->
-  <TouchableOpacity
-    style={styles.modalBackdrop}
-    activeOpacity={1}
-    onPress={() => setShowPrivacySheet(false)}
-  >
+<Modal visible={showPrivacySheet} transparent animationType="slide" onRequestClose={() => setShowPrivacySheet(false)}>
+  <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setShowPrivacySheet(false)}>
     <View style={styles.modalSheet}>
       <Text style={styles.modalTitle}>Wishlist Privacy</Text>
       {(
         [
-          { value: 'private' as const, icon: 'lock' as const, label: 'Private', subtitle: 'Only you can see this wishlist' },
-          { value: 'contacts' as const, icon: 'group' as const, label: 'Contacts only', subtitle: 'Share with specific people' },
-          { value: 'public' as const, icon: 'link' as const, label: 'Public link', subtitle: 'Anyone with the link can view' },
+          {
+            value: 'private' as const,
+            icon: 'lock' as const,
+            label: 'Private',
+            subtitle: 'Only you can see this wishlist',
+          },
+          {
+            value: 'contacts' as const,
+            icon: 'group' as const,
+            label: 'Contacts only',
+            subtitle: 'Share with specific people',
+          },
+          {
+            value: 'public' as const,
+            icon: 'link' as const,
+            label: 'Public link',
+            subtitle: 'Anyone with the link can view',
+          },
         ] as const
       ).map((option) => {
         const isSelected = (wishlist?.privacy ?? 'contacts') === option.value;

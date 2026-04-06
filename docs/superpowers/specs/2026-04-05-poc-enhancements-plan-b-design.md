@@ -26,6 +26,7 @@ Surface a numeric badge on the Wishlists tab icon when the current user has shar
 **New context value in `WishlistContext`:** `unseenSharedCount: number`
 
 Logic:
+
 ```
 sharedWishlists = wishlists filtered to those not owned by currentUser
 unseenSharedCount = sharedWishlists.filter(w => !seenIds.includes(w.id)).length
@@ -36,6 +37,7 @@ When the user opens a shared wishlist (`app/wishlist/shared/[id].tsx`), add its 
 ### UI
 
 `app/(tabs)/_layout.tsx` — Wishlists tab:
+
 ```tsx
 tabBarBadge={unseenSharedCount > 0 ? unseenSharedCount : undefined}
 ```
@@ -66,10 +68,11 @@ Let the wishlist owner optionally see who claimed each item — useful after an 
 ### Data
 
 **Wishlist type extension:**
+
 ```ts
 interface Wishlist {
   // ... existing fields
-  showClaimers?: boolean   // default: false
+  showClaimers?: boolean; // default: false
 }
 ```
 
@@ -97,8 +100,8 @@ A toggle row in the wishlist detail header section, below the item count/shared-
 When `showClaimers = true`, each item in the owner's `WishlistItemRow` that has `claimedBy` set shows: `"Claimed by [name]"` resolved from `wishlist.sharedWith` array:
 
 ```ts
-const claimer = wishlist.sharedWith.find(c => c.contactId === item.claimedBy)
-const claimerName = claimer?.contactName ?? item.claimedBy
+const claimer = wishlist.sharedWith.find((c) => c.contactId === item.claimedBy);
+const claimerName = claimer?.contactName ?? item.claimedBy;
 ```
 
 Render as a small green subtitle: `"✓ Claimed by Bob"` (font-size 11, color `#2E7D32`)
@@ -126,12 +129,14 @@ Mock "notify me" buttons on the product detail screen. These are UI-only — no 
 Two additional buttons rendered below the primary CTAs (Add to Wishlist / Add to Cart):
 
 **Restock Alert button (US-0022 — "Back in Stock"):**
+
 - Shown when `product.inStock === false` only
 - Label: `"🔔 Notify me when back in stock"`
 - Style: outlined button (border `#ccc`, text `#666`, font-size 13)
 - On tap: `Alert.alert("Restock Alert Set", "We'll notify you when this item is back in stock.")`
 
 **Price-Drop Alert button (US-0023 — "Price Drop"):**
+
 - Always visible regardless of stock status
 - Label: `"🔔 Notify me if price drops"`
 - Style: same outlined style as restock button
@@ -167,10 +172,11 @@ Give wishlist owners control over who can see their wishlist. Three tiers: Priva
 ### Data
 
 **Wishlist type extension:**
+
 ```ts
 interface Wishlist {
   // ... existing fields
-  privacy?: 'private' | 'contacts' | 'public'   // default: 'contacts'
+  privacy?: 'private' | 'contacts' | 'public'; // default: 'contacts'
 }
 ```
 
@@ -184,11 +190,11 @@ A "Privacy" row in the wishlist detail header, showing the current setting and a
 
 **Picker rows:**
 
-| Icon | Label | Subtitle |
-|------|-------|---------|
-| 🔒 | Private | Only you can see this wishlist |
-| 👥 | Contacts only | Share with specific people |
-| 🔗 | Public link | Anyone with the link can view |
+| Icon | Label         | Subtitle                       |
+| ---- | ------------- | ------------------------------ |
+| 🔒   | Private       | Only you can see this wishlist |
+| 👥   | Contacts only | Share with specific people     |
+| 🔗   | Public link   | Anyone with the link can view  |
 
 Selected row has `border: 1.5px solid #D52B1E` and `background: #fff5f5`.
 
@@ -223,20 +229,20 @@ Selected row has `border: 1.5px solid #D52B1E` and `background: #fff5f5`.
 
 ## Files to Create
 
-| File | Purpose |
-|------|---------|
+| File   | Purpose                                |
+| ------ | -------------------------------------- |
 | (none) | All changes additive to existing files |
 
 ## Files to Modify
 
-| File | Change |
-|------|--------|
-| `types/index.ts` (or equivalent) | Add `showClaimers?`, `privacy?` to `Wishlist` type |
-| `services/wishlistService.ts` | Add `setShowClaimers`, `setPrivacy` |
-| `contexts/WishlistContext.tsx` | Expose new methods; add `unseenSharedCount` + `seenIds` logic |
-| `services/storageKeys.ts` | Add `SEEN_SHARED_IDS` key |
-| `app/(tabs)/_layout.tsx` | Add `tabBarBadge` to Wishlists tab |
-| `app/wishlist/shared/[id].tsx` | Mark wishlist as seen on mount |
-| `app/wishlist/[id].tsx` | Add claimer reveal toggle; add privacy row + picker |
-| `components/WishlistItemRow.tsx` | Render claimer name when `showClaimers` is true |
-| `app/product/[id].tsx` | Add restock + price-drop alert buttons |
+| File                             | Change                                                        |
+| -------------------------------- | ------------------------------------------------------------- |
+| `types/index.ts` (or equivalent) | Add `showClaimers?`, `privacy?` to `Wishlist` type            |
+| `services/wishlistService.ts`    | Add `setShowClaimers`, `setPrivacy`                           |
+| `contexts/WishlistContext.tsx`   | Expose new methods; add `unseenSharedCount` + `seenIds` logic |
+| `services/storageKeys.ts`        | Add `SEEN_SHARED_IDS` key                                     |
+| `app/(tabs)/_layout.tsx`         | Add `tabBarBadge` to Wishlists tab                            |
+| `app/wishlist/shared/[id].tsx`   | Mark wishlist as seen on mount                                |
+| `app/wishlist/[id].tsx`          | Add claimer reveal toggle; add privacy row + picker           |
+| `components/WishlistItemRow.tsx` | Render claimer name when `showClaimers` is true               |
+| `app/product/[id].tsx`           | Add restock + price-drop alert buttons                        |

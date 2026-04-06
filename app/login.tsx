@@ -17,21 +17,17 @@ export default function LoginScreen() {
   }
 
   function handleResetDemo() {
-    Alert.alert(
-      'Reset Demo Data',
-      'This will delete all wishlists and recent scans for all users. Continue?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Reset',
-          style: 'destructive',
-          onPress: async () => {
-            await resetDemoData();
-            Alert.alert('Done', 'Demo data cleared.');
-          },
+    Alert.alert('Reset Demo Data', 'This will delete all wishlists and recent scans for all users. Continue?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Reset',
+        style: 'destructive',
+        onPress: async () => {
+          await resetDemoData();
+          Alert.alert('Done', 'Demo data cleared.');
         },
-      ],
-    );
+      },
+    ]);
   }
 
   async function handleGuest() {

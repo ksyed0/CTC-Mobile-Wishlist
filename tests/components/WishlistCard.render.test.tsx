@@ -15,8 +15,19 @@ jest.mock('react-native', () => {
     Text: makeComponent('Text'),
     Image: makeComponent('Image'),
     ScrollView: makeComponent('ScrollView'),
-    TouchableOpacity: function TouchableOpacity({ children, onPress, testID, accessibilityLabel, accessibilityRole, ...rest }: any) {
-      return React.createElement('TouchableOpacity', { testID, accessibilityLabel, accessibilityRole, onPress, ...rest }, children);
+    TouchableOpacity: function TouchableOpacity({
+      children,
+      onPress,
+      testID,
+      accessibilityLabel,
+      accessibilityRole,
+      ...rest
+    }: any) {
+      return React.createElement(
+        'TouchableOpacity',
+        { testID, accessibilityLabel, accessibilityRole, onPress, ...rest },
+        children,
+      );
     },
     StyleSheet: {
       create: (styles: any) => styles,
@@ -37,14 +48,23 @@ jest.mock('@expo/vector-icons', () => {
 
 jest.mock('../../theme/colors', () => ({
   colors: {
-    primary: '#D52B1E', white: '#FFFFFF', dark: '#333333',
-    textSecondary: '#666666', textLight: '#999999', background: '#F5F5F5',
-    border: '#E0E0E0', success: '#2E7D32',
+    primary: '#D52B1E',
+    white: '#FFFFFF',
+    dark: '#333333',
+    textSecondary: '#666666',
+    textLight: '#999999',
+    background: '#F5F5F5',
+    border: '#E0E0E0',
+    success: '#2E7D32',
   },
 }));
 jest.mock('../../theme/spacing', () => ({
   spacing: {
-    xs: 4, sm: 8, md: 16, lg: 24, xl: 32,
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
     borderRadius: { sm: 8, md: 12, lg: 16, full: 999 },
   },
 }));
@@ -117,9 +137,7 @@ describe('WishlistCard — render', () => {
 
   it('shows shared-with count in meta when sharedWith is populated', () => {
     const wishlist = makeWishlist({
-      sharedWith: [
-        { contactId: 'c-1', contactName: 'Alice', phone: '555-0001', sharedAt: '2026-01-01T00:00:00Z' },
-      ],
+      sharedWith: [{ contactId: 'c-1', contactName: 'Alice', phone: '555-0001', sharedAt: '2026-01-01T00:00:00Z' }],
     });
     const { getByText } = render(<WishlistCard wishlist={wishlist} />);
     expect(getByText(/Shared with 1/)).toBeTruthy();

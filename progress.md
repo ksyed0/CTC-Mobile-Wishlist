@@ -770,17 +770,21 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 - Split into Plan A (quick wins: #1–4) and Plan B (medium effort: #5, #7–10)
 
 **Specs written:**
+
 - `docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md`
 - `docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md`
 
 **Implementation plans written:**
+
 - `docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md` (7 tasks: BottomSheetInput, service methods, context, item notes UI, saved indicator, demo reset, rename)
 - `docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md` (7 tasks: type extension, service methods, context, tab badge, claimer reveal, alert buttons, privacy levels)
 
 **RELEASE_PLAN.md updated:**
+
 - EPIC-0007 added with US-0016–US-0024 (9 stories), each with Spec + Plan links
 
 **Dashboard fixed:**
+
 - `sdlc-status.json`: US-0016–US-0024 added, `storiesTotal` updated to 23 (was 14)
 - Dashboard now shows 14/23 stories
 
@@ -789,6 +793,7 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 **DIAGRAMS.md fix:** `gitgraph` → `gitGraph` (GitHub Mermaid renderer is case-sensitive)
 
 **v0.5.0 released:**
+
 - PR #17: develop → main, merged
 - Tag `v0.5.0` pushed to GitHub
 - All stale feature branches deleted (local + remote): 8 remote branches, 4 local worktree branches

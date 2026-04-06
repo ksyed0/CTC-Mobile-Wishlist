@@ -15,11 +15,7 @@ jest.mock('react-native/Libraries/Utilities/Platform', () => ({
 jest.mock('react-native/Libraries/Components/Touchable/TouchableOpacity', () => {
   const React = require('react');
   return function MockTouchableOpacity({ children, onPress, testID, accessibilityLabel, accessibilityRole }) {
-    return React.createElement(
-      'View',
-      { testID, accessibilityLabel, accessibilityRole, onPress },
-      children
-    );
+    return React.createElement('View', { testID, accessibilityLabel, accessibilityRole, onPress }, children);
   };
 });
 

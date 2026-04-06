@@ -16,8 +16,19 @@ jest.mock('react-native', () => {
     Text: makeComponent('Text'),
     Image: makeComponent('Image'),
     ScrollView: makeComponent('ScrollView'),
-    TouchableOpacity: function TouchableOpacity({ children, onPress, testID, accessibilityLabel, accessibilityRole, ...rest }: any) {
-      return React.createElement('TouchableOpacity', { testID, accessibilityLabel, accessibilityRole, onPress, ...rest }, children);
+    TouchableOpacity: function TouchableOpacity({
+      children,
+      onPress,
+      testID,
+      accessibilityLabel,
+      accessibilityRole,
+      ...rest
+    }: any) {
+      return React.createElement(
+        'TouchableOpacity',
+        { testID, accessibilityLabel, accessibilityRole, onPress, ...rest },
+        children,
+      );
     },
     StyleSheet: {
       create: (styles: any) => styles,
@@ -52,7 +63,11 @@ jest.mock('../../theme/colors', () => ({
 }));
 jest.mock('../../theme/spacing', () => ({
   spacing: {
-    xs: 4, sm: 8, md: 16, lg: 24, xl: 32,
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
     borderRadius: { sm: 8, md: 12, lg: 16, full: 999 },
   },
 }));
@@ -79,9 +94,7 @@ describe('EmptyState — render', () => {
   });
 
   it('shows subtitle when provided', () => {
-    const { getByText } = render(
-      <EmptyState title="Empty" subtitle="Add some items to get started" />
-    );
+    const { getByText } = render(<EmptyState title="Empty" subtitle="Add some items to get started" />);
     expect(getByText('Add some items to get started')).toBeTruthy();
   });
 
@@ -92,25 +105,19 @@ describe('EmptyState — render', () => {
 
   it('renders CTA button when ctaLabel and onCta are provided', () => {
     const onCta = jest.fn();
-    const { getByText } = render(
-      <EmptyState title="Empty" ctaLabel="Create Wishlist" onCta={onCta} />
-    );
+    const { getByText } = render(<EmptyState title="Empty" ctaLabel="Create Wishlist" onCta={onCta} />);
     expect(getByText('Create Wishlist')).toBeTruthy();
   });
 
   it('fires onCta when CTA button is pressed', () => {
     const onCta = jest.fn();
-    const { getByText } = render(
-      <EmptyState title="Empty" ctaLabel="Create Wishlist" onCta={onCta} />
-    );
+    const { getByText } = render(<EmptyState title="Empty" ctaLabel="Create Wishlist" onCta={onCta} />);
     fireEvent.press(getByText('Create Wishlist'));
     expect(onCta).toHaveBeenCalledTimes(1);
   });
 
   it('does not render CTA when only ctaLabel is provided (no handler)', () => {
-    const { queryByText } = render(
-      <EmptyState title="Empty" ctaLabel="Create Wishlist" />
-    );
+    const { queryByText } = render(<EmptyState title="Empty" ctaLabel="Create Wishlist" />);
     // Button should not render without both ctaLabel AND onCta
     expect(queryByText('Create Wishlist')).toBeNull();
   });

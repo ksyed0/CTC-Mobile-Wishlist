@@ -15,8 +15,19 @@ jest.mock('react-native', () => {
     Text: makeComponent('Text'),
     Image: makeComponent('Image'),
     ScrollView: makeComponent('ScrollView'),
-    TouchableOpacity: function TouchableOpacity({ children, onPress, testID, accessibilityLabel, accessibilityRole, ...rest }: any) {
-      return React.createElement('TouchableOpacity', { testID, accessibilityLabel, accessibilityRole, onPress, ...rest }, children);
+    TouchableOpacity: function TouchableOpacity({
+      children,
+      onPress,
+      testID,
+      accessibilityLabel,
+      accessibilityRole,
+      ...rest
+    }: any) {
+      return React.createElement(
+        'TouchableOpacity',
+        { testID, accessibilityLabel, accessibilityRole, onPress, ...rest },
+        children,
+      );
     },
     StyleSheet: {
       create: (styles: any) => styles,
@@ -37,14 +48,23 @@ jest.mock('@expo/vector-icons', () => {
 
 jest.mock('../../theme/colors', () => ({
   colors: {
-    primary: '#D52B1E', white: '#FFFFFF', dark: '#333333',
-    textSecondary: '#666666', textLight: '#999999', background: '#F5F5F5',
-    border: '#E0E0E0', success: '#2E7D32',
+    primary: '#D52B1E',
+    white: '#FFFFFF',
+    dark: '#333333',
+    textSecondary: '#666666',
+    textLight: '#999999',
+    background: '#F5F5F5',
+    border: '#E0E0E0',
+    success: '#2E7D32',
   },
 }));
 jest.mock('../../theme/spacing', () => ({
   spacing: {
-    xs: 4, sm: 8, md: 16, lg: 24, xl: 32,
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
     borderRadius: { sm: 8, md: 12, lg: 16, full: 999 },
   },
 }));
@@ -77,9 +97,7 @@ describe('WishlistItemRow — render', () => {
   });
 
   it('shows product name when provided', () => {
-    const { getByText } = render(
-      <WishlistItemRow item={makeItem()} productName="Power Drill" />
-    );
+    const { getByText } = render(<WishlistItemRow item={makeItem()} productName="Power Drill" />);
     expect(getByText('Power Drill')).toBeTruthy();
   });
 
@@ -89,26 +107,18 @@ describe('WishlistItemRow — render', () => {
   });
 
   it('shows formatted price when productPrice is provided', () => {
-    const { getByText } = render(
-      <WishlistItemRow item={makeItem()} productName="Drill" productPrice={49.99} />
-    );
+    const { getByText } = render(<WishlistItemRow item={makeItem()} productName="Drill" productPrice={49.99} />);
     expect(getByText('$49.99')).toBeTruthy();
   });
 
   it('does not show price when productPrice is omitted', () => {
-    const { queryByText } = render(
-      <WishlistItemRow item={makeItem()} productName="Drill" />
-    );
+    const { queryByText } = render(<WishlistItemRow item={makeItem()} productName="Drill" />);
     expect(queryByText(/^\$/)).toBeNull();
   });
 
   it('shows "Claimed" text when item is claimed', () => {
     const { getByText } = render(
-      <WishlistItemRow
-        item={makeItem({ claimedBy: 'u-002' })}
-        productName="Drill"
-        isOwner
-      />
+      <WishlistItemRow item={makeItem({ claimedBy: 'u-002' })} productName="Drill" isOwner />,
     );
     expect(getByText('Claimed')).toBeTruthy();
   });
@@ -120,25 +130,19 @@ describe('WishlistItemRow — render', () => {
         productName="Drill"
         claimerName="Alice"
         isOwner={false}
-      />
+      />,
     );
     expect(getByText('Claimed by Alice')).toBeTruthy();
   });
 
   it('shows "I\'ll Get This" claim button when showClaimButton is true and not claimed', () => {
-    const { getByText } = render(
-      <WishlistItemRow item={makeItem()} productName="Drill" showClaimButton />
-    );
+    const { getByText } = render(<WishlistItemRow item={makeItem()} productName="Drill" showClaimButton />);
     expect(getByText("I'll Get This")).toBeTruthy();
   });
 
   it('does not show claim button when item is already claimed', () => {
     const { queryByText } = render(
-      <WishlistItemRow
-        item={makeItem({ claimedBy: 'u-002' })}
-        productName="Drill"
-        showClaimButton
-      />
+      <WishlistItemRow item={makeItem({ claimedBy: 'u-002' })} productName="Drill" showClaimButton />,
     );
     expect(queryByText("I'll Get This")).toBeNull();
   });
@@ -146,12 +150,7 @@ describe('WishlistItemRow — render', () => {
   it('calls onClaim when "I\'ll Get This" button is pressed', () => {
     const onClaim = jest.fn();
     const { getByLabelText } = render(
-      <WishlistItemRow
-        item={makeItem()}
-        productName="Power Drill"
-        showClaimButton
-        onClaim={onClaim}
-      />
+      <WishlistItemRow item={makeItem()} productName="Power Drill" showClaimButton onClaim={onClaim} />,
     );
     fireEvent.press(getByLabelText('Claim Power Drill'));
     expect(onClaim).toHaveBeenCalledTimes(1);
@@ -160,20 +159,14 @@ describe('WishlistItemRow — render', () => {
   it('calls onRemove when remove button is pressed', () => {
     const onRemove = jest.fn();
     const { getByLabelText } = render(
-      <WishlistItemRow
-        item={makeItem()}
-        productName="Power Drill"
-        onRemove={onRemove}
-      />
+      <WishlistItemRow item={makeItem()} productName="Power Drill" onRemove={onRemove} />,
     );
     fireEvent.press(getByLabelText('Remove Power Drill from wishlist'));
     expect(onRemove).toHaveBeenCalledTimes(1);
   });
 
   it('does not render remove button when onRemove is not provided', () => {
-    const { queryByLabelText } = render(
-      <WishlistItemRow item={makeItem()} productName="Power Drill" />
-    );
+    const { queryByLabelText } = render(<WishlistItemRow item={makeItem()} productName="Power Drill" />);
     expect(queryByLabelText(/Remove/)).toBeNull();
   });
 });

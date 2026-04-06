@@ -14,7 +14,12 @@ interface ProductCardProps {
   isSaved?: boolean;
 }
 
-export const ProductCard = memo(function ProductCard({ product, onPress, onAddToWishlist, isSaved = false }: ProductCardProps) {
+export const ProductCard = memo(function ProductCard({
+  product,
+  onPress,
+  onAddToWishlist,
+  isSaved = false,
+}: ProductCardProps) {
   return (
     <TouchableOpacity
       style={styles.card}

@@ -270,9 +270,7 @@ export const wishlistService = {
     const updated: Wishlist = {
       ...wishlist,
       items: wishlist.items.map((item) =>
-        item.productId === productId
-          ? { ...item, note: note.trim() === '' ? null : note.trim() }
-          : item,
+        item.productId === productId ? { ...item, note: note.trim() === '' ? null : note.trim() } : item,
       ),
     };
     const updatedAll = [...all];
@@ -299,10 +297,7 @@ export const wishlistService = {
    * Clear all wishlists and recent scans from storage (US-0018 demo reset).
    */
   async resetDemoData(): Promise<void> {
-    await Promise.all([
-      removeItem(StorageKeys.WISHLISTS),
-      removeItem(StorageKeys.RECENT_SCANS),
-    ]);
+    await Promise.all([removeItem(StorageKeys.WISHLISTS), removeItem(StorageKeys.RECENT_SCANS)]);
   },
 
   /**

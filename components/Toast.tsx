@@ -60,7 +60,10 @@ export function Toast({ message, type, visible }: ToastState) {
 
   return (
     <Animated.View
-      style={[styles.container, { backgroundColor: bg, bottom: insets.bottom + spacing.md, transform: [{ translateY }], opacity }]}
+      style={[
+        styles.container,
+        { backgroundColor: bg, bottom: insets.bottom + spacing.md, transform: [{ translateY }], opacity },
+      ]}
       pointerEvents="none"
     >
       <MaterialIcons name={icon} size={20} color={colors.white} />

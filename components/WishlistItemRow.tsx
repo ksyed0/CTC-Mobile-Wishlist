@@ -74,9 +74,7 @@ export const WishlistItemRow = memo(function WishlistItemRow({
         {isClaimed ? (
           <View style={styles.claimedRow}>
             <MaterialIcons name="check-circle" size={14} color={colors.success} />
-            <Text style={styles.claimedText}>
-              {claimerName ? `Claimed by ${claimerName}` : 'Claimed'}
-            </Text>
+            <Text style={styles.claimedText}>{claimerName ? `Claimed by ${claimerName}` : 'Claimed'}</Text>
           </View>
         ) : showClaimButton ? (
           <TouchableOpacity

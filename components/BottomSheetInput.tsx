@@ -46,20 +46,9 @@ export function BottomSheetInput({
   }, [visible, initialValue]);
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      onRequestClose={onCancel}
-    >
-      <TouchableOpacity
-        style={styles.backdrop}
-        activeOpacity={1}
-        onPress={onCancel}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onCancel}>
+      <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onCancel}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <TouchableOpacity activeOpacity={1}>
             <View style={styles.sheet}>
               <Text style={styles.title}>{title}</Text>
