@@ -207,7 +207,13 @@ export default function WishlistDetailScreen() {
           </TouchableOpacity>
         )}
         {isOwner && (wishlist.privacy ?? 'contacts') === 'public' && (
-          <TouchableOpacity style={styles.copyLinkButton} onPress={handleCopyLink} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.copyLinkButton}
+            onPress={handleCopyLink}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel="Copy link"
+          >
             <MaterialIcons name="content-copy" size={14} color={colors.primary} />
             <Text style={styles.copyLinkText}>Copy link</Text>
           </TouchableOpacity>
@@ -313,6 +319,8 @@ export default function WishlistDetailScreen() {
                   style={[styles.privacyOption, isSelected && styles.privacyOptionSelected]}
                   onPress={() => handlePrivacyChange(option.value)}
                   activeOpacity={0.75}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Set privacy to ${option.label}`}
                 >
                   <MaterialIcons
                     name={option.icon}
@@ -329,7 +337,12 @@ export default function WishlistDetailScreen() {
                 </TouchableOpacity>
               );
             })}
-            <TouchableOpacity style={styles.cancelButton} onPress={() => setShowPrivacySheet(false)}>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setShowPrivacySheet(false)}
+              accessibilityRole="button"
+              accessibilityLabel="Cancel"
+            >
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
@@ -599,6 +612,6 @@ const styles = StyleSheet.create({
   privacyOptionSubtitle: {
     fontSize: typography.fontSize.xs,
     color: colors.textLight,
-    marginTop: 2,
+    marginTop: spacing.xxs,
   },
 });
