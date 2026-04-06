@@ -1145,8 +1145,8 @@
 ### BUG-0111: copyLinkButton and privacy picker option/cancel TouchableOpacity elements missing accessibilityRole and accessibilityLabel (US-0024)
 
 - **Severity:** Major
-- **Status:** Open
-- **Fix Branch:** feature/plan-b-ui (Pixel to fix)
+- **Status:** Fixed
+- **Fix Branch:** feature/plan-b-ui
 - **Found in:** `app/wishlist/[id].tsx` (lines ~210, ~311–332)
 - **Story:** US-0024
 - **Found by:** Lens (code review)
@@ -1162,8 +1162,8 @@
 ### BUG-0112: privacyOptionSubtitle uses hardcoded marginTop: 2 instead of a spacing token
 
 - **Severity:** Minor
-- **Status:** Open
-- **Fix Branch:** feature/plan-b-ui (Pixel to fix)
+- **Status:** Fixed
+- **Fix Branch:** feature/plan-b-ui
 - **Found in:** `app/wishlist/[id].tsx` (line ~602, `privacyOptionSubtitle` style)
 - **Story:** US-0024
 - **Found by:** Lens (code review)

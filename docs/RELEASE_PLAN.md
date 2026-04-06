@@ -525,7 +525,7 @@ Notes: FlatList of all products; tapping navigates to /product/[id] with fromSca
 EPIC-0007: POC Demo Enhancements
 Description: Nine UX and feature enhancements to improve demo polish, gift-sharing UX, and presenter ergonomics
 Release Target: POC v2
-Status: In Progress
+Status: Done
 Dependencies: EPIC-0004, EPIC-0005, EPIC-0006
 Spec (Plan A — #1-4): docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md
 Spec (Plan B — #5,7-10): docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md
@@ -600,77 +600,77 @@ Acceptance Criteria:
 US-0020 (EPIC-0007): As a user, I want to see a badge on the Wishlists tab when I have unread shared wishlists, so that I know when someone has shared something with me.
 Priority: Medium
 Estimate: S
-Status: Planned
-Branch: feature/US-0020-tab-badge
+Status: Done
+Branch: feature/plan-b-ui
 Dependencies: US-0011
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-5--unseen-shared-wishlist-tab-badge-us-0020
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Tasks 3, 4
 Acceptance Criteria:
-  - [ ] AC-0061: Wishlists tab shows a numeric badge when there are unseen shared wishlists
-  - [ ] AC-0062: Opening a shared wishlist removes it from the unseen count
-  - [ ] AC-0063: Badge disappears when all shared wishlists have been viewed
-  - [ ] AC-0064: Switching users shows the correct badge count for the new user
+  - [x] AC-0061: Wishlists tab shows a numeric badge when there are unseen shared wishlists
+  - [x] AC-0062: Opening a shared wishlist removes it from the unseen count
+  - [x] AC-0063: Badge disappears when all shared wishlists have been viewed
+  - [x] AC-0064: Switching users shows the correct badge count for the new user
 ```
 
 ```
 US-0021 (EPIC-0007): As a wishlist owner, I want to optionally reveal who claimed each item, so that I can see fulfillment status after the event when the surprise is no longer needed.
 Priority: Low
 Estimate: S
-Status: Planned
-Branch: feature/US-0021-claimer-reveal
+Status: Done
+Branch: feature/plan-b-ui
 Dependencies: US-0012
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-7--claimer-reveal-toggle-us-0021
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Tasks 1, 2, 3, 5
 Acceptance Criteria:
-  - [ ] AC-0065: Owner's wishlist detail shows a "Show who claimed items" toggle in the header
-  - [ ] AC-0066: Toggle defaults to off; "Claimed" items show no name
-  - [ ] AC-0067: When toggled on, claimed items show "Claimed by [contact name]"
-  - [ ] AC-0068: Toggle state persists across app restarts
-  - [ ] AC-0069: Recipients never see the toggle
+  - [x] AC-0065: Owner's wishlist detail shows a "Show who claimed items" toggle in the header
+  - [x] AC-0066: Toggle defaults to off; "Claimed" items show no name
+  - [x] AC-0067: When toggled on, claimed items show "Claimed by [contact name]"
+  - [x] AC-0068: Toggle state persists across app restarts
+  - [x] AC-0069: Recipients never see the toggle
 ```
 
 ```
 US-0022 (EPIC-0007): As a shopper, I want to set a restock alert on an out-of-stock product, so that I'm notified when it becomes available (mock).
 Priority: Low
 Estimate: XS
-Status: Planned
-Branch: feature/US-0022-restock-alert
+Status: Done
+Branch: feature/plan-b-ui
 Dependencies: US-0004
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-8--9--restock--price-drop-alerts-us-0022--us-0023
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Task 6
 Acceptance Criteria:
-  - [ ] AC-0070: "Notify me when back in stock" button appears only when product.inStock === false
-  - [ ] AC-0071: Tapping the restock button shows an Alert confirmation (no navigation)
+  - [x] AC-0070: "Notify me when back in stock" button appears only when product.inStock === false
+  - [x] AC-0071: Tapping the restock button shows an Alert confirmation (no navigation)
 ```
 
 ```
 US-0023 (EPIC-0007): As a shopper, I want to set a price-drop alert on any product, so that I'm notified if the price decreases (mock).
 Priority: Low
 Estimate: XS
-Status: Planned
-Branch: feature/US-0023-price-drop-alert
+Status: Done
+Branch: feature/plan-b-ui
 Dependencies: US-0004
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-8--9--restock--price-drop-alerts-us-0022--us-0023
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Task 6
 Acceptance Criteria:
-  - [ ] AC-0072: "Notify me if price drops" button is always visible on the product detail screen
-  - [ ] AC-0073: Tapping the price-drop button shows an Alert confirmation (no navigation)
-  - [ ] AC-0074: Both buttons use an outlined style to avoid competing with the main CTAs
+  - [x] AC-0072: "Notify me if price drops" button is always visible on the product detail screen
+  - [x] AC-0073: Tapping the price-drop button shows an Alert confirmation (no navigation)
+  - [x] AC-0074: Both buttons use an outlined style to avoid competing with the main CTAs
 ```
 
 ```
 US-0024 (EPIC-0007): As a wishlist owner, I want to set a privacy level on my wishlist (Private / Contacts / Public link), so that I control who can see it.
 Priority: Medium
 Estimate: M
-Status: Planned
-Branch: feature/US-0024-privacy-levels
+Status: Done
+Branch: feature/plan-b-ui
 Dependencies: US-0010
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-10--privacy-levels-us-0024
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Tasks 1, 2, 3, 7
 Acceptance Criteria:
-  - [ ] AC-0075: Wishlist detail header shows the current privacy setting
-  - [ ] AC-0076: Tapping the privacy row opens a 3-option picker sheet
-  - [ ] AC-0077: Setting to "Private" hides the Share button
-  - [ ] AC-0078: Setting to "Public link" shows a "Copy Link" button that copies a mock deep link
-  - [ ] AC-0079: Privacy setting persists across app restarts
+  - [x] AC-0075: Wishlist detail header shows the current privacy setting
+  - [x] AC-0076: Tapping the privacy row opens a 3-option picker sheet
+  - [x] AC-0077: Setting to "Private" hides the Share button
+  - [x] AC-0078: Setting to "Public link" shows a "Copy Link" button that copies a mock deep link
+  - [x] AC-0079: Privacy setting persists across app restarts
 ```
