@@ -529,6 +529,8 @@ Status: Backlog
 Dependencies: EPIC-0004, EPIC-0005, EPIC-0006
 Spec (Plan A — #1-4): docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md
 Spec (Plan B — #5,7-10): docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md
+Plan (Plan A): docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md
+Plan (Plan B): docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md
 ```
 
 ```
@@ -539,6 +541,7 @@ Status: Backlog
 Branch: feature/US-0016-item-notes
 Dependencies: US-0008
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-1--item-notes-us-0016
+Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Tasks 2, 3, 4
 Acceptance Criteria:
   - [ ] AC-0046: Owner can tap "+ Add note" on any item to open a bottom sheet input
   - [ ] AC-0047: Entering text and tapping Save persists the note via AsyncStorage
@@ -554,6 +557,7 @@ Status: Backlog
 Branch: feature/US-0017-saved-indicator
 Dependencies: US-0007, US-0003
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-2--already-in-wishlist-indicator-us-0017
+Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Task 5
 Acceptance Criteria:
   - [ ] AC-0050: Products already saved to any wishlist show a filled red heart badge on their catalog card
   - [ ] AC-0051: Saved products show a green "✓ Saved" pill instead of the add button
@@ -568,6 +572,7 @@ Status: Backlog
 Branch: feature/US-0018-demo-reset
 Dependencies: US-0013
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-3--demo-reset-us-0018
+Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Tasks 2, 3, 6
 Acceptance Criteria:
   - [ ] AC-0053: A "Reset demo data" button is visible on the login/user-select screen
   - [ ] AC-0054: Tapping it shows a confirmation dialog before any data is deleted
@@ -583,6 +588,7 @@ Status: Backlog
 Branch: feature/US-0019-wishlist-rename
 Dependencies: US-0007
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-4--wishlist-rename-us-0019
+Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Tasks 1, 2, 3, 7
 Acceptance Criteria:
   - [ ] AC-0057: A pencil icon is visible next to the wishlist name in the detail header
   - [ ] AC-0058: Tapping the pencil opens a pre-filled bottom sheet input
@@ -598,6 +604,7 @@ Status: Backlog
 Branch: feature/US-0020-tab-badge
 Dependencies: US-0011
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-5--unseen-shared-wishlist-tab-badge-us-0020
+Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Tasks 3, 4
 Acceptance Criteria:
   - [ ] AC-0061: Wishlists tab shows a numeric badge when there are unseen shared wishlists
   - [ ] AC-0062: Opening a shared wishlist removes it from the unseen count
@@ -613,6 +620,7 @@ Status: Backlog
 Branch: feature/US-0021-claimer-reveal
 Dependencies: US-0012
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-7--claimer-reveal-toggle-us-0021
+Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Tasks 1, 2, 3, 5
 Acceptance Criteria:
   - [ ] AC-0065: Owner's wishlist detail shows a "Show who claimed items" toggle in the header
   - [ ] AC-0066: Toggle defaults to off; "Claimed" items show no name
@@ -629,6 +637,7 @@ Status: Backlog
 Branch: feature/US-0022-restock-alert
 Dependencies: US-0004
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-8--9--restock--price-drop-alerts-us-0022--us-0023
+Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Task 6
 Acceptance Criteria:
   - [ ] AC-0070: "Notify me when back in stock" button appears only when product.inStock === false
   - [ ] AC-0071: Tapping the restock button shows an Alert confirmation (no navigation)
@@ -642,6 +651,7 @@ Status: Backlog
 Branch: feature/US-0023-price-drop-alert
 Dependencies: US-0004
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-8--9--restock--price-drop-alerts-us-0022--us-0023
+Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Task 6
 Acceptance Criteria:
   - [ ] AC-0072: "Notify me if price drops" button is always visible on the product detail screen
   - [ ] AC-0073: Tapping the price-drop button shows an Alert confirmation (no navigation)
@@ -656,6 +666,7 @@ Status: Backlog
 Branch: feature/US-0024-privacy-levels
 Dependencies: US-0010
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-10--privacy-levels-us-0024
+Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Tasks 1, 2, 3, 7
 Acceptance Criteria:
   - [ ] AC-0075: Wishlist detail header shows the current privacy setting
   - [ ] AC-0076: Tapping the privacy row opens a 3-option picker sheet
