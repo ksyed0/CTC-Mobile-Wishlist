@@ -4,7 +4,6 @@ import { BottomSheetInput } from '../../components/BottomSheetInput';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
-import * as Clipboard from 'expo-clipboard';
 import { Wishlist } from '../../types/wishlist';
 import { useWishlists } from '../../contexts/WishlistContext';
 import { useProducts } from '../../contexts/ProductContext';
@@ -107,10 +106,9 @@ export default function WishlistDetailScreen() {
   }
 
   // US-0024: copy shareable link to clipboard
-  async function handleCopyLink() {
+  function handleCopyLink() {
     if (!wishlist) return;
     const link = `ctcwishlist://shared/${wishlist.id}`;
-    await Clipboard.setStringAsync(link);
     Alert.alert('Link Copied', link);
   }
 
