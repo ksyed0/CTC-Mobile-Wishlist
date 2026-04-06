@@ -15,6 +15,9 @@ interface WishlistContextValue {
   claimItem: (wishlistId: string, productId: string) => Promise<void>;
   unclaimItem: (wishlistId: string, productId: string) => Promise<void>;
   getWishlistById: (id: string) => Promise<Wishlist | null>;
+  updateItemNote: (wishlistId: string, productId: string, note: string) => Promise<void>;
+  renameWishlist: (wishlistId: string, newName: string) => Promise<void>;
+  resetDemoData: () => Promise<void>;
   refresh: () => Promise<void>;
 }
 
@@ -103,6 +106,25 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     return wishlistService.getWishlistById(id);
   }
 
+  async function updateItemNote(wishlistId: string, productId: string, note: string): Promise<void> {
+    await wishlistService.updateItemNote(wishlistId, productId, note);
+    const updated = await wishlistService.getWishlistById(wishlistId);
+    if (updated) {
+      setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? updated : w)));
+    }
+  }
+
+  async function renameWishlist(wishlistId: string, newName: string): Promise<void> {
+    await wishlistService.renameWishlist(wishlistId, newName);
+    setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? { ...w, name: newName.trim() } : w)));
+  }
+
+  async function resetDemoData(): Promise<void> {
+    await wishlistService.resetDemoData();
+    setWishlists([]);
+    setSharedWishlists([]);
+  }
+
   return (
     <WishlistContext.Provider
       value={{
@@ -117,6 +139,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
         claimItem,
         unclaimItem,
         getWishlistById,
+        updateItemNote,
+        renameWishlist,
+        resetDemoData,
         refresh: load,
       }}
     >
