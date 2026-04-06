@@ -994,3 +994,82 @@
 - **Description:** The Costs tab "Bug Fix Costs" table groups bugs by epic (via `bug.relatedStory` → story → epic lookup) and renders each group as a collapsible `<tbody>` starting with `class="hidden"`. On first load the user sees only the epic group header rows with bug counts, but no actual bug rows — the table body appears empty. The issue is compounded by the fact that most bugs in `BUGS.md` have a `Story:` value of `N/A`, `N/A (tooling)`, or a multi-value string that doesn't match any single story ID in the story-epic map. These bugs are bucketed into a single `_ungrouped` group labeled "No Epic". The result is one collapsed header row ("No Epic (N)") with all N bugs hidden underneath — the entire "Bug Fix Costs" section appears blank to the user.
 - **Fix:** Removed `class="hidden"` from bug group `<tbody>` elements and changed the initial arrow from `&#9654;` (►) to `&#9660;` (▼) so all bug rows are visible on first render.
 - **Resolution:** Applied to `tools/lib/render-html.js`. Regenerated `docs/plan-status.html` — 0 hidden bug-cost group tbodies confirmed.
+
+## P2 — Minor (US-0015 Simulator Scan — demo observation)
+
+### BUG-0099: Product detail screen always shows placeholder — Image never rendered
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Found in:** `app/product/[id].tsx`
+- **Story:** US-0004
+- **Found by:** User (simulator demo observation)
+- **Description:** The product detail screen rendered a static grey placeholder View with a MaterialIcons "image" icon regardless of whether the product had an image URL. The `<Image>` component was never used, so products with real images always showed a grey box.
+- **Fix:** Replaced placeholder View with an Image component matching the ProductCard approach, with a colored-view fallback (using category color) for products without an image.
+
+### BUG-0100: No mock "Add to Cart" button on product detail screen
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Found in:** `app/product/[id].tsx`
+- **Story:** US-0004
+- **Found by:** User (simulator demo observation)
+- **Description:** The product detail screen had no "Add to Cart" button, making the demo feel incomplete. Users expected to see both cart and wishlist actions on the detail screen.
+- **Fix:** Added a secondary outlined button below the "Add to Wishlist" CTA that shows an Alert reading "Added to cart!" when tapped.
+
+### BUG-0101: "Add to Wishlist" skipped picker when user had exactly one wishlist
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Found in:** `app/product/[id].tsx`
+- **Story:** US-0004
+- **Found by:** User (simulator demo observation)
+- **Description:** When a user had exactly one wishlist, tapping "Add to Wishlist" would silently add the item directly without any confirmation or visual feedback. This was confusing and inconsistent with the multi-wishlist picker flow.
+- **Fix:** Changed `handleAddToWishlist` to always call `setShowPicker(true)` when `wishlists.length >= 1`, so the picker sheet always appears and the user confirms which wishlist to add to.
+
+### BUG-0102: Wishlist detail screen never passed productImage prop to WishlistItemRow — always showed grey placeholder
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Found in:** `app/wishlist/[id].tsx`
+- **Story:** US-0008
+- **Found by:** User (simulator demo observation)
+- **Description:** The wishlist detail screen looked up product data for each wishlist item but never passed the `productImage` prop to `WishlistItemRow`. Every item rendered a grey placeholder image even when the product had a valid image URL.
+- **Fix:** Added `productImage={product?.image}` to the `WishlistItemRow` render call so item thumbnails display correctly.
+
+### BUG-0103: Wishlist total footer clipped by iPhone home indicator
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Found in:** `app/wishlist/[id].tsx`
+- **Story:** US-0009
+- **Found by:** User (simulator demo observation)
+- **Description:** The wishlist total price footer was positioned at the bottom of the screen without accounting for the iPhone home indicator safe area. On modern iPhones the total price text was partially hidden behind the home indicator swipe zone.
+- **Fix:** Applied `useSafeAreaInsets()` from `react-native-safe-area-context` and added `paddingBottom: spacing.md + insets.bottom` to the footer container.
+
+### BUG-0104: No logout/switch-user button in tab header — blocks demo user switching
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Found in:** `app/(tabs)/_layout.tsx`
+- **Story:** US-0013
+- **Found by:** User (simulator demo observation)
+- **Description:** The `LogoutButton` component did not exist and the tab layout had no `headerRight` configured, so there was no way to switch between mock users during a demo without force-quitting the app.
+- **Fix:** Created `components/LogoutButton.tsx` wired to `useAuth().logout()` and `router.replace('/login')`. Added `headerRight: () => <LogoutButton />` to the global `screenOptions` on the `Tabs` component so the button appears on every tab header.
+
+### BUG-0105: Create Wishlist modal keyboard obscures input on iOS
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Found in:** `app/(tabs)/wishlists.tsx`
+- **Story:** US-0007
+- **Found by:** User (simulator demo observation)
+- **Description:** When creating a new wishlist, tapping the name input caused the iOS keyboard to appear and slide over the modal, hiding the text field. The user could not see what they were typing.
+- **Fix:** Wrapped the modal sheet content in a `KeyboardAvoidingView` with `behavior="padding"` so the modal shifts upward when the keyboard appears.
