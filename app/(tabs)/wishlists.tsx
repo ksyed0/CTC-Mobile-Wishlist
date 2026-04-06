@@ -10,6 +10,8 @@ import {
   Modal,
   TextInput,
   SectionList,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -127,6 +129,7 @@ export default function WishlistsScreen() {
         onRequestClose={() => setShowCreateModal(false)}
       >
         <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setShowCreateModal(false)}>
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <View style={styles.modalSheet}>
             <Text style={styles.modalTitle}>New Wishlist</Text>
             <TextInput
@@ -165,6 +168,7 @@ export default function WishlistsScreen() {
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
+          </KeyboardAvoidingView>
         </TouchableOpacity>
       </Modal>
     </>
