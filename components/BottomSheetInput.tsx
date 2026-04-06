@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Modal,
   View,
@@ -36,12 +36,12 @@ export function BottomSheetInput({
   confirmLabel = 'Save',
   cancelLabel = 'Cancel',
 }: BottomSheetInputProps) {
-  const valueRef = useRef(initialValue);
+  const [value, setValue] = useState(initialValue);
 
   // Reset value when sheet opens with a new initialValue
   useEffect(() => {
     if (visible) {
-      valueRef.current = initialValue;
+      setValue(initialValue);
     }
   }, [visible, initialValue]);
 
@@ -70,17 +70,16 @@ export function BottomSheetInput({
                 defaultValue={initialValue}
                 maxLength={maxLength}
                 autoFocus
-                onChangeText={(text) => {
-                  valueRef.current = text;
-                }}
+                onChangeText={setValue}
                 returnKeyType="done"
-                onSubmitEditing={() => onConfirm(valueRef.current)}
+                onSubmitEditing={() => onConfirm(value)}
                 accessibilityLabel={title}
               />
               <View style={styles.buttons}>
                 <TouchableOpacity
-                  style={styles.confirmButton}
-                  onPress={() => onConfirm(valueRef.current)}
+                  style={[styles.confirmButton, value.trim() === '' && styles.confirmButtonDisabled]}
+                  onPress={() => onConfirm(value)}
+                  disabled={value.trim() === ''}
                   activeOpacity={0.8}
                   accessibilityRole="button"
                   accessibilityLabel={confirmLabel}
@@ -146,6 +145,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     minHeight: 44,
     justifyContent: 'center',
+  },
+  confirmButtonDisabled: {
+    opacity: 0.4,
   },
   confirmButtonText: {
     color: colors.white,
