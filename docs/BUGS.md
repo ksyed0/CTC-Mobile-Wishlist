@@ -1142,6 +1142,36 @@
 
 ---
 
+### BUG-0111: copyLinkButton and privacy picker option/cancel TouchableOpacity elements missing accessibilityRole and accessibilityLabel (US-0024)
+
+- **Severity:** Major
+- **Status:** Open
+- **Fix Branch:** feature/plan-b-ui (Pixel to fix)
+- **Found in:** `app/wishlist/[id].tsx` (lines ~210, ~311–332)
+- **Story:** US-0024
+- **Found by:** Lens (code review)
+- **Description:** Three new interactive `TouchableOpacity` elements introduced in commit 33f4489 are missing accessibility attributes:
+  1. `copyLinkButton` (line ~210) — no `accessibilityRole` or `accessibilityLabel`.
+  2. Privacy picker option buttons in the modal `.map()` (lines ~311–329) — no `accessibilityRole` or `accessibilityLabel`.
+  3. Privacy picker cancel button (line ~332) — no `accessibilityRole`.
+  Per L-0028 and design system rule, every `TouchableOpacity` must have `accessibilityRole="button"` and a descriptive `accessibilityLabel`. The restock and price-drop buttons in US-0022/0023 correctly include both — this inconsistency is in the US-0024 commit only.
+- **Fix:** Add `accessibilityRole="button"` to all three touchables. Add `accessibilityLabel="Copy link"` to copyLinkButton. Add `accessibilityLabel={option.label}` (or `\`Set privacy to \${option.label}\``) to each picker option. Add `accessibilityLabel="Cancel"` to the cancel button.
+
+---
+
+### BUG-0112: privacyOptionSubtitle uses hardcoded marginTop: 2 instead of a spacing token
+
+- **Severity:** Minor
+- **Status:** Open
+- **Fix Branch:** feature/plan-b-ui (Pixel to fix)
+- **Found in:** `app/wishlist/[id].tsx` (line ~602, `privacyOptionSubtitle` style)
+- **Story:** US-0024
+- **Found by:** Lens (code review)
+- **Description:** The `privacyOptionSubtitle` StyleSheet entry uses `marginTop: 2`, which is a raw pixel value with no corresponding token in `theme/spacing.ts` (smallest token is `spacing.xs = 4`). Design system compliance requires all spacing to use defined tokens. This is a minor visual delta but violates the no-hardcoded-values rule.
+- **Fix:** Either add a `spacing.xxs = 2` token to `theme/spacing.ts` and reference it, or replace with `marginTop: spacing.xs` (4px) if the visual difference is acceptable at the POC level.
+
+---
+
 ### BUG-0106: Dashboard shows no audio/notification alert when pipeline state changes — user has no signal to return to terminal
 
 - **Status:** Fixed
