@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal } from 'react-native';
+import { BottomSheetInput } from '../../components/BottomSheetInput';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -16,12 +17,14 @@ import { spacing } from '../../theme/spacing';
 export default function WishlistDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const { getWishlistById, removeItem, shareWishlist } = useWishlists();
+  const { getWishlistById, removeItem, shareWishlist, updateItemNote, renameWishlist } = useWishlists();
   const { products } = useProducts();
   const { mockUsers, currentUser } = useAuth();
   const [wishlist, setWishlist] = useState<Wishlist | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [noteSheet, setNoteSheet] = useState<{ productId: string; currentNote: string | null } | null>(null);
+  const [showRenameSheet, setShowRenameSheet] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -70,6 +73,21 @@ export default function WishlistDetailScreen() {
     setWishlist(updated);
   }
 
+  async function handleNoteSave(note: string) {
+    if (!wishlist || !noteSheet) return;
+    await updateItemNote(wishlist.id, noteSheet.productId, note);
+    const updated = await getWishlistById(wishlist.id);
+    setWishlist(updated);
+    setNoteSheet(null);
+  }
+
+  async function handleRenameSave(newName: string) {
+    if (!wishlist || !newName.trim()) return;
+    await renameWishlist(wishlist.id, newName);
+    setWishlist((prev) => (prev ? { ...prev, name: newName.trim() } : prev));
+    setShowRenameSheet(false);
+  }
+
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -96,7 +114,17 @@ export default function WishlistDetailScreen() {
         {/* Header with share button */}
         <View style={styles.header}>
           <View style={styles.headerText}>
-            <Text style={styles.headerTitle}>{wishlist.name}</Text>
+            <View style={styles.headerTitleRow}>
+              <Text style={styles.headerTitle}>{wishlist.name}</Text>
+              <TouchableOpacity
+                onPress={() => setShowRenameSheet(true)}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                accessibilityRole="button"
+                accessibilityLabel="Rename wishlist"
+              >
+                <MaterialIcons name="edit" size={18} color={colors.primary} />
+              </TouchableOpacity>
+            </View>
             <Text style={styles.headerMeta}>
               {wishlist.items.length} item{wishlist.items.length !== 1 ? 's' : ''}
             </Text>
@@ -123,6 +151,8 @@ export default function WishlistDetailScreen() {
                   productPrice={product?.price}
                   productImage={product?.image}
                   isOwner={isOwner}
+                  note={item.note}
+                  onNotePress={() => setNoteSheet({ productId: item.productId, currentNote: item.note })}
                 />
                 {/* Remove button (AC-0025) */}
                 <TouchableOpacity style={styles.removeButton} onPress={() => handleRemove(item.productId, productName)}>
@@ -150,6 +180,29 @@ export default function WishlistDetailScreen() {
           </View>
         )}
       </View>
+
+      {/* Item Note bottom sheet */}
+      <BottomSheetInput
+        visible={noteSheet !== null}
+        title="Item Note"
+        placeholder="e.g. Size M, the blue one"
+        initialValue={noteSheet?.currentNote ?? ''}
+        maxLength={120}
+        onConfirm={handleNoteSave}
+        onCancel={() => setNoteSheet(null)}
+      />
+
+      {/* Rename Wishlist bottom sheet */}
+      <BottomSheetInput
+        visible={showRenameSheet}
+        title="Rename Wishlist"
+        placeholder="Wishlist name"
+        initialValue={wishlist?.name ?? ''}
+        maxLength={60}
+        confirmLabel="Save"
+        onConfirm={handleRenameSave}
+        onCancel={() => setShowRenameSheet(false)}
+      />
 
       {/* AC-0028/44: Share modal with mock users */}
       <Modal visible={showShareModal} transparent animationType="slide" onRequestClose={() => setShowShareModal(false)}>
@@ -203,6 +256,11 @@ const styles = StyleSheet.create({
   },
   headerText: {
     flex: 1,
+  },
+  headerTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
   },
   headerTitle: {
     fontSize: 18,
