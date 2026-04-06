@@ -3,6 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../theme/colors';
+import { LogoutButton } from '../../components/LogoutButton';
 
 function LogoutButton() {
   const { logout } = useAuth();
@@ -35,6 +36,7 @@ export default function TabLayout() {
         headerTitleStyle: {
           fontWeight: '700',
         },
+        headerRight: () => <LogoutButton />,
       }}
     >
       <Tabs.Screen
