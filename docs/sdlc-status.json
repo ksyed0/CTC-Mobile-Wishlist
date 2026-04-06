@@ -106,9 +106,9 @@
     {
       "id": 7,
       "name": "Demo Polish",
-      "status": "in-progress",
+      "status": "complete",
       "startedAt": "2026-04-05T18:00:00",
-      "completedAt": null,
+      "completedAt": "2026-04-05T20:12:00",
       "agents": [
         "Pixel",
         "Lens"
@@ -256,11 +256,56 @@
       "status": "Complete",
       "title": "Simulator scan mock \u2014 tappable catalog WebView",
       "epic": "EPIC-0003"
+    },
+    "US-0016": {
+      "status": "Backlog",
+      "title": "Item notes on wishlist items",
+      "epic": "EPIC-0007"
+    },
+    "US-0017": {
+      "status": "Backlog",
+      "title": "Already-in-wishlist indicator on catalog",
+      "epic": "EPIC-0007"
+    },
+    "US-0018": {
+      "status": "Backlog",
+      "title": "Demo reset button",
+      "epic": "EPIC-0007"
+    },
+    "US-0019": {
+      "status": "Backlog",
+      "title": "Wishlist rename",
+      "epic": "EPIC-0007"
+    },
+    "US-0020": {
+      "status": "Backlog",
+      "title": "Unseen shared wishlist tab badge",
+      "epic": "EPIC-0007"
+    },
+    "US-0021": {
+      "status": "Backlog",
+      "title": "Claimer reveal toggle",
+      "epic": "EPIC-0007"
+    },
+    "US-0022": {
+      "status": "Backlog",
+      "title": "Mock restock alert button",
+      "epic": "EPIC-0007"
+    },
+    "US-0023": {
+      "status": "Backlog",
+      "title": "Mock price-drop alert button",
+      "epic": "EPIC-0007"
+    },
+    "US-0024": {
+      "status": "Backlog",
+      "title": "Wishlist privacy levels",
+      "epic": "EPIC-0007"
     }
   },
   "metrics": {
     "storiesCompleted": 14,
-    "storiesTotal": 14,
+    "storiesTotal": 23,
     "tasksCompleted": 23,
     "tasksTotal": 23,
     "testsPassed": 436,
