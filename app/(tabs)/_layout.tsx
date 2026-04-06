@@ -1,6 +1,22 @@
 import { Tabs } from 'expo-router';
+import { TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useAuth } from '../../contexts/AuthContext';
 import { colors } from '../../theme/colors';
+
+function LogoutButton() {
+  const { logout } = useAuth();
+  return (
+    <TouchableOpacity
+      onPress={logout}
+      style={{ marginRight: 12 }}
+      accessibilityLabel="Log out"
+      accessibilityRole="button"
+    >
+      <MaterialIcons name="logout" size={22} color={colors.white} />
+    </TouchableOpacity>
+  );
+}
 
 export default function TabLayout() {
   return (
