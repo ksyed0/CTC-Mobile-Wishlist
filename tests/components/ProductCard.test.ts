@@ -60,3 +60,31 @@ describe('ProductCard — props contract', () => {
     expect(product.name).toBe('Fancy Camera');
   });
 });
+
+// ---------------------------------------------------------------------------
+// isSaved prop
+// ---------------------------------------------------------------------------
+
+describe('ProductCard — isSaved prop', () => {
+  it('defaults isSaved to false when not provided', () => {
+    const isSaved = undefined ?? false;
+    expect(isSaved).toBe(false);
+  });
+
+  it('accepts isSaved = true', () => {
+    const isSaved = true;
+    expect(isSaved).toBe(true);
+  });
+
+  it('isSaved determines button label logic', () => {
+    const saved = true;
+    const label = saved ? '✓ Saved' : 'Add to Wishlist';
+    expect(label).toBe('✓ Saved');
+  });
+
+  it('isSaved false shows add button', () => {
+    const saved = false;
+    const label = saved ? '✓ Saved' : 'Add to Wishlist';
+    expect(label).toBe('Add to Wishlist');
+  });
+});

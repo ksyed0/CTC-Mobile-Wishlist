@@ -11,9 +11,10 @@ interface ProductCardProps {
   product: Product;
   onPress?: () => void;
   onAddToWishlist?: () => void;
+  isSaved?: boolean;
 }
 
-export const ProductCard = memo(function ProductCard({ product, onPress, onAddToWishlist }: ProductCardProps) {
+export const ProductCard = memo(function ProductCard({ product, onPress, onAddToWishlist, isSaved = false }: ProductCardProps) {
   return (
     <TouchableOpacity
       style={styles.card}
@@ -41,6 +42,14 @@ export const ProductCard = memo(function ProductCard({ product, onPress, onAddTo
             <Text style={styles.outOfStockBadgeText}>Out of Stock</Text>
           </View>
         ) : null}
+        {/* Saved heart badge — top-right of image */}
+        <View style={styles.heartBadge}>
+          <MaterialIcons
+            name={isSaved ? 'favorite' : 'favorite-border'}
+            size={16}
+            color={isSaved ? colors.primary : colors.textLight}
+          />
+        </View>
       </View>
 
       <View style={styles.info}>
@@ -50,7 +59,11 @@ export const ProductCard = memo(function ProductCard({ product, onPress, onAddTo
         <Text style={styles.category}>{product.category}</Text>
         <Text style={styles.price}>${product.price.toFixed(2)}</Text>
 
-        {onAddToWishlist ? (
+        {isSaved ? (
+          <View style={styles.savedPill}>
+            <Text style={styles.savedPillText}>✓ Saved</Text>
+          </View>
+        ) : onAddToWishlist ? (
           <TouchableOpacity
             style={[styles.addButton, !product.inStock && styles.addButtonDisabled]}
             onPress={onAddToWishlist}
@@ -163,5 +176,35 @@ const styles = StyleSheet.create({
   },
   addButtonTextDisabled: {
     color: colors.textLight,
+  },
+  heartBadge: {
+    position: 'absolute',
+    top: spacing.xs,
+    right: spacing.xs,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  savedPill: {
+    backgroundColor: '#E8F5E9',
+    borderRadius: spacing.borderRadius.sm,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.sm,
+    alignItems: 'center',
+    minHeight: 32,
+    justifyContent: 'center',
+  },
+  savedPillText: {
+    fontSize: typography.fontSize.xs,
+    fontWeight: typography.fontWeight.semiBold,
+    color: '#2E7D32',
   },
 });
