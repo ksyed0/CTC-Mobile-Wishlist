@@ -12,3 +12,6 @@ docs/plan-status.json
 # Dependencies
 package-lock.json
 node_modules/
+
+# Claude Code internal directories (worktrees, settings)
+.claude/

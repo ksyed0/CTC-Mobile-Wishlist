@@ -84,15 +84,6 @@ function generateHTML(status) {
     agentRoles[name] = cfg.role || name;
   }
 
-  const statusColors = {
-    idle: '#888',
-    active: '#34A853',
-    complete: '#1565C0',
-    blocked: DASH_META.primaryColor,
-    pending: '#888',
-    'in-progress': '#F57C00',
-  };
-
   const phasesComplete = phases.filter((p) => p.status === 'complete').length;
   const pipelineComplete = phasesComplete === phases.length && phases.length > 0;
 
@@ -100,8 +91,6 @@ function generateHTML(status) {
 
   const storyPercent =
     metrics.storiesTotal > 0 ? Math.round((metrics.storiesCompleted / metrics.storiesTotal) * 100) : 0;
-
-  const testPercent = metrics.testsTotal > 0 ? Math.round((metrics.testsPassed / metrics.testsTotal) * 100) : 0;
 
   return `<!DOCTYPE html>
 <html lang="en">

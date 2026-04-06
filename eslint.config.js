@@ -27,7 +27,16 @@ const commonRules = {
 };
 
 module.exports = [
-  { ignores: ['eslint.config.js', 'jest.config.js', 'babel.services.config.js', 'metro.config.js'] },
+  {
+    ignores: [
+      'eslint.config.js',
+      'jest.config.js',
+      'babel.services.config.js',
+      'babel.components.config.js',
+      'metro.config.js',
+      '.claude/**',
+    ],
+  },
   js.configs.recommended,
   {
     files: ['tools/**/*.js', 'orchestrator/**/*.js'],
