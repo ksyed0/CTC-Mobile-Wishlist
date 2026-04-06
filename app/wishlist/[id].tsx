@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal, Switch } from 'react-native';
 import { BottomSheetInput } from '../../components/BottomSheetInput';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
@@ -13,11 +13,12 @@ import { EmptyState } from '../../components/EmptyState';
 import { getTotalPrice } from '../../utils/wishlistUtils';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
+import { typography } from '../../theme/typography';
 
 export default function WishlistDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const { getWishlistById, removeItem, shareWishlist, updateItemNote, renameWishlist } = useWishlists();
+  const { getWishlistById, removeItem, shareWishlist, updateItemNote, renameWishlist, setShowClaimers } = useWishlists();
   const { products } = useProducts();
   const { mockUsers, currentUser } = useAuth();
   const [wishlist, setWishlist] = useState<Wishlist | null>(null);
@@ -88,6 +89,13 @@ export default function WishlistDetailScreen() {
     setShowRenameSheet(false);
   }
 
+  // AC-0065/66/67/68: claimer reveal toggle (owner-only)
+  async function handleToggleClaimers(value: boolean) {
+    if (!wishlist) return;
+    await setShowClaimers(wishlist.id, value);
+    setWishlist((prev) => (prev ? { ...prev, showClaimers: value } : prev));
+  }
+
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -135,6 +143,19 @@ export default function WishlistDetailScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* AC-0065: claimer reveal toggle — owner-only */}
+        {isOwner && (
+          <View style={styles.claimerToggleRow}>
+            <Text style={styles.claimerToggleLabel}>Show who claimed items</Text>
+            <Switch
+              value={wishlist.showClaimers ?? false}
+              onValueChange={handleToggleClaimers}
+              trackColor={{ false: colors.border, true: colors.primary }}
+              thumbColor={colors.white}
+            />
+          </View>
+        )}
+
         <FlatList
           data={wishlist.items}
           keyExtractor={(item) => item.productId}
@@ -153,6 +174,11 @@ export default function WishlistDetailScreen() {
                   isOwner={isOwner}
                   note={item.note}
                   onNotePress={() => setNoteSheet({ productId: item.productId, currentNote: item.note })}
+                  claimerName={
+                    isOwner && (wishlist.showClaimers ?? false) && item.claimedBy
+                      ? (wishlist.sharedWith.find((c) => c.contactId === item.claimedBy)?.contactName ?? item.claimedBy)
+                      : undefined
+                  }
                 />
                 {/* Remove button (AC-0025) */}
                 <TouchableOpacity style={styles.removeButton} onPress={() => handleRemove(item.productId, productName)}>
@@ -398,5 +424,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textSecondary,
     fontWeight: '500',
+  },
+  claimerToggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.white,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    marginTop: spacing.xs,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  claimerToggleLabel: {
+    fontSize: typography.fontSize.sm,
+    color: colors.textSecondary,
   },
 });
