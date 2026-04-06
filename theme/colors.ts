@@ -8,6 +8,8 @@ export const colors = {
   textSecondary: '#666666',
   textLight: '#999999',
   success: '#4CAF50',
+  successLight: '#E8F5E9',
+  successDark: '#2E7D32',
   warning: '#FF9800',
   error: '#F44336',
   tabBar: '#FFFFFF',

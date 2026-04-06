@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   savedPill: {
-    backgroundColor: '#E8F5E9',
+    backgroundColor: colors.successLight,
     borderRadius: spacing.borderRadius.sm,
     paddingVertical: spacing.xs,
     paddingHorizontal: spacing.sm,
@@ -205,6 +205,6 @@ const styles = StyleSheet.create({
   savedPillText: {
     fontSize: typography.fontSize.xs,
     fontWeight: typography.fontWeight.semiBold,
-    color: '#2E7D32',
+    color: colors.successDark,
   },
 });
