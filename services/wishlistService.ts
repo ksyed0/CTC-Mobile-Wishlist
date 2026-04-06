@@ -1,5 +1,5 @@
 import { Wishlist, WishlistItem, SharedContact } from '../types/wishlist';
-import { StorageKeys, getItem, setItem } from '../utils/storage';
+import { StorageKeys, getItem, setItem, removeItem } from '../utils/storage';
 
 async function loadWishlists(): Promise<Wishlist[]> {
   try {
@@ -255,5 +255,74 @@ export const wishlistService = {
     updatedAll[idx] = updated;
     await saveWishlists(updatedAll);
     return updated;
+  },
+
+  /**
+   * Set or clear the note on a wishlist item (US-0016).
+   * Passing empty string clears the note (sets null).
+   * No-op when wishlistId or productId is not found.
+   */
+  async updateItemNote(wishlistId: string, productId: string, note: string): Promise<void> {
+    const all = await loadWishlists();
+    const idx = all.findIndex((w) => w.id === wishlistId);
+    if (idx === -1) return;
+    const wishlist = all[idx];
+    const updated: Wishlist = {
+      ...wishlist,
+      items: wishlist.items.map((item) =>
+        item.productId === productId ? { ...item, note: note.trim() === '' ? null : note.trim() } : item,
+      ),
+    };
+    const updatedAll = [...all];
+    updatedAll[idx] = updated;
+    await saveWishlists(updatedAll);
+  },
+
+  /**
+   * Rename a wishlist (US-0019).
+   * No-op when wishlistId is not found or newName trims to empty.
+   */
+  async renameWishlist(wishlistId: string, newName: string): Promise<void> {
+    const trimmed = newName.trim();
+    if (!trimmed) return;
+    const all = await loadWishlists();
+    const idx = all.findIndex((w) => w.id === wishlistId);
+    if (idx === -1) return;
+    const updatedAll = [...all];
+    updatedAll[idx] = { ...all[idx], name: trimmed };
+    await saveWishlists(updatedAll);
+  },
+
+  /**
+   * Clear all wishlists and recent scans from storage (US-0018 demo reset).
+   */
+  async resetDemoData(): Promise<void> {
+    await Promise.all([removeItem(StorageKeys.WISHLISTS), removeItem(StorageKeys.RECENT_SCANS)]);
+  },
+
+  /**
+   * Toggle the showClaimers flag on a wishlist (US-0021).
+   * No-op when wishlistId is not found.
+   */
+  async setShowClaimers(wishlistId: string, show: boolean): Promise<void> {
+    const all = await loadWishlists();
+    const idx = all.findIndex((w) => w.id === wishlistId);
+    if (idx === -1) return;
+    const updatedAll = [...all];
+    updatedAll[idx] = { ...all[idx], showClaimers: show };
+    await saveWishlists(updatedAll);
+  },
+
+  /**
+   * Set the privacy level on a wishlist (US-0024).
+   * No-op when wishlistId is not found.
+   */
+  async setPrivacy(wishlistId: string, privacy: 'private' | 'contacts' | 'public'): Promise<void> {
+    const all = await loadWishlists();
+    const idx = all.findIndex((w) => w.id === wishlistId);
+    if (idx === -1) return;
+    const updatedAll = [...all];
+    updatedAll[idx] = { ...all[idx], privacy };
+    await saveWishlists(updatedAll);
   },
 };

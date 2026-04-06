@@ -16,6 +16,8 @@ interface WishlistItemRowProps {
   onClaim?: () => void;
   showClaimButton?: boolean;
   isOwner?: boolean;
+  note?: string | null;
+  onNotePress?: () => void;
 }
 
 export const WishlistItemRow = memo(function WishlistItemRow({
@@ -28,6 +30,8 @@ export const WishlistItemRow = memo(function WishlistItemRow({
   onClaim,
   showClaimButton = false,
   isOwner = false,
+  note,
+  onNotePress,
 }: WishlistItemRowProps) {
   const isClaimed = item.claimedBy !== null;
 
@@ -56,12 +60,21 @@ export const WishlistItemRow = memo(function WishlistItemRow({
           <Text style={[styles.price, isClaimed && styles.priceClaimed]}>${productPrice.toFixed(2)}</Text>
         ) : null}
 
+        {/* Item note — owner sees tappable note or add-note link; recipients see read-only */}
+        {note ? (
+          <TouchableOpacity onPress={onNotePress} activeOpacity={onNotePress ? 0.7 : 1} disabled={!onNotePress}>
+            <Text style={styles.noteText}>{note}</Text>
+          </TouchableOpacity>
+        ) : onNotePress ? (
+          <TouchableOpacity onPress={onNotePress} activeOpacity={0.7}>
+            <Text style={styles.addNoteLink}>+ Add note</Text>
+          </TouchableOpacity>
+        ) : null}
+
         {isClaimed ? (
           <View style={styles.claimedRow}>
             <MaterialIcons name="check-circle" size={14} color={colors.success} />
-            <Text style={styles.claimedText}>
-              {isOwner ? 'Claimed' : claimerName ? `Claimed by ${claimerName}` : 'Claimed'}
-            </Text>
+            <Text style={styles.claimedText}>{claimerName ? `Claimed by ${claimerName}` : 'Claimed'}</Text>
           </View>
         ) : showClaimButton ? (
           <TouchableOpacity
@@ -182,5 +195,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: spacing.xs,
+  },
+  noteText: {
+    fontSize: typography.fontSize.xs,
+    color: colors.textSecondary,
+    marginTop: 2,
+    fontStyle: 'italic',
+  },
+  addNoteLink: {
+    fontSize: typography.fontSize.xs,
+    color: colors.textLight,
+    marginTop: 2,
   },
 });

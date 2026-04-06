@@ -15,8 +15,19 @@ jest.mock('react-native', () => {
     Text: makeComponent('Text'),
     Image: makeComponent('Image'),
     ScrollView: makeComponent('ScrollView'),
-    TouchableOpacity: function TouchableOpacity({ children, onPress, testID, accessibilityLabel, accessibilityRole, ...rest }: any) {
-      return React.createElement('TouchableOpacity', { testID, accessibilityLabel, accessibilityRole, onPress, ...rest }, children);
+    TouchableOpacity: function TouchableOpacity({
+      children,
+      onPress,
+      testID,
+      accessibilityLabel,
+      accessibilityRole,
+      ...rest
+    }: any) {
+      return React.createElement(
+        'TouchableOpacity',
+        { testID, accessibilityLabel, accessibilityRole, onPress, ...rest },
+        children,
+      );
     },
     StyleSheet: {
       create: (styles: any) => styles,
@@ -37,14 +48,23 @@ jest.mock('@expo/vector-icons', () => {
 
 jest.mock('../../theme/colors', () => ({
   colors: {
-    primary: '#D52B1E', white: '#FFFFFF', dark: '#333333',
-    textSecondary: '#666666', textLight: '#999999', background: '#F5F5F5',
-    border: '#E0E0E0', success: '#2E7D32',
+    primary: '#D52B1E',
+    white: '#FFFFFF',
+    dark: '#333333',
+    textSecondary: '#666666',
+    textLight: '#999999',
+    background: '#F5F5F5',
+    border: '#E0E0E0',
+    success: '#2E7D32',
   },
 }));
 jest.mock('../../theme/spacing', () => ({
   spacing: {
-    xs: 4, sm: 8, md: 16, lg: 24, xl: 32,
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
     borderRadius: { sm: 8, md: 12, lg: 16, full: 999 },
   },
 }));
@@ -108,7 +128,7 @@ describe('ProductCard — render', () => {
   it('calls onPress when card is pressed', () => {
     const onPress = jest.fn();
     const { getByAccessibilityHint, getByLabelText } = render(
-      <ProductCard product={makeProduct({ name: 'Drill', price: 49.99 })} onPress={onPress} />
+      <ProductCard product={makeProduct({ name: 'Drill', price: 49.99 })} onPress={onPress} />,
     );
     // The card has accessibilityLabel: "Drill, $49.99"
     fireEvent.press(getByLabelText('Drill, $49.99'));
@@ -116,19 +136,14 @@ describe('ProductCard — render', () => {
   });
 
   it('shows "Add to Wishlist" button when onAddToWishlist is provided', () => {
-    const { getByText } = render(
-      <ProductCard product={makeProduct()} onAddToWishlist={jest.fn()} />
-    );
+    const { getByText } = render(<ProductCard product={makeProduct()} onAddToWishlist={jest.fn()} />);
     expect(getByText('Add to Wishlist')).toBeTruthy();
   });
 
   it('calls onAddToWishlist when "Add to Wishlist" button is pressed', () => {
     const onAddToWishlist = jest.fn();
     const { getByLabelText } = render(
-      <ProductCard
-        product={makeProduct({ name: 'Drill' })}
-        onAddToWishlist={onAddToWishlist}
-      />
+      <ProductCard product={makeProduct({ name: 'Drill' })} onAddToWishlist={onAddToWishlist} />,
     );
     fireEvent.press(getByLabelText('Add Drill to wishlist'));
     expect(onAddToWishlist).toHaveBeenCalledTimes(1);
@@ -140,9 +155,7 @@ describe('ProductCard — render', () => {
   });
 
   it('renders category initial placeholder when image is "placeholder"', () => {
-    const { getByText } = render(
-      <ProductCard product={makeProduct({ image: 'placeholder', category: 'Tools' })} />
-    );
+    const { getByText } = render(<ProductCard product={makeProduct({ image: 'placeholder', category: 'Tools' })} />);
     // Category initial 'T' should appear in the placeholder
     expect(getByText('T')).toBeTruthy();
   });

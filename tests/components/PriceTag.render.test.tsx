@@ -23,8 +23,12 @@ jest.mock('react-native', () => {
 
 jest.mock('../../theme/colors', () => ({
   colors: {
-    primary: '#D52B1E', white: '#FFFFFF', dark: '#333333',
-    textSecondary: '#666666', textLight: '#999999', background: '#F5F5F5',
+    primary: '#D52B1E',
+    white: '#FFFFFF',
+    dark: '#333333',
+    textSecondary: '#666666',
+    textLight: '#999999',
+    background: '#F5F5F5',
   },
 }));
 jest.mock('../../theme/typography', () => ({

@@ -2,10 +2,7 @@
 // Uses the automatic JSX runtime so component files don't need `import React`.
 // Used by jest.config.js for *.tsx component test files.
 module.exports = {
-  presets: [
-    '@babel/preset-typescript',
-    ['@babel/preset-react', { runtime: 'automatic' }],
-  ],
+  presets: ['@babel/preset-typescript', ['@babel/preset-react', { runtime: 'automatic' }]],
   plugins: [
     '@babel/plugin-transform-modules-commonjs',
     '@babel/plugin-transform-class-properties',

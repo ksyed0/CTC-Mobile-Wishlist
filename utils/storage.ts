@@ -4,6 +4,7 @@ export const StorageKeys = {
   CURRENT_USER: 'currentUser',
   WISHLISTS: 'wishlists',
   RECENT_SCANS: 'recentScans',
+  SEEN_SHARED_IDS_PREFIX: '@ctc_seen_shared_',
 } as const;
 
 export type StorageKey = (typeof StorageKeys)[keyof typeof StorageKeys];

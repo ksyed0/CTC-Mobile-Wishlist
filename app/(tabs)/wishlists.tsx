@@ -88,7 +88,9 @@ export default function WishlistsScreen() {
               <WishlistCard
                 wishlist={item}
                 isShared={(section as Section).isShared}
-                ownerName={(section as Section).isShared ? mockUsers.find((u) => u.id === item.ownerId)?.name : undefined}
+                ownerName={
+                  (section as Section).isShared ? mockUsers.find((u) => u.id === item.ownerId)?.name : undefined
+                }
                 onPress={() => {
                   if ((section as Section).isShared) {
                     router.push(`/wishlist/shared/${item.id}`);
@@ -131,44 +133,44 @@ export default function WishlistsScreen() {
       >
         <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setShowCreateModal(false)}>
           <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-          <View style={styles.modalSheet}>
-            <Text style={styles.modalTitle}>New Wishlist</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Wishlist name (e.g. Birthday, Camping)"
-              value={newName}
-              onChangeText={setNewName}
-              autoFocus
-              returnKeyType="done"
-              onSubmitEditing={handleCreate}
-              maxLength={60}
-            />
-            <TouchableOpacity
-              style={[styles.createButton, (!newName.trim() || isCreating) && styles.createButtonDisabled]}
-              onPress={handleCreate}
-              disabled={!newName.trim() || isCreating}
-              activeOpacity={0.8}
-              accessibilityRole="button"
-              accessibilityLabel="Create wishlist"
-            >
-              {isCreating ? (
-                <ActivityIndicator color={colors.white} />
-              ) : (
-                <Text style={styles.createButtonText}>Create Wishlist</Text>
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={() => {
-                setShowCreateModal(false);
-                setNewName('');
-              }}
-              accessibilityRole="button"
-              accessibilityLabel="Cancel"
-            >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.modalSheet}>
+              <Text style={styles.modalTitle}>New Wishlist</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Wishlist name (e.g. Birthday, Camping)"
+                value={newName}
+                onChangeText={setNewName}
+                autoFocus
+                returnKeyType="done"
+                onSubmitEditing={handleCreate}
+                maxLength={60}
+              />
+              <TouchableOpacity
+                style={[styles.createButton, (!newName.trim() || isCreating) && styles.createButtonDisabled]}
+                onPress={handleCreate}
+                disabled={!newName.trim() || isCreating}
+                activeOpacity={0.8}
+                accessibilityRole="button"
+                accessibilityLabel="Create wishlist"
+              >
+                {isCreating ? (
+                  <ActivityIndicator color={colors.white} />
+                ) : (
+                  <Text style={styles.createButtonText}>Create Wishlist</Text>
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => {
+                  setShowCreateModal(false);
+                  setNewName('');
+                }}
+                accessibilityRole="button"
+                accessibilityLabel="Cancel"
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
           </KeyboardAvoidingView>
         </TouchableOpacity>
       </Modal>

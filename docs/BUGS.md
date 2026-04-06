@@ -728,6 +728,7 @@
 - **Severity:** Major
 - **Status:** Fixed
 - **Fix Branch:** feature/BUG-0073-component-tests
+- **Estimated Cost USD:** 4.50
 - **Found in:** `tests/` — no component or screen test files
 - **Story:** All UI stories
 - **Description:** There are service unit tests for `wishlistService`, `productService`, `userService`, and `wishlistUtils` but zero component/screen tests exist. The agent instruction file requires component tests for all new UI components. 8 screens and 7 components were built with no corresponding test coverage.
@@ -785,6 +786,7 @@
 
 - **Severity:** Minor
 - **Status:** Open
+- **Estimated Cost USD:** 1.00
 - **Found in:** `docs/dashboard.html`, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
@@ -807,6 +809,7 @@
 
 - **Severity:** Minor
 - **Status:** Open
+- **Estimated Cost USD:** 0.75
 - **Found in:** `docs/sdlc-status.json`, `tools/generate-dashboard.js`
 - **Story:** N/A — dashboard tooling
 - **Found by:** Kamal (user observation during Phase 3 build)
@@ -887,6 +890,7 @@
 
 - **Severity:** Major
 - **Status:** Open
+- **Estimated Cost USD:** 6.00
 - **Found in:** `docs/sdlc-status.json`, `docs/agents/DM_AGENT.md` (orchestration model)
 - **Story:** N/A (tooling / orchestration architecture)
 - **Found by:** User (post-pipeline observation)
@@ -1004,6 +1008,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 1.50
 - **Found in:** `app/product/[id].tsx`
 - **Story:** US-0004
 - **Found by:** User (simulator demo observation)
@@ -1015,6 +1020,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 0.75
 - **Found in:** `app/product/[id].tsx`
 - **Story:** US-0004
 - **Found by:** User (simulator demo observation)
@@ -1026,6 +1032,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 0.75
 - **Found in:** `app/product/[id].tsx`
 - **Story:** US-0004
 - **Found by:** User (simulator demo observation)
@@ -1037,6 +1044,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 0.75
 - **Found in:** `app/wishlist/[id].tsx`
 - **Story:** US-0008
 - **Found by:** User (simulator demo observation)
@@ -1048,6 +1056,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 1.00
 - **Found in:** `app/wishlist/[id].tsx`
 - **Story:** US-0009
 - **Found by:** User (simulator demo observation)
@@ -1059,6 +1068,7 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 1.50
 - **Found in:** `app/(tabs)/_layout.tsx`
 - **Story:** US-0013
 - **Found by:** User (simulator demo observation)
@@ -1070,28 +1080,162 @@
 - **Severity:** Minor
 - **Status:** Fixed
 - **Fix Branch:** feature/US-0015-simulator-scan-mock
+- **Estimated Cost USD:** 1.00
 - **Found in:** `app/(tabs)/wishlists.tsx`
 - **Story:** US-0007
 - **Found by:** User (simulator demo observation)
 - **Description:** When creating a new wishlist, tapping the name input caused the iOS keyboard to appear and slide over the modal, hiding the text field. The user could not see what they were typing.
 - **Fix:** Wrapped the modal sheet content in a `KeyboardAvoidingView` with `behavior="padding"` so the modal shifts upward when the keyboard appears.
 
+### BUG-0108: Dashboard phase pipeline accumulates across sessions — misleading progress metrics
+
+- **Severity:** Medium
+- **Status:** To Do (Enhancement)
+- **Estimated Cost USD:** 2.50
+- **Found in:** `docs/sdlc-status.json` (phases array), `tools/generate-dashboard.js` (phase strip rendering)
+- **Story:** Tooling
+- **Found by:** User (observation — screenshot showing 7/8 complete when only 1 phase is active in current session)
+- **Description:** The `phases` array in `sdlc-status.json` grows indefinitely across sessions. The dashboard renders all phases in a single horizontal strip, so completed phases from prior sessions (Blueprint, Architect, Build, etc.) always show alongside the current session's active phase. This makes "Phases Complete: 7/8" misleading — 7 of those phases belong to previous sessions and the ratio has no meaning within the current session's context.
+- **Root cause:** `sdlc-status.json` has no concept of sessions. All phases are flat in one array, and the dashboard has no way to distinguish "current session" from "historical session" phases.
+- **Approaches considered:**
+
+  **A — Per-session reset (user's suggestion):** Add a `sessions` array to `sdlc-status.json`. Each session is `{ id, startedAt, phases: [...] }`. The dashboard shows only the current (last) session's phases and progress metrics. Previous sessions collapse into a "Session History" accordion. Metrics (phases complete, tasks done) reset per session.
+  - ✅ Clean, accurate per-session metrics
+  - ✅ Historical sessions still browsable
+  - ⚠️ Requires schema migration + dashboard rendering change
+
+  **B — Phase type tagging:** Add `"type": "sdlc" | "iteration"` to each phase. BLAST phases 1–6 are `sdlc` (run once, shown as project foundation). Any subsequent phases are `iteration` (shown in a separate "Iterations" row below). Progress metrics only count `iteration` phases for the current session.
+  - ✅ Minimal schema change
+  - ✅ Preserves the visual BLAST pipeline as a permanent reference
+  - ⚠️ Iteration phases still accumulate across sessions without session grouping
+
+  **C — Rolling current-session view (simplest):** Add `"sessionStartPhaseId"` to the root of `sdlc-status.json`. Conductor sets this to the first phase ID of each session. The dashboard renders phases before `sessionStartPhaseId` as a greyed "prior work" strip and phases from `sessionStartPhaseId` onward as the active pipeline. Metrics only count active phases.
+  - ✅ Single integer field change — minimal migration
+  - ✅ Dashboard change is CSS-level (grey vs active styling)
+  - ✅ "Phases Complete" becomes meaningful within the session
+  - ⚠️ Prior work strip can get long over many sessions
+
+- **Recommendation:** **Option C** for now (low effort, high impact on the misleading metric). Option A is the proper long-term fix if the project runs many more sessions.
+- **Fix scope:** `docs/sdlc-status.json` (add `sessionStartPhaseId`), `tools/generate-dashboard.js` (split phase strip rendering, scope metrics to session phases).
+
 ### BUG-0107: Dashboard blinks on every auto-refresh due to full-page reload architecture
 
 - **Severity:** Low
 - **Status:** Backlog (Future Enhancement)
+- **Estimated Cost USD:** 0.50
 - **Found in:** `tools/generate-dashboard.js` (line 112 — `<meta http-equiv="refresh" content="5">`)
 - **Story:** Tooling
 - **Found by:** User (observation)
 - **Description:** The dashboard uses `<meta http-equiv="refresh" content="5">` to stay live during pipeline runs. This causes a full browser page reload every 5 seconds, resulting in a visible blink/flash even when no data has changed. It also resets scroll position and any expanded UI state on every cycle.
 - **Enhancement:** Replace the meta-refresh with a WebSocket or SSE (Server-Sent Events) connection so the dashboard can receive push updates from a lightweight local dev server (e.g. `ws` or Node's `http` module). Alternatively, a polling `fetch` from JavaScript against a JSON endpoint would allow DOM diffing without a full reload. This is a project-agnostic pipeline improvement relevant to any team using the SDLC dashboard tooling.
 
+### BUG-0109: ProductCard savedPill and savedPillText use hardcoded hex colors instead of theme tokens
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Fix Branch:** feature/plan-a-fixes
+- **Estimated Cost USD:** 1.50
+- **Found in:** `components/ProductCard.tsx` (lines 197, 208)
+- **Story:** US-0017
+- **Found by:** Lens (code review)
+- **Description:** The `savedPill` style uses `backgroundColor: '#E8F5E9'` and `savedPillText` uses `color: '#2E7D32'` — both are hardcoded hex values that bypass the design-system theme tokens. The theme `colors.ts` does not expose a `successLight` or `savedBackground` token, so Pixel introduced ad-hoc colours. Per the design system compliance rule, all colours must come from `theme/colors.ts`.
+- **Fix:** Added `successLight: '#E8F5E9'` and `successDark: '#2E7D32'` tokens to `theme/colors.ts`; updated `ProductCard.tsx` to reference `colors.successLight` and `colors.successDark`.
+
+---
+
+### BUG-0110: BottomSheetInput confirm button is never visually disabled when input is empty — AC-0060 not met
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Fix Branch:** feature/plan-a-fixes
+- **Estimated Cost USD:** 1.50
+- **Found in:** `components/BottomSheetInput.tsx` (lines 81–88), `app/wishlist/[id].tsx` (line 85)
+- **Story:** US-0019
+- **Found by:** Lens (code review)
+- **Description:** AC-0060 requires the save button to be disabled when the input is empty. The component uses a `useRef` (not `useState`) to track the current value, so the component cannot reactively re-render to toggle `disabled`. The confirm `TouchableOpacity` has no `disabled` prop and no visual disabled style. The rename handler in `wishlist/[id].tsx` does guard `!newName.trim()` so data integrity is safe, but the button appears pressable even when the field is empty, which fails the acceptance criterion.
+- **Fix:** Converted `valueRef` to `useState` in `BottomSheetInput`. Added `disabled={value.trim() === ''}` to the confirm `TouchableOpacity` and a `confirmButtonDisabled: { opacity: 0.4 }` style for visual feedback.
+
+---
+
+### BUG-0111: copyLinkButton and privacy picker option/cancel TouchableOpacity elements missing accessibilityRole and accessibilityLabel (US-0024)
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Fix Branch:** feature/plan-b-ui
+- **Estimated Cost USD:** 2.00
+- **Found in:** `app/wishlist/[id].tsx` (lines ~210, ~311–332)
+- **Story:** US-0024
+- **Found by:** Lens (code review)
+- **Description:** Three new interactive `TouchableOpacity` elements introduced in commit 33f4489 are missing accessibility attributes:
+  1. `copyLinkButton` (line ~210) — no `accessibilityRole` or `accessibilityLabel`.
+  2. Privacy picker option buttons in the modal `.map()` (lines ~311–329) — no `accessibilityRole` or `accessibilityLabel`.
+  3. Privacy picker cancel button (line ~332) — no `accessibilityRole`.
+     Per L-0028 and design system rule, every `TouchableOpacity` must have `accessibilityRole="button"` and a descriptive `accessibilityLabel`. The restock and price-drop buttons in US-0022/0023 correctly include both — this inconsistency is in the US-0024 commit only.
+- **Fix:** Add `accessibilityRole="button"` to all three touchables. Add `accessibilityLabel="Copy link"` to copyLinkButton. Add `accessibilityLabel={option.label}` (or `\`Set privacy to \${option.label}\``) to each picker option. Add `accessibilityLabel="Cancel"` to the cancel button.
+
+---
+
+### BUG-0112: privacyOptionSubtitle uses hardcoded marginTop: 2 instead of a spacing token
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** feature/plan-b-ui
+- **Estimated Cost USD:** 0.50
+- **Found in:** `app/wishlist/[id].tsx` (line ~602, `privacyOptionSubtitle` style)
+- **Story:** US-0024
+- **Found by:** Lens (code review)
+- **Description:** The `privacyOptionSubtitle` StyleSheet entry uses `marginTop: 2`, which is a raw pixel value with no corresponding token in `theme/spacing.ts` (smallest token is `spacing.xs = 4`). Design system compliance requires all spacing to use defined tokens. This is a minor visual delta but violates the no-hardcoded-values rule.
+- **Fix:** Either add a `spacing.xxs = 2` token to `theme/spacing.ts` and reference it, or replace with `marginTop: spacing.xs` (4px) if the visual difference is acceptable at the POC level.
+
+---
+
 ### BUG-0106: Dashboard shows no audio/notification alert when pipeline state changes — user has no signal to return to terminal
 
 - **Status:** Fixed
 - **Severity:** Medium
+- **Estimated Cost USD:** 3.50
 - **Found in:** `tools/generate-dashboard.js` (dashboard HTML generation)
 - **Story:** Tooling
 - **Found by:** User (demo prep observation)
 - **Description:** The agentic SDLC dashboard auto-refreshes every 5 seconds but gives no audio or notification signal when pipeline phases complete, agents become blocked, or bugs are opened. Users stepping away from the terminal have no way to know when their attention is required.
 - **Fix:** Added a `localStorage`-based state change detection system. Each generated page embeds a `DASH_SNAPSHOT` JSON object with current phase, bug count, agent statuses, and pipeline completion state. On page load, the snapshot is compared to the previous render stored in `localStorage`. When a meaningful change is detected (phase completes, agent blocked, pipeline finishes, new bugs opened), the system plays a Web Audio API tone and fires a browser `Notification`. A "🔔 Alerts" button in the header lets users grant notification permission. No new dependencies — uses only built-in browser APIs.
+
+---
+
+## P2 — Minor (plan visualizer tooling — found 2026-04-06)
+
+### BUG-0113: AI Cost Timeline chart inflated by est/\* estimated bug costs — diverged from header total
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** develop
+- **Estimated Cost USD:** 0.50
+- **Found in:** `tools/generate-plan.js` (`sessionTimeline` computation)
+- **Story:** N/A (tooling)
+- **Found by:** User (observation — header showed $483.63, timeline showed $573.68)
+- **Description:** `sessionTimeline` called `deduplicateSessions(costRows)` without filtering `est/*` branches. The 18 synthetic estimated-bug-cost rows (e.g. `est/BUG-0001`) — representing manual estimates injected into `AI_COST_LOG.md` for bugs without real session data — were included in the cumulative timeline, inflating it by $101.15. The header total (`_totals.costUsd`) correctly skips `est/*` branches in `aggregateCostByBranch`, causing the two metrics to diverge.
+- **Fix:** Added `.filter((row) => !row.branch.startsWith('est/'))` to the `sessionTimeline` pipeline in `generate-plan.js`. Both metrics now end at $483.63.
+
+### BUG-0114: Plan Visualizer hierarchy card view renders blank — applyFilters hides all card epics on init
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** develop
+- **Estimated Cost USD:** 1.00
+- **Found in:** `tools/lib/render-html.js` (`applyFilters` function, line ~1792)
+- **Story:** N/A (tooling)
+- **Found by:** User (observation — card view appeared blank on switching from column view)
+- **Description:** `applyFilters` queried `.story-row` children of each `.epic-block` element to determine whether to show or hide the block. In the column view, story rows are children of `.epic-block`. In the card view, the `.epic-block` is only the collapsible header; story rows live in a sibling `epic-cards-*` div. So `block.querySelectorAll('.story-row')` always returned 0 children for card view epic-blocks, causing all of them to be set to `display: none` on page load. Switching to card view showed a completely blank panel.
+- **Fix:** Changed the search scope from `block` to `wrapper.closest('.mb-8') || block` so story rows in sibling divs are found correctly for card view epic blocks.
+
+### BUG-0115: Agent Status card not fixed width — overflows grid and pushes User Stories panel offscreen
+
+- **Severity:** Minor
+- **Status:** Fixed
+- **Fix Branch:** develop
+- **Estimated Cost USD:** 0.25
+- **Found in:** `tools/generate-dashboard.js` (`.grid-2` CSS rule)
+- **Story:** N/A (tooling)
+- **Found by:** User (screenshot — User Stories panel only partially visible at right edge)
+- **Description:** The Agents + Stories section uses `.grid-2 { grid-template-columns: 2fr 1fr }`. CSS Grid does not automatically constrain grid items below their intrinsic content width — without `min-width: 0`, items can overflow their grid column. The Agent Status card contained an `agent-grid` with 3-column `repeat(3, 1fr)` cells that had non-wrapping text, causing the left column to expand and push the User Stories card off-screen to the right.
+- **Fix:** Added `.grid-2 > * { min-width: 0; }` to force grid children to respect their column boundaries.

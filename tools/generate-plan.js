@@ -205,6 +205,7 @@ function main() {
   }
 
   const sessionTimeline = deduplicateSessions(costRows)
+    .filter((row) => !row.branch.startsWith('est/'))
     .sort((a, b) => a.date.localeCompare(b.date))
     .reduce((acc, row) => {
       const prev = acc.length ? acc[acc.length - 1].cumCost : 0;

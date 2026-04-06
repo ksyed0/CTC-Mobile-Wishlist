@@ -19,4 +19,6 @@ export interface Wishlist {
   createdAt: string;
   items: WishlistItem[];
   sharedWith: SharedContact[];
+  showClaimers?: boolean; // US-0021 — default false when absent
+  privacy?: 'private' | 'contacts' | 'public'; // US-0024 — default 'contacts' when absent
 }

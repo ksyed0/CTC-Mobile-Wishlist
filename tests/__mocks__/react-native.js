@@ -27,7 +27,7 @@ function TouchableOpacity({ children, onPress, testID, accessibilityLabel, acces
   return React.createElement(
     'TouchableOpacity',
     { testID, accessibilityLabel, accessibilityRole, onPress, disabled, ...rest },
-    children
+    children,
   );
 }
 

@@ -222,23 +222,23 @@ Notes: productService.getByBarcode() wired in scan.tsx; recent scans saved to As
 US-0015 (EPIC-0003): As a demo presenter, I want the scan screen to show a tappable product catalog when running on a simulator, so that I can demonstrate the scan flow without a physical device or real barcode.
 Priority: High
 Estimate: M
-Status: Pending
+Status: Done
 Branch: feature/US-0015-simulator-scan-mock
 Dependencies: US-0006
 Spec: docs/superpowers/specs/2026-04-05-simulator-scan-mock-design.md
 Plan: docs/superpowers/plans/2026-04-05-simulator-scan-mock.md
 Acceptance Criteria:
-  - [ ] AC-0045: On a physical device, scan screen behaves exactly as before (camera + live barcode scanning)
-  - [ ] AC-0046: On a simulator (Device.isDevice === false), the camera view is replaced with a scrollable WebView rendering data/product-catalog-print.html
-  - [ ] AC-0047: Each product card in the WebView is tappable; tapping fires handleBarcode() with the card's barcode string
-  - [ ] AC-0048: A simulator-mode banner is shown at the top of the scan screen
+  - [x] AC-0045: On a physical device, scan screen behaves exactly as before (camera + live barcode scanning)
+  - [x] AC-0046: On a simulator (Device.isDevice === false), the camera view is replaced with a scrollable WebView rendering data/product-catalog-print.html
+  - [x] AC-0047: Each product card in the WebView is tappable; tapping fires handleBarcode() with the card's barcode string
+  - [x] AC-0048: A simulator-mode banner is shown at the top of the scan screen
 ```
 
 ```
 TASK-0022 (US-0015): Build SimulatorScanView component — WebView loading product-catalog-print.html with injected tap-to-scan click handlers
 Type: Dev
 Assignee: Agent
-Status: Pending
+Status: Done
 Branch: feature/US-0015-simulator-scan-mock
 Plan: docs/superpowers/plans/2026-04-05-simulator-scan-mock.md — Tasks 1, 2, 3
 Notes: extractBarcodeFromMeta reads barcode from .card-meta text; expo-asset + expo-file-system load HTML; tap handler script injected before </body>; new deps: expo-device, react-native-webview, expo-asset, expo-file-system
@@ -248,7 +248,7 @@ Notes: extractBarcodeFromMeta reads barcode from .card-meta text; expo-asset + e
 TASK-0023 (US-0015): Wire Device.isDevice simulator detection into scan.tsx
 Type: Dev
 Assignee: Agent
-Status: Pending
+Status: Done
 Branch: feature/US-0015-simulator-scan-mock
 Plan: docs/superpowers/plans/2026-04-05-simulator-scan-mock.md — Tasks 4, 5
 Notes: isSimulator = !Device.isDevice evaluated at module level; renders SimulatorScanView in place of CameraView+BarcodeOverlay on simulators; physical device path unchanged; metro.config.js required to bundle .html asset
@@ -479,7 +479,7 @@ Notes:
 US-0014: As a pipeline engineer, I want each lesson in LESSONS.md to have an "Applies to" field listing relevant agent roles, so that agents can efficiently scan their lessons without reading all 29 entries.
 Priority: Low
 Estimate: XS
-Status: Backlog
+Status: To Do
 Branch: —
 Dependencies: None
 Acceptance Criteria:
@@ -525,7 +525,7 @@ Notes: FlatList of all products; tapping navigates to /product/[id] with fromSca
 EPIC-0007: POC Demo Enhancements
 Description: Nine UX and feature enhancements to improve demo polish, gift-sharing UX, and presenter ergonomics
 Release Target: POC v2
-Status: Backlog
+Status: Done
 Dependencies: EPIC-0004, EPIC-0005, EPIC-0006
 Spec (Plan A — #1-4): docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md
 Spec (Plan B — #5,7-10): docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md
@@ -537,140 +537,140 @@ Plan (Plan B): docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md
 US-0016 (EPIC-0007): As a wishlist owner, I want to attach a short note to any wishlist item, so that I can give the gift buyer useful context (size, colour, variant).
 Priority: Medium
 Estimate: S
-Status: Backlog
-Branch: feature/US-0016-item-notes
+Status: Done
+Branch: feature/plan-a-ui
 Dependencies: US-0008
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-1--item-notes-us-0016
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Tasks 2, 3, 4
 Acceptance Criteria:
-  - [ ] AC-0046: Owner can tap "+ Add note" on any item to open a bottom sheet input
-  - [ ] AC-0047: Entering text and tapping Save persists the note via AsyncStorage
-  - [ ] AC-0048: The note is shown as a subtitle below the item name in both owner and shared views
-  - [ ] AC-0049: Owner can edit or clear an existing note by tapping it
+  - [x] AC-0046: Owner can tap "+ Add note" on any item to open a bottom sheet input
+  - [x] AC-0047: Entering text and tapping Save persists the note via AsyncStorage
+  - [x] AC-0048: The note is shown as a subtitle below the item name in both owner and shared views
+  - [x] AC-0049: Owner can edit or clear an existing note by tapping it
 ```
 
 ```
 US-0017 (EPIC-0007): As a shopper, I want to see which catalog products I've already saved to a wishlist, so that I don't add duplicates while browsing.
 Priority: Medium
 Estimate: S
-Status: Backlog
-Branch: feature/US-0017-saved-indicator
+Status: Done
+Branch: feature/plan-a-ui
 Dependencies: US-0007, US-0003
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-2--already-in-wishlist-indicator-us-0017
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Task 5
 Acceptance Criteria:
-  - [ ] AC-0050: Products already saved to any wishlist show a filled red heart badge on their catalog card
-  - [ ] AC-0051: Saved products show a green "✓ Saved" pill instead of the add button
-  - [ ] AC-0052: Indicator updates immediately after adding a product to a wishlist
+  - [x] AC-0050: Products already saved to any wishlist show a filled red heart badge on their catalog card
+  - [x] AC-0051: Saved products show a green "✓ Saved" pill instead of the add button
+  - [x] AC-0052: Indicator updates immediately after adding a product to a wishlist
 ```
 
 ```
 US-0018 (EPIC-0007): As a demo presenter, I want a one-tap button to reset all demo data, so that I can start fresh between live demonstrations.
 Priority: High
 Estimate: XS
-Status: Backlog
-Branch: feature/US-0018-demo-reset
+Status: Done
+Branch: feature/plan-a-ui
 Dependencies: US-0013
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-3--demo-reset-us-0018
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Tasks 2, 3, 6
 Acceptance Criteria:
-  - [ ] AC-0053: A "Reset demo data" button is visible on the login/user-select screen
-  - [ ] AC-0054: Tapping it shows a confirmation dialog before any data is deleted
-  - [ ] AC-0055: After confirming, all wishlists and recent scans are cleared from AsyncStorage
-  - [ ] AC-0056: The app remains on the login screen after reset; no navigation side effects
+  - [x] AC-0053: A "Reset demo data" button is visible on the login/user-select screen
+  - [x] AC-0054: Tapping it shows a confirmation dialog before any data is deleted
+  - [x] AC-0055: After confirming, all wishlists and recent scans are cleared from AsyncStorage
+  - [x] AC-0056: The app remains on the login screen after reset; no navigation side effects
 ```
 
 ```
 US-0019 (EPIC-0007): As a wishlist owner, I want to rename a wishlist, so that I can fix typos or change the purpose of an existing list.
 Priority: Low
 Estimate: XS
-Status: Backlog
-Branch: feature/US-0019-wishlist-rename
+Status: Done
+Branch: feature/plan-a-ui
 Dependencies: US-0007
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md#feature-4--wishlist-rename-us-0019
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md — Tasks 1, 2, 3, 7
 Acceptance Criteria:
-  - [ ] AC-0057: A pencil icon is visible next to the wishlist name in the detail header
-  - [ ] AC-0058: Tapping the pencil opens a pre-filled bottom sheet input
-  - [ ] AC-0059: Saving updates the wishlist name immediately in the header and list views
-  - [ ] AC-0060: The save button is disabled when the name input is empty
+  - [x] AC-0057: A pencil icon is visible next to the wishlist name in the detail header
+  - [x] AC-0058: Tapping the pencil opens a pre-filled bottom sheet input
+  - [x] AC-0059: Saving updates the wishlist name immediately in the header and list views
+  - [x] AC-0060: The save button is disabled when the name input is empty
 ```
 
 ```
 US-0020 (EPIC-0007): As a user, I want to see a badge on the Wishlists tab when I have unread shared wishlists, so that I know when someone has shared something with me.
 Priority: Medium
 Estimate: S
-Status: Backlog
-Branch: feature/US-0020-tab-badge
+Status: Done
+Branch: feature/plan-b-ui
 Dependencies: US-0011
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-5--unseen-shared-wishlist-tab-badge-us-0020
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Tasks 3, 4
 Acceptance Criteria:
-  - [ ] AC-0061: Wishlists tab shows a numeric badge when there are unseen shared wishlists
-  - [ ] AC-0062: Opening a shared wishlist removes it from the unseen count
-  - [ ] AC-0063: Badge disappears when all shared wishlists have been viewed
-  - [ ] AC-0064: Switching users shows the correct badge count for the new user
+  - [x] AC-0061: Wishlists tab shows a numeric badge when there are unseen shared wishlists
+  - [x] AC-0062: Opening a shared wishlist removes it from the unseen count
+  - [x] AC-0063: Badge disappears when all shared wishlists have been viewed
+  - [x] AC-0064: Switching users shows the correct badge count for the new user
 ```
 
 ```
 US-0021 (EPIC-0007): As a wishlist owner, I want to optionally reveal who claimed each item, so that I can see fulfillment status after the event when the surprise is no longer needed.
 Priority: Low
 Estimate: S
-Status: Backlog
-Branch: feature/US-0021-claimer-reveal
+Status: Done
+Branch: feature/plan-b-ui
 Dependencies: US-0012
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-7--claimer-reveal-toggle-us-0021
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Tasks 1, 2, 3, 5
 Acceptance Criteria:
-  - [ ] AC-0065: Owner's wishlist detail shows a "Show who claimed items" toggle in the header
-  - [ ] AC-0066: Toggle defaults to off; "Claimed" items show no name
-  - [ ] AC-0067: When toggled on, claimed items show "Claimed by [contact name]"
-  - [ ] AC-0068: Toggle state persists across app restarts
-  - [ ] AC-0069: Recipients never see the toggle
+  - [x] AC-0065: Owner's wishlist detail shows a "Show who claimed items" toggle in the header
+  - [x] AC-0066: Toggle defaults to off; "Claimed" items show no name
+  - [x] AC-0067: When toggled on, claimed items show "Claimed by [contact name]"
+  - [x] AC-0068: Toggle state persists across app restarts
+  - [x] AC-0069: Recipients never see the toggle
 ```
 
 ```
 US-0022 (EPIC-0007): As a shopper, I want to set a restock alert on an out-of-stock product, so that I'm notified when it becomes available (mock).
 Priority: Low
 Estimate: XS
-Status: Backlog
-Branch: feature/US-0022-restock-alert
+Status: Done
+Branch: feature/plan-b-ui
 Dependencies: US-0004
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-8--9--restock--price-drop-alerts-us-0022--us-0023
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Task 6
 Acceptance Criteria:
-  - [ ] AC-0070: "Notify me when back in stock" button appears only when product.inStock === false
-  - [ ] AC-0071: Tapping the restock button shows an Alert confirmation (no navigation)
+  - [x] AC-0070: "Notify me when back in stock" button appears only when product.inStock === false
+  - [x] AC-0071: Tapping the restock button shows an Alert confirmation (no navigation)
 ```
 
 ```
 US-0023 (EPIC-0007): As a shopper, I want to set a price-drop alert on any product, so that I'm notified if the price decreases (mock).
 Priority: Low
 Estimate: XS
-Status: Backlog
-Branch: feature/US-0023-price-drop-alert
+Status: Done
+Branch: feature/plan-b-ui
 Dependencies: US-0004
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-8--9--restock--price-drop-alerts-us-0022--us-0023
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Task 6
 Acceptance Criteria:
-  - [ ] AC-0072: "Notify me if price drops" button is always visible on the product detail screen
-  - [ ] AC-0073: Tapping the price-drop button shows an Alert confirmation (no navigation)
-  - [ ] AC-0074: Both buttons use an outlined style to avoid competing with the main CTAs
+  - [x] AC-0072: "Notify me if price drops" button is always visible on the product detail screen
+  - [x] AC-0073: Tapping the price-drop button shows an Alert confirmation (no navigation)
+  - [x] AC-0074: Both buttons use an outlined style to avoid competing with the main CTAs
 ```
 
 ```
 US-0024 (EPIC-0007): As a wishlist owner, I want to set a privacy level on my wishlist (Private / Contacts / Public link), so that I control who can see it.
 Priority: Medium
 Estimate: M
-Status: Backlog
-Branch: feature/US-0024-privacy-levels
+Status: Done
+Branch: feature/plan-b-ui
 Dependencies: US-0010
 Spec: docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md#feature-10--privacy-levels-us-0024
 Plan: docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md — Tasks 1, 2, 3, 7
 Acceptance Criteria:
-  - [ ] AC-0075: Wishlist detail header shows the current privacy setting
-  - [ ] AC-0076: Tapping the privacy row opens a 3-option picker sheet
-  - [ ] AC-0077: Setting to "Private" hides the Share button
-  - [ ] AC-0078: Setting to "Public link" shows a "Copy Link" button that copies a mock deep link
-  - [ ] AC-0079: Privacy setting persists across app restarts
+  - [x] AC-0075: Wishlist detail header shows the current privacy setting
+  - [x] AC-0076: Tapping the privacy row opens a 3-option picker sheet
+  - [x] AC-0077: Setting to "Private" hides the Share button
+  - [x] AC-0078: Setting to "Public link" shows a "Copy Link" button that copies a mock deep link
+  - [x] AC-0079: Privacy setting persists across app restarts
 ```

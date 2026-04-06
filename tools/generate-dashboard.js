@@ -84,15 +84,6 @@ function generateHTML(status) {
     agentRoles[name] = cfg.role || name;
   }
 
-  const statusColors = {
-    idle: '#888',
-    active: '#34A853',
-    complete: '#1565C0',
-    blocked: DASH_META.primaryColor,
-    pending: '#888',
-    'in-progress': '#F57C00',
-  };
-
   const phasesComplete = phases.filter((p) => p.status === 'complete').length;
   const pipelineComplete = phasesComplete === phases.length && phases.length > 0;
 
@@ -100,8 +91,6 @@ function generateHTML(status) {
 
   const storyPercent =
     metrics.storiesTotal > 0 ? Math.round((metrics.storiesCompleted / metrics.storiesTotal) * 100) : 0;
-
-  const testPercent = metrics.testsTotal > 0 ? Math.round((metrics.testsPassed / metrics.testsTotal) * 100) : 0;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -185,6 +174,7 @@ function generateHTML(status) {
 
   .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 24px; }
   .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+  .grid-2 > * { min-width: 0; }
 
   .card { background: var(--bg-card); border-radius: 12px; padding: 20px; border: 1px solid var(--bg-card-border); transition: background 0.3s, border-color 0.3s; }
   .card h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: var(--brand-primary); text-transform: uppercase; letter-spacing: 1px; }
@@ -236,7 +226,11 @@ function generateHTML(status) {
   /* Story table */
   .story-list { display: flex; flex-direction: column; gap: 10px; }
   .epic-group { }
-  .epic-header { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 0 4px 4px; border-bottom: 1px solid var(--divider); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .epic-header { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 0 4px 4px; border-bottom: 1px solid var(--divider); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+  .epic-header:hover { color: var(--text-secondary); }
+  .epic-toggle { font-size: 9px; margin-left: auto; opacity: 0.6; transition: transform 0.2s; }
+  .epic-group.collapsed .epic-toggle { transform: rotate(-90deg); }
+  .epic-group.collapsed .epic-stories { display: none; }
   .epic-id { color: var(--brand-primary); font-size: 10px; font-weight: 600; }
   .epic-stories { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
   .story-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--bg-card-inner); border-radius: 6px; font-size: 12px; transition: all 0.2s; }
@@ -577,10 +571,11 @@ ${(() => {
         : epicInProgress
           ? 'rgba(245,124,0,0.15)'
           : 'rgba(136,136,136,0.15)';
-      return `      <div class="epic-group">
-        <div class="epic-header">
+      return `      <div class="epic-group${epicDone ? ' collapsed' : ''}">
+        <div class="epic-header" onclick="this.closest('.epic-group').classList.toggle('collapsed')">
           <span class="epic-id">${epicId}</span> ${epicName}
           <span style="margin-left:8px; font-size:10px; padding:2px 8px; border-radius:10px; background:${epicStatusBg}; color:${epicStatusColor}; font-weight:600;">${epicStatus}</span>
+          <span class="epic-toggle">▼</span>
         </div>
         <div class="epic-stories">
 ${storyRows}

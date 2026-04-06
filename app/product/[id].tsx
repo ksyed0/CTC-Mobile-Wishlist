@@ -11,6 +11,7 @@ import {
   FlatList,
   Image,
 } from 'react-native';
+import { Toast, useToast } from '../../components/Toast';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { typography } from '../../theme/typography';
@@ -47,6 +48,7 @@ export default function ProductDetailScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
+  const { showToast, toast } = useToast();
 
   useEffect(() => {
     if (id) {
@@ -63,7 +65,7 @@ export default function ProductDetailScreen() {
     // AC-0042: duplicate guard
     const alreadyIn = wishlist.items.some((i) => i.productId === product.id);
     if (alreadyIn) {
-      Alert.alert('Already in Wishlist', `"${product.name}" is already in "${wishlist.name}".`);
+      showToast(`"${product.name}" is already in "${wishlist.name}".`, 'info');
       setShowPicker(false);
       return;
     }
@@ -72,9 +74,9 @@ export default function ProductDetailScreen() {
     setShowPicker(false);
     try {
       await addItem(wishlist.id, product.id);
-      Alert.alert('Added!', `"${product.name}" was added to "${wishlist.name}".`);
+      showToast(`Added to "${wishlist.name}"`, 'success');
     } catch {
-      Alert.alert('Error', 'Could not add item. Please try again.');
+      showToast('Could not add item. Please try again.', 'error');
     } finally {
       setIsAdding(false);
     }
@@ -113,7 +115,7 @@ export default function ProductDetailScreen() {
   }
 
   return (
-    <>
+    <View style={styles.root}>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         {/* BUG-0099: render real image when available, colored category placeholder otherwise */}
         <View style={styles.imageContainer}>
@@ -159,15 +161,39 @@ export default function ProductDetailScreen() {
           {/* BUG-0100: mock Add to Cart secondary button */}
           <TouchableOpacity
             style={styles.addToCartButton}
-            onPress={() =>
-              Alert.alert('Added to Cart', `"${product.name}" has been added to your cart.`)
-            }
+            onPress={() => showToast(`"${product.name}" added to cart`, 'success')}
             activeOpacity={0.8}
             accessibilityRole="button"
             accessibilityLabel="Add to cart"
           >
             <MaterialIcons name="shopping-cart" size={20} color={colors.primary} />
             <Text style={styles.addToCartButtonText}>Add to Cart</Text>
+          </TouchableOpacity>
+
+          {/* US-0022: Restock alert — only when out of stock */}
+          {!product.inStock && (
+            <TouchableOpacity
+              style={styles.alertButton}
+              onPress={() => showToast("We'll notify you when this item is back in stock.", 'info')}
+              activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Notify me when back in stock"
+            >
+              <MaterialIcons name="notifications-none" size={16} color={colors.textSecondary} />
+              <Text style={styles.alertButtonText}>Notify me when back in stock</Text>
+            </TouchableOpacity>
+          )}
+
+          {/* US-0023: Price-drop alert — always visible */}
+          <TouchableOpacity
+            style={styles.alertButton}
+            onPress={() => showToast("We'll notify you if the price drops on this item.", 'info')}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel="Notify me if price drops"
+          >
+            <MaterialIcons name="trending-down" size={16} color={colors.textSecondary} />
+            <Text style={styles.alertButtonText}>Notify me if price drops</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -211,11 +237,15 @@ export default function ProductDetailScreen() {
           </View>
         </TouchableOpacity>
       </Modal>
-    </>
+      <Toast {...toast} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -383,5 +413,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textSecondary,
     fontWeight: '500',
+  },
+  alertButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: spacing.borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    gap: spacing.xs,
+    marginTop: spacing.sm,
+    minHeight: 44,
+  },
+  alertButtonText: {
+    fontSize: typography.fontSize.sm,
+    color: colors.textSecondary,
   },
 });

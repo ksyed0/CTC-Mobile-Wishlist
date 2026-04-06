@@ -1,16 +1,33 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '../contexts/AuthContext';
+import { useWishlists } from '../contexts/WishlistContext';
 import { User } from '../types/user';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
+import { typography } from '../theme/typography';
 
 export default function LoginScreen() {
   const { mockUsers, login, continueAsGuest, isLoading } = useAuth();
+  const { resetDemoData } = useWishlists();
 
   async function handleLogin(user: User) {
     await login(user.id);
     router.replace('/(tabs)');
+  }
+
+  function handleResetDemo() {
+    Alert.alert('Reset Demo Data', 'This will delete all wishlists and recent scans for all users. Continue?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Reset',
+        style: 'destructive',
+        onPress: async () => {
+          await resetDemoData();
+          Alert.alert('Done', 'Demo data cleared.');
+        },
+      },
+    ]);
   }
 
   async function handleGuest() {
@@ -70,6 +87,16 @@ export default function LoginScreen() {
         </TouchableOpacity>
 
         <Text style={styles.disclaimer}>This is a demo app. No real authentication is performed.</Text>
+
+        <TouchableOpacity
+          style={styles.resetButton}
+          onPress={handleResetDemo}
+          activeOpacity={0.7}
+          accessibilityRole="button"
+          accessibilityLabel="Reset demo data"
+        >
+          <Text style={styles.resetButtonText}>Reset demo data</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -170,5 +197,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.textLight,
     textAlign: 'center',
+  },
+  resetButton: {
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+    marginTop: spacing.sm,
+  },
+  resetButtonText: {
+    fontSize: typography.fontSize.xs,
+    color: colors.textLight,
   },
 });

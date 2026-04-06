@@ -15,6 +15,7 @@
 ## Task 1: BottomSheetInput component
 
 **Files:**
+
 - Create: `components/BottomSheetInput.tsx`
 - Create: `tests/components/BottomSheetInput.test.ts`
 
@@ -140,20 +141,9 @@ export function BottomSheetInput({
   const isRequired = initialValue === undefined;
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      onRequestClose={onCancel}
-    >
-      <TouchableOpacity
-        style={styles.backdrop}
-        activeOpacity={1}
-        onPress={onCancel}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onCancel}>
+      <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={onCancel}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <TouchableOpacity activeOpacity={1}>
             <View style={styles.sheet}>
               <Text style={styles.title}>{title}</Text>
@@ -165,7 +155,9 @@ export function BottomSheetInput({
                 defaultValue={initialValue}
                 maxLength={maxLength}
                 autoFocus
-                onChangeText={(text) => { valueRef.current = text; }}
+                onChangeText={(text) => {
+                  valueRef.current = text;
+                }}
                 returnKeyType="done"
                 onSubmitEditing={() => onConfirm(valueRef.current)}
               />
@@ -177,11 +169,7 @@ export function BottomSheetInput({
                 >
                   <Text style={styles.confirmButtonText}>{confirmLabel}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.cancelButton}
-                  onPress={onCancel}
-                  activeOpacity={0.8}
-                >
+                <TouchableOpacity style={styles.cancelButton} onPress={onCancel} activeOpacity={0.8}>
                   <Text style={styles.cancelButtonText}>{cancelLabel}</Text>
                 </TouchableOpacity>
               </View>
@@ -277,6 +265,7 @@ git commit -m "feat(US-0016,US-0019): add BottomSheetInput shared component"
 ## Task 2: wishlistService — updateItemNote, renameWishlist, resetDemoData
 
 **Files:**
+
 - Modify: `services/wishlistService.ts`
 - Modify: `utils/storage.ts`
 - Modify: `tests/services/wishlistService.test.ts`
@@ -493,6 +482,7 @@ git commit -m "feat(US-0016,US-0018,US-0019): add updateItemNote, renameWishlist
 ## Task 3: WishlistContext — expose new methods
 
 **Files:**
+
 - Modify: `contexts/WishlistContext.tsx`
 
 - [ ] **Step 1: Add the three new methods to the context interface and provider**
@@ -509,25 +499,25 @@ resetDemoData: () => Promise<void>;
 Add the implementations inside `WishlistProvider`, after the `getWishlistById` function:
 
 ```ts
-  async function updateItemNote(wishlistId: string, productId: string, note: string): Promise<void> {
-    await wishlistService.updateItemNote(wishlistId, productId, note);
-    // Refresh the affected wishlist in local state
-    const updated = await wishlistService.getWishlistById(wishlistId);
-    if (updated) {
-      setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? updated : w)));
-    }
+async function updateItemNote(wishlistId: string, productId: string, note: string): Promise<void> {
+  await wishlistService.updateItemNote(wishlistId, productId, note);
+  // Refresh the affected wishlist in local state
+  const updated = await wishlistService.getWishlistById(wishlistId);
+  if (updated) {
+    setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? updated : w)));
   }
+}
 
-  async function renameWishlist(wishlistId: string, newName: string): Promise<void> {
-    await wishlistService.renameWishlist(wishlistId, newName);
-    setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? { ...w, name: newName.trim() } : w)));
-  }
+async function renameWishlist(wishlistId: string, newName: string): Promise<void> {
+  await wishlistService.renameWishlist(wishlistId, newName);
+  setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? { ...w, name: newName.trim() } : w)));
+}
 
-  async function resetDemoData(): Promise<void> {
-    await wishlistService.resetDemoData();
-    setWishlists([]);
-    setSharedWishlists([]);
-  }
+async function resetDemoData(): Promise<void> {
+  await wishlistService.resetDemoData();
+  setWishlists([]);
+  setSharedWishlists([]);
+}
 ```
 
 Add them to the context value object in the `return` statement:
@@ -559,6 +549,7 @@ git commit -m "feat(US-0016,US-0018,US-0019): expose updateItemNote, renameWishl
 ## Task 4: Item Notes UI
 
 **Files:**
+
 - Modify: `components/WishlistItemRow.tsx`
 - Modify: `app/wishlist/[id].tsx`
 - Modify: `app/wishlist/shared/[id].tsx`
@@ -576,16 +567,20 @@ onNotePress?: () => void;
 After the `{productPrice !== undefined ? ... : null}` block (around line 55), add:
 
 ```tsx
-{/* Item note — owner sees tappable note or add-note link; recipients see read-only */}
-{item.note ? (
-  <TouchableOpacity onPress={onNotePress} activeOpacity={onNotePress ? 0.7 : 1} disabled={!onNotePress}>
-    <Text style={styles.noteText}>{item.note}</Text>
-  </TouchableOpacity>
-) : onNotePress ? (
-  <TouchableOpacity onPress={onNotePress} activeOpacity={0.7}>
-    <Text style={styles.addNoteLink}>+ Add note</Text>
-  </TouchableOpacity>
-) : null}
+{
+  /* Item note — owner sees tappable note or add-note link; recipients see read-only */
+}
+{
+  item.note ? (
+    <TouchableOpacity onPress={onNotePress} activeOpacity={onNotePress ? 0.7 : 1} disabled={!onNotePress}>
+      <Text style={styles.noteText}>{item.note}</Text>
+    </TouchableOpacity>
+  ) : onNotePress ? (
+    <TouchableOpacity onPress={onNotePress} activeOpacity={0.7}>
+      <Text style={styles.addNoteLink}>+ Add note</Text>
+    </TouchableOpacity>
+  ) : null;
+}
 ```
 
 Add to the `styles` StyleSheet at the end:
@@ -702,6 +697,7 @@ git commit -m "feat(US-0016): item notes — add/edit note on wishlist items, re
 ## Task 5: Already-in-Wishlist indicator
 
 **Files:**
+
 - Modify: `components/ProductCard.tsx`
 - Modify: `app/(tabs)/catalog.tsx`
 - Modify: `tests/components/ProductCard.test.ts`
@@ -766,41 +762,39 @@ export const ProductCard = memo(function ProductCard({ product, onPress, onAddTo
 Inside `imageContainer` View (after the `outOfStockBadge`), add the heart badge:
 
 ```tsx
-{/* Saved heart badge — top-right of image */}
+{
+  /* Saved heart badge — top-right of image */
+}
 <View style={styles.heartBadge}>
   <MaterialIcons
     name={isSaved ? 'favorite' : 'favorite-border'}
     size={16}
     color={isSaved ? colors.primary : colors.textLight}
   />
-</View>
+</View>;
 ```
 
 Replace the `onAddToWishlist` button block with the saved/unsaved conditional:
 
 ```tsx
-{isSaved ? (
-  <View style={styles.savedPill}>
-    <Text style={styles.savedPillText}>✓ Saved</Text>
-  </View>
-) : onAddToWishlist ? (
-  <TouchableOpacity
-    style={[styles.addButton, !product.inStock && styles.addButtonDisabled]}
-    onPress={onAddToWishlist}
-    activeOpacity={0.75}
-    accessibilityRole="button"
-    accessibilityLabel={`Add ${product.name} to wishlist`}
-  >
-    <MaterialIcons
-      name="favorite-border"
-      size={14}
-      color={product.inStock ? colors.primary : colors.textLight}
-    />
-    <Text style={[styles.addButtonText, !product.inStock && styles.addButtonTextDisabled]}>
-      Add to Wishlist
-    </Text>
-  </TouchableOpacity>
-) : null}
+{
+  isSaved ? (
+    <View style={styles.savedPill}>
+      <Text style={styles.savedPillText}>✓ Saved</Text>
+    </View>
+  ) : onAddToWishlist ? (
+    <TouchableOpacity
+      style={[styles.addButton, !product.inStock && styles.addButtonDisabled]}
+      onPress={onAddToWishlist}
+      activeOpacity={0.75}
+      accessibilityRole="button"
+      accessibilityLabel={`Add ${product.name} to wishlist`}
+    >
+      <MaterialIcons name="favorite-border" size={14} color={product.inStock ? colors.primary : colors.textLight} />
+      <Text style={[styles.addButtonText, !product.inStock && styles.addButtonTextDisabled]}>Add to Wishlist</Text>
+    </TouchableOpacity>
+  ) : null;
+}
 ```
 
 Add the new styles to the `StyleSheet.create` block:
@@ -851,10 +845,7 @@ Inside `CatalogScreen`, after the existing `useProducts()` line:
 
 ```ts
 const { wishlists } = useWishlists();
-const savedProductIds = useMemo(
-  () => new Set(wishlists.flatMap((w) => w.items.map((i) => i.productId))),
-  [wishlists],
-);
+const savedProductIds = useMemo(() => new Set(wishlists.flatMap((w) => w.items.map((i) => i.productId))), [wishlists]);
 ```
 
 Update the `renderItem` in the FlatList:
@@ -889,6 +880,7 @@ git commit -m "feat(US-0017): already-in-wishlist indicator — heart badge and 
 ## Task 6: Demo Reset button
 
 **Files:**
+
 - Modify: `app/login.tsx`
 
 - [ ] **Step 1: Add the reset button to the login screen**
@@ -915,21 +907,17 @@ Add the handler function:
 
 ```ts
 function handleResetDemo() {
-  Alert.alert(
-    'Reset Demo Data',
-    'This will delete all wishlists and recent scans for all users. Continue?',
-    [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Reset',
-        style: 'destructive',
-        onPress: async () => {
-          await resetDemoData();
-          Alert.alert('Done', 'Demo data cleared.');
-        },
+  Alert.alert('Reset Demo Data', 'This will delete all wishlists and recent scans for all users. Continue?', [
+    { text: 'Cancel', style: 'cancel' },
+    {
+      text: 'Reset',
+      style: 'destructive',
+      onPress: async () => {
+        await resetDemoData();
+        Alert.alert('Done', 'Demo data cleared.');
       },
-    ],
-  );
+    },
+  ]);
 }
 ```
 
@@ -981,6 +969,7 @@ git commit -m "feat(US-0018): demo reset button on login screen"
 ## Task 7: Wishlist Rename
 
 **Files:**
+
 - Modify: `app/wishlist/[id].tsx`
 
 - [ ] **Step 1: Add rename state and handler to `app/wishlist/[id].tsx`**
@@ -1003,7 +992,7 @@ Add handler after `handleNoteSave`:
 async function handleRenameSave(newName: string) {
   if (!wishlist || !newName.trim()) return;
   await renameWishlist(wishlist.id, newName);
-  setWishlist((prev) => prev ? { ...prev, name: newName.trim() } : prev);
+  setWishlist((prev) => (prev ? { ...prev, name: newName.trim() } : prev));
   setShowRenameSheet(false);
 }
 ```

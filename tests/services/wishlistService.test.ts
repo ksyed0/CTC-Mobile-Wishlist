@@ -511,3 +511,145 @@ describe('wishlistService.unclaimItem', () => {
     await expect(wishlistService.unclaimItem('wl-1', '')).rejects.toThrow(/productId must be a non-empty string/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// updateItemNote — US-0016
+// ---------------------------------------------------------------------------
+describe('wishlistService.updateItemNote', () => {
+  it('sets a note on an existing item', async () => {
+    const wishlist = makeWishlist({
+      items: [{ productId: 'p-001', addedAt: '2026-01-01T00:00:00.000Z', claimedBy: null, note: null }],
+    });
+    await seedWishlists([wishlist]);
+
+    await wishlistService.updateItemNote('wl-test-001', 'p-001', 'Size M');
+
+    const all = await wishlistService.getWishlists('user-001');
+    expect(all[0].items[0].note).toBe('Size M');
+  });
+
+  it('clears a note when empty string is passed', async () => {
+    const wishlist = makeWishlist({
+      items: [{ productId: 'p-001', addedAt: '2026-01-01T00:00:00.000Z', claimedBy: null, note: 'Old note' }],
+    });
+    await seedWishlists([wishlist]);
+
+    await wishlistService.updateItemNote('wl-test-001', 'p-001', '');
+
+    const all = await wishlistService.getWishlists('user-001');
+    expect(all[0].items[0].note).toBeNull();
+  });
+
+  it('does nothing when wishlist id is not found', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.updateItemNote('nonexistent', 'p-001', 'note');
+    // No throw — just no-op
+    const all = await wishlistService.getWishlists('user-001');
+    expect(all).toHaveLength(1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// renameWishlist — US-0019
+// ---------------------------------------------------------------------------
+describe('wishlistService.renameWishlist', () => {
+  it('updates the wishlist name', async () => {
+    await seedWishlists([makeWishlist({ name: 'Old Name' })]);
+
+    await wishlistService.renameWishlist('wl-test-001', 'New Name');
+
+    const updated = await wishlistService.getWishlistById('wl-test-001');
+    expect(updated?.name).toBe('New Name');
+  });
+
+  it('trims whitespace from the new name', async () => {
+    await seedWishlists([makeWishlist()]);
+
+    await wishlistService.renameWishlist('wl-test-001', '  Trimmed  ');
+
+    const updated = await wishlistService.getWishlistById('wl-test-001');
+    expect(updated?.name).toBe('Trimmed');
+  });
+
+  it('does nothing when wishlist id is not found', async () => {
+    await seedWishlists([makeWishlist({ name: 'Stays Same' })]);
+    await wishlistService.renameWishlist('nonexistent', 'New Name');
+    const wl = await wishlistService.getWishlistById('wl-test-001');
+    expect(wl?.name).toBe('Stays Same');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// resetDemoData — US-0018
+// ---------------------------------------------------------------------------
+describe('wishlistService.resetDemoData', () => {
+  it('removes the wishlists key from storage', async () => {
+    await seedWishlists([makeWishlist()]);
+
+    await wishlistService.resetDemoData();
+
+    const all = await wishlistService.getWishlists('user-001');
+    expect(all).toHaveLength(0);
+  });
+
+  it('removes the recentScans key from storage', async () => {
+    await AsyncStorage.setItem('recentScans', JSON.stringify([{ id: 'p-1' }]));
+
+    await wishlistService.resetDemoData();
+
+    const val = await AsyncStorage.getItem('recentScans');
+    expect(val).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setShowClaimers — US-0021
+// ---------------------------------------------------------------------------
+describe('wishlistService.setShowClaimers', () => {
+  it('sets showClaimers to true', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.setShowClaimers('wl-test-001', true);
+    const updated = await wishlistService.getWishlistById('wl-test-001');
+    expect(updated?.showClaimers).toBe(true);
+  });
+
+  it('sets showClaimers to false', async () => {
+    await seedWishlists([makeWishlist({ showClaimers: true })]);
+    await wishlistService.setShowClaimers('wl-test-001', false);
+    const updated = await wishlistService.getWishlistById('wl-test-001');
+    expect(updated?.showClaimers).toBe(false);
+  });
+
+  it('does nothing when wishlist id is not found', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.setShowClaimers('nonexistent', true);
+    const wl = await wishlistService.getWishlistById('wl-test-001');
+    expect(wl?.showClaimers).toBeUndefined();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// setPrivacy — US-0024
+// ---------------------------------------------------------------------------
+describe('wishlistService.setPrivacy', () => {
+  it('sets privacy to private', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.setPrivacy('wl-test-001', 'private');
+    const updated = await wishlistService.getWishlistById('wl-test-001');
+    expect(updated?.privacy).toBe('private');
+  });
+
+  it('sets privacy to public', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.setPrivacy('wl-test-001', 'public');
+    const updated = await wishlistService.getWishlistById('wl-test-001');
+    expect(updated?.privacy).toBe('public');
+  });
+
+  it('does nothing when wishlist id is not found', async () => {
+    await seedWishlists([makeWishlist()]);
+    await wishlistService.setPrivacy('nonexistent', 'private');
+    const wl = await wishlistService.getWishlistById('wl-test-001');
+    expect(wl?.privacy).toBeUndefined();
+  });
+});

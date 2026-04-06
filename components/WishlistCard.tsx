@@ -13,7 +13,12 @@ interface WishlistCardProps {
   ownerName?: string;
 }
 
-export const WishlistCard = memo(function WishlistCard({ wishlist, onPress, isShared = false, ownerName }: WishlistCardProps) {
+export const WishlistCard = memo(function WishlistCard({
+  wishlist,
+  onPress,
+  isShared = false,
+  ownerName,
+}: WishlistCardProps) {
   const itemCount = wishlist.items.length;
   const sharedCount = wishlist.sharedWith.length;
 

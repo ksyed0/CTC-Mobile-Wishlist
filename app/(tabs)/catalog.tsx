@@ -3,6 +3,7 @@ import { View, TextInput, TouchableOpacity, StyleSheet, FlatList, ActivityIndica
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useProducts } from '../../contexts/ProductContext';
+import { useWishlists } from '../../contexts/WishlistContext';
 import { ProductCard } from '../../components/ProductCard';
 import { CategoryChip } from '../../components/CategoryChip';
 import { EmptyState } from '../../components/EmptyState';
@@ -13,6 +14,11 @@ import { typography } from '../../theme/typography';
 export default function CatalogScreen() {
   const router = useRouter();
   const { filteredProducts, categories, isLoading, selectedCategory, setSelectedCategory } = useProducts();
+  const { wishlists } = useWishlists();
+  const savedProductIds = useMemo(
+    () => new Set(wishlists.flatMap((w) => w.items.map((i) => i.productId))),
+    [wishlists],
+  );
 
   /* BUG-0086: Search state — filter locally for real-time response */
   const [searchQuery, setSearchQuery] = useState('');
@@ -86,7 +92,13 @@ export default function CatalogScreen() {
         data={displayedProducts}
         keyExtractor={(item) => item.id}
         contentContainerStyle={displayedProducts.length === 0 ? styles.listEmpty : styles.list}
-        renderItem={({ item }) => <ProductCard product={item} onPress={() => router.push(`/product/${item.id}`)} />}
+        renderItem={({ item }) => (
+          <ProductCard
+            product={item}
+            onPress={() => router.push(`/product/${item.id}`)}
+            isSaved={savedProductIds.has(item.id)}
+          />
+        )}
         ListEmptyComponent={
           <EmptyState
             icon="search-off"

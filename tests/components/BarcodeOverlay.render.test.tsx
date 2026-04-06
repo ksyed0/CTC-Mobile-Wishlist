@@ -6,8 +6,19 @@
 jest.mock('react-native', () => {
   const React = require('react');
   function makeComponent(name: string) {
-    return function MockComponent({ children, testID, accessibilityLabel, accessibilityRole, pointerEvents, ...rest }: any) {
-      return React.createElement(name, { testID, accessibilityLabel, accessibilityRole, pointerEvents, ...rest }, children);
+    return function MockComponent({
+      children,
+      testID,
+      accessibilityLabel,
+      accessibilityRole,
+      pointerEvents,
+      ...rest
+    }: any) {
+      return React.createElement(
+        name,
+        { testID, accessibilityLabel, accessibilityRole, pointerEvents, ...rest },
+        children,
+      );
     };
   }
   return {
@@ -24,14 +35,23 @@ jest.mock('react-native', () => {
 
 jest.mock('../../theme/colors', () => ({
   colors: {
-    primary: '#D52B1E', white: '#FFFFFF', dark: '#333333',
-    textSecondary: '#666666', textLight: '#999999', background: '#F5F5F5',
-    border: '#E0E0E0', success: '#2E7D32',
+    primary: '#D52B1E',
+    white: '#FFFFFF',
+    dark: '#333333',
+    textSecondary: '#666666',
+    textLight: '#999999',
+    background: '#F5F5F5',
+    border: '#E0E0E0',
+    success: '#2E7D32',
   },
 }));
 jest.mock('../../theme/spacing', () => ({
   spacing: {
-    xs: 4, sm: 8, md: 16, lg: 24, xl: 32,
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
     borderRadius: { sm: 8, md: 12, lg: 16, full: 999 },
   },
 }));
