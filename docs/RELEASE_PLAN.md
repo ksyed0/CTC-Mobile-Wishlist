@@ -450,3 +450,33 @@ Acceptance Criteria:
   - [ ] AC-0043: Each lesson entry in docs/LESSONS.md has an "Applies to:" line listing agent names (e.g. "Applies to: Pixel, Lens")
   - [ ] AC-0044: Each agent's Mandatory Startup step for LESSONS.md is updated to scan for its own name rather than reading the full file
 ```
+
+```
+US-0015 (EPIC-0003): As a developer testing on a simulator, I want a mock scan UI that lets me tap a product to simulate a barcode scan, so that I can demo the scan flow without a physical device.
+Priority: High
+Estimate: S
+Status: Done
+Branch: feature/US-0015-simulator-scan-mock
+Dependencies: US-0006
+Acceptance Criteria:
+  - [ ] AC-0045: On simulator, the Scan tab shows a product picker instead of the camera
+  - [ ] AC-0046: Tapping a product in the picker navigates to the product detail screen as if scanned
+```
+
+```
+TASK-0022 (US-0015): Detect simulator vs physical device and conditionally render SimulatorScanView
+Type: Dev
+Assignee: Agent
+Status: Done
+Branch: feature/US-0015-simulator-scan-mock
+Notes: Uses Device.isDevice from expo-device; renders SimulatorScanView on simulator, real CameraView on device
+```
+
+```
+TASK-0023 (US-0015): Build SimulatorScanView component with mock product picker
+Type: Dev
+Assignee: Agent
+Status: Done
+Branch: feature/US-0015-simulator-scan-mock
+Notes: FlatList of all products; tapping navigates to /product/[id] with fromScan param
+```
