@@ -75,7 +75,7 @@ export const WishlistItemRow = memo(function WishlistItemRow({
           <View style={styles.claimedRow}>
             <MaterialIcons name="check-circle" size={14} color={colors.success} />
             <Text style={styles.claimedText}>
-              {isOwner ? 'Claimed' : claimerName ? `Claimed by ${claimerName}` : 'Claimed'}
+              {claimerName ? `Claimed by ${claimerName}` : 'Claimed'}
             </Text>
           </View>
         ) : showClaimButton ? (

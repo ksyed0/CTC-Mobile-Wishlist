@@ -2,8 +2,11 @@ import { Tabs } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '../../theme/colors';
 import { LogoutButton } from '../../components/LogoutButton';
+import { useWishlists } from '../../contexts/WishlistContext';
 
 export default function TabLayout() {
+  const { unseenSharedCount } = useWishlists();
+
   return (
     <Tabs
       screenOptions={{
@@ -49,6 +52,7 @@ export default function TabLayout() {
         options={{
           title: 'Wishlists',
           tabBarIcon: ({ color, size }) => <MaterialIcons name="favorite" size={size} color={color} />,
+          tabBarBadge: unseenSharedCount > 0 ? unseenSharedCount : undefined,
         }}
       />
     </Tabs>

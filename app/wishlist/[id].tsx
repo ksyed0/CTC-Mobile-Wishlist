@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Alert, Modal, Switch } from 'react-native';
 import { BottomSheetInput } from '../../components/BottomSheetInput';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+import * as Clipboard from 'expo-clipboard';
 import { Wishlist } from '../../types/wishlist';
 import { useWishlists } from '../../contexts/WishlistContext';
 import { useProducts } from '../../contexts/ProductContext';
@@ -13,11 +14,12 @@ import { EmptyState } from '../../components/EmptyState';
 import { getTotalPrice } from '../../utils/wishlistUtils';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
+import { typography } from '../../theme/typography';
 
 export default function WishlistDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const { getWishlistById, removeItem, shareWishlist, updateItemNote, renameWishlist } = useWishlists();
+  const { getWishlistById, removeItem, shareWishlist, updateItemNote, renameWishlist, setShowClaimers, setPrivacy } = useWishlists();
   const { products } = useProducts();
   const { mockUsers, currentUser } = useAuth();
   const [wishlist, setWishlist] = useState<Wishlist | null>(null);
@@ -25,6 +27,7 @@ export default function WishlistDetailScreen() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [noteSheet, setNoteSheet] = useState<{ productId: string; currentNote: string | null } | null>(null);
   const [showRenameSheet, setShowRenameSheet] = useState(false);
+  const [showPrivacySheet, setShowPrivacySheet] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -88,6 +91,29 @@ export default function WishlistDetailScreen() {
     setShowRenameSheet(false);
   }
 
+  // AC-0065/66/67/68: claimer reveal toggle (owner-only)
+  async function handleToggleClaimers(value: boolean) {
+    if (!wishlist) return;
+    await setShowClaimers(wishlist.id, value);
+    setWishlist((prev) => (prev ? { ...prev, showClaimers: value } : prev));
+  }
+
+  // US-0024: privacy level picker
+  async function handlePrivacyChange(privacy: 'private' | 'contacts' | 'public') {
+    if (!wishlist) return;
+    await setPrivacy(wishlist.id, privacy);
+    setWishlist((prev) => (prev ? { ...prev, privacy } : prev));
+    setShowPrivacySheet(false);
+  }
+
+  // US-0024: copy shareable link to clipboard
+  async function handleCopyLink() {
+    if (!wishlist) return;
+    const link = `ctcwishlist://shared/${wishlist.id}`;
+    await Clipboard.setStringAsync(link);
+    Alert.alert('Link Copied', link);
+  }
+
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -129,11 +155,69 @@ export default function WishlistDetailScreen() {
               {wishlist.items.length} item{wishlist.items.length !== 1 ? 's' : ''}
             </Text>
           </View>
-          <TouchableOpacity style={styles.shareButton} onPress={() => setShowShareModal(true)}>
-            <MaterialIcons name="share" size={20} color={colors.primary} />
-            <Text style={styles.shareButtonText}>Share</Text>
-          </TouchableOpacity>
+          {(wishlist.privacy ?? 'contacts') !== 'private' && (
+            <TouchableOpacity style={styles.shareButton} onPress={() => setShowShareModal(true)}>
+              <MaterialIcons name="share" size={20} color={colors.primary} />
+              <Text style={styles.shareButtonText}>Share</Text>
+            </TouchableOpacity>
+          )}
         </View>
+
+        {/* AC-0065: claimer reveal toggle — owner-only */}
+        {isOwner && (
+          <View style={styles.claimerToggleRow}>
+            <Text style={styles.claimerToggleLabel}>Show who claimed items</Text>
+            <Switch
+              value={wishlist.showClaimers ?? false}
+              onValueChange={handleToggleClaimers}
+              trackColor={{ false: colors.border, true: colors.primary }}
+              thumbColor={colors.white}
+            />
+          </View>
+        )}
+
+        {/* US-0024: privacy level selector — owner-only */}
+        {isOwner && (
+          <TouchableOpacity
+            style={styles.privacyRow}
+            onPress={() => setShowPrivacySheet(true)}
+            activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel="Change wishlist privacy"
+          >
+            <MaterialIcons
+              name={
+                (wishlist.privacy ?? 'contacts') === 'private'
+                  ? 'lock'
+                  : (wishlist.privacy ?? 'contacts') === 'public'
+                  ? 'link'
+                  : 'group'
+              }
+              size={16}
+              color={colors.textSecondary}
+            />
+            <Text style={styles.privacyLabel}>
+              {(wishlist.privacy ?? 'contacts') === 'private'
+                ? 'Private'
+                : (wishlist.privacy ?? 'contacts') === 'public'
+                ? 'Public link'
+                : 'Contacts only'}
+            </Text>
+            <MaterialIcons name="chevron-right" size={16} color={colors.textLight} />
+          </TouchableOpacity>
+        )}
+        {isOwner && (wishlist.privacy ?? 'contacts') === 'public' && (
+          <TouchableOpacity
+            style={styles.copyLinkButton}
+            onPress={handleCopyLink}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel="Copy link"
+          >
+            <MaterialIcons name="content-copy" size={14} color={colors.primary} />
+            <Text style={styles.copyLinkText}>Copy link</Text>
+          </TouchableOpacity>
+        )}
 
         <FlatList
           data={wishlist.items}
@@ -153,6 +237,11 @@ export default function WishlistDetailScreen() {
                   isOwner={isOwner}
                   note={item.note}
                   onNotePress={() => setNoteSheet({ productId: item.productId, currentNote: item.note })}
+                  claimerName={
+                    isOwner && (wishlist.showClaimers ?? false) && item.claimedBy
+                      ? (wishlist.sharedWith.find((c) => c.contactId === item.claimedBy)?.contactName ?? item.claimedBy)
+                      : undefined
+                  }
                 />
                 {/* Remove button (AC-0025) */}
                 <TouchableOpacity style={styles.removeButton} onPress={() => handleRemove(item.productId, productName)}>
@@ -203,6 +292,62 @@ export default function WishlistDetailScreen() {
         onConfirm={handleRenameSave}
         onCancel={() => setShowRenameSheet(false)}
       />
+
+      {/* US-0024: Privacy picker modal */}
+      <Modal
+        visible={showPrivacySheet}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setShowPrivacySheet(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalBackdrop}
+          activeOpacity={1}
+          onPress={() => setShowPrivacySheet(false)}
+        >
+          <View style={styles.modalSheet}>
+            <Text style={styles.modalTitle}>Wishlist Privacy</Text>
+            {([
+              { value: 'private' as const, icon: 'lock' as const, label: 'Private', subtitle: 'Only you can see this wishlist' },
+              { value: 'contacts' as const, icon: 'group' as const, label: 'Contacts only', subtitle: 'Share with specific people' },
+              { value: 'public' as const, icon: 'link' as const, label: 'Public link', subtitle: 'Anyone with the link can view' },
+            ] as const).map((option) => {
+              const isSelected = (wishlist?.privacy ?? 'contacts') === option.value;
+              return (
+                <TouchableOpacity
+                  key={option.value}
+                  style={[styles.privacyOption, isSelected && styles.privacyOptionSelected]}
+                  onPress={() => handlePrivacyChange(option.value)}
+                  activeOpacity={0.75}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Set privacy to ${option.label}`}
+                >
+                  <MaterialIcons
+                    name={option.icon}
+                    size={22}
+                    color={isSelected ? colors.primary : colors.textSecondary}
+                  />
+                  <View style={{ flex: 1 }}>
+                    <Text style={[styles.privacyOptionLabel, isSelected && styles.privacyOptionLabelSelected]}>
+                      {option.label}
+                    </Text>
+                    <Text style={styles.privacyOptionSubtitle}>{option.subtitle}</Text>
+                  </View>
+                  {isSelected && <MaterialIcons name="check" size={18} color={colors.primary} />}
+                </TouchableOpacity>
+              );
+            })}
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setShowPrivacySheet(false)}
+              accessibilityRole="button"
+              accessibilityLabel="Cancel"
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
 
       {/* AC-0028/44: Share modal with mock users */}
       <Modal visible={showShareModal} transparent animationType="slide" onRequestClose={() => setShowShareModal(false)}>
@@ -398,5 +543,75 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textSecondary,
     fontWeight: '500',
+  },
+  claimerToggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.white,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    marginTop: spacing.xs,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  claimerToggleLabel: {
+    fontSize: typography.fontSize.sm,
+    color: colors.textSecondary,
+  },
+  privacyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    backgroundColor: colors.white,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    marginTop: spacing.xs,
+  },
+  privacyLabel: {
+    flex: 1,
+    fontSize: typography.fontSize.sm,
+    color: colors.textSecondary,
+  },
+  copyLinkButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    backgroundColor: colors.white,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    marginTop: spacing.xs,
+  },
+  copyLinkText: {
+    fontSize: typography.fontSize.sm,
+    color: colors.primary,
+    fontWeight: typography.fontWeight.semiBold,
+  },
+  privacyOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    padding: spacing.sm,
+    borderRadius: spacing.borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    marginBottom: spacing.sm,
+  },
+  privacyOptionSelected: {
+    borderColor: colors.primary,
+    backgroundColor: '#fff5f5',
+  },
+  privacyOptionLabel: {
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.semiBold,
+    color: colors.dark,
+  },
+  privacyOptionLabelSelected: {
+    color: colors.primary,
+  },
+  privacyOptionSubtitle: {
+    fontSize: typography.fontSize.xs,
+    color: colors.textLight,
+    marginTop: spacing.xxs,
   },
 });
