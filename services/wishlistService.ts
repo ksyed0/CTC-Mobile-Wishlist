@@ -304,4 +304,30 @@ export const wishlistService = {
       removeItem(StorageKeys.RECENT_SCANS),
     ]);
   },
+
+  /**
+   * Toggle the showClaimers flag on a wishlist (US-0021).
+   * No-op when wishlistId is not found.
+   */
+  async setShowClaimers(wishlistId: string, show: boolean): Promise<void> {
+    const all = await loadWishlists();
+    const idx = all.findIndex((w) => w.id === wishlistId);
+    if (idx === -1) return;
+    const updatedAll = [...all];
+    updatedAll[idx] = { ...all[idx], showClaimers: show };
+    await saveWishlists(updatedAll);
+  },
+
+  /**
+   * Set the privacy level on a wishlist (US-0024).
+   * No-op when wishlistId is not found.
+   */
+  async setPrivacy(wishlistId: string, privacy: 'private' | 'contacts' | 'public'): Promise<void> {
+    const all = await loadWishlists();
+    const idx = all.findIndex((w) => w.id === wishlistId);
+    if (idx === -1) return;
+    const updatedAll = [...all];
+    updatedAll[idx] = { ...all[idx], privacy };
+    await saveWishlists(updatedAll);
+  },
 };

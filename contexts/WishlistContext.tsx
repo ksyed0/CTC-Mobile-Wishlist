@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import { Wishlist, SharedContact } from '../types/wishlist';
 import { wishlistService } from '../services/wishlistService';
+import { getItem, setItem, StorageKeys } from '../utils/storage';
 import { useAuth } from './AuthContext';
 
 interface WishlistContextValue {
@@ -19,6 +20,10 @@ interface WishlistContextValue {
   renameWishlist: (wishlistId: string, newName: string) => Promise<void>;
   resetDemoData: () => Promise<void>;
   refresh: () => Promise<void>;
+  unseenSharedCount: number;
+  markWishlistSeen: (wishlistId: string) => Promise<void>;
+  setShowClaimers: (wishlistId: string, show: boolean) => Promise<void>;
+  setPrivacy: (wishlistId: string, privacy: 'private' | 'contacts' | 'public') => Promise<void>;
 }
 
 const WishlistContext = createContext<WishlistContextValue | null>(null);
@@ -28,21 +33,30 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   const [wishlists, setWishlists] = useState<Wishlist[]>([]);
   const [sharedWishlists, setSharedWishlists] = useState<Wishlist[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [seenSharedIds, setSeenSharedIds] = useState<string[]>([]);
+
+  const unseenSharedCount = useMemo(() => {
+    const seenSet = new Set(seenSharedIds);
+    return sharedWishlists.filter((w) => !seenSet.has(w.id)).length;
+  }, [sharedWishlists, seenSharedIds]);
 
   const load = useCallback(async () => {
     if (!currentUser || currentUser.id === 'guest') {
       setWishlists([]);
       setSharedWishlists([]);
+      setSeenSharedIds([]);
       return;
     }
     setIsLoading(true);
     try {
-      const [owned, shared] = await Promise.all([
+      const [owned, shared, seen] = await Promise.all([
         wishlistService.getWishlists(currentUser.id),
         wishlistService.getSharedWishlists(currentUser.id),
+        getItem<string[]>(`${StorageKeys.SEEN_SHARED_IDS_PREFIX}${currentUser.id}`),
       ]);
       setWishlists(owned);
       setSharedWishlists(shared);
+      setSeenSharedIds(seen ?? []);
     } catch (error) {
       console.error('[WishlistContext] Load error:', error);
     } finally {
@@ -125,6 +139,23 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     setSharedWishlists([]);
   }
 
+  async function markWishlistSeen(wishlistId: string): Promise<void> {
+    if (!currentUser || currentUser.id === 'guest') return;
+    const updated = [...new Set([...seenSharedIds, wishlistId])];
+    setSeenSharedIds(updated);
+    await setItem(`${StorageKeys.SEEN_SHARED_IDS_PREFIX}${currentUser.id}`, updated);
+  }
+
+  async function setShowClaimers(wishlistId: string, show: boolean): Promise<void> {
+    await wishlistService.setShowClaimers(wishlistId, show);
+    setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? { ...w, showClaimers: show } : w)));
+  }
+
+  async function setPrivacy(wishlistId: string, privacy: 'private' | 'contacts' | 'public'): Promise<void> {
+    await wishlistService.setPrivacy(wishlistId, privacy);
+    setWishlists((prev) => prev.map((w) => (w.id === wishlistId ? { ...w, privacy } : w)));
+  }
+
   return (
     <WishlistContext.Provider
       value={{
@@ -143,6 +174,10 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
         renameWishlist,
         resetDemoData,
         refresh: load,
+        unseenSharedCount,
+        markWishlistSeen,
+        setShowClaimers,
+        setPrivacy,
       }}
     >
       {children}
