@@ -121,7 +121,7 @@ export default function ProductDetailScreen() {
             <Image
               source={{ uri: product.image }}
               style={styles.productImage}
-              resizeMode="cover"
+              resizeMode="contain"
               accessibilityLabel={product.name}
             />
           ) : (
@@ -230,8 +230,8 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: '100%',
-    height: 260,
-    backgroundColor: colors.border,
+    aspectRatio: 4 / 3,
+    backgroundColor: colors.white,
   },
   productImage: {
     width: '100%',

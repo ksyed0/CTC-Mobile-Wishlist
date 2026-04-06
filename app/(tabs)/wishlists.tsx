@@ -27,7 +27,7 @@ import { Wishlist } from '../../types/wishlist';
 export default function WishlistsScreen() {
   const router = useRouter();
   const { wishlists, sharedWishlists, isLoading, createWishlist } = useWishlists();
-  const { isGuest } = useAuth();
+  const { isGuest, mockUsers } = useAuth();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newName, setNewName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
@@ -88,6 +88,7 @@ export default function WishlistsScreen() {
               <WishlistCard
                 wishlist={item}
                 isShared={(section as Section).isShared}
+                ownerName={(section as Section).isShared ? mockUsers.find((u) => u.id === item.ownerId)?.name : undefined}
                 onPress={() => {
                   if ((section as Section).isShared) {
                     router.push(`/wishlist/shared/${item.id}`);

@@ -1076,6 +1076,16 @@
 - **Description:** When creating a new wishlist, tapping the name input caused the iOS keyboard to appear and slide over the modal, hiding the text field. The user could not see what they were typing.
 - **Fix:** Wrapped the modal sheet content in a `KeyboardAvoidingView` with `behavior="padding"` so the modal shifts upward when the keyboard appears.
 
+### BUG-0107: Dashboard blinks on every auto-refresh due to full-page reload architecture
+
+- **Severity:** Low
+- **Status:** Backlog (Future Enhancement)
+- **Found in:** `tools/generate-dashboard.js` (line 112 — `<meta http-equiv="refresh" content="5">`)
+- **Story:** Tooling
+- **Found by:** User (observation)
+- **Description:** The dashboard uses `<meta http-equiv="refresh" content="5">` to stay live during pipeline runs. This causes a full browser page reload every 5 seconds, resulting in a visible blink/flash even when no data has changed. It also resets scroll position and any expanded UI state on every cycle.
+- **Enhancement:** Replace the meta-refresh with a WebSocket or SSE (Server-Sent Events) connection so the dashboard can receive push updates from a lightweight local dev server (e.g. `ws` or Node's `http` module). Alternatively, a polling `fetch` from JavaScript against a JSON endpoint would allow DOM diffing without a full reload. This is a project-agnostic pipeline improvement relevant to any team using the SDLC dashboard tooling.
+
 ### BUG-0106: Dashboard shows no audio/notification alert when pipeline state changes — user has no signal to return to terminal
 
 - **Status:** Fixed

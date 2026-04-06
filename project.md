@@ -133,3 +133,5 @@ _Updated during Phase 5 — Trigger._
 - Simulator detection: use `Device.isDevice` from `expo-device`, not `__DEV__` (`__DEV__` is true on real devices in debug builds)
 - Playwright MCP blocks `file://` protocol — serve local HTML via `python3 -m http.server <port>` instead
 - `.claude/settings.json` Stop hook uses absolute path for `tools/capture-cost.js` — if changed back to relative, it breaks when session CWD shifts away from project root
+- `project.md` is the single source of truth (PROJECT.md was a duplicate caused by macOS case-insensitive fs; removed from git)
+- `docs/alert-test.html` — standalone test page for dashboard audio tones and browser notifications

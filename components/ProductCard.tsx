@@ -27,7 +27,7 @@ export const ProductCard = memo(function ProductCard({ product, onPress, onAddTo
           <Image
             source={{ uri: product.image }}
             style={styles.image}
-            resizeMode="cover"
+            resizeMode="contain"
             accessibilityLabel={product.name}
           />
         ) : (
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: '100%',
     aspectRatio: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.white,
     position: 'relative',
   },
   image: {

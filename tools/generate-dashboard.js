@@ -243,7 +243,7 @@ function generateHTML(status) {
   .story-row:hover { filter: brightness(1.1); }
   .story-id { font-weight: 700; color: var(--brand-primary); width: 65px; }
   .story-title { flex: 1; color: var(--story-title); margin: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .story-status { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+  .story-status { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; flex-shrink: 0; white-space: nowrap; }
   .story-status.Planned { background: var(--status-planned-bg); color: var(--status-planned-color); }
   .story-status.InProgress { background: var(--status-inprogress-bg); color: #F57C00; }
   [data-theme="light"] .story-status.InProgress { color: #E65100; }
@@ -806,7 +806,7 @@ function generate() {
   }
   const html = generateHTML(status);
   fs.writeFileSync(OUTPUT_PATH, html, 'utf8');
-  console.log(`Dashboard generated: ${OUTPUT_PATH}`);
+  console.log(`[${new Date().toLocaleTimeString()}] Dashboard generated: ${OUTPUT_PATH}`);
 }
 
 // Main
