@@ -745,3 +745,70 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 
 - **Execute US-0015** via `superpowers:subagent-driven-development` using `docs/superpowers/plans/2026-04-05-simulator-scan-mock.md`
 - **Fix BUG-0099–0105** (product image, add-to-cart, wishlist picker, wishlist image, safe area footer, logout button, keyboard modal) — all have exact fix code in `docs/BUGS.md`
+
+## Session — 2026-04-05 (continued, context compaction)
+
+### What Was Done
+
+**Demo Fixes (Pixel)**
+
+- Fixed product/catalog image resizeMode: `cover` → `contain`, `imageContainer.height: 260` → `aspectRatio: 4/3`
+- Fixed `SimulatorScanView.tsx`: `expo-file-system` → `expo-file-system/legacy` (SDK 53+ deprecated API)
+- Fixed Recent Scans blank images on Home screen — conditional `<Image>` component replacing hardcoded icon
+- Fixed shared wishlist items not rendering product images — passed `productImage` prop to `WishlistItemRow`
+- Fixed shared wishlist not showing sender name — added `ownerName` prop to `WishlistCard`, resolved from `mockUsers` in `wishlists.tsx`
+- Fixed catalog category not resetting on user switch — added `useEffect` in `ProductContext` watching `currentUser.id`
+- Fixed story badge CSS clipping — added `flex-shrink: 0; white-space: nowrap;` to `.story-status` in `generate-dashboard.js`
+- Added timestamp to dashboard `console.log`
+- Logged BUG-0107: dashboard blinks on auto-refresh (full-page meta-refresh; future fix: WebSocket/SSE polling)
+
+**EPIC-0007 POC Enhancements — Brainstorm & Planning**
+
+- Ran full superpowers brainstorming session for 9 POC enhancements (features #1–5, #7–10; #6 native share excluded)
+- Used visual browser companion for 8 design decisions (mockups in `.superpowers/brainstorm/`)
+- All design decisions captured: BottomSheetInput (shared), item notes, saved indicator, demo reset, rename, tab badge, claimer reveal, alerts, privacy levels
+- Split into Plan A (quick wins: #1–4) and Plan B (medium effort: #5, #7–10)
+
+**Specs written:**
+- `docs/superpowers/specs/2026-04-05-poc-enhancements-plan-a-design.md`
+- `docs/superpowers/specs/2026-04-05-poc-enhancements-plan-b-design.md`
+
+**Implementation plans written:**
+- `docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md` (7 tasks: BottomSheetInput, service methods, context, item notes UI, saved indicator, demo reset, rename)
+- `docs/superpowers/plans/2026-04-05-poc-enhancements-plan-b.md` (7 tasks: type extension, service methods, context, tab badge, claimer reveal, alert buttons, privacy levels)
+
+**RELEASE_PLAN.md updated:**
+- EPIC-0007 added with US-0016–US-0024 (9 stories), each with Spec + Plan links
+
+**Dashboard fixed:**
+- `sdlc-status.json`: US-0016–US-0024 added, `storiesTotal` updated to 23 (was 14)
+- Dashboard now shows 14/23 stories
+
+**docs/DEMO_PLAN.md** — created with 10-scene live demo walkthrough, talking points, barcodes table, preflight checklist, fallback scripts
+
+**DIAGRAMS.md fix:** `gitgraph` → `gitGraph` (GitHub Mermaid renderer is case-sensitive)
+
+**v0.5.0 released:**
+- PR #17: develop → main, merged
+- Tag `v0.5.0` pushed to GitHub
+- All stale feature branches deleted (local + remote): 8 remote branches, 4 local worktree branches
+
+### Stats
+
+- Stories: 14 complete / 23 total (9 new backlog in EPIC-0007)
+- Plans: 3 implementation plans in `docs/superpowers/plans/`
+- Specs: 3 specs in `docs/superpowers/specs/`
+- Release: v0.5.0 on main
+
+### Ready for Next Session
+
+- **Execute Plan A** via `superpowers:subagent-driven-development` using `docs/superpowers/plans/2026-04-05-poc-enhancements-plan-a.md`
+  - Task 1: `BottomSheetInput` component
+  - Task 2: `wishlistService` — `updateItemNote`, `renameWishlist`, `resetDemoData`
+  - Task 3: `WishlistContext` — expose new methods
+  - Task 4: Item Notes UI
+  - Task 5: Already-in-Wishlist indicator
+  - Task 6: Demo Reset button
+  - Task 7: Wishlist Rename
+- **Execute Plan B** after Plan A (independent, can run in parallel if desired)
+- **Branch**: create `feature/US-0016-plan-a` for Plan A work
