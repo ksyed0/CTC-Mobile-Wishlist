@@ -169,6 +169,32 @@ export default function ProductDetailScreen() {
             <MaterialIcons name="shopping-cart" size={20} color={colors.primary} />
             <Text style={styles.addToCartButtonText}>Add to Cart</Text>
           </TouchableOpacity>
+
+          {/* US-0022: Restock alert — only when out of stock */}
+          {!product.inStock && (
+            <TouchableOpacity
+              style={styles.alertButton}
+              onPress={() => Alert.alert('Restock Alert Set', "We'll notify you when this item is back in stock.")}
+              activeOpacity={0.8}
+              accessibilityRole="button"
+              accessibilityLabel="Notify me when back in stock"
+            >
+              <MaterialIcons name="notifications-none" size={16} color={colors.textSecondary} />
+              <Text style={styles.alertButtonText}>Notify me when back in stock</Text>
+            </TouchableOpacity>
+          )}
+
+          {/* US-0023: Price-drop alert — always visible */}
+          <TouchableOpacity
+            style={styles.alertButton}
+            onPress={() => Alert.alert('Price Drop Alert Set', "We'll notify you if the price drops on this item.")}
+            activeOpacity={0.8}
+            accessibilityRole="button"
+            accessibilityLabel="Notify me if price drops"
+          >
+            <MaterialIcons name="trending-down" size={16} color={colors.textSecondary} />
+            <Text style={styles.alertButtonText}>Notify me if price drops</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
 
@@ -383,5 +409,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textSecondary,
     fontWeight: '500',
+  },
+  alertButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: spacing.borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    gap: spacing.xs,
+    marginTop: spacing.sm,
+    minHeight: 44,
+  },
+  alertButtonText: {
+    fontSize: typography.fontSize.sm,
+    color: colors.textSecondary,
   },
 });
