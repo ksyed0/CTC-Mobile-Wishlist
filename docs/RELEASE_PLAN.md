@@ -892,3 +892,28 @@ Status: Done
 Branch: develop
 Notes: tools/lib/parse-release-plan.js handles markdown parsing; requires (EPIC-XXXX) in US headers to associate stories; US-0014 intentionally excluded (lacks epic tag)
 ```
+
+```
+US-008-007 (EPIC-008): As a pipeline engineer, I want the SDLC dashboard and plan visualizer to include smart auto-refresh, persistent alert toggles, expanded filter controls, 3D agent card hover, portrait popups, full date timestamps, pill-style buttons, and an epic-inclusive search index, so that the monitoring UI is more interactive and informative.
+Priority: Medium
+Estimate: S
+Status: Done
+Branch: feature/session14-tooling-sync
+Dependencies: US-008-004, US-008-006
+Acceptance Criteria:
+  - [x] AC-008-007-001: generate-dashboard.js replaces meta-refresh with a 30s JS setInterval that skips reload when the About modal is open, preventing mid-read dismissal and portrait flicker
+  - [x] AC-008-007-002: Alerts button is a proper on/off toggle backed by localStorage key dashboard-alerts-enabled; sendNotification() checks this key before firing
+  - [x] AC-008-007-003: NaN% in the per-epic budget table is eliminated — budget.js guards division by zero with epicBudget > 0 check
+  - [x] AC-008-007-004: Costs tab scrolls naturally (tab-fill fixed-height constraint removed); #tab-costs .scroll-table has max-height: none; overflow: visible
+  - [x] AC-008-007-005: Agent cards gain 3D hover (scale, box-shadow, brightness) and show a fixed-position portrait popup on mouseenter / hide on mouseleave
+  - [x] AC-008-007-006: Last refreshed footer shows full date + time (toLocaleString with month/day/year/hour/minute); bug and lesson cards gain story-card-hover class; filter bar shows for lessons and traceability tabs; topbar buttons use pill style; theme toggle shows ☀️ Light / 🌙 Dark text; search index includes epics
+```
+
+```
+TASK-008-007-001 (US-008-007): Sync session 14 dashboard/visualizer improvements from PlanVisualizer repo into CTC-Mobile-Wishlist tool copies
+Type: Dev
+Assignee: Agent
+Status: Done
+Branch: feature/session14-tooling-sync
+Notes: Changes applied to tools/generate-dashboard.js, tools/lib/render-html.js, tools/lib/budget.js; new file tools/lib/search-index.js created
+```
