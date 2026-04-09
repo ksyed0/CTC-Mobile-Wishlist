@@ -864,8 +864,9 @@ setInterval(function() {
 function generate() {
   const status = readJSON(STATUS_PATH);
   if (!status) {
-    console.error('Could not read', STATUS_PATH);
-    process.exit(1);
+    console.warn('[generate-dashboard] sdlc-status.json not found — skipping dashboard generation.');
+    console.warn('[generate-dashboard] Run the orchestrator to create', STATUS_PATH);
+    return;
   }
   const html = generateHTML(status);
   fs.writeFileSync(OUTPUT_PATH, html, 'utf8');
