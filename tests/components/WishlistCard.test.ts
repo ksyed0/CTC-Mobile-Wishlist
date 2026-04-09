@@ -1,5 +1,5 @@
 /**
- * WishlistCard component tests — BUG-0073
+ * WishlistCard component tests — BUG-073
  *
  * Validates the props contract and display logic for WishlistCard.
  */

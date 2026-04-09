@@ -56,7 +56,7 @@ export function BottomSheetInput({
                 style={styles.input}
                 placeholder={placeholder}
                 placeholderTextColor={colors.textLight}
-                defaultValue={initialValue}
+                value={value}
                 maxLength={maxLength}
                 autoFocus
                 onChangeText={setValue}

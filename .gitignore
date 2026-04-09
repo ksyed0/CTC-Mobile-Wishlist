@@ -34,6 +34,7 @@ data/*.pdf
 docs/dashboard.html
 docs/plan-status.html
 docs/plan-status.json
+docs/sdlc-status.json
 
 # Expo / React Native
 .expo/

@@ -28,7 +28,7 @@ file are supported.
 ### Epic
 
 ```
-EPIC-0001: Short descriptive title
+EPIC-001: Short descriptive title
 Description: What this epic delivers and why it matters
 Release Target: MVP
 Status: Planned
@@ -40,15 +40,15 @@ Dependencies: None
 ### User Story
 
 ```
-US-0001 (EPIC-0001): As a [persona], I want [action], so that [outcome].
+US-001-001 (EPIC-001): As a [persona], I want [action], so that [outcome].
 Priority: High
 Estimate: M
 Status: Planned
-Branch: feature/US-0001-short-name
+Branch: feature/US-001-001-short-name
 Dependencies: None
 Acceptance Criteria:
-  - [ ] AC-0001: Specific, testable condition
-  - [ ] AC-0002: Specific, testable condition
+  - [ ] AC-001-001-001: Specific, testable condition
+  - [ ] AC-001-001-002: Specific, testable condition
 ```
 
 `Priority` values: `High` | `Medium` | `Low`
@@ -59,11 +59,11 @@ ACs use `- [ ]` (open) or `- [x]` (done) followed by `AC-XXXX: text`
 ### Task
 
 ```
-TASK-0001 (US-0001): Short imperative description of the work
+TASK-001-001-001 (US-001-001): Short imperative description of the work
 Type: Dev
 Assignee: Agent
 Status: To Do
-Branch: feature/US-0001-short-name
+Branch: feature/US-001-001-short-name
 Notes:
 ```
 
@@ -78,10 +78,10 @@ Free-form markdown. Each test case block starts with `TC-XXXX:` at the beginning
 The parser reads until the next `TC-XXXX:` line.
 
 ```
-TC-0001: Short descriptive title
-Related Story: US-0001
-Related Task: TASK-0001
-Related AC: AC-0001
+TC-001-001-001: Short descriptive title
+Related Story: US-001-001
+Related Task: TASK-001-001-001
+Related AC: AC-001-001-001
 Type: Functional
 Status: [ ] Not Run
 Defect Raised: None
@@ -99,12 +99,12 @@ Free-form markdown. Each bug block starts with `BUG-XXXX:` at the beginning of a
 The parser reads until the next `BUG-XXXX:` line.
 
 ```
-BUG-0001: Short description of the defect
+BUG-001: Short description of the defect
 Severity: High
-Related Story: US-0001
-Related Task: TASK-0001
+Related Story: US-001-001
+Related Task: TASK-001-001-001
 Status: Open
-Fix Branch: bugfix/BUG-0001-short-description
+Fix Branch: bugfix/BUG-001-short-description
 Lesson Encoded: No
 ```
 
@@ -125,7 +125,7 @@ card views. Bug Ref cross-links are generated automatically when a `BUG-XXXX` en
 `Lesson Encoded` field contains the lesson's ID.
 
 ```markdown
-## L-0001 — Short lesson title
+## L-001 — Short lesson title
 
 **Rule:** The actionable rule derived from the lesson.
 _Context paragraph describing when this lesson was learned._
@@ -196,14 +196,14 @@ manually — update it immediately whenever a new artefact is created.
 ```markdown
 # ID Registry
 
-| Sequence | Next Available ID | Last Assigned |
-| -------- | ----------------- | ------------- |
-| EPIC     | EPIC-0002         | EPIC-0001     |
-| US       | US-0002           | US-0001       |
-| TASK     | TASK-0002         | TASK-0001     |
-| AC       | AC-0002           | AC-0001       |
-| TC       | TC-0002           | TC-0001       |
-| BUG      | BUG-0001          | —             |
+| Sequence | Next Available ID | Last Assigned    |
+| -------- | ----------------- | ---------------- |
+| EPIC     | EPIC-002          | EPIC-001         |
+| US       | US-001-002        | US-001-001       |
+| TASK     | TASK-001-001-002  | TASK-001-001-001 |
+| AC       | AC-001-001-002    | AC-001-001-001   |
+| TC       | TC-001-001-002    | TC-001-001-001   |
+| BUG      | BUG-001           | —                |
 ```
 
 IDs are permanent. Retired or deleted artefacts keep their ID marked `Status: Retired` — never

@@ -132,7 +132,7 @@ claude "Read docs/agents/BE_DEV_AGENT.md for your full instructions.
 
 # Run the code reviewer on a branch
 claude "Read docs/agents/CODE_REVIEWER_AGENT.md for your full instructions.
-        Review branch feature/US-0001-expo-scaffold for merge readiness."
+        Review branch feature/US-001-001-expo-scaffold for merge readiness."
 ```
 
 ### Parallel Sessions (Maximum Velocity)
@@ -189,7 +189,7 @@ CTC-Mobile-Wishlist/
 │   ├── HACKATHON_PLAN.md              # CTC hackathon agent roster, timeline, prompts
 │   ├── BUSINESS_PLAN.md               # Revenue model, resource plan, ROI
 │   ├── RELEASE_PLAN.md                # 6 epics, 13 stories, 21 tasks, 40 ACs
-│   ├── TEST_CASES.md                  # 40 test cases (TC-0001 – TC-0040)
+│   ├── TEST_CASES.md                  # 40 test cases (TC-001-001-001 – TC-002-003-002)
 │   ├── ID_REGISTRY.md                 # Artifact ID tracking
 │   ├── AI_COST_LOG.md                 # AI session cost tracking
 │   ├── BUGS.md                        # Bug tracking

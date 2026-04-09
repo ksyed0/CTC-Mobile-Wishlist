@@ -52,7 +52,7 @@ Compass to prioritize the backlog.
 | **BLAST Phase**      | Blueprint                                                                         |
 | **Input Artifacts**  | `PROJECT.md`, `docs/RELEASE_PLAN.md`, `docs/TEST_CASES.md`                        |
 | **Output Artifacts** | Refined ACs, priority-ordered backlog, UI direction notes                         |
-| **User Stories**     | All (US-0001 through US-0013) — owns prioritization                               |
+| **User Stories**     | All (US-001-001 through US-006-001) — owns prioritization                         |
 
 **Prompt Template:**
 
@@ -76,7 +76,7 @@ Focus on MVP scope: browsing, barcode scan, wishlist CRUD, and sharing.
 | **BLAST Phase**      | Architect                                                                                                                       |
 | **Input Artifacts**  | `architecture/SYSTEM_ARCHITECTURE.md`, `architecture/DATA_FLOW.md`, `architecture/DESIGN_SYSTEM.md`, `architecture/DIAGRAMS.md` |
 | **Output Artifacts** | TypeScript interfaces, service stubs, directory scaffold, Context providers                                                     |
-| **User Stories**     | US-0001 (scaffold), US-0002 (mock data layer)                                                                                   |
+| **User Stories**     | US-001-001 (scaffold), US-001-002 (mock data layer)                                                                             |
 
 **Prompt Template:**
 
@@ -94,13 +94,13 @@ architecture/. Your job is to:
 
 ### 1.4 Palette — UI Designer Agent
 
-| Attribute            | Detail                                                                                    |
-| -------------------- | ----------------------------------------------------------------------------------------- |
-| **Role**             | Mobile UI design, wireframes, component specs, CTC brand compliance                       |
-| **BLAST Phase**      | Stylize                                                                                   |
-| **Input Artifacts**  | `architecture/DESIGN_SYSTEM.md`, `PROJECT.md` (design system section)                     |
-| **Output Artifacts** | Component style definitions, layout specs, theme configuration                            |
-| **User Stories**     | US-0001 (theming), US-0003 (catalog UI), US-0005 (scanner overlay), US-0007 (wishlist UI) |
+| Attribute            | Detail                                                                                                |
+| -------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Role**             | Mobile UI design, wireframes, component specs, CTC brand compliance                                   |
+| **BLAST Phase**      | Stylize                                                                                               |
+| **Input Artifacts**  | `architecture/DESIGN_SYSTEM.md`, `PROJECT.md` (design system section)                                 |
+| **Output Artifacts** | Component style definitions, layout specs, theme configuration                                        |
+| **User Stories**     | US-001-001 (theming), US-002-001 (catalog UI), US-002-003 (scanner overlay), US-004-001 (wishlist UI) |
 
 **Prompt Template:**
 
@@ -120,13 +120,13 @@ Use system fonts, maintain WCAG AA contrast ratios, and follow the 4px spacing g
 
 ### 1.5 Forge — Backend Developer Agent
 
-| Attribute            | Detail                                                                                                                               |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| **Role**             | Service layer implementation, data models, AsyncStorage persistence, mock data                                                       |
-| **BLAST Phase**      | Link                                                                                                                                 |
-| **Input Artifacts**  | `architecture/DATA_FLOW.md`, `architecture/SYSTEM_ARCHITECTURE.md`                                                                   |
-| **Output Artifacts** | Service implementations, mock JSON data files, Context providers                                                                     |
-| **User Stories**     | US-0002 (mock data), US-0004 (product detail), US-0006 (scan lookup), US-0008 (wishlist CRUD), US-0010 (sharing), US-0012 (claiming) |
+| Attribute            | Detail                                                                                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Role**             | Service layer implementation, data models, AsyncStorage persistence, mock data                                                                         |
+| **BLAST Phase**      | Link                                                                                                                                                   |
+| **Input Artifacts**  | `architecture/DATA_FLOW.md`, `architecture/SYSTEM_ARCHITECTURE.md`                                                                                     |
+| **Output Artifacts** | Service implementations, mock JSON data files, Context providers                                                                                       |
+| **User Stories**     | US-001-002 (mock data), US-002-002 (product detail), US-003-001 (scan lookup), US-004-002 (wishlist CRUD), US-005-001 (sharing), US-005-003 (claiming) |
 
 **Prompt Template:**
 
@@ -145,13 +145,13 @@ architecture/DATA_FLOW.md. Your job is to:
 
 ### 1.6 Pixel — Frontend Developer Agent
 
-| Attribute            | Detail                                                                                                                                                  |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Role**             | React Native screen implementation, component building, navigation, state management                                                                    |
-| **BLAST Phase**      | Stylize                                                                                                                                                 |
-| **Input Artifacts**  | `architecture/DESIGN_SYSTEM.md`, `architecture/SYSTEM_ARCHITECTURE.md`, `docs/RELEASE_PLAN.md`                                                          |
-| **Output Artifacts** | Screen components, navigation config, UI components                                                                                                     |
-| **User Stories**     | US-0001 (scaffold), US-0003 (catalog), US-0005 (scanner), US-0007 (wishlists), US-0009 (wishlist detail), US-0011 (share flow), US-0013 (user switcher) |
+| Attribute            | Detail                                                                                                                                                                       |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Role**             | React Native screen implementation, component building, navigation, state management                                                                                         |
+| **BLAST Phase**      | Stylize                                                                                                                                                                      |
+| **Input Artifacts**  | `architecture/DESIGN_SYSTEM.md`, `architecture/SYSTEM_ARCHITECTURE.md`, `docs/RELEASE_PLAN.md`                                                                               |
+| **Output Artifacts** | Screen components, navigation config, UI components                                                                                                                          |
+| **User Stories**     | US-001-001 (scaffold), US-002-001 (catalog), US-002-003 (scanner), US-004-001 (wishlists), US-004-003 (wishlist detail), US-005-002 (share flow), US-006-001 (user switcher) |
 
 **Prompt Template:**
 
@@ -170,23 +170,23 @@ architecture/DESIGN_SYSTEM.md and architecture/SYSTEM_ARCHITECTURE.md. Your job 
 
 ### 1.7 Sentinel — Functional Tester Agent
 
-| Attribute            | Detail                                                                 |
-| -------------------- | ---------------------------------------------------------------------- |
-| **Role**             | Manual test execution, bug reporting, acceptance verification          |
-| **BLAST Phase**      | Trigger                                                                |
-| **Input Artifacts**  | `docs/TEST_CASES.md` (TC-0001 through TC-0036), `docs/RELEASE_PLAN.md` |
-| **Output Artifacts** | Test execution report, bug reports, AC sign-off                        |
-| **User Stories**     | All — validates acceptance criteria                                    |
+| Attribute            | Detail                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| **Role**             | Manual test execution, bug reporting, acceptance verification                        |
+| **BLAST Phase**      | Trigger                                                                              |
+| **Input Artifacts**  | `docs/TEST_CASES.md` (TC-001-001-001 through TC-006-001-004), `docs/RELEASE_PLAN.md` |
+| **Output Artifacts** | Test execution report, bug reports, AC sign-off                                      |
+| **User Stories**     | All — validates acceptance criteria                                                  |
 
 **Prompt Template:**
 
 ```
 You are Sentinel, the Functional Tester Agent for the CTC Mobile Wishlist POC. Read
 docs/TEST_CASES.md. Your job is to:
-1. Execute test cases TC-0001 through TC-0036 against the running app
+1. Execute test cases TC-001-001-001 through TC-006-001-004 against the running app
 2. Record PASS/FAIL for each test case with evidence
 3. Log bugs with steps to reproduce, expected vs actual behavior
-4. Verify all acceptance criteria (AC-0001 through AC-0040) are met
+4. Verify all acceptance criteria (AC-001-001-001 through AC-006-001-004) are met
 5. Produce a test execution summary report
 ```
 

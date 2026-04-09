@@ -23,8 +23,12 @@ export default function LoginScreen() {
         text: 'Reset',
         style: 'destructive',
         onPress: async () => {
-          await resetDemoData();
-          Alert.alert('Done', 'Demo data cleared.');
+          try {
+            await resetDemoData();
+            Alert.alert('Done', 'Demo data cleared.');
+          } catch {
+            Alert.alert('Error', 'Could not reset demo data. Please try again.');
+          }
         },
       },
     ]);

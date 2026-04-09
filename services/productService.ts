@@ -40,8 +40,8 @@ export const productService = {
 
   /**
    * Look up a product by its EAN barcode string.
-   * Returns null for any barcode that has no matching product (AC-0019).
-   * Returns the matching product for a recognised barcode (AC-0041).
+   * Returns null for any barcode that has no matching product (AC-003-001-003).
+   * Returns the matching product for a recognised barcode (AC-003-001-005).
    */
   async getByBarcode(barcode: string): Promise<Product | null> {
     if (!barcode || typeof barcode !== 'string' || barcode.trim() === '') {

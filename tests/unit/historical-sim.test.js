@@ -14,12 +14,12 @@ describe('historical-sim', () => {
     it('calculates average tokens per estimate from done stories', () => {
       const data = {
         stories: [
-          { id: 'US-0001', status: 'Done', estimate: 'M' },
-          { id: 'US-0002', status: 'Done', estimate: 'M' },
+          { id: 'US-001-001', status: 'Done', estimate: 'M' },
+          { id: 'US-001-002', status: 'Done', estimate: 'M' },
         ],
         costs: {
-          'US-0001': { inputTokens: 10000, outputTokens: 5000 },
-          'US-0002': { inputTokens: 20000, outputTokens: 10000 },
+          'US-001-001': { inputTokens: 10000, outputTokens: 5000 },
+          'US-001-002': { inputTokens: 20000, outputTokens: 10000 },
         },
       };
       const result = calculateAvgTokensPerEstimate(data);
@@ -29,11 +29,11 @@ describe('historical-sim', () => {
     it('ignores stories without costs', () => {
       const data = {
         stories: [
-          { id: 'US-0001', status: 'Done', estimate: 'S' },
-          { id: 'US-0002', status: 'Done', estimate: 'S' },
+          { id: 'US-001-001', status: 'Done', estimate: 'S' },
+          { id: 'US-001-002', status: 'Done', estimate: 'S' },
         ],
         costs: {
-          'US-0001': { inputTokens: 5000, outputTokens: 2500 },
+          'US-001-001': { inputTokens: 5000, outputTokens: 2500 },
         },
       };
       const result = calculateAvgTokensPerEstimate(data);
@@ -64,28 +64,28 @@ describe('historical-sim', () => {
       if (!fs.existsSync(docsDir)) fs.mkdirSync(docsDir, { recursive: true });
       const testData = {
         stories: [
-          { id: 'US-0001', status: 'Done', estimate: 'M', epicId: 'EPIC-0001' },
-          { id: 'US-0002', status: 'Done', estimate: 'S', epicId: 'EPIC-0001' },
+          { id: 'US-001-001', status: 'Done', estimate: 'M', epicId: 'EPIC-001' },
+          { id: 'US-001-002', status: 'Done', estimate: 'S', epicId: 'EPIC-001' },
           {
-            id: 'US-0003',
+            id: 'US-002-001',
             status: 'Planned',
             estimate: 'M',
-            epicId: 'EPIC-0002',
+            epicId: 'EPIC-002',
           },
         ],
         costs: {
           _totals: { costUsd: 100, inputTokens: 50000, outputTokens: 25000 },
-          'US-0001': { costUsd: 60, inputTokens: 30000, outputTokens: 15000 },
-          'US-0002': { costUsd: 40, inputTokens: 20000, outputTokens: 10000 },
+          'US-001-001': { costUsd: 60, inputTokens: 30000, outputTokens: 15000 },
+          'US-001-002': { costUsd: 40, inputTokens: 20000, outputTokens: 10000 },
         },
         bugs: [
-          { id: 'BUG-0001', status: 'Fixed', relatedStory: 'US-0001' },
-          { id: 'BUG-0002', status: 'Open', relatedStory: 'US-0002' },
+          { id: 'BUG-001', status: 'Fixed', relatedStory: 'US-001-001' },
+          { id: 'BUG-002', status: 'Open', relatedStory: 'US-001-002' },
         ],
         coverage: { overall: 85, available: true },
         epics: [
-          { id: 'EPIC-0001', title: 'Epic 1' },
-          { id: 'EPIC-0002', title: 'Epic 2' },
+          { id: 'EPIC-001', title: 'Epic 1' },
+          { id: 'EPIC-002', title: 'Epic 2' },
         ],
         lessons: [],
         testCases: [],

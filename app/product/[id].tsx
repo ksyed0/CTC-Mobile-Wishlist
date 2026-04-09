@@ -22,7 +22,7 @@ import { useWishlists } from '../../contexts/WishlistContext';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 
-/** BUG-0099: Category color map matching ProductCard approach */
+/** BUG-099: Category color map matching ProductCard approach */
 const CATEGORY_COLORS: Record<string, string> = {
   Tools: colors.primary,
   Automotive: '#1565C0',
@@ -62,7 +62,7 @@ export default function ProductDetailScreen() {
   async function addToWishlist(wishlist: Wishlist) {
     if (!product) return;
 
-    // AC-0042: duplicate guard
+    // AC-004-002-004: duplicate guard
     const alreadyIn = wishlist.items.some((i) => i.productId === product.id);
     if (alreadyIn) {
       showToast(`"${product.name}" is already in "${wishlist.name}".`, 'info');
@@ -83,7 +83,7 @@ export default function ProductDetailScreen() {
   }
 
   function handleAddToWishlist() {
-    // AC-0013: no wishlists → prompt to create one first, offer navigation
+    // AC-002-002-002: no wishlists → prompt to create one first, offer navigation
     if (wishlists.length === 0) {
       Alert.alert('No Wishlists', 'Create a wishlist first, then come back to add this product.', [
         { text: 'Cancel', style: 'cancel' },
@@ -94,7 +94,7 @@ export default function ProductDetailScreen() {
       ]);
       return;
     }
-    // BUG-0101: always show picker when wishlists exist (even if only one)
+    // BUG-101: always show picker when wishlists exist (even if only one)
     setShowPicker(true);
   }
 
@@ -117,7 +117,7 @@ export default function ProductDetailScreen() {
   return (
     <View style={styles.root}>
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        {/* BUG-0099: render real image when available, colored category placeholder otherwise */}
+        {/* BUG-099: render real image when available, colored category placeholder otherwise */}
         <View style={styles.imageContainer}>
           {product.image && product.image !== 'placeholder' ? (
             <Image
@@ -139,7 +139,7 @@ export default function ProductDetailScreen() {
           <Text style={styles.description}>{product.description}</Text>
           <Text style={styles.barcode}>Barcode: {product.barcode}</Text>
 
-          {/* AC-0013/14: Add to Wishlist */}
+          {/* AC-002-002-002/14: Add to Wishlist */}
           <TouchableOpacity
             style={[styles.addButton, isAdding && styles.addButtonDisabled]}
             onPress={handleAddToWishlist}
@@ -158,7 +158,7 @@ export default function ProductDetailScreen() {
             )}
           </TouchableOpacity>
 
-          {/* BUG-0100: mock Add to Cart secondary button */}
+          {/* BUG-100: mock Add to Cart secondary button */}
           <TouchableOpacity
             style={styles.addToCartButton}
             onPress={() => showToast(`"${product.name}" added to cart`, 'success')}
@@ -170,7 +170,7 @@ export default function ProductDetailScreen() {
             <Text style={styles.addToCartButtonText}>Add to Cart</Text>
           </TouchableOpacity>
 
-          {/* US-0022: Restock alert — only when out of stock */}
+          {/* US-007-007: Restock alert — only when out of stock */}
           {!product.inStock && (
             <TouchableOpacity
               style={styles.alertButton}
@@ -184,7 +184,7 @@ export default function ProductDetailScreen() {
             </TouchableOpacity>
           )}
 
-          {/* US-0023: Price-drop alert — always visible */}
+          {/* US-007-008: Price-drop alert — always visible */}
           <TouchableOpacity
             style={styles.alertButton}
             onPress={() => showToast("We'll notify you if the price drops on this item.", 'info')}

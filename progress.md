@@ -54,7 +54,7 @@
 
 ### What Was Done
 
-**Documentation & Agent Optimization (BUG-0001 – BUG-0024)**
+**Documentation & Agent Optimization (BUG-001 – BUG-024)**
 
 - Reviewed all agent docs, architecture, and tooling — logged 24 bugs
 - Fixed AsyncStorage key conflict (global `wishlists` key, filter by ownerId)
@@ -62,7 +62,7 @@
 - Added Phase Exit Criteria table and Error Handling SOP to Conductor
 - Standardized context passing with structured template
 - Clarified AC ownership (Compass vs Sentinel)
-- Added 4 missing test cases (TC-0037 – TC-0040)
+- Added 4 missing test cases (TC-001-001-004 – TC-002-003-002)
 - Added real-vs-simulated scope table and deployment strategy
 - Populated ROLLBACK.md
 - Added device compatibility matrix (iPhone 17 Pro Max, Pixel 10 Pro XL)
@@ -94,7 +94,7 @@
 - Integrated into build pipeline: `npm run avatars`
 - Dashboard fallback chain: headshot → full image → emoji
 
-**Orchestration Loop Safety (BUG-0025 – BUG-0030)**
+**Orchestration Loop Safety (BUG-025 – BUG-030)**
 
 - Retry state tracking with progress.md log format
 - Concrete escalation workflow (pause, BLOCKED status, resume protocol)
@@ -103,7 +103,7 @@
 - 90-min hard phase timeout with force-cut-scope action
 - Explicit BLOCK vs REQUEST CHANGES threshold criteria for Lens
 
-**Platform-Agnostic Orchestration (BUG-0031)**
+**Platform-Agnostic Orchestration (BUG-031)**
 
 - Created `orchestrator/` adapter layer
 - Adapters: Claude Code, OpenAI Codex, Google Gemini, Aider (open-source)
@@ -119,7 +119,7 @@
 
 ### Stats
 
-- 31 bugs logged (BUG-0001 – BUG-0031), all fixed
+- 31 bugs logged (BUG-001 – BUG-031), all fixed
 - 215 tests passing, 90.5% coverage
 - 39 files changed, ~2,800 lines added
 
@@ -139,15 +139,15 @@
 ### Review: Forge — Service Tests and Enhancements
 
 **Branch:** `feature/forge-services`
-**Stories in scope:** US-0002, US-0006, US-0007, US-0008, US-0009, US-0010, US-0012
+**Stories in scope:** US-001-002, US-003-001, US-004-001, US-004-002, US-004-003, US-005-001, US-005-003
 **Verdict: APPROVE**
 
-All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service contracts match DATA_FLOW.md. AC-0042 duplicate guard correctly implemented and tested. AC-0041/AC-0019 barcode tests are meaningful. getTotalPrice() covers all edge cases including float rounding.
+All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service contracts match DATA_FLOW.md. AC-004-002-004 duplicate guard correctly implemented and tested. AC-003-001-005/AC-003-001-003 barcode tests are meaningful. getTotalPrice() covers all edge cases including float rounding.
 
 **Bugs filed:**
 
-- BUG-0077 (Major): AC-0041 and AC-0042 referenced in code/tests but not formally defined in RELEASE_PLAN.md or updated in ID_REGISTRY
-- BUG-0078 (Minor): `wishlistService.removeItem` missing test for empty `productId` validation guard
+- BUG-077 (Major): AC-003-001-005 and AC-004-002-004 referenced in code/tests but not formally defined in RELEASE_PLAN.md or updated in ID_REGISTRY
+- BUG-078 (Minor): `wishlistService.removeItem` missing test for empty `productId` validation guard
 
 **Retry tracking:** None — APPROVE issued, no retry needed.
 
@@ -165,20 +165,20 @@ All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service
 - Dependency Audit job: `npm audit --audit-level=high`
 - Prettier Format Check job: `npm run format:check`
 
-**ESLint Expansion (BUG-0033)**
+**ESLint Expansion (BUG-033)**
 
 - Added orchestrator/ and tests/ to ESLint config
 - Added Jest globals (describe, it, expect, beforeEach, etc.) for test files
 - Added timer globals (setTimeout, setInterval, etc.) to Node.js globals
 - Added ignores for root config files (eslint.config.js, jest.config.js)
 
-**Code Quality Fixes (BUG-0034 – BUG-0036)**
+**Code Quality Fixes (BUG-034 – BUG-036)**
 
 - Removed unused imports (path, fs) in orchestrator/spawn.js
 - Fixed useless assignment in generate-dashboard.js
 - Preserved error cause chain in generate-plan.js
 
-**Prettier Formatting (BUG-0037)**
+**Prettier Formatting (BUG-037)**
 
 - Added Prettier with `.prettierrc` config (semi, singleQuote, trailingComma all, printWidth 120)
 - Created `.prettierignore` for generated outputs and binaries
@@ -197,7 +197,7 @@ All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service
 - Added §2.1 PR Creation & Review Flow and §2.2 BLOCK Recovery Protocol to AGENT_PLAN.md
 - Added 3 Mermaid diagrams to DIAGRAMS.md: PR review workflow, CI pipeline flow, agent branch strategy
 
-**Dashboard BLOCK Alert System (BUG-0038 – BUG-0042)**
+**Dashboard BLOCK Alert System (BUG-038 – BUG-042)**
 
 - Added `.phase-block.blocked` CSS with red pulsing animation and ⛔ icon
 - Added `.agent-card.blocked` CSS with red border and status color
@@ -206,13 +206,13 @@ All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service
 - Added browser Notification API push on BLOCK transitions (toggle in header)
 - Both toggles persist to localStorage; notification requests permission on enable
 
-**CI Fix (BUG-0043)**
+**CI Fix (BUG-043)**
 
 - Fixed Prettier reformatting test fixture that broke parse-bugs tests
 
 ### Stats
 
-- 11 bugs logged (BUG-0033 – BUG-0043), all fixed
+- 11 bugs logged (BUG-033 – BUG-043), all fixed
 - 6-job CI pipeline protecting main and develop branches
 - Dashboard now surfaces BLOCKED states with audio, visual, and push alerts
 
@@ -227,7 +227,7 @@ All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service
 
 ### What Was Done
 
-**Concurrency Safety (BUG-0044 – BUG-0048)**
+**Concurrency Safety (BUG-044 – BUG-048)**
 
 - Created `orchestrator/file-lock.js` — mkdir-based file locking with stale lock detection (30s threshold), PID tracking, and automatic cleanup
 - Created `orchestrator/atomic-write.js` — atomic file writes (temp+rename), locked read-modify-write for JSON, locked append for logs, and `reserveId()` for safe ID allocation
@@ -235,7 +235,7 @@ All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service
 - Updated DM_AGENT.md with concurrency safety section: shared file table, utility references, merge ordering rules
 - Added `.locks/` to `.gitignore`
 
-**Pre-commit Hook (BUG-0049)**
+**Pre-commit Hook (BUG-049)**
 
 - Installed husky + lint-staged
 - Pre-commit hook runs Prettier on staged `.js`, `.json`, `.md`, `.yml`, `.yaml` files
@@ -247,7 +247,7 @@ All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service
 - 22 new tests for concurrency utilities (file-lock, atomic-write, git-safe)
 - 237 total tests passing
 
-**Config-Driven Agent Registry (BUG-0050)**
+**Config-Driven Agent Registry (BUG-050)**
 
 - Created `agents.config.json` — single source of truth for agent names, roles, icons, colors, instruction files, and orchestrator settings (dmAgent, reviewer, avatarGrid)
 - Updated `orchestrator/spawn.js` — loads AGENTS from config, `--print-all` uses `orchestrator.dmAgent`
@@ -265,7 +265,7 @@ All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service
 
 ### Stats
 
-- 7 bugs logged (BUG-0044 – BUG-0050), all fixed
+- 7 bugs logged (BUG-044 – BUG-050), all fixed
 - 3 new orchestrator modules: file-lock.js, atomic-write.js, git-safe.js
 - 1 new config file: agents.config.json
 - 1 new tool: init-sdlc-status.js
@@ -275,42 +275,42 @@ All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service
 
 ### What Was Done
 
-**Project-Agnostic Agent Framework (BUG-0051 – BUG-0053)**
+**Project-Agnostic Agent Framework (BUG-051 – BUG-053)**
 
 - Refactored all 9 agent instruction files to remove project-specific content (story IDs, screen names, service names, branch names, design tokens, mock data specs)
 - Agent files are now generic role templates defining HOW each role operates (patterns, rules, quality standards)
 - The DM agent builds project-specific context dynamically at spawn time from `project.md` and architecture docs
 - Fixed "7 sub-agents" → "8 sub-agents" in DM_AGENT.md and HACKATHON_PLAN.md
 
-**Project Entry Point + Platform Symlinks (BUG-0053)**
+**Project Entry Point + Platform Symlinks (BUG-053)**
 
 - Created `project.md` as single project entry point referencing all docs (architecture, release plan, test cases, tracking)
 - Created 7 platform symlinks in repo root: `CLAUDE.md`, `Gemini.md`, `Codex.md`, `EliteA.md`, `CodeMie.md`, `Qwen.md`, `MiniMax.md` → all point to `project.md`
 - Each AI platform auto-discovers project context via its convention file
 
-**Config-Driven Dashboard (BUG-0054)**
+**Config-Driven Dashboard (BUG-054)**
 
 - Made dashboard title, subtitle, footer, repo URL, and brand accent color configurable via `agents.config.json` `dashboard` section
 - Replaced 11 hardcoded `#D52B1E` CSS references with `var(--brand-primary)` CSS variable
 - Defaults to repo name from `package.json` when config not set
 
-**Security Fixes — Code Review Findings (BUG-0055 – BUG-0066)**
+**Security Fixes — Code Review Findings (BUG-055 – BUG-066)**
 
-- Fixed XSS vulnerabilities in render-html.js: 9 locations with unescaped data attributes and onclick handlers (BUG-0055)
-- Fixed command injection via unquoted branch names in git-safe.js: 6 shell commands (BUG-0056)
-- Fixed infinite recursion risk in file-lock.js stale lock recovery (BUG-0057)
-- Fixed race condition on temp file names in atomic-write.js (BUG-0058)
-- Added JSON parse error handling in atomic-write.js and spawn.js (BUG-0059, BUG-0060)
-- Added CLI argument bounds checking in spawn.js (BUG-0061)
-- Improved lock directory cleanup logging in file-lock.js (BUG-0062)
-- Made dashboard author info config-driven via agents.config.json (BUG-0063)
-- Made process-avatars.js face count dynamic from agents.config.json (BUG-0064)
-- Replaced project-specific branch examples with generic placeholders in AGENTS.md and AGENT_PLAN.md (BUG-0065)
-- Added CodeQL SAST and TruffleHog secret scanning to CI pipeline (BUG-0066)
+- Fixed XSS vulnerabilities in render-html.js: 9 locations with unescaped data attributes and onclick handlers (BUG-055)
+- Fixed command injection via unquoted branch names in git-safe.js: 6 shell commands (BUG-056)
+- Fixed infinite recursion risk in file-lock.js stale lock recovery (BUG-057)
+- Fixed race condition on temp file names in atomic-write.js (BUG-058)
+- Added JSON parse error handling in atomic-write.js and spawn.js (BUG-059, BUG-060)
+- Added CLI argument bounds checking in spawn.js (BUG-061)
+- Improved lock directory cleanup logging in file-lock.js (BUG-062)
+- Made dashboard author info config-driven via agents.config.json (BUG-063)
+- Made process-avatars.js face count dynamic from agents.config.json (BUG-064)
+- Replaced project-specific branch examples with generic placeholders in AGENTS.md and AGENT_PLAN.md (BUG-065)
+- Added CodeQL SAST and TruffleHog secret scanning to CI pipeline (BUG-066)
 
 ### Stats
 
-- 16 bugs logged (BUG-0051 – BUG-0066), all fixed
+- 16 bugs logged (BUG-051 – BUG-066), all fixed
 - 9 agent files refactored to project-agnostic role templates
 - 1 new file: project.md
 - 7 new symlinks for multi-platform support
@@ -333,9 +333,9 @@ All 94 new unit tests pass (1324 total). No `any` types. No PII in logs. Service
 
 ### What Was Done
 
-**Expo Project Scaffold (US-0001, US-0002, US-0013)**
+**Expo Project Scaffold (US-001-001, US-001-002, US-006-001)**
 
-Branch: `feature/US-0001-expo-scaffold`
+Branch: `feature/US-001-001-expo-scaffold`
 
 - Installed all Expo/React Native dependencies: expo, react, react-native, expo-router, @expo/vector-icons, @react-native-async-storage/async-storage, expo-status-bar, expo-splash-screen, react-native-safe-area-context, react-native-screens, typescript, @types/react, @types/react-native
 - Created `app.json` (Expo config with splash, iOS bundle ID, Android package, expo-router plugin)
@@ -351,7 +351,7 @@ Branch: `feature/US-0001-expo-scaffold`
 **Mock Data**
 
 - `data/products.json` — 23 products across 5 categories (Tools, Automotive, Outdoor, Sports, Home)
-- All 23 barcodes are unique 12-digit EAN format (AC-0041 satisfied)
+- All 23 barcodes are unique 12-digit EAN format (AC-003-001-005 satisfied)
 - `data/users.json` — Alice (user-001), Bob (user-002), Carol (user-003)
 - `data/categories.json` — 5 categories with id, name, icon
 
@@ -401,14 +401,14 @@ Branch: `feature/US-0001-expo-scaffold`
 
 **RELEASE_PLAN.md Updates**
 
-- TASK-0001, TASK-0002, TASK-0003, TASK-0004, TASK-0005, TASK-0006, TASK-0020, TASK-0021 → Status: Done
+- TASK-001-001-001, TASK-001-001-002, TASK-001-001-003, TASK-001-002-001, TASK-001-002-002, TASK-001-002-003, TASK-006-001-001, TASK-006-001-002 → Status: Done
 
 ### Stats
 
 - 35 new files created
 - 547 npm packages installed (Expo + React Native ecosystem)
 - 0 TypeScript errors
-- All 8 tasks for US-0001, US-0002, US-0013 scaffold work marked Done
+- All 8 tasks for US-001-001, US-001-002, US-006-001 scaffold work marked Done
 
 ## Session 9 — 2026-04-04
 
@@ -419,7 +419,7 @@ Branch: `feature/US-0001-expo-scaffold`
 **Code Review: feature/pixel-screens (Pixel — UI Agent)**
 
 Branch reviewed: `feature/pixel-screens`
-Stories in scope: US-0001, US-0003, US-0004, US-0006, US-0007, US-0008, US-0010, US-0011, US-0012, US-0013
+Stories in scope: US-001-001, US-002-001, US-002-002, US-003-001, US-004-001, US-004-002, US-005-001, US-005-002, US-005-003, US-006-001
 Commit reviewed: `be92720`
 
 **Verdict: REQUEST CHANGES**
@@ -438,21 +438,21 @@ Commit reviewed: `be92720`
 
 **Findings filed as bugs**
 
-- BUG-0067: AC-0034/AC-0035 — No "I'll Get This" claim button (Major)
-- BUG-0068: AC-0036 — Owner/recipient distinction not implemented (Major)
-- BUG-0069: AC-0024/AC-0025 — wishlist/[id].tsx shows raw IDs; no remove action (Major)
-- BUG-0070: AC-0013/AC-0014 — No "Add to Wishlist" on product detail (Major)
-- BUG-0071: US-0006 scan screen is a stub — AC-0017–AC-0020 not delivered (Major)
-- BUG-0072: shared/[id].tsx shows raw productIds (Major)
-- BUG-0073: No component tests for any screen or component (Major)
-- BUG-0074: No accessibility attributes on any interactive element (Minor)
-- BUG-0075: ProductCard and WishlistCard not used in catalog/wishlists screens (Minor)
-- BUG-0076: wishlistUtils.ts duplicated — coordinate merge with Forge (Minor)
+- BUG-067: AC-005-003-001/AC-005-003-002 — No "I'll Get This" claim button (Major)
+- BUG-068: AC-005-003-003 — Owner/recipient distinction not implemented (Major)
+- BUG-069: AC-004-002-001/AC-004-002-002 — wishlist/[id].tsx shows raw IDs; no remove action (Major)
+- BUG-070: AC-002-002-002/AC-002-002-003 — No "Add to Wishlist" on product detail (Major)
+- BUG-071: US-003-001 scan screen is a stub — AC-003-001-001–AC-003-001-004 not delivered (Major)
+- BUG-072: shared/[id].tsx shows raw productIds (Major)
+- BUG-073: No component tests for any screen or component (Major)
+- BUG-074: No accessibility attributes on any interactive element (Minor)
+- BUG-075: ProductCard and WishlistCard not used in catalog/wishlists screens (Minor)
+- BUG-076: wishlistUtils.ts duplicated — coordinate merge with Forge (Minor)
 
 ### Stats
 
-- 10 bugs logged (BUG-0067 – BUG-0076): 7 Major, 3 Minor
-- ID_REGISTRY.md updated: BUG next → BUG-0077
+- 10 bugs logged (BUG-067 – BUG-076): 7 Major, 3 Minor
+- ID_REGISTRY.md updated: BUG next → BUG-077
 
 ## Session 10 — 2026-04-04
 
@@ -462,24 +462,24 @@ Commit reviewed: `be92720`
 
 **Targeted Re-Review: feature/pixel-screens (commit b1e7fd3)**
 
-Purpose: Verify all 6 Major bugs fixed by Pixel (BUG-0067 through BUG-0073). Minors BUG-0074/BUG-0076 remain acceptable for POC.
+Purpose: Verify all 6 Major bugs fixed by Pixel (BUG-067 through BUG-073). Minors BUG-074/BUG-076 remain acceptable for POC.
 
 **Fix Verification Results**
 
-| Bug         | File                                       | Requirement                                                                                                                                                                                                               | Status |
-| ----------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| BUG-0071    | `app/(tabs)/scan.tsx`                      | Real camera via `CameraView` + `useCameraPermissions`, `onBarcodeScanned` handler, debounce via `lastScanned` ref, manual barcode fallback in both permission-denied and camera-active states, `BarcodeOverlay` component | FIXED  |
-| BUG-0070    | `app/product/[id].tsx`                     | "Add to Wishlist" button present; duplicate guard `wishlist.items.some(i => i.productId === product.id)` with Alert; multi-wishlist picker modal                                                                          | FIXED  |
-| BUG-0069    | `app/wishlist/[id].tsx`                    | `WishlistItemRow` used with `product?.name` resolved; remove action with confirm alert (`Alert.alert`); `getTotalPrice` footer; share modal with `mockUsers`                                                              | FIXED  |
-| BUG-0072    | `app/wishlist/shared/[id].tsx`             | Product names resolved via `products.find`; `WishlistItemRow` used with resolved `productName`/`productPrice`                                                                                                             | FIXED  |
-| BUG-0067/68 | `app/wishlist/shared/[id].tsx`             | "I'll Get This" button for guests/claimers; claimed items greyed (`itemWrapperClaimed` opacity 0.55); `!isOwner` guard hides claim UI from owner; claimer name NOT shown (only "Claimed" badge — AC-0033 respected)       | FIXED  |
-| BUG-0075    | `app/(tabs)/catalog.tsx` + `wishlists.tsx` | `catalog.tsx` uses `ProductCard` + `CategoryChip`; `wishlists.tsx` uses `WishlistCard`                                                                                                                                    | FIXED  |
-| BUG-0073    | `tests/components/`                        | 3 component test files: `EmptyState.test.ts`, `ProductCard.test.ts`, `WishlistCard.test.ts`                                                                                                                               | FIXED  |
+| Bug        | File                                       | Requirement                                                                                                                                                                                                                | Status |
+| ---------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| BUG-071    | `app/(tabs)/scan.tsx`                      | Real camera via `CameraView` + `useCameraPermissions`, `onBarcodeScanned` handler, debounce via `lastScanned` ref, manual barcode fallback in both permission-denied and camera-active states, `BarcodeOverlay` component  | FIXED  |
+| BUG-070    | `app/product/[id].tsx`                     | "Add to Wishlist" button present; duplicate guard `wishlist.items.some(i => i.productId === product.id)` with Alert; multi-wishlist picker modal                                                                           | FIXED  |
+| BUG-069    | `app/wishlist/[id].tsx`                    | `WishlistItemRow` used with `product?.name` resolved; remove action with confirm alert (`Alert.alert`); `getTotalPrice` footer; share modal with `mockUsers`                                                               | FIXED  |
+| BUG-072    | `app/wishlist/shared/[id].tsx`             | Product names resolved via `products.find`; `WishlistItemRow` used with resolved `productName`/`productPrice`                                                                                                              | FIXED  |
+| BUG-067/68 | `app/wishlist/shared/[id].tsx`             | "I'll Get This" button for guests/claimers; claimed items greyed (`itemWrapperClaimed` opacity 0.55); `!isOwner` guard hides claim UI from owner; claimer name NOT shown (only "Claimed" badge — AC-005-002-003 respected) | FIXED  |
+| BUG-075    | `app/(tabs)/catalog.tsx` + `wishlists.tsx` | `catalog.tsx` uses `ProductCard` + `CategoryChip`; `wishlists.tsx` uses `WishlistCard`                                                                                                                                     | FIXED  |
+| BUG-073    | `tests/components/`                        | 3 component test files: `EmptyState.test.ts`, `ProductCard.test.ts`, `WishlistCard.test.ts`                                                                                                                                | FIXED  |
 
 **Remaining Acceptable Minors**
 
-- BUG-0074: No accessibility attributes — Minor, acceptable for POC
-- BUG-0076: `wishlistUtils.ts` duplication — Minor, acceptable for POC
+- BUG-074: No accessibility attributes — Minor, acceptable for POC
+- BUG-076: `wishlistUtils.ts` duplication — Minor, acceptable for POC
 
 **Verdict: APPROVE**
 
@@ -488,7 +488,7 @@ All 7 Major bugs are resolved. Implementation quality is solid: no stubs, real c
 ### Stats
 
 - 7/7 Major bugs verified fixed
-- 2 Minor bugs remain (BUG-0074, BUG-0076) — acceptable for POC
+- 2 Minor bugs remain (BUG-074, BUG-076) — acceptable for POC
 - Verdict: APPROVE — feature/pixel-screens cleared to merge
 
 ## Session 11 — 2026-04-04
@@ -548,8 +548,8 @@ One copy lives at `utils/wishlistUtils.ts` (root, in develop). The duplicate is 
 
 ### Remaining for Phase 5/6
 
-- BUG-0074: Accessibility attributes (Minor — acceptable for POC, Sentinel should verify)
-- US-0005 search bar on catalog screen (TASK-0009 still To Do)
+- BUG-074: Accessibility attributes (Minor — acceptable for POC, Sentinel should verify)
+- US-002-003 search bar on catalog screen (TASK-002-003-001 still To Do)
 - Real product images (placeholder icons only currently)
 - Expo-splash-screen and app icon configuration
 - End-to-end automation tests (Circuit agent, Phase 5)
@@ -572,12 +572,12 @@ One copy lives at `utils/wishlistUtils.ts` (root, in develop). The duplicate is 
 
 ### Failed Tests
 
-| TC ID   | Summary                                         | Bug ID   |
-| ------- | ----------------------------------------------- | -------- |
-| TC-0037 | Splash screen displays CTC branding on launch   | BUG-0084 |
-| TC-0038 | Mock product images are bundled as local assets | BUG-0085 |
-| TC-0012 | Search filters products by name in real time    | BUG-0086 |
-| TC-0040 | Search bar visible at top of catalog screen     | BUG-0086 |
+| TC ID          | Summary                                         | Bug ID  |
+| -------------- | ----------------------------------------------- | ------- |
+| TC-001-001-004 | Splash screen displays CTC branding on launch   | BUG-084 |
+| TC-001-002-003 | Mock product images are bundled as local assets | BUG-085 |
+| TC-002-003-001 | Search filters products by name in real time    | BUG-086 |
+| TC-002-003-002 | Search bar visible at top of catalog screen     | BUG-086 |
 
 ### Blocked Tests
 
@@ -587,21 +587,21 @@ None — all 40 test cases were executable via static analysis.
 
 **Critical/Major findings:**
 
-1. **BUG-0084 (TC-0037) — assets/ directory missing:** The `assets/` directory does not exist. `app.json` references `./assets/splash.png`, `./assets/icon.png`, `./assets/adaptive-icon.png`, and `./assets/favicon.png`. Without these files the app cannot be built via Expo. This was previously noted in Phase 4's "Remaining" items. Severity: Major — blocks app build.
+1. **BUG-084 (TC-001-001-004) — assets/ directory missing:** The `assets/` directory does not exist. `app.json` references `./assets/splash.png`, `./assets/icon.png`, `./assets/adaptive-icon.png`, and `./assets/favicon.png`. Without these files the app cannot be built via Expo. This was previously noted in Phase 4's "Remaining" items. Severity: Major — blocks app build.
 
-2. **BUG-0085 (TC-0038) — No bundled product images:** All 23 products use `image: "placeholder"`. The app renders icon placeholders everywhere. Previously noted as a known gap. Severity: Major — degrades demo quality.
+2. **BUG-085 (TC-001-002-003) — No bundled product images:** All 23 products use `image: "placeholder"`. The app renders icon placeholders everywhere. Previously noted as a known gap. Severity: Major — degrades demo quality.
 
-3. **BUG-0086 (TC-0012 + TC-0040) — Search bar not implemented in catalog:** `catalog.tsx` has no search UI. `productService.search()` and `ProductContext.search()` are fully implemented but no TextInput is wired to them. TASK-0009 was previously noted as "still To Do." Severity: Major — AC-0015 and AC-0016 unmet.
+3. **BUG-086 (TC-002-003-001 + TC-002-003-002) — Search bar not implemented in catalog:** `catalog.tsx` has no search UI. `productService.search()` and `ProductContext.search()` are fully implemented but no TextInput is wired to them. TASK-002-003-001 was previously noted as "still To Do." Severity: Major — AC-002-003-001 and AC-002-003-002 unmet.
 
-**The 9-step demo flow passes end-to-end:** Login (TC-0033) → Browse catalog (TC-0006/07/08) → Scan barcode (TC-0013/14) → Add to wishlist (TC-0010/11) → Share wishlist (TC-0024/25/26) → Claim item (TC-0030/31/32) — all pass.
+**The 9-step demo flow passes end-to-end:** Login (TC-006-001-001) → Browse catalog (TC-002-001-001/07/08) → Scan barcode (TC-003-001-001/14) → Add to wishlist (TC-002-002-002/11) → Share wishlist (TC-005-001-001/25/26) → Claim item (TC-005-003-001/31/32) — all pass.
 
-**Duplicate item guard (AC-0042) verified:** Both wishlistService.addItem() and product/[id].tsx addToWishlist() check for duplicates. Service returns early; UI shows Alert "Already in Wishlist." Pass.
+**Duplicate item guard (AC-004-002-004) verified:** Both wishlistService.addItem() and product/[id].tsx addToWishlist() check for duplicates. Service returns early; UI shows Alert "Already in Wishlist." Pass.
 
-**Owner surprise preservation (AC-0036) verified:** isOwner check in wishlist/[id].tsx and WishlistItemRow correctly hides claimer identity from the wishlist owner. Pass.
+**Owner surprise preservation (AC-005-003-003) verified:** isOwner check in wishlist/[id].tsx and WishlistItemRow correctly hides claimer identity from the wishlist owner. Pass.
 
-**Wishlist persistence across user switches (AC-0040) verified:** WishlistContext re-runs load() when currentUser changes via useCallback dependency. Pass.
+**Wishlist persistence across user switches (AC-006-001-004) verified:** WishlistContext re-runs load() when currentUser changes via useCallback dependency. Pass.
 
-**New bugs filed:** BUG-0084, BUG-0085, BUG-0086 (IDs BUG-0084 through BUG-0086; next available BUG-0087).
+**New bugs filed:** BUG-084, BUG-085, BUG-086 (IDs BUG-084 through BUG-086; next available BUG-087).
 
 ---
 
@@ -611,30 +611,30 @@ Agent: Pixel | Branch: `feature/polish-fixes` | Based on: `develop`
 
 ### Bugs Fixed
 
-**BUG-0084 (Critical) — Missing assets directory**
+**BUG-084 (Critical) — Missing assets directory**
 
 - Created `assets/` directory at project root with four PNG placeholder files: `icon.png` (1024×1024), `adaptive-icon.png` (1024×1024), `splash.png` (1242×2688), `favicon.png` (32×32).
 - All filled with Canadian Tire red (#D52B1E) and a white triangle motif, generated via Node.js `canvas`.
 - Expo build will no longer crash on missing asset references in `app.json`.
 
-**BUG-0085 (Major) — No product images**
+**BUG-085 (Major) — No product images**
 
 - Updated `components/ProductCard.tsx`: when `image === "placeholder"`, renders a colored `View` with the category's initial letter instead of a broken image icon.
 - Category color map applied: Tools (red), Automotive (blue), Outdoor (green), Sports (orange), Home (purple).
 - Catalog now looks intentional and demo-ready.
 
-**BUG-0086 (Major) — Search bar missing from catalog screen**
+**BUG-086 (Major) — Search bar missing from catalog screen**
 
 - Added `TextInput` search bar to `app/(tabs)/catalog.tsx` above the category chip row.
 - Real-time filtering via `useMemo` over `filteredProducts` — no async call needed, instant response.
 - Clear (×) button appears when query is non-empty.
 - Empty state subtitle adapts to show the search term when no results are found.
-- AC-0015 (search bar visible) and AC-0016 (real-time name filtering) now satisfied.
+- AC-002-003-001 (search bar visible) and AC-002-003-002 (real-time name filtering) now satisfied.
 
 ### Docs Updated
 
-- `docs/BUGS.md` — BUG-0084, BUG-0085, BUG-0086 appended with Fixed status.
-- `docs/RELEASE_PLAN.md` — TASK-0009 (search bar) → Status: Done.
+- `docs/BUGS.md` — BUG-084, BUG-085, BUG-086 appended with Fixed status.
+- `docs/RELEASE_PLAN.md` — TASK-002-003-001 (search bar) → Status: Done.
 
 ### Stats
 
@@ -651,7 +651,7 @@ Post-BLAST: Plan Visualizer fixes, lesson-bug linking, new lessons, AI cost esti
 
 ### Plan Visualizer Fixes
 
-**BUG-0096 — Hierarchy + Costs tab column views empty**
+**BUG-096 — Hierarchy + Costs tab column views empty**
 
 - `render-html.js`: three separate render functions each had `class="hidden"` on their epic/bug tbodies. Fixed all three: arrow `&#9654;` → `&#9660;`, removed `class="hidden"`.
 - Separately fixed Bugs tab column view (fourth independent `bugColGroups` render function, line ~1396).
@@ -665,26 +665,26 @@ Post-BLAST: Plan Visualizer fixes, lesson-bug linking, new lessons, AI cost esti
 
 - Resolved by the same back-fill fix above; `lessonStoryMap` now resolves correctly.
 
-### New Lessons (L-0023–L-0029)
+### New Lessons (L-023–L-029)
 
 Distilled 7 new lessons from 39 bugs not covered by any prior lesson:
 
-- **L-0023** — Expo JS and native layers are independent; native requires explicit `expo prebuild` after any asset change.
-- **L-0024** — Scaffold completeness check required before advancing from Phase 2.
-- **L-0025** — Register all ACs in RELEASE_PLAN.md before build agents reference them.
-- **L-0026** — Enumerate existing components and utils before writing new ones.
-- **L-0027** — Create `.test.tsx` alongside every component and screen file at creation time.
-- **L-0028** — Add `accessibilityRole` + `accessibilityLabel` to every interactive element at creation time.
-- **L-0029** — Tooling must degrade visibly, not silently; collapsible sections default to expanded.
+- **L-023** — Expo JS and native layers are independent; native requires explicit `expo prebuild` after any asset change.
+- **L-024** — Scaffold completeness check required before advancing from Phase 2.
+- **L-025** — Register all ACs in RELEASE_PLAN.md before build agents reference them.
+- **L-026** — Enumerate existing components and utils before writing new ones.
+- **L-027** — Create `.test.tsx` alongside every component and screen file at creation time.
+- **L-028** — Add `accessibilityRole` + `accessibilityLabel` to every interactive element at creation time.
+- **L-029** — Tooling must degrade visibly, not silently; collapsible sections default to expanded.
 
-Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
+Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-029.
 
 ### AI Cost Estimation for Bug Fixes
 
 - Added estimated AI costs (~$100.65 total) for 93 of 97 bugs to `docs/AI_COST_LOG.md` using `est/BUG-XXXX` synthetic branch convention.
 - Added `Fix Branch: est/BUG-XXXX` to all covered bugs in `docs/BUGS.md`.
 - Modified `tools/lib/compute-costs.js`: `attributeAICosts()` now skips `est/` branches for story totals (prevents double-counting); `attributeBugCosts()` marks `est/` branch matches as `isEstimated: true`.
-- 4 open bugs (BUG-0073, 0080, 0082, 0088) correctly show $0.
+- 4 open bugs (BUG-073, 0080, 0082, 0088) correctly show $0.
 
 ### Lessons Integration — Agent Instruction Files
 
@@ -694,11 +694,11 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 
 ### Docs Updated
 
-- `docs/LESSONS.md` — 7 new lessons (L-0023–L-0029), header updated to 101 bugs
-- `docs/BUGS.md` — BUG-0096, BUG-0097 logged and fixed; `Fix Branch: est/BUG-XXXX` added to 93 bugs
+- `docs/LESSONS.md` — 7 new lessons (L-023–L-029), header updated to 101 bugs
+- `docs/BUGS.md` — BUG-096, BUG-097 logged and fixed; `Fix Branch: est/BUG-XXXX` added to 93 bugs
 - `docs/AI_COST_LOG.md` — 93 estimated bug fix cost entries appended
-- `docs/RELEASE_PLAN.md` — US-0014 added (Backlog); TASK-0009 search bar marked Done
-- `docs/ID_REGISTRY.md` — L → L-0030, BUG → BUG-0098, US → US-0015, AC → AC-0045
+- `docs/RELEASE_PLAN.md` — US-0014 added (Backlog); TASK-002-003-001 search bar marked Done
+- `docs/ID_REGISTRY.md` — L → L-030, BUG → BUG-098, US → US-003-002, AC → AC-003-002-001
 - `docs/agents/*.md` — all 9 agent files updated with LESSONS.md Mandatory Startup step
 - `tools/lib/parse-lessons.js`, `tools/lib/compute-costs.js`, `tools/lib/render-html.js`, `tools/generate-plan.js` — bug fixes and cost attribution improvements
 
@@ -706,7 +706,7 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 
 ### What Was Done
 
-**Feature: Simulator Scan Mock (US-0015)**
+**Feature: Simulator Scan Mock (US-003-002)**
 
 - Designed and specced a simulator scan mode for `app/(tabs)/scan.tsx`: on iOS/Android simulator (`Device.isDevice === false`), the camera view is replaced with a scrollable WebView rendering `data/product-catalog-print.html`; tapping any product card triggers the same `handleBarcode()` flow as a real scan
 - Verified `data/product-catalog-print.html` renders correctly in browser (product images from canadiantire.ca CDN load; EAN-13 barcodes render via JsBarcode CDN); confirmed `.card-meta` barcode text is authoritative (matches `products.json`)
@@ -715,20 +715,20 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 
 ### Docs Updated
 
-- `docs/RELEASE_PLAN.md` — US-0015, TASK-0022, TASK-0023 added under Epic 3 with `Spec:` and `Plan:` pointers; EPIC-0003 status remains Done (story is Pending)
-- `docs/plan-status.html` — regenerated (now 14 stories including US-0015)
+- `docs/RELEASE_PLAN.md` — US-003-002, TASK-003-002-001, TASK-003-002-002 added under Epic 3 with `Spec:` and `Plan:` pointers; EPIC-003 status remains Done (story is Pending)
+- `docs/plan-status.html` — regenerated (now 14 stories including US-003-002)
 - `docs/dashboard.html` — regenerated
 - `CLAUDE.md` — SDK version corrected (52 → 55); Tooling, Testing, and Codebase Gotchas sections added
 - `.claude/settings.json` — Stop hook path made absolute to fix CWD-shift failure
 
 ### Ready for Next Session
 
-- **Execute US-0015** via `superpowers:subagent-driven-development` using `docs/superpowers/plans/2026-04-05-simulator-scan-mock.md`
+- **Execute US-003-002** via `superpowers:subagent-driven-development` using `docs/superpowers/plans/2026-04-05-simulator-scan-mock.md`
 - Plan is self-contained: install 4 deps, create metro.config.js, build SimulatorScanView, wire into scan.tsx, update RELEASE_PLAN
 
 ### Session Continuation — 2026-04-05 (context compaction)
 
-**Dashboard Alert System (BUG-0106)**
+**Dashboard Alert System (BUG-106)**
 
 - Added `localStorage`-based state change detection to `tools/generate-dashboard.js`: each generated page embeds `DASH_SNAPSHOT` JSON; on load, compares against previous snapshot to detect phase completions, blocked agents, pipeline finish, new bug spikes
 - Audio alerts via Web Audio API: ascending ding (normal), 3-pulse square alarm (urgent) — no sound files needed
@@ -737,14 +737,14 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 
 **Docs & Cleanup**
 
-- `docs/sdlc-status.json` — Phase 7 "Demo Polish" added as in-progress; US-0015 added as Pending; metrics updated (storiesTotal 14, tasksTotal 23, bugsOpen 11); session log entries added
+- `docs/sdlc-status.json` — Phase 7 "Demo Polish" added as in-progress; US-003-002 added as Pending; metrics updated (storiesTotal 14, tasksTotal 23, bugsOpen 11); session log entries added
 - `PROJECT.md` removed from git (duplicate of `project.md` — same physical file on case-insensitive macOS fs)
-- `docs/BUGS.md` — BUG-0106 logged; ID_REGISTRY advanced to BUG-0107
+- `docs/BUGS.md` — BUG-106 logged; ID_REGISTRY advanced to BUG-107
 
 ### Ready for Next Session
 
-- **Execute US-0015** via `superpowers:subagent-driven-development` using `docs/superpowers/plans/2026-04-05-simulator-scan-mock.md`
-- **Fix BUG-0099–0105** (product image, add-to-cart, wishlist picker, wishlist image, safe area footer, logout button, keyboard modal) — all have exact fix code in `docs/BUGS.md`
+- **Execute US-003-002** via `superpowers:subagent-driven-development` using `docs/superpowers/plans/2026-04-05-simulator-scan-mock.md`
+- **Fix BUG-099–0105** (product image, add-to-cart, wishlist picker, wishlist image, safe area footer, logout button, keyboard modal) — all have exact fix code in `docs/BUGS.md`
 
 ## Session — 2026-04-05 (continued, context compaction)
 
@@ -760,9 +760,9 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 - Fixed catalog category not resetting on user switch — added `useEffect` in `ProductContext` watching `currentUser.id`
 - Fixed story badge CSS clipping — added `flex-shrink: 0; white-space: nowrap;` to `.story-status` in `generate-dashboard.js`
 - Added timestamp to dashboard `console.log`
-- Logged BUG-0107: dashboard blinks on auto-refresh (full-page meta-refresh; future fix: WebSocket/SSE polling)
+- Logged BUG-107: dashboard blinks on auto-refresh (full-page meta-refresh; future fix: WebSocket/SSE polling)
 
-**EPIC-0007 POC Enhancements — Brainstorm & Planning**
+**EPIC-007 POC Enhancements — Brainstorm & Planning**
 
 - Ran full superpowers brainstorming session for 9 POC enhancements (features #1–5, #7–10; #6 native share excluded)
 - Used visual browser companion for 8 design decisions (mockups in `.superpowers/brainstorm/`)
@@ -781,11 +781,11 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 
 **RELEASE_PLAN.md updated:**
 
-- EPIC-0007 added with US-0016–US-0024 (9 stories), each with Spec + Plan links
+- EPIC-007 added with US-007-001–US-007-009 (9 stories), each with Spec + Plan links
 
 **Dashboard fixed:**
 
-- `sdlc-status.json`: US-0016–US-0024 added, `storiesTotal` updated to 23 (was 14)
+- `sdlc-status.json`: US-007-001–US-007-009 added, `storiesTotal` updated to 23 (was 14)
 - Dashboard now shows 14/23 stories
 
 **docs/DEMO_PLAN.md** — created with 10-scene live demo walkthrough, talking points, barcodes table, preflight checklist, fallback scripts
@@ -800,7 +800,7 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
 
 ### Stats
 
-- Stories: 14 complete / 23 total (9 new backlog in EPIC-0007)
+- Stories: 14 complete / 23 total (9 new backlog in EPIC-007)
 - Plans: 3 implementation plans in `docs/superpowers/plans/`
 - Specs: 3 specs in `docs/superpowers/specs/`
 - Release: v0.5.0 on main
@@ -816,4 +816,4 @@ Updated LESSONS.md header from 88 → 101 bugs. Last assigned: L-0029.
   - Task 6: Demo Reset button
   - Task 7: Wishlist Rename
 - **Execute Plan B** after Plan A (independent, can run in parallel if desired)
-- **Branch**: create `feature/US-0016-plan-a` for Plan A work
+- **Branch**: create `feature/US-007-001-plan-a` for Plan A work

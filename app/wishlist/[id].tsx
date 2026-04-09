@@ -54,7 +54,7 @@ export default function WishlistDetailScreen() {
     return products.find((p) => p.id === productId);
   }
 
-  // AC-0025: confirm before removing
+  // AC-004-002-002: confirm before removing
   function handleRemove(productId: string, productName: string) {
     Alert.alert('Remove Item', `Remove "${productName}" from this wishlist?`, [
       { text: 'Cancel', style: 'cancel' },
@@ -71,7 +71,7 @@ export default function WishlistDetailScreen() {
     ]);
   }
 
-  // AC-0028/44: share with a mock user
+  // AC-005-001-001/44: share with a mock user
   async function handleShare(userId: string, userName: string) {
     if (!wishlist) return;
     await shareWishlist(wishlist.id, [
@@ -90,39 +90,60 @@ export default function WishlistDetailScreen() {
 
   async function handleNoteSave(note: string) {
     if (!wishlist || !noteSheet) return;
-    await updateItemNote(wishlist.id, noteSheet.productId, note);
-    const updated = await getWishlistById(wishlist.id);
-    setWishlist(updated);
-    setNoteSheet(null);
+    try {
+      await updateItemNote(wishlist.id, noteSheet.productId, note);
+      const updated = await getWishlistById(wishlist.id);
+      setWishlist(updated);
+      setNoteSheet(null);
+    } catch {
+      showToast('Could not save note. Please try again.', 'error');
+    }
   }
 
   async function handleRenameSave(newName: string) {
     if (!wishlist || !newName.trim()) return;
-    await renameWishlist(wishlist.id, newName);
-    setWishlist((prev) => (prev ? { ...prev, name: newName.trim() } : prev));
-    setShowRenameSheet(false);
+    try {
+      await renameWishlist(wishlist.id, newName);
+      setWishlist((prev) => (prev ? { ...prev, name: newName.trim() } : prev));
+      setShowRenameSheet(false);
+    } catch {
+      showToast('Could not rename wishlist. Please try again.', 'error');
+    }
   }
 
-  // AC-0065/66/67/68: claimer reveal toggle (owner-only)
+  // AC-007-006-001/66/67/68: claimer reveal toggle (owner-only)
   async function handleToggleClaimers(value: boolean) {
     if (!wishlist) return;
-    await setShowClaimers(wishlist.id, value);
-    setWishlist((prev) => (prev ? { ...prev, showClaimers: value } : prev));
+    try {
+      await setShowClaimers(wishlist.id, value);
+      setWishlist((prev) => (prev ? { ...prev, showClaimers: value } : prev));
+    } catch {
+      showToast('Could not update setting. Please try again.', 'error');
+    }
   }
 
-  // US-0024: privacy level picker
+  // US-007-009: privacy level picker
   async function handlePrivacyChange(privacy: 'private' | 'contacts' | 'public') {
     if (!wishlist) return;
-    await setPrivacy(wishlist.id, privacy);
-    setWishlist((prev) => (prev ? { ...prev, privacy } : prev));
-    setShowPrivacySheet(false);
+    try {
+      await setPrivacy(wishlist.id, privacy);
+      setWishlist((prev) => (prev ? { ...prev, privacy } : prev));
+      setShowPrivacySheet(false);
+    } catch {
+      showToast('Could not update privacy. Please try again.', 'error');
+    }
   }
 
-  // US-0024: copy shareable link to clipboard
-  function handleCopyLink() {
+  // US-007-009: copy shareable link to clipboard
+  async function handleCopyLink() {
     if (!wishlist) return;
-    const link = `ctcwishlist://shared/${wishlist.id}`;
-    showToast('Link copied to clipboard', 'info');
+    try {
+      const { setStringAsync } = await import('expo-clipboard');
+      await setStringAsync(`ctcwishlist://shared/${wishlist.id}`);
+      showToast('Link copied to clipboard', 'info');
+    } catch {
+      showToast('Could not copy link. Please try again.', 'error');
+    }
   }
 
   if (isLoading) {
@@ -142,7 +163,7 @@ export default function WishlistDetailScreen() {
   }
 
   const total = getTotalPrice(wishlist, products);
-  // AC-0033/AC-0036: owner sees "Claimed" without claimer identity
+  // AC-005-002-003/AC-005-003-003: owner sees "Claimed" without claimer identity
   const isOwner = currentUser?.id === wishlist.ownerId;
 
   return (
@@ -174,7 +195,7 @@ export default function WishlistDetailScreen() {
           )}
         </View>
 
-        {/* AC-0065: claimer reveal toggle — owner-only */}
+        {/* AC-007-006-001: claimer reveal toggle — owner-only */}
         {isOwner && (
           <View style={styles.claimerToggleRow}>
             <Text style={styles.claimerToggleLabel}>Show who claimed items</Text>
@@ -187,7 +208,7 @@ export default function WishlistDetailScreen() {
           </View>
         )}
 
-        {/* US-0024: privacy level selector — owner-only */}
+        {/* US-007-009: privacy level selector — owner-only */}
         {isOwner && (
           <TouchableOpacity
             style={styles.privacyRow}
@@ -254,7 +275,7 @@ export default function WishlistDetailScreen() {
                       : undefined
                   }
                 />
-                {/* Remove button (AC-0025) */}
+                {/* Remove button (AC-004-002-002) */}
                 <TouchableOpacity style={styles.removeButton} onPress={() => handleRemove(item.productId, productName)}>
                   <MaterialIcons name="delete-outline" size={18} color={colors.error} />
                   <Text style={styles.removeButtonText}>Remove</Text>
@@ -263,7 +284,7 @@ export default function WishlistDetailScreen() {
             );
           }}
           ListEmptyComponent={
-            /* AC-0026: EmptyState component */
+            /* AC-004-002-003: EmptyState component */
             <EmptyState
               icon="favorite-border"
               title="No items yet"
@@ -272,7 +293,7 @@ export default function WishlistDetailScreen() {
           }
         />
 
-        {/* AC-0027: price total footer — BUG-0103: safe area bottom inset */}
+        {/* AC-004-003-001: price total footer — BUG-103: safe area bottom inset */}
         {wishlist.items.length > 0 && (
           <View style={[styles.footer, { paddingBottom: spacing.md + insets.bottom }]}>
             <Text style={styles.footerLabel}>Total</Text>
@@ -304,7 +325,7 @@ export default function WishlistDetailScreen() {
         onCancel={() => setShowRenameSheet(false)}
       />
 
-      {/* US-0024: Privacy picker modal */}
+      {/* US-007-009: Privacy picker modal */}
       <Modal
         visible={showPrivacySheet}
         transparent
@@ -373,7 +394,7 @@ export default function WishlistDetailScreen() {
         </TouchableOpacity>
       </Modal>
 
-      {/* AC-0028/44: Share modal with mock users */}
+      {/* AC-005-001-001/44: Share modal with mock users */}
       <Modal visible={showShareModal} transparent animationType="slide" onRequestClose={() => setShowShareModal(false)}>
         <TouchableOpacity style={styles.modalBackdrop} activeOpacity={1} onPress={() => setShowShareModal(false)}>
           <View style={styles.modalSheet}>

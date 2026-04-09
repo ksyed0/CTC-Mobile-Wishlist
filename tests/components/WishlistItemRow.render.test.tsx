@@ -1,5 +1,5 @@
 /**
- * WishlistItemRow render tests — BUG-0073
+ * WishlistItemRow render tests — BUG-073
  * Uses @testing-library/react-native for actual component rendering.
  */
 

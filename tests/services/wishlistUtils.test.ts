@@ -2,7 +2,7 @@
  * Unit tests for utils/wishlistUtils
  *
  * Coverage targets:
- *   US-0009 AC-0027 — getTotalPrice: sum product prices in wishlist
+ *   US-004-003 AC-004-003-001 — getTotalPrice: sum product prices in wishlist
  */
 
 import { getTotalPrice } from '../../utils/wishlistUtils';
@@ -47,17 +47,17 @@ function makeProduct(id: string, price: number): Product {
 // ---------------------------------------------------------------------------
 
 describe('getTotalPrice', () => {
-  it('AC-0027: returns 0 for an empty wishlist', () => {
+  it('AC-004-003-001: returns 0 for an empty wishlist', () => {
     const total = getTotalPrice(makeWishlist([]), [makeProduct('prod-1', 10)]);
     expect(total).toBe(0);
   });
 
-  it('AC-0027: returns the price of a single item', () => {
+  it('AC-004-003-001: returns the price of a single item', () => {
     const total = getTotalPrice(makeWishlist(['prod-1']), [makeProduct('prod-1', 29.99)]);
     expect(total).toBe(29.99);
   });
 
-  it('AC-0027: sums prices of multiple items', () => {
+  it('AC-004-003-001: sums prices of multiple items', () => {
     const products = [makeProduct('prod-1', 89.99), makeProduct('prod-2', 24.99), makeProduct('prod-3', 14.99)];
     const total = getTotalPrice(makeWishlist(['prod-1', 'prod-2', 'prod-3']), products);
     expect(total).toBe(129.97);

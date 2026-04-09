@@ -3,7 +3,7 @@
 **Date:** 2026-04-05  
 **Status:** Approved  
 **Features:** Item Notes (#1), Already-in-Wishlist Indicator (#2), Demo Reset (#3), Wishlist Rename (#4)  
-**Epic:** EPIC-0007
+**Epic:** EPIC-007
 
 ---
 
@@ -46,7 +46,7 @@ interface BottomSheetInputProps {
 
 ---
 
-## Feature 1 — Item Notes (US-0016)
+## Feature 1 — Item Notes (US-007-001)
 
 ### Purpose
 
@@ -77,14 +77,14 @@ Reads the wishlist from AsyncStorage, finds the matching item by `productId`, se
 
 ### Acceptance Criteria
 
-- AC-0046: Owner can tap "+ Add note" on any item to open a bottom sheet input
-- AC-0047: Entering text and tapping Save persists the note via AsyncStorage
-- AC-0048: The note is shown as a subtitle below the item name in both owner and shared views
-- AC-0049: Owner can edit or clear an existing note by tapping it
+- AC-003-002-002: Owner can tap "+ Add note" on any item to open a bottom sheet input
+- AC-003-002-003: Entering text and tapping Save persists the note via AsyncStorage
+- AC-003-002-004: The note is shown as a subtitle below the item name in both owner and shared views
+- AC-007-001-001: Owner can edit or clear an existing note by tapping it
 
 ---
 
-## Feature 2 — Already-in-Wishlist Indicator (US-0017)
+## Feature 2 — Already-in-Wishlist Indicator (US-007-002)
 
 ### Purpose
 
@@ -114,17 +114,17 @@ In `app/(tabs)/catalog.tsx`:
 
 ### Product Detail Screen
 
-The detail screen already prevents duplicate adds via `addItem` duplicate guard (AC-0042). No additional changes needed on that screen — the catalog-level indicator is sufficient.
+The detail screen already prevents duplicate adds via `addItem` duplicate guard (AC-004-002-004). No additional changes needed on that screen — the catalog-level indicator is sufficient.
 
 ### Acceptance Criteria
 
-- AC-0050: Products already saved to any wishlist show a filled red heart badge on their catalog card
-- AC-0051: Saved products show a green "✓ Saved" pill instead of the add button
-- AC-0052: Indicator updates immediately after adding a product to a wishlist (context state drives re-render)
+- AC-007-002-001: Products already saved to any wishlist show a filled red heart badge on their catalog card
+- AC-007-002-002: Saved products show a green "✓ Saved" pill instead of the add button
+- AC-007-002-003: Indicator updates immediately after adding a product to a wishlist (context state drives re-render)
 
 ---
 
-## Feature 3 — Demo Reset (US-0018)
+## Feature 3 — Demo Reset (US-007-003)
 
 ### Purpose
 
@@ -155,14 +155,14 @@ After completion, the `WishlistContext` re-initializes via its existing `loadWis
 
 ### Acceptance Criteria
 
-- AC-0053: A "Reset demo data" button is visible on the login/user-select screen
-- AC-0054: Tapping it shows a confirmation dialog before any data is deleted
-- AC-0055: After confirming, all wishlists and recent scans are cleared from AsyncStorage
-- AC-0056: The app remains on the login screen after reset; no navigation side effects
+- AC-007-003-001: A "Reset demo data" button is visible on the login/user-select screen
+- AC-007-003-002: Tapping it shows a confirmation dialog before any data is deleted
+- AC-007-003-003: After confirming, all wishlists and recent scans are cleared from AsyncStorage
+- AC-007-003-004: The app remains on the login screen after reset; no navigation side effects
 
 ---
 
-## Feature 4 — Wishlist Rename (US-0019)
+## Feature 4 — Wishlist Rename (US-007-004)
 
 ### Purpose
 
@@ -186,16 +186,16 @@ WishlistContext exposes this as `renameWishlist(wishlistId, newName)` — update
 
 ### Acceptance Criteria
 
-- AC-0057: A pencil icon is visible next to the wishlist name in the detail header
-- AC-0058: Tapping the pencil opens a pre-filled bottom sheet input
-- AC-0059: Saving updates the wishlist name immediately in the header and list views
-- AC-0060: The save button is disabled when the name input is empty
+- AC-007-004-001: A pencil icon is visible next to the wishlist name in the detail header
+- AC-007-004-002: Tapping the pencil opens a pre-filled bottom sheet input
+- AC-007-004-003: Saving updates the wishlist name immediately in the header and list views
+- AC-007-004-004: The save button is disabled when the name input is empty
 
 ---
 
 ## Architecture Notes
 
-- `BottomSheetInput` is created first (TASK-0024) as it is a dependency for both Feature 1 and Feature 4
+- `BottomSheetInput` is created first (TASK-008-001-001) as it is a dependency for both Feature 1 and Feature 4
 - `wishlistService` and `WishlistContext` are extended incrementally — each feature adds one method
 - No new screens — all changes are additive to existing screens
 - No new dependencies required

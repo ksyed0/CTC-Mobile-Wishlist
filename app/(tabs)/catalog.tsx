@@ -20,7 +20,7 @@ export default function CatalogScreen() {
     [wishlists],
   );
 
-  /* BUG-0086: Search state — filter locally for real-time response */
+  /* BUG-086: Search state — filter locally for real-time response */
   const [searchQuery, setSearchQuery] = useState('');
 
   const displayedProducts = useMemo(() => {
@@ -39,7 +39,7 @@ export default function CatalogScreen() {
 
   return (
     <View style={styles.container}>
-      {/* BUG-0086: Search bar — AC-0015, AC-0016 */}
+      {/* BUG-086: Search bar — AC-002-003-001, AC-002-003-002 */}
       <View style={styles.searchBar}>
         <MaterialIcons name="search" size={20} color={colors.textSecondary} style={styles.searchIcon} />
         <TextInput
@@ -87,7 +87,7 @@ export default function CatalogScreen() {
         </ScrollView>
       </View>
 
-      {/* Product list — ProductCard with onPress → /product/[id] (AC-0011) */}
+      {/* Product list — ProductCard with onPress → /product/[id] (AC-002-001-003) */}
       <FlatList
         data={displayedProducts}
         keyExtractor={(item) => item.id}
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  /* BUG-0086: Search bar styles */
+  /* BUG-086: Search bar styles */
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
