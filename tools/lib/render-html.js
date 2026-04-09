@@ -1,5 +1,7 @@
 'use strict';
 
+const { buildSearchIndex } = require('./search-index');
+
 const esc = (s) =>
   String(s ?? '')
     .replace(/&/g, '&amp;')
@@ -101,7 +103,7 @@ function renderTopBar(data) {
         <div class="flex items-center gap-2 flex-wrap">
           <h1 class="topbar-title">${esc(data.projectName)}</h1>
           <button onclick="openAbout()" class="topbar-btn">About</button>
-          <button onclick="toggleTheme()" id="theme-toggle" class="topbar-btn" aria-label="Toggle dark/light mode"><span id="theme-icon">&#9788;</span></button>
+          <button onclick="toggleTheme()" id="theme-toggle" class="topbar-btn" aria-label="Toggle dark/light mode">☀️ Light</button>
         </div>
         <p class="topbar-tagline">${esc(data.tagline)}&nbsp;·&nbsp;Updated <span id="gen-time" data-iso="${genAt}"></span>&nbsp;·&nbsp;<code class="font-mono" style="font-size:10px">${esc(data.commitSha)}</code></p>
       </div>
@@ -158,9 +160,16 @@ function renderFilterBar(data) {
       </select>
     </span>
     <span id="fgrp-bug" class="hidden flex-wrap gap-2 flex">
+      <select id="f-bug-epic" onchange="applyFilters()" class="${sel}" aria-label="Filter bugs by epic">
+        <option value="">All Epics</option>${epicOptions}
+      </select>
       <select id="f-bug-status" onchange="applyFilters()" class="${sel}" aria-label="Filter bugs by status">
         <option value="">All Statuses</option>
         <option>Open</option><option>In Progress</option><option>Fixed</option>
+      </select>
+      <select id="f-bug-severity" onchange="applyFilters()" class="${sel}" aria-label="Filter bugs by severity">
+        <option value="">All Severities</option>
+        <option>Critical</option><option>High</option><option>Medium</option><option>Low</option>
       </select>
     </span>
     <input id="f-search" oninput="applyFilters()" type="text" placeholder="Search IDs, titles…"
@@ -1246,7 +1255,7 @@ function renderCostsTab(data, options = {}) {
     : '';
 
   return `
-  <div id="tab-costs" class="p-6 hidden tab-fill" role="tabpanel" aria-labelledby="tab-btn-costs">
+  <div id="tab-costs" class="p-6 hidden" role="tabpanel" aria-labelledby="tab-btn-costs">
     ${budgetSection}
     <div class="flex items-center justify-between mb-4 flex-shrink-0">
       <span class="text-sm text-slate-500 dark:text-slate-400">${data.stories.length} stories · ${data.bugs.length} bugs</span>
@@ -1348,7 +1357,7 @@ function renderBugsTab(data) {
   const renderBugRow = (bug) => {
     const epicId = storyEpicMap[bug.relatedStory] || '_ungrouped';
     return `
-    <tr id="bug-row-${esc(bug.id)}" class="bug-row border-t border-slate-100 dark:border-slate-700" data-status="${esc(bug.status)}" data-epic="${esc(epicId)}">
+    <tr id="bug-row-${esc(bug.id)}" class="bug-row border-t border-slate-100 dark:border-slate-700" data-status="${esc(bug.status)}" data-epic="${esc(epicId)}" data-severity="${esc(bug.severity)}">
       <td class="px-3 py-2 font-mono text-xs whitespace-nowrap dark:text-slate-200">${bug.id}</td>
       <td class="px-3 py-2 text-sm dark:text-slate-200">${esc(bug.title)}</td>
       <td class="px-3 py-2 text-center">${badge(bug.severity)}</td>
@@ -1362,7 +1371,7 @@ function renderBugsTab(data) {
   const renderBugCard = (bug) => {
     const epicId = storyEpicMap[bug.relatedStory] || '_ungrouped';
     return `
-    <div id="bug-card-${esc(bug.id)}" class="bug-row bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 flex flex-col gap-2" data-status="${esc(bug.status)}" data-epic="${esc(epicId)}">
+    <div id="bug-card-${esc(bug.id)}" class="bug-row story-card-hover bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 flex flex-col gap-2" data-status="${esc(bug.status)}" data-epic="${esc(epicId)}" data-severity="${esc(bug.severity)}">
       <div class="flex items-center gap-2 flex-wrap">
         <span class="font-mono text-xs text-slate-500 whitespace-nowrap">${bug.id}</span>
         ${badge(bug.severity)} ${badge(bug.status)}
@@ -1514,7 +1523,7 @@ function renderLessonsTab(data) {
   const lessonEpicOrder = [...new Set(lessonEpicIds)];
 
   const renderLessonRow = (l) => `
-  <tr id="lesson-col-${l.id}" class="border-t border-slate-100 dark:border-slate-700 align-top">
+  <tr id="lesson-col-${l.id}" class="lesson-row border-t border-slate-100 dark:border-slate-700 align-top">
     <td class="px-3 py-3 font-mono text-xs text-blue-600 dark:text-blue-400 whitespace-nowrap">${l.id}</td>
     <td class="px-3 py-3 text-sm text-slate-700 dark:text-slate-200">${esc(l.rule)}</td>
     <td class="px-3 py-3 text-sm text-slate-500 dark:text-slate-400 italic">${esc(l.context)}</td>
@@ -1523,7 +1532,7 @@ function renderLessonsTab(data) {
   </tr>`;
 
   const renderLessonCard = (l) => `
-  <div id="lesson-card-${l.id}" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 flex flex-col gap-2">
+  <div id="lesson-card-${l.id}" class="lesson-row story-card-hover bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 flex flex-col gap-2">
     <div class="flex items-center gap-2">
       <span class="font-mono text-xs font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap flex-shrink-0">${l.id}</span>
       <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">${esc(l.title)}</span>
@@ -1676,6 +1685,8 @@ function renderScripts(data, options = {}) {
 
   const VALID_TABS = ['hierarchy','kanban','traceability','charts','trends','costs','bugs','lessons'];
 
+  const SEARCH_INDEX = ${JSON.stringify(buildSearchIndex(data)).replace(/<\/script>/gi, '<\\/script>')};
+
   function downloadBudgetCSV() {
     const csv = ${JSON.stringify(options.budgetCSV || '')};
     const blob = new Blob([csv], { type: 'text/csv' });
@@ -1693,7 +1704,8 @@ function renderScripts(data, options = {}) {
     const bugGrp = document.getElementById('fgrp-bug');
     const showStory = name === 'hierarchy' || name === 'kanban';
     const showBug = name === 'bugs';
-    bar.classList.toggle('hidden', !showStory && !showBug);
+    const showSearch = name === 'traceability' || name === 'lessons';
+    bar.classList.toggle('hidden', !showStory && !showBug && !showSearch);
     storyGrp.classList.toggle('hidden', !showStory);
     bugGrp.classList.toggle('hidden', !showBug);
   }
@@ -1765,13 +1777,17 @@ function renderScripts(data, options = {}) {
     const epicEl = document.getElementById('f-epic');
     const statusEl = document.getElementById('f-status');
     const priorityEl = document.getElementById('f-priority');
+    const bugEpicEl = document.getElementById('f-bug-epic');
     const bugStatusEl = document.getElementById('f-bug-status');
+    const bugSeverityEl = document.getElementById('f-bug-severity');
     const searchEl = document.getElementById('f-search');
     if (!epicEl || !statusEl || !priorityEl || !bugStatusEl || !searchEl) return;
     const epic = epicEl.value;
     const status = statusEl.value;
     const priority = priorityEl.value;
+    const bugEpic = bugEpicEl ? bugEpicEl.value : '';
     const bugStatus = bugStatusEl.value;
+    const bugSeverity = bugSeverityEl ? bugSeverityEl.value : '';
     const search = searchEl.value.toLowerCase();
     document.querySelectorAll('.story-row').forEach(row => {
       const hide =
@@ -1783,11 +1799,22 @@ function renderScripts(data, options = {}) {
     });
     document.querySelectorAll('.bug-row').forEach(row => {
       const rowEpic = row.dataset.epic || '_ungrouped';
+      const rowSeverity = row.dataset.severity || '';
       const hide =
-        (epic && rowEpic !== epic) ||
+        (bugEpic && rowEpic !== bugEpic) ||
         (bugStatus && row.dataset.status !== bugStatus) ||
+        (bugSeverity && rowSeverity !== bugSeverity) ||
         (search && !row.innerText.toLowerCase().includes(search));
       row.style.display = hide ? 'none' : '';
+    });
+    document.querySelectorAll('.lesson-row').forEach(row => {
+      const hide = search && !row.innerText.toLowerCase().includes(search);
+      row.style.display = hide ? 'none' : '';
+    });
+    document.querySelectorAll('[data-trace-epic]').forEach(row => {
+      const hide = search && !row.innerText.toLowerCase().includes(search);
+      if (hide) row.classList.add('hidden');
+      else row.classList.remove('hidden');
     });
     document.querySelectorAll('.epic-block').forEach(block => {
       // Card view: story rows live in a sibling div (epic-cards-*), not inside .epic-block
@@ -1825,10 +1852,10 @@ function renderScripts(data, options = {}) {
   }
 
   function clearFilters() {
-    ['f-epic','f-status','f-priority','f-bug-status'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    ['f-epic','f-status','f-priority','f-bug-epic','f-bug-status','f-bug-severity'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     const searchEl2 = document.getElementById('f-search');
     if (searchEl2) searchEl2.value = '';
-    ['f-epic','f-status','f-priority','f-bug-status','f-search'].forEach(k => localStorage.removeItem(k));
+    ['f-epic','f-status','f-priority','f-bug-epic','f-bug-status','f-bug-severity','f-search'].forEach(k => localStorage.removeItem(k));
     applyFilters();
   }
 
@@ -1879,8 +1906,8 @@ function renderScripts(data, options = {}) {
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    var icon = document.getElementById('theme-icon');
-    if (icon) icon.textContent = document.documentElement.classList.contains('dark') ? '\u2600' : '\u263e';
+    var themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) themeBtn.textContent = document.documentElement.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
 
     initActivityPanel();
 
@@ -1937,8 +1964,8 @@ function renderScripts(data, options = {}) {
     var html = document.documentElement;
     var isDark = html.classList.toggle('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    var icon = document.getElementById('theme-icon');
-    if (icon) icon.textContent = isDark ? '\u2600' : '\u263e';
+    var themeBtn2 = document.getElementById('theme-toggle');
+    if (themeBtn2) themeBtn2.textContent = isDark ? '☀️ Light' : '🌙 Dark';
     updateChartTheme();
   }
 
@@ -2021,6 +2048,7 @@ function renderPrintCSS() {
   .tab-fill .scroll-table { flex: 1; min-height: 0; max-height: none; }
   .scroll-table { overflow: auto; max-height: calc(100vh - var(--sticky-top, 100px) - 3rem); }
   .scroll-table thead th { position: sticky; top: 0; z-index: 10; background-color: var(--clr-header-bg); color: var(--clr-header-text); }
+  #tab-costs .scroll-table { max-height: none; overflow: visible; }
   /* Kanban: Epic swimlane grid */
   .ksw-outer { overflow: auto; height: calc(100vh - var(--sticky-top, 100px) - 1rem); padding: 16px; }
   .ksw-board { min-width: calc(160px + 5 * 200px); }
@@ -2090,8 +2118,8 @@ function renderHtml(data, options = {}) {
     .topbar-project { flex: 1; min-width: 0; }
     .topbar-title { font-size: 1rem; font-weight: 700; color: #ffffff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .topbar-tagline { font-size: 11px; color: rgba(255,255,255,0.72); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; }
-    .topbar-btn { background: none; border: 1px solid rgba(255,255,255,0.35); color: rgba(255,255,255,0.8); border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; transition: color 150ms, border-color 150ms; }
-    .topbar-btn:hover { color: #ffffff; border-color: rgba(255,255,255,0.65); }
+    .topbar-btn { background: rgba(255,255,255,0.2); border: none; border-radius: 20px; padding: 6px 14px; font-size: 13px; color: #fff; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-flex; align-items: center; }
+    .topbar-btn:hover { background: rgba(255,255,255,0.35); color: #ffffff; }
 
     /* Glassmorphic stat tiles */
     .topbar-tiles { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
