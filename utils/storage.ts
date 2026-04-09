@@ -25,6 +25,7 @@ export async function setItem<T>(key: string, value: T): Promise<void> {
     await AsyncStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
     console.error(`[Storage] Error writing key "${key}":`, error);
+    throw error;
   }
 }
 
@@ -33,6 +34,7 @@ export async function removeItem(key: string): Promise<void> {
     await AsyncStorage.removeItem(key);
   } catch (error) {
     console.error(`[Storage] Error removing key "${key}":`, error);
+    throw error;
   }
 }
 

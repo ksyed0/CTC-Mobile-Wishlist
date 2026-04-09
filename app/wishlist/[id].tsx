@@ -90,39 +90,60 @@ export default function WishlistDetailScreen() {
 
   async function handleNoteSave(note: string) {
     if (!wishlist || !noteSheet) return;
-    await updateItemNote(wishlist.id, noteSheet.productId, note);
-    const updated = await getWishlistById(wishlist.id);
-    setWishlist(updated);
-    setNoteSheet(null);
+    try {
+      await updateItemNote(wishlist.id, noteSheet.productId, note);
+      const updated = await getWishlistById(wishlist.id);
+      setWishlist(updated);
+      setNoteSheet(null);
+    } catch {
+      showToast('Could not save note. Please try again.', 'error');
+    }
   }
 
   async function handleRenameSave(newName: string) {
     if (!wishlist || !newName.trim()) return;
-    await renameWishlist(wishlist.id, newName);
-    setWishlist((prev) => (prev ? { ...prev, name: newName.trim() } : prev));
-    setShowRenameSheet(false);
+    try {
+      await renameWishlist(wishlist.id, newName);
+      setWishlist((prev) => (prev ? { ...prev, name: newName.trim() } : prev));
+      setShowRenameSheet(false);
+    } catch {
+      showToast('Could not rename wishlist. Please try again.', 'error');
+    }
   }
 
   // AC-007-006-001/66/67/68: claimer reveal toggle (owner-only)
   async function handleToggleClaimers(value: boolean) {
     if (!wishlist) return;
-    await setShowClaimers(wishlist.id, value);
-    setWishlist((prev) => (prev ? { ...prev, showClaimers: value } : prev));
+    try {
+      await setShowClaimers(wishlist.id, value);
+      setWishlist((prev) => (prev ? { ...prev, showClaimers: value } : prev));
+    } catch {
+      showToast('Could not update setting. Please try again.', 'error');
+    }
   }
 
   // US-007-009: privacy level picker
   async function handlePrivacyChange(privacy: 'private' | 'contacts' | 'public') {
     if (!wishlist) return;
-    await setPrivacy(wishlist.id, privacy);
-    setWishlist((prev) => (prev ? { ...prev, privacy } : prev));
-    setShowPrivacySheet(false);
+    try {
+      await setPrivacy(wishlist.id, privacy);
+      setWishlist((prev) => (prev ? { ...prev, privacy } : prev));
+      setShowPrivacySheet(false);
+    } catch {
+      showToast('Could not update privacy. Please try again.', 'error');
+    }
   }
 
   // US-007-009: copy shareable link to clipboard
-  function handleCopyLink() {
+  async function handleCopyLink() {
     if (!wishlist) return;
-    const link = `ctcwishlist://shared/${wishlist.id}`;
-    showToast('Link copied to clipboard', 'info');
+    try {
+      const { setStringAsync } = await import('expo-clipboard');
+      await setStringAsync(`ctcwishlist://shared/${wishlist.id}`);
+      showToast('Link copied to clipboard', 'info');
+    } catch {
+      showToast('Could not copy link. Please try again.', 'error');
+    }
   }
 
   if (isLoading) {

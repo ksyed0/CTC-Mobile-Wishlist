@@ -265,11 +265,13 @@ function updateIdRegistry(storyMap, acMap, taskMap, tcMap, bugMap, lMap) {
   const lastTc = [...tcMap.values()].reduce((acc, v) => (v > acc ? v : acc), '');
   const nextTc = lastTc ? lastTc.replace(/\d+$/, (n) => pad(parseInt(n) + 1, 3)) : 'TC-001-001-001';
 
-  const maxBug = Math.max(...[...bugMap.keys()].map((k) => parseInt(k.slice(4))));
+  const bugNums = [...bugMap.keys()].map((k) => parseInt(k.slice(4)));
+  const maxBug = bugNums.length > 0 ? Math.max(...bugNums) : 0;
   const lastBug = `BUG-${pad(maxBug, 3)}`;
   const nextBug = `BUG-${pad(maxBug + 1, 3)}`;
 
-  const maxL = Math.max(...[...lMap.keys()].map((k) => parseInt(k.slice(2))));
+  const lNums = [...lMap.keys()].map((k) => parseInt(k.slice(2)));
+  const maxL = lNums.length > 0 ? Math.max(...lNums) : 0;
   const lastL = `L-${pad(maxL, 3)}`;
   const nextL = `L-${pad(maxL + 1, 3)}`;
 
@@ -314,8 +316,8 @@ let allContent = releasePlanMd + '\n' + testCasesMd + '\n';
 for (const f of targetFiles) {
   try {
     allContent += fs.readFileSync(f, 'utf8') + '\n';
-  } catch {
-    /* skip unreadable files */
+  } catch (e) {
+    console.warn(`[renumber] Could not read ${f}:`, e.message);
   }
 }
 

@@ -29,7 +29,7 @@ export default function SharedWishlistScreen() {
         setIsLoading(false);
         // AC-007-005-002: mark as seen so the tab badge clears
         if (w) {
-          markWishlistSeen(id);
+          markWishlistSeen(id).catch(() => {});
         }
       });
     }
