@@ -4,7 +4,7 @@ import { Product } from '../types/product';
 /**
  * Calculate the total price of all items in a wishlist.
  *
- * AC-0027: The total price is the sum of the prices of every product whose
+ * AC-004-003-001: The total price is the sum of the prices of every product whose
  * productId appears in the wishlist.  Products not found in the catalogue
  * contribute $0 so a partial catalogue never crashes the calculation.
  *

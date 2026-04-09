@@ -4,19 +4,19 @@ const { computeBudgetMetrics, generateBudgetCSV } = require('../../tools/lib/bud
 describe('computeBudgetMetrics', () => {
   const baseData = {
     epics: [
-      { id: 'EPIC-0001', title: 'Test Epic 1' },
-      { id: 'EPIC-0002', title: 'Test Epic 2' },
+      { id: 'EPIC-001', title: 'Test Epic 1' },
+      { id: 'EPIC-002', title: 'Test Epic 2' },
     ],
     stories: [
-      { id: 'US-0001', epicId: 'EPIC-0001', status: 'Done', estimate: 'M' },
-      { id: 'US-0002', epicId: 'EPIC-0001', status: 'In Progress', estimate: 'S' },
-      { id: 'US-0003', epicId: 'EPIC-0002', status: 'Done', estimate: 'L' },
+      { id: 'US-001-001', epicId: 'EPIC-001', status: 'Done', estimate: 'M' },
+      { id: 'US-001-002', epicId: 'EPIC-001', status: 'In Progress', estimate: 'S' },
+      { id: 'US-002-001', epicId: 'EPIC-002', status: 'Done', estimate: 'L' },
     ],
     costs: {
       _totals: { costUsd: 50, inputTokens: 1000, outputTokens: 500 },
-      'US-0001': { costUsd: 30, inputTokens: 600, outputTokens: 300 },
-      'US-0002': { costUsd: 10, inputTokens: 200, outputTokens: 100 },
-      'US-0003': { costUsd: 10, inputTokens: 200, outputTokens: 100 },
+      'US-001-001': { costUsd: 30, inputTokens: 600, outputTokens: 300 },
+      'US-001-002': { costUsd: 10, inputTokens: 200, outputTokens: 100 },
+      'US-002-001': { costUsd: 10, inputTokens: 200, outputTokens: 100 },
     },
   };
 
@@ -45,12 +45,12 @@ describe('computeBudgetMetrics', () => {
     const result = computeBudgetMetrics(
       baseData,
       {
-        budget: { totalUsd: 100, byEpic: { 'EPIC-0001': 50, 'EPIC-0002': 30 } },
+        budget: { totalUsd: 100, byEpic: { 'EPIC-001': 50, 'EPIC-002': 30 } },
       },
       [],
     );
     expect(result.epicBudgets).toHaveLength(2);
-    const epic1 = result.epicBudgets.find((e) => e.id === 'EPIC-0001');
+    const epic1 = result.epicBudgets.find((e) => e.id === 'EPIC-001');
     expect(epic1.budget).toBe(50);
     expect(epic1.spent).toBe(40);
     expect(epic1.remaining).toBe(10);
@@ -84,18 +84,18 @@ describe('generateBudgetCSV', () => {
 
   it('generates CSV with budget data', () => {
     const data = {
-      epics: [{ id: 'EPIC-0001', title: 'Test Epic' }],
+      epics: [{ id: 'EPIC-001', title: 'Test Epic' }],
       stories: [],
       costs: {},
     };
     const metrics = {
       burnRate: 1.5,
       daysRemaining: 30,
-      epicBudgets: [{ id: 'EPIC-0001', title: 'Test Epic', budget: 100, spent: 50, remaining: 50, percentUsed: 50 }],
+      epicBudgets: [{ id: 'EPIC-001', title: 'Test Epic', budget: 100, spent: 50, remaining: 50, percentUsed: 50 }],
     };
     const result = generateBudgetCSV(data, metrics, []);
     expect(result).toContain('Date,Epic ID,Epic Title,Budget,Spent,Remaining,% Used,Burn Rate,Projected Exhaustion');
-    expect(result).toContain('EPIC-0001');
+    expect(result).toContain('EPIC-001');
     expect(result).toContain('50.00');
     expect(result).toContain('30 days');
   });

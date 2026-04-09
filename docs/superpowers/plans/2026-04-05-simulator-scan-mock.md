@@ -18,7 +18,7 @@
 | `components/SimulatorScanView.tsx`           | Create | WebView + loading state + injected tap handler; exports `extractBarcodeFromMeta` for testing |
 | `app/(tabs)/scan.tsx`                        | Modify | Add `isSimulator` branch to swap `CameraView` for `SimulatorScanView`                        |
 | `tests/components/SimulatorScanView.test.ts` | Create | Unit tests for `extractBarcodeFromMeta` pure function                                        |
-| `docs/RELEASE_PLAN.md`                       | Modify | Add US-0015, TASK-0022, TASK-0023 under Epic 3                                               |
+| `docs/RELEASE_PLAN.md`                       | Modify | Add US-003-002, TASK-003-002-001, TASK-003-002-002 under Epic 3                              |
 
 ---
 
@@ -440,7 +440,7 @@ git commit -m "feat(scan): show SimulatorScanView on simulator, real camera on p
 
 - Modify: `docs/RELEASE_PLAN.md`
 
-- [ ] **Step 1: Add US-0015 and its tasks under Epic 3, after TASK-0011**
+- [ ] **Step 1: Add US-003-002 and its tasks under Epic 3, after TASK-003-001-002**
 
 Find this line in `docs/RELEASE_PLAN.md`:
 
@@ -454,34 +454,34 @@ Insert before it:
 
 ````
 ```
-US-0015 (EPIC-0003): As a demo presenter, I want the scan screen to show a tappable product catalog when running on a simulator, so that I can demonstrate the scan flow without a physical device or real barcode.
+US-003-002 (EPIC-003): As a demo presenter, I want the scan screen to show a tappable product catalog when running on a simulator, so that I can demonstrate the scan flow without a physical device or real barcode.
 Priority: High
 Estimate: M
 Status: Done
-Branch: feature/US-0015-simulator-scan-mock
-Dependencies: US-0006
+Branch: feature/US-003-002-simulator-scan-mock
+Dependencies: US-003-001
 Acceptance Criteria:
-  - [ ] AC-0045: On a physical device, scan screen behaves exactly as before (camera + live barcode scanning)
-  - [ ] AC-0046: On a simulator (Device.isDevice === false), the camera view is replaced with a scrollable WebView rendering data/product-catalog-print.html
-  - [ ] AC-0047: Each product card in the WebView is tappable; tapping fires handleBarcode() with the card's barcode string
-  - [ ] AC-0048: A simulator-mode banner is shown at the top of the scan screen
+  - [ ] AC-003-002-001: On a physical device, scan screen behaves exactly as before (camera + live barcode scanning)
+  - [ ] AC-003-002-002: On a simulator (Device.isDevice === false), the camera view is replaced with a scrollable WebView rendering data/product-catalog-print.html
+  - [ ] AC-003-002-003: Each product card in the WebView is tappable; tapping fires handleBarcode() with the card's barcode string
+  - [ ] AC-003-002-004: A simulator-mode banner is shown at the top of the scan screen
 ```
 
 ```
-TASK-0022 (US-0015): Build SimulatorScanView component — WebView loading product-catalog-print.html with injected tap-to-scan click handlers
+TASK-003-002-001 (US-003-002): Build SimulatorScanView component — WebView loading product-catalog-print.html with injected tap-to-scan click handlers
 Type: Dev
 Assignee: Agent
 Status: Done
-Branch: feature/US-0015-simulator-scan-mock
+Branch: feature/US-003-002-simulator-scan-mock
 Notes: extractBarcodeFromMeta reads barcode from .card-meta text; expo-asset + expo-file-system load HTML; script injected before </body>
 ```
 
 ```
-TASK-0023 (US-0015): Wire Device.isDevice simulator detection into scan.tsx
+TASK-003-002-002 (US-003-002): Wire Device.isDevice simulator detection into scan.tsx
 Type: Dev
 Assignee: Agent
 Status: Done
-Branch: feature/US-0015-simulator-scan-mock
+Branch: feature/US-003-002-simulator-scan-mock
 Notes: isSimulator = !Device.isDevice; renders SimulatorScanView in place of CameraView on simulators; physical device path unchanged
 ```
 
@@ -492,7 +492,7 @@ Notes: isSimulator = !Device.isDevice; renders SimulatorScanView in place of Cam
 
 ```bash
 git add docs/RELEASE_PLAN.md
-git commit -m "docs: add US-0015 simulator scan mock to release plan"
+git commit -m "docs: add US-003-002 simulator scan mock to release plan"
 ```
 
 ---

@@ -43,7 +43,7 @@ describe('saveSnapshot', () => {
   });
 
   it('saves a valid JSON file', () => {
-    const data = { stories: [{ id: 'US-0001', status: 'Done' }] };
+    const data = { stories: [{ id: 'US-001-001', status: 'Done' }] };
     const result = saveSnapshot(data, { historyDir: testDir, commit: 'abc123' });
     expect(result.filename).toMatch(SNAPSHOT_REGEX);
     expect(fs.existsSync(result.filepath)).toBe(true);
@@ -73,7 +73,7 @@ describe('loadSnapshots', () => {
       JSON.stringify({
         generatedAt: '2026-03-01T10:00:00Z',
         commit: 'aaa',
-        data: { stories: [{ id: 'US-0001', status: 'Done' }], costs: {}, coverage: {} },
+        data: { stories: [{ id: 'US-001-001', status: 'Done' }], costs: {}, coverage: {} },
       }),
     );
     fs.writeFileSync(
@@ -83,8 +83,8 @@ describe('loadSnapshots', () => {
         commit: 'bbb',
         data: {
           stories: [
-            { id: 'US-0001', status: 'Done' },
-            { id: 'US-0002', status: 'Done' },
+            { id: 'US-001-001', status: 'Done' },
+            { id: 'US-001-002', status: 'Done' },
           ],
           costs: {},
           coverage: {},
@@ -162,11 +162,15 @@ describe('extractTrends', () => {
     const snaps = [
       {
         generatedAt: '2026-03-01T10:00:00Z',
-        data: { stories: [], costs: { 'US-0001': { costUsd: 10.5 } }, coverage: {} },
+        data: { stories: [], costs: { 'US-001-001': { costUsd: 10.5 } }, coverage: {} },
       },
       {
         generatedAt: '2026-03-02T10:00:00Z',
-        data: { stories: [], costs: { 'US-0001': { costUsd: 10.5 }, 'US-0002': { costUsd: 5.25 } }, coverage: {} },
+        data: {
+          stories: [],
+          costs: { 'US-001-001': { costUsd: 10.5 }, 'US-001-002': { costUsd: 5.25 } },
+          coverage: {},
+        },
       },
     ];
     const trends = extractTrends(snaps);
@@ -256,15 +260,15 @@ describe('extractTrends', () => {
     const snaps = [
       {
         generatedAt: '2026-03-01T10:00:00Z',
-        data: { stories: [], costs: { 'US-0001': { inputTokens: 1000, outputTokens: 500 } }, coverage: {} },
+        data: { stories: [], costs: { 'US-001-001': { inputTokens: 1000, outputTokens: 500 } }, coverage: {} },
       },
       {
         generatedAt: '2026-03-02T10:00:00Z',
         data: {
           stories: [],
           costs: {
-            'US-0001': { inputTokens: 1000, outputTokens: 500 },
-            'US-0002': { inputTokens: 2000, outputTokens: 800 },
+            'US-001-001': { inputTokens: 1000, outputTokens: 500 },
+            'US-001-002': { inputTokens: 2000, outputTokens: 800 },
           },
           coverage: {},
         },

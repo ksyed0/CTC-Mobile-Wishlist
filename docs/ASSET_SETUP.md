@@ -102,7 +102,7 @@ Landscape-style images used in the active agent spotlight banner. These are the 
 | **Location**      | `src/assets/splash.png`                       |
 | **Format**        | PNG                                           |
 | **Purpose**       | App launch screen with Canadian Tire branding |
-| **Referenced by** | AC-0004, TC-0037                              |
+| **Referenced by** | AC-001-001-004, TC-001-001-004                |
 
 Standard Expo splash screen. Configure dimensions in `app.json`.
 
@@ -118,13 +118,13 @@ Standard Expo app icon. Recommended 1024×1024 px for store submission.
 
 ### Mock Product Images
 
-| Property          | Value                                |
-| ----------------- | ------------------------------------ |
-| **Location**      | `src/assets/images/products/`        |
-| **Format**        | PNG or JPG                           |
-| **Size**          | 300×300 px per image                 |
-| **Count**         | At least 20 (per AC-0005, AC-0006)   |
-| **Referenced by** | AC-0005, AC-0006, TC-0038, TASK-0005 |
+| Property          | Value                                                            |
+| ----------------- | ---------------------------------------------------------------- |
+| **Location**      | `src/assets/images/products/`                                    |
+| **Format**        | PNG or JPG                                                       |
+| **Size**          | 300×300 px per image                                             |
+| **Count**         | At least 20 (per AC-001-002-001, AC-001-002-002)                 |
+| **Referenced by** | AC-001-002-001, AC-001-002-002, TC-001-002-003, TASK-001-002-002 |
 
 Bundled locally — no network requests. Used in product catalog cards and detail screens.
 

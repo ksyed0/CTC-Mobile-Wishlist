@@ -1,9 +1,9 @@
 # TEST_CASES.md — Fixture
 
-TC-0001: File picker opens device file system
-Related Story: US-0001
-Related Task: TASK-0001
-Related AC: AC-0001
+TC-001-001-001: File picker opens device file system
+Related Story: US-001-001
+Related Task: TASK-001-001-001
+Related AC: AC-001-001-001
 Type: Functional
 Preconditions: App running on simulator
 Steps:

@@ -1,5 +1,5 @@
 /**
- * EmptyState component tests — BUG-0073
+ * EmptyState component tests — BUG-073
  *
  * Validates the props contract and conditional rendering logic for EmptyState.
  */

@@ -2,16 +2,16 @@
 const { renderHtml } = require('../../tools/lib/render-html');
 
 const sampleData = {
-  epics: [{ id: 'EPIC-0001', title: 'Code Editing', status: 'In Progress', releaseTarget: 'MVP', dependencies: [] }],
+  epics: [{ id: 'EPIC-001', title: 'Code Editing', status: 'In Progress', releaseTarget: 'MVP', dependencies: [] }],
   stories: [
     {
-      id: 'US-0001',
-      epicId: 'EPIC-0001',
+      id: 'US-001-001',
+      epicId: 'EPIC-001',
       title: 'Open a file',
       priority: 'P0',
       estimate: 'M',
       status: 'In Progress',
-      branch: 'feature/US-0001',
+      branch: 'feature/US-001-001',
       acs: [],
       dependencies: [],
     },
@@ -21,10 +21,10 @@ const sampleData = {
   bugs: [],
   lessons: [],
   costs: {
-    'US-0001': { projectedUsd: 800, aiCostUsd: 0.47, inputTokens: 50000, outputTokens: 14000 },
+    'US-001-001': { projectedUsd: 800, aiCostUsd: 0.47, inputTokens: 50000, outputTokens: 14000 },
     _totals: { costUsd: 0.89, inputTokens: 95000, outputTokens: 26000 },
   },
-  atRisk: { 'US-0001': { missingTCs: true, noBranch: false, failedTCNoBug: false, isAtRisk: true } },
+  atRisk: { 'US-001-001': { missingTCs: true, noBranch: false, failedTCNoBug: false, isAtRisk: true } },
   coverage: { lines: 84.5, overall: 81.0, meetsTarget: true },
   recentActivity: [{ date: '2026-03-10', summary: 'Implemented FileSystemBridge' }],
   generatedAt: '2026-03-10T12:00:00Z',
@@ -48,7 +48,7 @@ describe('renderHtml', () => {
   it('includes commit SHA', () => expect(html).toMatch(/abc1234/));
   it('includes total projected cost', () => expect(html).toMatch(/\$800/));
   it('includes coverage percent', () => expect(html).toMatch(/81/));
-  it('includes epic filter option', () => expect(html).toMatch(/EPIC-0001/));
+  it('includes epic filter option', () => expect(html).toMatch(/EPIC-001/));
   it('includes all 7 tabs', () => {
     expect(html).toMatch(/Hierarchy/);
     expect(html).toMatch(/Kanban/);
@@ -67,18 +67,18 @@ describe('renderHtml — bugs tab', () => {
       ...sampleData,
       bugs: [
         {
-          id: 'BUG-0001',
+          id: 'BUG-001',
           title: 'Crash',
           severity: 'High',
           status: 'Open',
-          relatedStory: 'US-0001',
-          fixBranch: 'bugfix/BUG-0001',
+          relatedStory: 'US-001-001',
+          fixBranch: 'bugfix/BUG-001',
           lessonEncoded: 'Yes',
         },
       ],
     };
     const html = renderHtml(dataWithBug);
-    expect(html).toMatch(/BUG-0001/);
+    expect(html).toMatch(/BUG-001/);
     expect(html).toMatch(/Crash/);
   });
 });
@@ -89,9 +89,9 @@ describe('renderHtml — traceability tab', () => {
       ...sampleData,
       testCases: [
         {
-          id: 'TC-0001',
-          relatedStory: 'US-0001',
-          relatedAC: 'AC-0001',
+          id: 'TC-001-001-001',
+          relatedStory: 'US-001-001',
+          relatedAC: 'AC-001-001-001',
           status: 'Pass',
           defect: 'None',
           title: 'Test',
@@ -100,7 +100,7 @@ describe('renderHtml — traceability tab', () => {
       ],
     };
     const html = renderHtml(dataWithTCs);
-    expect(html).toMatch(/TC-0001/);
+    expect(html).toMatch(/TC-001-001-001/);
     expect(html).toMatch(/Not linked/);
   });
 });
@@ -152,7 +152,7 @@ describe('renderHtml — story with no risk', () => {
   it('does not render at-risk badge for safe story', () => {
     const dataNoRisk = {
       ...sampleData,
-      atRisk: { 'US-0001': { missingTCs: false, noBranch: false, failedTCNoBug: false, isAtRisk: false } },
+      atRisk: { 'US-001-001': { missingTCs: false, noBranch: false, failedTCNoBug: false, isAtRisk: false } },
     };
     const html = renderHtml(dataNoRisk);
     expect(html).not.toMatch(/⚠ At Risk/);
@@ -163,12 +163,12 @@ describe('renderHtml — story with ACs', () => {
   it('renders AC items with linked TC', () => {
     const dataWithACs = {
       ...sampleData,
-      stories: [{ ...sampleData.stories[0], acs: [{ id: 'AC-0001', text: 'File picker opens', done: false }] }],
+      stories: [{ ...sampleData.stories[0], acs: [{ id: 'AC-001-001-001', text: 'File picker opens', done: false }] }],
       testCases: [
         {
-          id: 'TC-0001',
-          relatedStory: 'US-0001',
-          relatedAC: 'AC-0001',
+          id: 'TC-001-001-001',
+          relatedStory: 'US-001-001',
+          relatedAC: 'AC-001-001-001',
           status: 'Pass',
           defect: 'None',
           title: 'Test',
@@ -177,18 +177,18 @@ describe('renderHtml — story with ACs', () => {
       ],
     };
     const html = renderHtml(dataWithACs);
-    expect(html).toMatch(/AC-0001/);
-    expect(html).toMatch(/TC-0001/);
+    expect(html).toMatch(/AC-001-001-001/);
+    expect(html).toMatch(/TC-001-001-001/);
   });
 
   it('renders AC items without linked TC', () => {
     const dataWithACs = {
       ...sampleData,
-      stories: [{ ...sampleData.stories[0], acs: [{ id: 'AC-0002', text: 'No TC yet', done: true }] }],
+      stories: [{ ...sampleData.stories[0], acs: [{ id: 'AC-001-001-002', text: 'No TC yet', done: true }] }],
       testCases: [],
     };
     const html = renderHtml(dataWithACs);
-    expect(html).toMatch(/AC-0002/);
+    expect(html).toMatch(/AC-001-001-002/);
     expect(html).toMatch(/No TC yet/);
   });
 });
@@ -206,7 +206,7 @@ describe('renderHtml — badge fallback', () => {
     const dataUnknown = {
       ...sampleData,
       stories: [{ ...sampleData.stories[0], status: 'UNKNOWN_STATUS', priority: 'P3' }],
-      atRisk: { 'US-0001': { missingTCs: false, noBranch: false, failedTCNoBug: false, isAtRisk: false } },
+      atRisk: { 'US-001-001': { missingTCs: false, noBranch: false, failedTCNoBug: false, isAtRisk: false } },
     };
     const html = renderHtml(dataUnknown);
     expect(html).toMatch(/border-\[#475569\].*bg-\[#0f1520\]/s);
@@ -217,7 +217,7 @@ describe('renderHtml — epic with no stories', () => {
   it('renders no stories message for empty epic', () => {
     const dataNoStories = {
       ...sampleData,
-      epics: [{ id: 'EPIC-0002', title: 'Empty Epic', status: 'Planned', releaseTarget: 'v1', dependencies: [] }],
+      epics: [{ id: 'EPIC-002', title: 'Empty Epic', status: 'Planned', releaseTarget: 'v1', dependencies: [] }],
       stories: [],
       costs: { _totals: { costUsd: 0, inputTokens: 0, outputTokens: 0 } },
       atRisk: {},
@@ -232,7 +232,7 @@ describe('renderHtml — done story in kanban', () => {
     const dataDone = {
       ...sampleData,
       stories: [{ ...sampleData.stories[0], status: 'Done' }],
-      atRisk: { 'US-0001': { missingTCs: false, noBranch: false, failedTCNoBug: false, isAtRisk: false } },
+      atRisk: { 'US-001-001': { missingTCs: false, noBranch: false, failedTCNoBug: false, isAtRisk: false } },
     };
     const html = renderHtml(dataDone);
     expect(html).toMatch(/100%/);
@@ -245,11 +245,11 @@ describe('renderHtml — traceability with Fail TC', () => {
       ...sampleData,
       testCases: [
         {
-          id: 'TC-0002',
-          relatedStory: 'US-0001',
-          relatedAC: 'AC-0001',
+          id: 'TC-001-001-002',
+          relatedStory: 'US-001-001',
+          relatedAC: 'AC-001-001-001',
           status: 'Fail',
-          defect: 'BUG-0001',
+          defect: 'BUG-001',
           title: 'Fail test',
           type: 'Functional',
         },
@@ -264,7 +264,7 @@ describe('renderHtml — all three risk flags', () => {
   it('renders all risk reasons in title', () => {
     const dataAllRisks = {
       ...sampleData,
-      atRisk: { 'US-0001': { missingTCs: true, noBranch: true, failedTCNoBug: true, isAtRisk: true } },
+      atRisk: { 'US-001-001': { missingTCs: true, noBranch: true, failedTCNoBug: true, isAtRisk: true } },
     };
     const html = renderHtml(dataAllRisks);
     expect(html).toMatch(/Missing TCs/);
@@ -278,7 +278,7 @@ describe('renderHtml — blocked story', () => {
     const dataBlocked = {
       ...sampleData,
       stories: [{ ...sampleData.stories[0], status: 'Blocked' }],
-      atRisk: { 'US-0001': { missingTCs: false, noBranch: false, failedTCNoBug: false, isAtRisk: false } },
+      atRisk: { 'US-001-001': { missingTCs: false, noBranch: false, failedTCNoBug: false, isAtRisk: false } },
     };
     const html = renderHtml(dataBlocked);
     expect(html).toMatch(/Blocked/);
@@ -290,7 +290,7 @@ describe('renderHtml — story estimate missing', () => {
     const dataNoEstimate = {
       ...sampleData,
       stories: [{ ...sampleData.stories[0], estimate: '' }],
-      atRisk: { 'US-0001': { missingTCs: false, noBranch: false, failedTCNoBug: false, isAtRisk: false } },
+      atRisk: { 'US-001-001': { missingTCs: false, noBranch: false, failedTCNoBug: false, isAtRisk: false } },
     };
     const html = renderHtml(dataNoEstimate);
     expect(html).toMatch(/\?/);
@@ -303,18 +303,18 @@ describe('renderHtml — bugs with lessonEncoded No', () => {
       ...sampleData,
       bugs: [
         {
-          id: 'BUG-0002',
+          id: 'BUG-002',
           title: 'Some bug',
           severity: 'Medium',
           status: 'Fixed',
-          relatedStory: 'US-0001',
+          relatedStory: 'US-001-001',
           fixBranch: '',
           lessonEncoded: 'No',
         },
       ],
     };
     const html = renderHtml(dataWithBug);
-    expect(html).toMatch(/BUG-0002/);
+    expect(html).toMatch(/BUG-002/);
   });
 });
 
@@ -338,9 +338,9 @@ describe('renderHtml — traceability with Not Run TC', () => {
       ...sampleData,
       testCases: [
         {
-          id: 'TC-0003',
-          relatedStory: 'US-0001',
-          relatedAC: 'AC-0001',
+          id: 'TC-001-001-003',
+          relatedStory: 'US-001-001',
+          relatedAC: 'AC-001-001-001',
           status: 'Not Run',
           defect: 'None',
           title: 'Not run test',
@@ -349,25 +349,25 @@ describe('renderHtml — traceability with Not Run TC', () => {
       ],
     };
     const html = renderHtml(dataNotRunTC);
-    expect(html).toMatch(/TC-0003/);
+    expect(html).toMatch(/TC-001-001-003/);
   });
 });
 
-describe('renderHtml — sticky header (BUG-0004 regression)', () => {
+describe('renderHtml — sticky header (BUG-004 regression)', () => {
   it('wraps header in a sticky container', () => {
     const html = renderHtml(sampleData);
     expect(html).toContain('id="topbar-fixed"');
   });
 });
 
-describe('renderHtml — projected cost from data.costs (BUG-0006)', () => {
+describe('renderHtml — projected cost from data.costs (BUG-006)', () => {
   it('uses data.costs.projectedUsd not TSHIRT_HOURS', () => {
     const html = renderHtml(sampleData);
     expect(html).toMatch(/\$800/);
   });
 });
 
-describe('renderHtml — filter bar (BUG-0009)', () => {
+describe('renderHtml — filter bar (BUG-009)', () => {
   it('includes f-bug-status select for bugs tab filtering', () => {
     expect(renderHtml(sampleData)).toContain('id="f-bug-status"');
   });
@@ -376,12 +376,12 @@ describe('renderHtml — filter bar (BUG-0009)', () => {
       ...sampleData,
       bugs: [
         {
-          id: 'BUG-0001',
+          id: 'BUG-001',
           title: 'Crash',
           severity: 'High',
           status: 'Open',
-          relatedStory: 'US-0001',
-          fixBranch: 'bugfix/BUG-0001',
+          relatedStory: 'US-001-001',
+          fixBranch: 'bugfix/BUG-001',
           lessonEncoded: 'No',
         },
       ],
@@ -390,7 +390,7 @@ describe('renderHtml — filter bar (BUG-0009)', () => {
   });
 });
 
-describe('renderHtml — coverage available false shows N/A (BUG-0010)', () => {
+describe('renderHtml — coverage available false shows N/A (BUG-010)', () => {
   it('shows N/A when coverage not available', () => {
     const noFile = {
       ...sampleData,
@@ -401,18 +401,18 @@ describe('renderHtml — coverage available false shows N/A (BUG-0010)', () => {
   });
 });
 
-describe('renderHtml — lessonEncoded startsWith fix (BUG-0038)', () => {
+describe('renderHtml — lessonEncoded startsWith fix (BUG-038)', () => {
   it('renders ✓ for lessonEncoded starting with Yes', () => {
     const d = {
       ...sampleData,
       bugs: [
         {
-          id: 'BUG-0001',
+          id: 'BUG-001',
           title: 'Crash',
           severity: 'High',
           status: 'Fixed',
-          relatedStory: 'US-0001',
-          fixBranch: 'bugfix/BUG-0001',
+          relatedStory: 'US-001-001',
+          fixBranch: 'bugfix/BUG-001',
           lessonEncoded: 'Yes — see docs/LESSONS.md',
         },
       ],
@@ -424,11 +424,11 @@ describe('renderHtml — lessonEncoded startsWith fix (BUG-0038)', () => {
       ...sampleData,
       bugs: [
         {
-          id: 'BUG-0002',
+          id: 'BUG-002',
           title: 'Other',
           severity: 'Low',
           status: 'Fixed',
-          relatedStory: 'US-0001',
+          relatedStory: 'US-001-001',
           fixBranch: '',
           lessonEncoded: 'No',
         },
@@ -438,31 +438,31 @@ describe('renderHtml — lessonEncoded startsWith fix (BUG-0038)', () => {
   });
 });
 
-describe('renderHtml — bug token dash for estimated costs (BUG-0037)', () => {
+describe('renderHtml — bug token dash for estimated costs (BUG-037)', () => {
   it('shows — for token count when bug cost is estimated', () => {
     const d = {
       ...sampleData,
       bugs: [
         {
-          id: 'BUG-0001',
+          id: 'BUG-001',
           title: 'Crash',
           severity: 'High',
           status: 'Fixed',
-          relatedStory: 'US-0001',
+          relatedStory: 'US-001-001',
           fixBranch: '',
           lessonEncoded: 'No',
         },
       ],
       costs: {
         ...sampleData.costs,
-        _bugs: { 'BUG-0001': { costUsd: 0.5, inputTokens: 0, outputTokens: 0, isEstimated: true } },
+        _bugs: { 'BUG-001': { costUsd: 0.5, inputTokens: 0, outputTokens: 0, isEstimated: true } },
       },
     };
     expect(renderHtml(d)).toContain('—');
   });
 });
 
-describe('renderHtml — AI cost column colour (BUG-0036)', () => {
+describe('renderHtml — AI cost column colour (BUG-036)', () => {
   it('uses text-teal-700 for AI cost cells', () => {
     expect(renderHtml(sampleData)).toContain('text-teal-700');
   });
@@ -470,10 +470,10 @@ describe('renderHtml — AI cost column colour (BUG-0036)', () => {
 
 describe('renderHtml — Lessons tab (US-0032)', () => {
   const sampleLesson = {
-    id: 'L-0010',
+    id: 'L-010',
     title: 'Update TC statuses',
     rule: 'Always update TCs when story is Done.',
-    context: 'BUG-0003 caused 23 TCs to show Not Run.',
+    context: 'BUG-003 caused 23 TCs to show Not Run.',
     date: '2026-03-10',
   };
 
@@ -481,7 +481,7 @@ describe('renderHtml — Lessons tab (US-0032)', () => {
     const d = { ...sampleData, lessons: [sampleLesson] };
     const html = renderHtml(d);
     expect(html).toContain('id="tab-lessons"');
-    expect(html).toContain('L-0010');
+    expect(html).toContain('L-010');
     expect(html).toContain('Always update TCs');
   });
 
@@ -510,45 +510,45 @@ describe('renderHtml — Lessons tab (US-0032)', () => {
   it('renders lesson anchor id for scroll target', () => {
     const d = { ...sampleData, lessons: [sampleLesson] };
     const html = renderHtml(d);
-    expect(html).toMatch(/id="lesson-(col|card)-L-0010"/);
+    expect(html).toMatch(/id="lesson-(col|card)-L-010"/);
   });
 });
 
 describe('renderHtml — Bugs tab lesson hyperlink (US-0032)', () => {
   const bugWithLessonId = {
-    id: 'BUG-0001',
+    id: 'BUG-001',
     title: 'Crash',
     severity: 'High',
     status: 'Fixed',
-    relatedStory: 'US-0001',
+    relatedStory: 'US-001-001',
     fixBranch: '',
-    lessonEncoded: 'Yes — see docs/LESSONS.md (L-0010)',
+    lessonEncoded: 'Yes — see docs/LESSONS.md (L-010)',
   };
   const bugWithYesNoId = {
-    id: 'BUG-0002',
+    id: 'BUG-002',
     title: 'Other',
     severity: 'Low',
     status: 'Fixed',
-    relatedStory: 'US-0001',
+    relatedStory: 'US-001-001',
     fixBranch: '',
     lessonEncoded: 'Yes — see docs/LESSONS.md',
   };
   const bugNoLesson = {
-    id: 'BUG-0003',
+    id: 'BUG-003',
     title: 'Minor',
     severity: 'Low',
     status: 'Open',
-    relatedStory: 'US-0001',
+    relatedStory: 'US-001-001',
     fixBranch: '',
     lessonEncoded: 'No',
   };
 
-  it('renders ✓ L-0010 ↗ as link when lesson ID present', () => {
+  it('renders ✓ L-010 ↗ as link when lesson ID present', () => {
     const d = { ...sampleData, bugs: [bugWithLessonId] };
     const html = renderHtml(d);
-    expect(html).toMatch(/&#10003;.*L-0010.*&#8599;/);
+    expect(html).toMatch(/&#10003;.*L-010.*&#8599;/);
     expect(html).toContain("'lesson-col-'");
-    expect(html).toContain("'L-0010'");
+    expect(html).toContain("'L-010'");
   });
 
   it('renders plain ✓ when Yes but no L-ID', () => {
@@ -565,63 +565,63 @@ describe('renderHtml — Bugs tab lesson hyperlink (US-0032)', () => {
 
   it('adds bug-row id for reverse scroll from Lessons tab', () => {
     const d = { ...sampleData, bugs: [bugWithLessonId] };
-    expect(renderHtml(d)).toContain('id="bug-row-BUG-0001"');
+    expect(renderHtml(d)).toContain('id="bug-row-BUG-001"');
   });
 });
 
-describe('renderHtml — multi-epic bug grouping sort (BUG-0093)', () => {
+describe('renderHtml — multi-epic bug grouping sort (BUG-093)', () => {
   // Data with 2 epics + an ungrouped bug to exercise all sort comparator branches
   const multiEpicData = {
     ...sampleData,
     epics: [
-      { id: 'EPIC-0001', title: 'Editing', status: 'Done', releaseTarget: 'MVP', dependencies: [] },
-      { id: 'EPIC-0002', title: 'Navigation', status: 'In Progress', releaseTarget: 'MVP', dependencies: [] },
+      { id: 'EPIC-001', title: 'Editing', status: 'Done', releaseTarget: 'MVP', dependencies: [] },
+      { id: 'EPIC-002', title: 'Navigation', status: 'In Progress', releaseTarget: 'MVP', dependencies: [] },
     ],
     stories: [
       {
-        id: 'US-0001',
-        epicId: 'EPIC-0001',
+        id: 'US-001-001',
+        epicId: 'EPIC-001',
         title: 'Open a file',
         priority: 'P0',
         estimate: 'M',
         status: 'Done',
-        branch: 'feature/US-0001',
+        branch: 'feature/US-001-001',
         acs: [],
         dependencies: [],
       },
       {
-        id: 'US-0002',
-        epicId: 'EPIC-0002',
+        id: 'US-001-002',
+        epicId: 'EPIC-002',
         title: 'Navigate',
         priority: 'P1',
         estimate: 'S',
         status: 'In Progress',
-        branch: 'feature/US-0002',
+        branch: 'feature/US-001-002',
         acs: [],
         dependencies: [],
       },
     ],
     bugs: [
       {
-        id: 'BUG-0001',
+        id: 'BUG-001',
         title: 'Alpha bug',
         severity: 'High',
         status: 'Fixed',
-        relatedStory: 'US-0001',
-        fixBranch: 'bugfix/BUG-0001',
+        relatedStory: 'US-001-001',
+        fixBranch: 'bugfix/BUG-001',
         lessonEncoded: 'No',
       },
       {
-        id: 'BUG-0002',
+        id: 'BUG-002',
         title: 'Beta bug',
         severity: 'Medium',
         status: 'Fixed',
-        relatedStory: 'US-0002',
-        fixBranch: 'bugfix/BUG-0002',
+        relatedStory: 'US-001-002',
+        fixBranch: 'bugfix/BUG-002',
         lessonEncoded: 'No',
       },
       {
-        id: 'BUG-0003',
+        id: 'BUG-003',
         title: 'Orphan bug',
         severity: 'Low',
         status: 'Open',
@@ -633,9 +633,9 @@ describe('renderHtml — multi-epic bug grouping sort (BUG-0093)', () => {
     costs: {
       ...sampleData.costs,
       _bugs: {
-        'BUG-0001': { costUsd: 0.1, inputTokens: 1000, outputTokens: 300, projectedUsd: 400 },
-        'BUG-0002': { costUsd: 0.05, inputTokens: 500, outputTokens: 100, projectedUsd: 200 },
-        'BUG-0003': { costUsd: 0, inputTokens: 0, outputTokens: 0, projectedUsd: 200, isEstimated: true },
+        'BUG-001': { costUsd: 0.1, inputTokens: 1000, outputTokens: 300, projectedUsd: 400 },
+        'BUG-002': { costUsd: 0.05, inputTokens: 500, outputTokens: 100, projectedUsd: 200 },
+        'BUG-003': { costUsd: 0, inputTokens: 0, outputTokens: 0, projectedUsd: 200, isEstimated: true },
       },
     },
   };
@@ -643,11 +643,11 @@ describe('renderHtml — multi-epic bug grouping sort (BUG-0093)', () => {
   it('renders bugs tab with multiple epic groups in ascending order', () => {
     const html = renderHtml(multiEpicData);
     // '_ungrouped' has underscore replaced → '-ungrouped' in DOM IDs
-    expect(html).toContain('bugs-ep-EPIC-0001');
-    expect(html).toContain('bugs-ep-EPIC-0002');
+    expect(html).toContain('bugs-ep-EPIC-001');
+    expect(html).toContain('bugs-ep-EPIC-002');
     expect(html).toContain('bugs-ep--ungrouped');
-    const pos1 = html.indexOf('bugs-ep-EPIC-0001');
-    const pos2 = html.indexOf('bugs-ep-EPIC-0002');
+    const pos1 = html.indexOf('bugs-ep-EPIC-001');
+    const pos2 = html.indexOf('bugs-ep-EPIC-002');
     const posU = html.indexOf('bugs-ep--ungrouped');
     expect(pos1).toBeLessThan(pos2);
     expect(pos2).toBeLessThan(posU);
@@ -655,11 +655,11 @@ describe('renderHtml — multi-epic bug grouping sort (BUG-0093)', () => {
 
   it('renders costs tab bug section with multiple epic groups in ascending order', () => {
     const html = renderHtml(multiEpicData);
-    expect(html).toContain('bug-costs-ep-EPIC-0001');
-    expect(html).toContain('bug-costs-ep-EPIC-0002');
+    expect(html).toContain('bug-costs-ep-EPIC-001');
+    expect(html).toContain('bug-costs-ep-EPIC-002');
     expect(html).toContain('bug-costs-ep--ungrouped');
-    const pos1 = html.indexOf('bug-costs-ep-EPIC-0001');
-    const pos2 = html.indexOf('bug-costs-ep-EPIC-0002');
+    const pos1 = html.indexOf('bug-costs-ep-EPIC-001');
+    const pos2 = html.indexOf('bug-costs-ep-EPIC-002');
     const posU = html.indexOf('bug-costs-ep--ungrouped');
     expect(pos1).toBeLessThan(pos2);
     expect(pos2).toBeLessThan(posU);

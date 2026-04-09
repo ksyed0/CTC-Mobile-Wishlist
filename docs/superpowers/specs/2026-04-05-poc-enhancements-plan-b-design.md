@@ -3,7 +3,7 @@
 **Date:** 2026-04-05  
 **Status:** Approved  
 **Features:** Tab Badge (#5), Claimer Reveal (#7), Restock & Price-Drop Alerts (#8/#9), Privacy Levels (#10)  
-**Epic:** EPIC-0007
+**Epic:** EPIC-007
 
 ---
 
@@ -13,7 +13,7 @@ Five medium-effort enhancements that build on top of the existing sharing, wishl
 
 ---
 
-## Feature 5 — Unseen Shared Wishlist Tab Badge (US-0020)
+## Feature 5 — Unseen Shared Wishlist Tab Badge (US-007-005)
 
 ### Purpose
 
@@ -52,14 +52,14 @@ tabBarBadge={unseenSharedCount > 0 ? unseenSharedCount : undefined}
 
 ### Acceptance Criteria
 
-- AC-0061: Wishlists tab shows a numeric badge when there are unseen shared wishlists
-- AC-0062: Opening a shared wishlist removes it from the unseen count
-- AC-0063: Badge disappears when all shared wishlists have been viewed
-- AC-0064: Switching users shows the correct badge count for the new user
+- AC-007-005-001: Wishlists tab shows a numeric badge when there are unseen shared wishlists
+- AC-007-005-002: Opening a shared wishlist removes it from the unseen count
+- AC-007-005-003: Badge disappears when all shared wishlists have been viewed
+- AC-007-005-004: Switching users shows the correct badge count for the new user
 
 ---
 
-## Feature 7 — Claimer Reveal Toggle (US-0021)
+## Feature 7 — Claimer Reveal Toggle (US-007-006)
 
 ### Purpose
 
@@ -110,15 +110,15 @@ When `showClaimers = false` (default), render only `"✓ Claimed"` with no name 
 
 ### Acceptance Criteria
 
-- AC-0065: Owner's wishlist detail shows a "Show who claimed items" toggle in the header
-- AC-0066: Toggle defaults to off; "Claimed" items show no name
-- AC-0067: When toggled on, claimed items show "Claimed by [contact name]"
-- AC-0068: Toggle state persists across app restarts (stored in wishlist record)
-- AC-0069: Recipients never see the toggle; their view is read-only
+- AC-007-006-001: Owner's wishlist detail shows a "Show who claimed items" toggle in the header
+- AC-007-006-002: Toggle defaults to off; "Claimed" items show no name
+- AC-007-006-003: When toggled on, claimed items show "Claimed by [contact name]"
+- AC-007-006-004: Toggle state persists across app restarts (stored in wishlist record)
+- AC-007-006-005: Recipients never see the toggle; their view is read-only
 
 ---
 
-## Feature 8 & 9 — Restock & Price-Drop Alerts (US-0022 / US-0023)
+## Feature 8 & 9 — Restock & Price-Drop Alerts (US-007-007 / US-007-008)
 
 ### Purpose
 
@@ -128,14 +128,14 @@ Mock "notify me" buttons on the product detail screen. These are UI-only — no 
 
 Two additional buttons rendered below the primary CTAs (Add to Wishlist / Add to Cart):
 
-**Restock Alert button (US-0022 — "Back in Stock"):**
+**Restock Alert button (US-007-007 — "Back in Stock"):**
 
 - Shown when `product.inStock === false` only
 - Label: `"🔔 Notify me when back in stock"`
 - Style: outlined button (border `#ccc`, text `#666`, font-size 13)
 - On tap: `Alert.alert("Restock Alert Set", "We'll notify you when this item is back in stock.")`
 
-**Price-Drop Alert button (US-0023 — "Price Drop"):**
+**Price-Drop Alert button (US-007-008 — "Price Drop"):**
 
 - Always visible regardless of stock status
 - Label: `"🔔 Notify me if price drops"`
@@ -155,15 +155,15 @@ No state is persisted — each tap is a fresh one-time confirmation dialog. This
 
 ### Acceptance Criteria
 
-- AC-0070: "Notify me when back in stock" button appears only when `product.inStock === false`
-- AC-0071: Tapping the restock button shows an Alert confirmation (no navigation)
-- AC-0072: "Notify me if price drops" button is always visible on the product detail screen
-- AC-0073: Tapping the price-drop button shows an Alert confirmation (no navigation)
-- AC-0074: Both buttons use an outlined (non-primary) style to avoid competing with the main CTAs
+- AC-007-007-001: "Notify me when back in stock" button appears only when `product.inStock === false`
+- AC-007-007-002: Tapping the restock button shows an Alert confirmation (no navigation)
+- AC-007-008-001: "Notify me if price drops" button is always visible on the product detail screen
+- AC-007-008-002: Tapping the price-drop button shows an Alert confirmation (no navigation)
+- AC-007-008-003: Both buttons use an outlined (non-primary) style to avoid competing with the main CTAs
 
 ---
 
-## Feature 10 — Privacy Levels (US-0024)
+## Feature 10 — Privacy Levels (US-007-009)
 
 ### Purpose
 
@@ -210,11 +210,11 @@ Selected row has `border: 1.5px solid #D52B1E` and `background: #fff5f5`.
 
 ### Acceptance Criteria
 
-- AC-0075: Wishlist detail header shows the current privacy setting
-- AC-0076: Tapping the privacy row opens a 3-option picker sheet
-- AC-0077: Setting to "Private" hides the Share button
-- AC-0078: Setting to "Public link" shows a "Copy Link" button that copies a mock deep link
-- AC-0079: Privacy setting persists across app restarts
+- AC-007-009-001: Wishlist detail header shows the current privacy setting
+- AC-007-009-002: Tapping the privacy row opens a 3-option picker sheet
+- AC-007-009-003: Setting to "Private" hides the Share button
+- AC-007-009-004: Setting to "Public link" shows a "Copy Link" button that copies a mock deep link
+- AC-007-009-005: Privacy setting persists across app restarts
 
 ---
 

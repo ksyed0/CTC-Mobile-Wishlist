@@ -29,8 +29,8 @@ export interface Wishlist {
   createdAt: string;
   items: WishlistItem[];
   sharedWith: SharedContact[];
-  showClaimers?: boolean; // US-0021 — default false when absent
-  privacy?: 'private' | 'contacts' | 'public'; // US-0024 — default 'contacts' when absent
+  showClaimers?: boolean; // US-007-006 — default false when absent
+  privacy?: 'private' | 'contacts' | 'public'; // US-007-009 — default 'contacts' when absent
 }
 ```
 
@@ -49,7 +49,7 @@ Expected: PASS — optional fields don't break existing usage
 
 ```bash
 git add types/wishlist.ts
-git commit -m "feat(US-0021,US-0024): extend Wishlist type with showClaimers and privacy fields"
+git commit -m "feat(US-007-006,US-007-009): extend Wishlist type with showClaimers and privacy fields"
 ```
 
 ---
@@ -68,7 +68,7 @@ Add to the bottom of `tests/services/wishlistService.test.ts`:
 
 ```ts
 // ---------------------------------------------------------------------------
-// setShowClaimers — US-0021
+// setShowClaimers — US-007-006
 // ---------------------------------------------------------------------------
 describe('wishlistService.setShowClaimers', () => {
   it('sets showClaimers to true', async () => {
@@ -94,7 +94,7 @@ describe('wishlistService.setShowClaimers', () => {
 });
 
 // ---------------------------------------------------------------------------
-// setPrivacy — US-0024
+// setPrivacy — US-007-009
 // ---------------------------------------------------------------------------
 describe('wishlistService.setPrivacy', () => {
   it('sets privacy to private', async () => {
@@ -134,7 +134,7 @@ Add after `resetDemoData` (or at the end of the `wishlistService` object, before
 
 ```ts
   /**
-   * Toggle the showClaimers flag on a wishlist (US-0021).
+   * Toggle the showClaimers flag on a wishlist (US-007-006).
    * No-op when wishlistId is not found.
    */
   async setShowClaimers(wishlistId: string, show: boolean): Promise<void> {
@@ -147,7 +147,7 @@ Add after `resetDemoData` (or at the end of the `wishlistService` object, before
   },
 
   /**
-   * Set the privacy level on a wishlist (US-0024).
+   * Set the privacy level on a wishlist (US-007-009).
    * No-op when wishlistId is not found.
    */
   async setPrivacy(wishlistId: string, privacy: 'private' | 'contacts' | 'public'): Promise<void> {
@@ -172,7 +172,7 @@ Expected: PASS
 
 ```bash
 git add services/wishlistService.ts utils/storage.ts tests/services/wishlistService.test.ts
-git commit -m "feat(US-0021,US-0024): add setShowClaimers and setPrivacy to wishlistService"
+git commit -m "feat(US-007-006,US-007-009): add setShowClaimers and setPrivacy to wishlistService"
 ```
 
 ---
@@ -292,7 +292,7 @@ Expected: PASS
 
 ```bash
 git add contexts/WishlistContext.tsx
-git commit -m "feat(US-0020,US-0021,US-0024): add unseenSharedCount, markWishlistSeen, setShowClaimers, setPrivacy to WishlistContext"
+git commit -m "feat(US-007-005,US-007-006,US-007-009): add unseenSharedCount, markWishlistSeen, setShowClaimers, setPrivacy to WishlistContext"
 ```
 
 ---
@@ -367,7 +367,7 @@ Expected: PASS
 
 ```bash
 git add app/(tabs)/_layout.tsx app/wishlist/shared/[id].tsx
-git commit -m "feat(US-0020): tab badge shows unseen shared wishlist count; clears when opened"
+git commit -m "feat(US-007-005): tab badge shows unseen shared wishlist count; clears when opened"
 ```
 
 ---
@@ -491,7 +491,7 @@ Expected: PASS
 
 ```bash
 git add app/wishlist/[id].tsx components/WishlistItemRow.tsx
-git commit -m "feat(US-0021): claimer reveal toggle in wishlist header; shows contact name when enabled"
+git commit -m "feat(US-007-006): claimer reveal toggle in wishlist header; shows contact name when enabled"
 ```
 
 ---
@@ -508,7 +508,7 @@ In `app/product/[id].tsx`, the CTAs live inside `<View style={styles.details}>`.
 
 ```tsx
 {
-  /* US-0022: Restock alert — only when out of stock */
+  /* US-007-007: Restock alert — only when out of stock */
 }
 {
   !product.inStock && (
@@ -526,7 +526,7 @@ In `app/product/[id].tsx`, the CTAs live inside `<View style={styles.details}>`.
 }
 
 {
-  /* US-0023: Price-drop alert — always visible */
+  /* US-007-008: Price-drop alert — always visible */
 }
 <TouchableOpacity
   style={styles.alertButton}
@@ -574,7 +574,7 @@ Expected: PASS
 
 ```bash
 git add app/product/[id].tsx
-git commit -m "feat(US-0022,US-0023): mock restock and price-drop alert buttons on product detail"
+git commit -m "feat(US-007-007,US-007-008): mock restock and price-drop alert buttons on product detail"
 ```
 
 ---
@@ -823,7 +823,7 @@ Expected: PASS
 
 ```bash
 git add app/wishlist/[id].tsx
-git commit -m "feat(US-0024): privacy levels — 3-tier picker in wishlist header; public link copy; hides share when private"
+git commit -m "feat(US-007-009): privacy levels — 3-tier picker in wishlist header; public link copy; hides share when private"
 ```
 
 ---

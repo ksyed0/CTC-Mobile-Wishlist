@@ -2,8 +2,8 @@
  * Unit tests for productService
  *
  * Coverage targets:
- *   AC-0018 / AC-0041 — getByBarcode returns product for valid barcode
- *   AC-0019            — getByBarcode returns null for unknown barcode
+ *   AC-003-001-002 / AC-003-001-005 — getByBarcode returns product for valid barcode
+ *   AC-003-001-003            — getByBarcode returns null for unknown barcode
  *   getProducts        — all + category filter + unknown category
  *   getProductById     — found / not found / invalid arg
  *   search             — match by name, match by description, no match, blank query
@@ -71,28 +71,28 @@ describe('productService.getProductById', () => {
 });
 
 // ---------------------------------------------------------------------------
-// getByBarcode (AC-0018, AC-0019, AC-0041)
+// getByBarcode (AC-003-001-002, AC-003-001-003, AC-003-001-005)
 // ---------------------------------------------------------------------------
 describe('productService.getByBarcode', () => {
-  it('AC-0041: returns the correct product for a valid barcode (prod-001)', async () => {
+  it('AC-003-001-005: returns the correct product for a valid barcode (prod-001)', async () => {
     const result = await productService.getByBarcode('062073000011');
     expect(result).not.toBeNull();
     expect(result!.id).toBe('prod-001');
     expect(result!.barcode).toBe('062073000011');
   });
 
-  it('AC-0041: returns the correct product for barcode of prod-022 (Weber BBQ)', async () => {
+  it('AC-003-001-005: returns the correct product for barcode of prod-022 (Weber BBQ)', async () => {
     const result = await productService.getByBarcode('062073000222');
     expect(result).not.toBeNull();
     expect(result!.id).toBe('prod-022');
   });
 
-  it('AC-0019: returns null for an unrecognised barcode', async () => {
+  it('AC-003-001-003: returns null for an unrecognised barcode', async () => {
     const result = await productService.getByBarcode('000000000000');
     expect(result).toBeNull();
   });
 
-  it('AC-0019: returns null for a barcode that is close but does not exactly match', async () => {
+  it('AC-003-001-003: returns null for a barcode that is close but does not exactly match', async () => {
     // '062073000011' is valid; leading zero stripped should not match
     const result = await productService.getByBarcode('62073000011');
     expect(result).toBeNull();

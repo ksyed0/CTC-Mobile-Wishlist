@@ -1317,7 +1317,7 @@ function renderBugsTab(data) {
 
   const lessonCell = (bug) => {
     if (!bug.lessonEncoded || !bug.lessonEncoded.startsWith('Yes')) return '○';
-    const lm = bug.lessonEncoded.match(/L-\d{4}/);
+    const lm = bug.lessonEncoded.match(/L-\d{3}/);
     if (!lm) return '✓';
     return `<a href="#" onclick="showTab('lessons');setTimeout(function(){var colView=document.getElementById('lessons-column-view');var prefix=colView&&!colView.classList.contains('hidden')?'lesson-col-':'lesson-card-';var el=document.getElementById(prefix+'${lm[0]}');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},50);return false;" class="text-blue-600 dark:text-blue-400 hover:underline font-mono text-xs whitespace-nowrap" title="View lesson ${lm[0]}">&#10003; ${lm[0]} &#8599;</a>`;
   };
@@ -1479,7 +1479,7 @@ function renderLessonsTab(data) {
   // Build reverse map: lessonId → first bugId that references it
   const lessonBugMap = {};
   for (const bug of data.bugs) {
-    const m = bug.lessonEncoded && bug.lessonEncoded.match(/L-\d{4}/);
+    const m = bug.lessonEncoded && bug.lessonEncoded.match(/L-\d{3}/);
     if (m && !lessonBugMap[m[0]]) lessonBugMap[m[0]] = bug.id;
   }
 
@@ -1492,7 +1492,7 @@ function renderLessonsTab(data) {
   // Build lesson→epic grouping via lesson→bug→story→epic
   const lessonStoryMap = {};
   for (const bug of data.bugs) {
-    const m = bug.lessonEncoded && bug.lessonEncoded.match(/L-\d{4}/);
+    const m = bug.lessonEncoded && bug.lessonEncoded.match(/L-\d{3}/);
     if (m) lessonStoryMap[m[0]] = bug.relatedStory;
   }
   const lessonStoryEpicMap = {};

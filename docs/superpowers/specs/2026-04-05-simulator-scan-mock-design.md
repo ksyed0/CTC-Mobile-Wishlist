@@ -1,8 +1,8 @@
-# Design Spec: Simulator Scan Mock (US-0015)
+# Design Spec: Simulator Scan Mock (US-003-002)
 
 **Date:** 2026-04-05  
 **Status:** Approved  
-**Branch:** feature/US-0015-simulator-scan-mock
+**Branch:** feature/US-003-002-simulator-scan-mock
 
 ---
 
@@ -67,23 +67,23 @@ A red banner at the top of the screen reads **"SIMULATOR MODE — Tap any produc
 
 ## Files Changed
 
-| File                               | Change                              |
-| ---------------------------------- | ----------------------------------- |
-| `components/SimulatorScanView.tsx` | New component                       |
-| `app/(tabs)/scan.tsx`              | Add simulator branch                |
-| `metro.config.js`                  | New — add `html` to `assetExts`     |
-| `app.json`                         | Add `html` to `assetBundlePatterns` |
-| `docs/RELEASE_PLAN.md`             | Add US-0015, TASK-0022, TASK-0023   |
-| `package.json`                     | Add 4 new deps                      |
+| File                               | Change                                             |
+| ---------------------------------- | -------------------------------------------------- |
+| `components/SimulatorScanView.tsx` | New component                                      |
+| `app/(tabs)/scan.tsx`              | Add simulator branch                               |
+| `metro.config.js`                  | New — add `html` to `assetExts`                    |
+| `app.json`                         | Add `html` to `assetBundlePatterns`                |
+| `docs/RELEASE_PLAN.md`             | Add US-003-002, TASK-003-002-001, TASK-003-002-002 |
+| `package.json`                     | Add 4 new deps                                     |
 
 ---
 
 ## Acceptance Criteria
 
-- **AC-0045:** On a physical device, scan screen behaves exactly as before (camera + live barcode scanning)
-- **AC-0046:** On a simulator, the camera view is replaced with a scrollable WebView rendering `data/product-catalog-print.html`
-- **AC-0047:** Each product card in the WebView is tappable; tapping fires `handleBarcode()` with the card's barcode string
-- **AC-0048:** A simulator-mode banner is shown at the top of the scan screen
+- **AC-003-002-001:** On a physical device, scan screen behaves exactly as before (camera + live barcode scanning)
+- **AC-003-002-002:** On a simulator, the camera view is replaced with a scrollable WebView rendering `data/product-catalog-print.html`
+- **AC-003-002-003:** Each product card in the WebView is tappable; tapping fires `handleBarcode()` with the card's barcode string
+- **AC-003-002-004:** A simulator-mode banner is shown at the top of the scan screen
 
 ---
 

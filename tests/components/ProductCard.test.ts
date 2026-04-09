@@ -1,5 +1,5 @@
 /**
- * ProductCard component tests — BUG-0073
+ * ProductCard component tests — BUG-073
  *
  * These tests validate the props contract and display logic of ProductCard
  * without a React renderer (react-test-renderer is not installed).

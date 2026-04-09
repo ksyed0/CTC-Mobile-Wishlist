@@ -257,7 +257,7 @@ Expected: PASS
 
 ```bash
 git add components/BottomSheetInput.tsx tests/components/BottomSheetInput.test.ts
-git commit -m "feat(US-0016,US-0019): add BottomSheetInput shared component"
+git commit -m "feat(US-007-001,US-007-004): add BottomSheetInput shared component"
 ```
 
 ---
@@ -290,7 +290,7 @@ Add these test blocks to the bottom of `tests/services/wishlistService.test.ts`:
 
 ```ts
 // ---------------------------------------------------------------------------
-// updateItemNote — US-0016
+// updateItemNote — US-007-001
 // ---------------------------------------------------------------------------
 describe('wishlistService.updateItemNote', () => {
   it('sets a note on an existing item', async () => {
@@ -327,7 +327,7 @@ describe('wishlistService.updateItemNote', () => {
 });
 
 // ---------------------------------------------------------------------------
-// renameWishlist — US-0019
+// renameWishlist — US-007-004
 // ---------------------------------------------------------------------------
 describe('wishlistService.renameWishlist', () => {
   it('updates the wishlist name', async () => {
@@ -357,7 +357,7 @@ describe('wishlistService.renameWishlist', () => {
 });
 
 // ---------------------------------------------------------------------------
-// resetDemoData — US-0018
+// resetDemoData — US-007-003
 // ---------------------------------------------------------------------------
 describe('wishlistService.resetDemoData', () => {
   it('removes the wishlists key from storage', async () => {
@@ -394,7 +394,7 @@ Add these three methods inside the `wishlistService` object, after `unclaimItem`
 
 ```ts
   /**
-   * Set or clear the note on a wishlist item (US-0016).
+   * Set or clear the note on a wishlist item (US-007-001).
    * Passing empty string clears the note (sets null).
    * No-op when wishlistId or productId is not found.
    */
@@ -417,7 +417,7 @@ Add these three methods inside the `wishlistService` object, after `unclaimItem`
   },
 
   /**
-   * Rename a wishlist (US-0019).
+   * Rename a wishlist (US-007-004).
    * No-op when wishlistId is not found.
    */
   async renameWishlist(wishlistId: string, newName: string): Promise<void> {
@@ -432,7 +432,7 @@ Add these three methods inside the `wishlistService` object, after `unclaimItem`
   },
 
   /**
-   * Clear all wishlists and recent scans from storage (US-0018 demo reset).
+   * Clear all wishlists and recent scans from storage (US-007-003 demo reset).
    */
   async resetDemoData(): Promise<void> {
     const { removeItem } = await import('../utils/storage');
@@ -474,7 +474,7 @@ Expected: PASS (all tests including new ones)
 
 ```bash
 git add services/wishlistService.ts utils/storage.ts tests/services/wishlistService.test.ts
-git commit -m "feat(US-0016,US-0018,US-0019): add updateItemNote, renameWishlist, resetDemoData to wishlistService"
+git commit -m "feat(US-007-001,US-007-003,US-007-004): add updateItemNote, renameWishlist, resetDemoData to wishlistService"
 ```
 
 ---
@@ -541,7 +541,7 @@ Expected: PASS — no regressions from context changes
 
 ```bash
 git add contexts/WishlistContext.tsx
-git commit -m "feat(US-0016,US-0018,US-0019): expose updateItemNote, renameWishlist, resetDemoData in WishlistContext"
+git commit -m "feat(US-007-001,US-007-003,US-007-004): expose updateItemNote, renameWishlist, resetDemoData in WishlistContext"
 ```
 
 ---
@@ -689,7 +689,7 @@ Expected: PASS
 
 ```bash
 git add components/WishlistItemRow.tsx app/wishlist/[id].tsx app/wishlist/shared/[id].tsx
-git commit -m "feat(US-0016): item notes — add/edit note on wishlist items, read-only in shared view"
+git commit -m "feat(US-007-001): item notes — add/edit note on wishlist items, read-only in shared view"
 ```
 
 ---
@@ -872,7 +872,7 @@ Expected: PASS
 
 ```bash
 git add components/ProductCard.tsx app/(tabs)/catalog.tsx tests/components/ProductCard.test.ts
-git commit -m "feat(US-0017): already-in-wishlist indicator — heart badge and saved pill on catalog cards"
+git commit -m "feat(US-007-002): already-in-wishlist indicator — heart badge and saved pill on catalog cards"
 ```
 
 ---
@@ -961,7 +961,7 @@ Expected: PASS
 
 ```bash
 git add app/login.tsx
-git commit -m "feat(US-0018): demo reset button on login screen"
+git commit -m "feat(US-007-003): demo reset button on login screen"
 ```
 
 ---
@@ -1059,7 +1059,7 @@ Expected: PASS
 
 ```bash
 git add app/wishlist/[id].tsx
-git commit -m "feat(US-0019): wishlist rename — pencil icon opens bottom sheet, persists via AsyncStorage"
+git commit -m "feat(US-007-004): wishlist rename — pencil icon opens bottom sheet, persists via AsyncStorage"
 ```
 
 ---

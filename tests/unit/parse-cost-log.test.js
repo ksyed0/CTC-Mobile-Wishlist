@@ -49,10 +49,10 @@ describe('aggregateCostByBranch', () => {
   });
 
   it('sums two sessions on same branch', () => {
-    expect(agg['feature/US-0001-open-file'].costUsd).toBeCloseTo(0.47);
+    expect(agg['feature/US-001-001-open-file'].costUsd).toBeCloseTo(0.47);
   });
   it('sums tokens across sessions', () => {
-    expect(agg['feature/US-0001-open-file'].inputTokens).toBe(50000);
+    expect(agg['feature/US-001-001-open-file'].inputTokens).toBe(50000);
   });
   it('tracks main separately', () => {
     expect(agg['main'].costUsd).toBeCloseTo(0.42);

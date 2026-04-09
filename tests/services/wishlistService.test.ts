@@ -2,11 +2,11 @@
  * Unit tests for wishlistService
  *
  * Coverage targets:
- *   US-0007  TASK-0013 — CRUD: create / get / delete wishlist
- *   US-0008  TASK-0014 — addItem / removeItem
- *   AC-0042             — duplicate item guard in addItem
- *   US-0010  TASK-0017 — shareWishlist / getSharedWishlists
- *   US-0012  TASK-0019 — claimItem / unclaimItem
+ *   US-004-001  TASK-004-001-002 — CRUD: create / get / delete wishlist
+ *   US-004-002  TASK-004-002-001 — addItem / removeItem
+ *   AC-004-002-004             — duplicate item guard in addItem
+ *   US-005-001  TASK-005-001-002 — shareWishlist / getSharedWishlists
+ *   US-005-003  TASK-005-003-001 — claimItem / unclaimItem
  *   Error cases         — invalid args / not-found ids
  */
 
@@ -82,7 +82,7 @@ describe('wishlistService.getWishlists', () => {
 });
 
 // ---------------------------------------------------------------------------
-// getSharedWishlists (US-0010)
+// getSharedWishlists (US-005-001)
 // ---------------------------------------------------------------------------
 describe('wishlistService.getSharedWishlists', () => {
   const contact: SharedContact = {
@@ -137,7 +137,7 @@ describe('wishlistService.getWishlistById', () => {
 });
 
 // ---------------------------------------------------------------------------
-// createWishlist (US-0007)
+// createWishlist (US-004-001)
 // ---------------------------------------------------------------------------
 describe('wishlistService.createWishlist', () => {
   it('creates a wishlist and returns it with generated id and ISO date', async () => {
@@ -172,7 +172,7 @@ describe('wishlistService.createWishlist', () => {
 });
 
 // ---------------------------------------------------------------------------
-// deleteWishlist (US-0007)
+// deleteWishlist (US-004-001)
 // ---------------------------------------------------------------------------
 describe('wishlistService.deleteWishlist', () => {
   it('removes the wishlist from storage', async () => {
@@ -195,7 +195,7 @@ describe('wishlistService.deleteWishlist', () => {
 });
 
 // ---------------------------------------------------------------------------
-// addItem (US-0008, AC-0042)
+// addItem (US-004-002, AC-004-002-004)
 // ---------------------------------------------------------------------------
 describe('wishlistService.addItem', () => {
   it('adds an item and returns the updated wishlist', async () => {
@@ -209,7 +209,7 @@ describe('wishlistService.addItem', () => {
     expect(result!.items[0].addedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
   });
 
-  it('AC-0042: returns unchanged wishlist without adding duplicate', async () => {
+  it('AC-004-002-004: returns unchanged wishlist without adding duplicate', async () => {
     await seedWishlists([
       makeWishlist({
         id: 'wl-dup',
@@ -242,7 +242,7 @@ describe('wishlistService.addItem', () => {
 });
 
 // ---------------------------------------------------------------------------
-// removeItem (US-0008)
+// removeItem (US-004-002)
 // ---------------------------------------------------------------------------
 describe('wishlistService.removeItem', () => {
   it('removes an existing item from the wishlist', async () => {
@@ -283,7 +283,7 @@ describe('wishlistService.removeItem', () => {
 });
 
 // ---------------------------------------------------------------------------
-// shareWishlist (US-0010)
+// shareWishlist (US-005-001)
 // ---------------------------------------------------------------------------
 describe('wishlistService.shareWishlist', () => {
   const bob: SharedContact = {
@@ -339,7 +339,7 @@ describe('wishlistService.shareWishlist', () => {
 });
 
 // ---------------------------------------------------------------------------
-// claimItem (US-0012)
+// claimItem (US-005-003)
 // ---------------------------------------------------------------------------
 describe('wishlistService.claimItem', () => {
   it('sets claimedBy on an unclaimed item', async () => {
@@ -465,7 +465,7 @@ describe('wishlistService error paths', () => {
 });
 
 // ---------------------------------------------------------------------------
-// unclaimItem (US-0012)
+// unclaimItem (US-005-003)
 // ---------------------------------------------------------------------------
 describe('wishlistService.unclaimItem', () => {
   it('clears claimedBy on a claimed item', async () => {
@@ -513,7 +513,7 @@ describe('wishlistService.unclaimItem', () => {
 });
 
 // ---------------------------------------------------------------------------
-// updateItemNote — US-0016
+// updateItemNote — US-007-001
 // ---------------------------------------------------------------------------
 describe('wishlistService.updateItemNote', () => {
   it('sets a note on an existing item', async () => {
@@ -550,7 +550,7 @@ describe('wishlistService.updateItemNote', () => {
 });
 
 // ---------------------------------------------------------------------------
-// renameWishlist — US-0019
+// renameWishlist — US-007-004
 // ---------------------------------------------------------------------------
 describe('wishlistService.renameWishlist', () => {
   it('updates the wishlist name', async () => {
@@ -580,7 +580,7 @@ describe('wishlistService.renameWishlist', () => {
 });
 
 // ---------------------------------------------------------------------------
-// resetDemoData — US-0018
+// resetDemoData — US-007-003
 // ---------------------------------------------------------------------------
 describe('wishlistService.resetDemoData', () => {
   it('removes the wishlists key from storage', async () => {
@@ -603,7 +603,7 @@ describe('wishlistService.resetDemoData', () => {
 });
 
 // ---------------------------------------------------------------------------
-// setShowClaimers — US-0021
+// setShowClaimers — US-007-006
 // ---------------------------------------------------------------------------
 describe('wishlistService.setShowClaimers', () => {
   it('sets showClaimers to true', async () => {
@@ -629,7 +629,7 @@ describe('wishlistService.setShowClaimers', () => {
 });
 
 // ---------------------------------------------------------------------------
-// setPrivacy — US-0024
+// setPrivacy — US-007-009
 // ---------------------------------------------------------------------------
 describe('wishlistService.setPrivacy', () => {
   it('sets privacy to private', async () => {

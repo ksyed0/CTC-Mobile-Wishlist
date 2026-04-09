@@ -27,7 +27,7 @@ export default function SharedWishlistScreen() {
       getWishlistById(id).then((w) => {
         setWishlist(w);
         setIsLoading(false);
-        // AC-0062: mark as seen so the tab badge clears
+        // AC-007-005-002: mark as seen so the tab badge clears
         if (w) {
           markWishlistSeen(id);
         }
@@ -39,7 +39,7 @@ export default function SharedWishlistScreen() {
     return products.find((p) => p.id === productId);
   }
 
-  // AC-0034/35: claim an item
+  // AC-005-003-001/35: claim an item
   async function handleClaim(productId: string, productName: string) {
     if (!wishlist || !currentUser) return;
     setClaimingId(productId);
@@ -71,7 +71,7 @@ export default function SharedWishlistScreen() {
     );
   }
 
-  // AC-0036: owner cannot claim their own items
+  // AC-005-003-003: owner cannot claim their own items
   const isOwner = currentUser?.id === wishlist.ownerId;
 
   return (
@@ -103,8 +103,8 @@ export default function SharedWishlistScreen() {
                 note={item.note}
               />
 
-              {/* AC-0033: show "Claimed" badge — NOT who claimed it */}
-              {/* AC-0036: owner sees no claim buttons; guests see "I'll Get This" */}
+              {/* AC-005-002-003: show "Claimed" badge — NOT who claimed it */}
+              {/* AC-005-003-003: owner sees no claim buttons; guests see "I'll Get This" */}
               {!isOwner && (
                 <View style={styles.claimRow}>
                   {isClaimed ? (

@@ -37,7 +37,7 @@ export const ProductCard = memo(function ProductCard({
             accessibilityLabel={product.name}
           />
         ) : (
-          /* BUG-0085: Render a colored category placeholder instead of broken image */
+          /* BUG-085: Render a colored category placeholder instead of broken image */
           <View style={[styles.imagePlaceholder, { backgroundColor: getCategoryColor(product.category) }]}>
             <Text style={styles.categoryInitial}>{getCategoryInitial(product.category)}</Text>
           </View>

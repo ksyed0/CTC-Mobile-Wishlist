@@ -1,11 +1,11 @@
 # ID Registry
 
-| Sequence | Next Available ID | Last Assigned |
-| -------- | ----------------- | ------------- |
-| EPIC     | EPIC-0007         | EPIC-0006     |
-| US       | US-0016           | US-0015       |
-| TASK     | TASK-0024         | TASK-0023     |
-| AC       | AC-0045           | AC-0044       |
-| TC       | TC-0041           | TC-0040       |
-| BUG      | BUG-0116          | BUG-0115      |
-| L        | L-0030            | L-0029        |
+| Sequence | Next Available ID | Last Assigned    |
+| -------- | ----------------- | ---------------- |
+| EPIC     | EPIC-009          | EPIC-008         |
+| US       | US-008-007        | US-008-006       |
+| AC       | AC-008-006-006    | AC-008-006-005   |
+| TASK     | TASK-008-006-002  | TASK-008-006-001 |
+| TC       | TC-006-001-005    | TC-006-001-004   |
+| BUG      | BUG-117           | BUG-116          |
+| L        | L-031             | L-030            |

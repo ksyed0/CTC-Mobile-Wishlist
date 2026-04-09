@@ -37,7 +37,7 @@ export const wishlistService = {
   },
 
   /**
-   * Return all wishlists that have been shared with the given user (US-0010).
+   * Return all wishlists that have been shared with the given user (US-005-001).
    * Used in the share/claim demo flow.
    */
   async getSharedWishlists(userId: string): Promise<Wishlist[]> {
@@ -60,7 +60,7 @@ export const wishlistService = {
   },
 
   /**
-   * Create a new wishlist for the given owner (US-0007).
+   * Create a new wishlist for the given owner (US-004-001).
    */
   async createWishlist(name: string, ownerId: string): Promise<Wishlist> {
     if (!name || typeof name !== 'string' || name.trim() === '') {
@@ -95,9 +95,9 @@ export const wishlistService = {
   },
 
   /**
-   * Add a product to a wishlist (US-0008).
+   * Add a product to a wishlist (US-004-002).
    *
-   * AC-0042: If the productId already exists in the wishlist this method
+   * AC-004-002-004: If the productId already exists in the wishlist this method
    * returns the unchanged wishlist — it never creates a duplicate entry.
    *
    * Returns null when the wishlistId is not found.
@@ -116,7 +116,7 @@ export const wishlistService = {
 
     const wishlist = all[idx];
 
-    // AC-0042: guard against duplicates — return early without persisting
+    // AC-004-002-004: guard against duplicates — return early without persisting
     const alreadyExists = wishlist.items.some((i) => i.productId === productId);
     if (alreadyExists) return wishlist;
 
@@ -166,7 +166,7 @@ export const wishlistService = {
   },
 
   /**
-   * Share a wishlist with one or more contacts (US-0010).
+   * Share a wishlist with one or more contacts (US-005-001).
    * Already-shared contacts are silently de-duplicated.
    * Returns null when the wishlistId is not found.
    */
@@ -197,7 +197,7 @@ export const wishlistService = {
   },
 
   /**
-   * Claim a wishlist item on behalf of a contact (US-0012).
+   * Claim a wishlist item on behalf of a contact (US-005-003).
    * Only claims items whose claimedBy is currently null — already-claimed
    * items are left unchanged so a second caller cannot override a claim.
    * Returns null when the wishlistId is not found.
@@ -231,7 +231,7 @@ export const wishlistService = {
   },
 
   /**
-   * Remove a claim from a wishlist item (US-0012).
+   * Remove a claim from a wishlist item (US-005-003).
    * Returns null when the wishlistId is not found.
    */
   async unclaimItem(wishlistId: string, productId: string): Promise<Wishlist | null> {
@@ -258,7 +258,7 @@ export const wishlistService = {
   },
 
   /**
-   * Set or clear the note on a wishlist item (US-0016).
+   * Set or clear the note on a wishlist item (US-007-001).
    * Passing empty string clears the note (sets null).
    * No-op when wishlistId or productId is not found.
    */
@@ -279,7 +279,7 @@ export const wishlistService = {
   },
 
   /**
-   * Rename a wishlist (US-0019).
+   * Rename a wishlist (US-007-004).
    * No-op when wishlistId is not found or newName trims to empty.
    */
   async renameWishlist(wishlistId: string, newName: string): Promise<void> {
@@ -294,14 +294,14 @@ export const wishlistService = {
   },
 
   /**
-   * Clear all wishlists and recent scans from storage (US-0018 demo reset).
+   * Clear all wishlists and recent scans from storage (US-007-003 demo reset).
    */
   async resetDemoData(): Promise<void> {
     await Promise.all([removeItem(StorageKeys.WISHLISTS), removeItem(StorageKeys.RECENT_SCANS)]);
   },
 
   /**
-   * Toggle the showClaimers flag on a wishlist (US-0021).
+   * Toggle the showClaimers flag on a wishlist (US-007-006).
    * No-op when wishlistId is not found.
    */
   async setShowClaimers(wishlistId: string, show: boolean): Promise<void> {
@@ -314,7 +314,7 @@ export const wishlistService = {
   },
 
   /**
-   * Set the privacy level on a wishlist (US-0024).
+   * Set the privacy level on a wishlist (US-007-009).
    * No-op when wishlistId is not found.
    */
   async setPrivacy(wishlistId: string, privacy: 'private' | 'contacts' | 'public'): Promise<void> {

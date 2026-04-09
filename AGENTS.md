@@ -90,14 +90,14 @@ All project artefacts — epics, stories, tasks, bugs, test cases, acceptance cr
 
 **ID Format Standards:**
 
-| **Artefact**         | **Format**    | **Example** | **Where Tracked**               |
-| -------------------- | ------------- | ----------- | ------------------------------- |
-| Epic                 | `EPIC-[0001]` | `EPIC-0001` | `docs/RELEASE_PLAN.md`          |
-| User Story           | `US-[0001]`   | `US-0042`   | `docs/RELEASE_PLAN.md`          |
-| Task                 | `TASK-[0001]` | `TASK-0007` | `docs/RELEASE_PLAN.md`          |
-| Acceptance Criterion | `AC-[0001]`   | `AC-0003`   | Inline within the US definition |
-| Test Case            | `TC-[0001]`   | `TC-0015`   | `docs/TEST_CASES.md`            |
-| Bug / Defect         | `BUG-[0001]`  | `BUG-0002`  | `docs/BUGS.md`                  |
+| **Artefact**         | **Format**    | **Example**        | **Where Tracked**               |
+| -------------------- | ------------- | ------------------ | ------------------------------- |
+| Epic                 | `EPIC-[0001]` | `EPIC-001`         | `docs/RELEASE_PLAN.md`          |
+| User Story           | `US-[0001]`   | `US-0042`          | `docs/RELEASE_PLAN.md`          |
+| Task                 | `TASK-[0001]` | `TASK-002-001-001` | `docs/RELEASE_PLAN.md`          |
+| Acceptance Criterion | `AC-[0001]`   | `AC-001-001-003`   | Inline within the US definition |
+| Test Case            | `TC-[0001]`   | `TC-003-001-003`   | `docs/TEST_CASES.md`            |
+| Bug / Defect         | `BUG-[0001]`  | `BUG-002`          | `docs/BUGS.md`                  |
 
 **ID Registry file:** Maintain `docs/ID_REGISTRY.md` as the single source of truth for the next available ID in each sequence. Update it immediately whenever a new artefact is created.
 
@@ -109,12 +109,12 @@ All project artefacts — epics, stories, tasks, bugs, test cases, acceptance cr
 
 | **Sequence** | **Next Available ID** | **Last Assigned** |
 | ------------ | --------------------- | ----------------- |
-| EPIC         | EPIC-0003             | EPIC-0002         |
-| US           | US-0011               | US-0010           |
-| TASK         | TASK-0025             | TASK-0024         |
-| AC           | AC-0047               | AC-0046           |
-| TC           | TC-0019               | TC-0018           |
-| BUG          | BUG-0004              | BUG-0003          |
+| EPIC         | EPIC-003              | EPIC-002          |
+| US           | US-005-002            | US-005-001        |
+| TASK         | TASK-008-001-002      | TASK-008-001-001  |
+| AC           | AC-003-002-003        | AC-003-002-002    |
+| TC           | TC-004-001-003        | TC-004-001-002    |
+| BUG          | BUG-004               | BUG-003           |
 
 ```other
 
@@ -125,7 +125,7 @@ All project artefacts — epics, stories, tasks, bugs, test cases, acceptance cr
 - Always consult `docs/ID_REGISTRY.md` before creating any new artefact to get the next available ID.
 - Update `docs/ID_REGISTRY.md` immediately after assigning a new ID — before writing the artefact content.
 - IDs are permanent. Retired or deleted artefacts retain their ID and are marked `Status: Retired` or `Status: Cancelled` — never deleted from the record.
-- All cross-references between artefacts must use their full ID (e.g., `US-0003` not just “the login story”).
+- All cross-references between artefacts must use their full ID (e.g., `US-002-001` not just “the login story”).
 - Git branch names, commit messages, PR titles, and log entries must all reference the relevant artefact ID.
 
 > **Rule:** An artefact without a unique ID cannot be tracked, referenced, or audited. Assign the ID first, write the content second.
@@ -270,7 +270,7 @@ TASK-[0001] (US-[0001]): [Short imperative description of the work]
 Type: [Dev | Test | Design | docs | Infra | Bug]
 Assignee: [Agent / Human]
 Status: [To Do | In Progress | Done | Blocked]
-Branch: [feature/EPIC-0001-US-0001-short-description]
+Branch: [feature/EPIC-001-US-001-001-short-description]
 Notes: [Any implementation notes or constraints]
 ```
 
@@ -287,7 +287,7 @@ Steps to Reproduce:
 Expected: [What should happen]
 Actual: [What actually happened]
 Status: [Open | In Progress | Fixed | Verified | Closed]
-Fix Branch: [bugfix/BUG-0001-short-description]
+Fix Branch: [bugfix/BUG-001-short-description]
 Lesson Encoded: [Yes — see docs/LESSONS.md | No]
 ```
 
