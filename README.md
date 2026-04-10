@@ -10,7 +10,7 @@ Built as a **hackathon POC** using React Native + Expo with TypeScript, powered 
 
 | Attribute    | Detail                                                                                                    |
 | ------------ | --------------------------------------------------------------------------------------------------------- |
-| **Stack**    | React Native, Expo SDK 52, TypeScript, expo-router                                                        |
+| **Stack**    | React Native, Expo SDK 55, TypeScript, expo-router                                                        |
 | **Data**     | AsyncStorage with local mock data (POC)                                                                   |
 | **Platform** | iOS + Android                                                                                             |
 | **Brand**    | Canadian Tire (#D52B1E), system fonts, 4px grid                                                           |
@@ -255,7 +255,7 @@ npm run avatars          # Extract agent headshots from team-grid.png
 npm run plan:generate    # Generate Plan Visualizer
 npm run dashboard        # Generate SDLC Dashboard
 npm run dashboard:watch  # Watch mode (auto-regenerate on status changes)
-npm test                 # Run 246 unit tests
+npm test                 # Run 459 unit tests
 npm run test:coverage    # Run tests with coverage report
 ```
 

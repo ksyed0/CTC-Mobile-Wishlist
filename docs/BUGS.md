@@ -1239,3 +1239,16 @@
 - **Found by:** User (screenshot — User Stories panel only partially visible at right edge)
 - **Description:** The Agents + Stories section uses `.grid-2 { grid-template-columns: 2fr 1fr }`. CSS Grid does not automatically constrain grid items below their intrinsic content width — without `min-width: 0`, items can overflow their grid column. The Agent Status card contained an `agent-grid` with 3-column `repeat(3, 1fr)` cells that had non-wrapping text, causing the left column to expand and push the User Stories card off-screen to the right.
 - **Fix:** Added `.grid-2 > * { min-width: 0; }` to force grid children to respect their column boundaries.
+
+### BUG-116: `expo start --ios` fails on this machine — Expo Go cannot connect to Metro
+
+- **Severity:** Major
+- **Status:** Fixed
+- **Fix Branch:** main
+- **Estimated Cost USD:** 0.00
+- **Found in:** Development environment (iOS 18 simulator / Expo Go networking)
+- **Story:** N/A (environment/tooling)
+- **Found by:** Session 15 debugging
+- **Description:** Running `npx expo start --ios` opens the project in Expo Go, which advertises the host LAN IP (`192.168.1.45:8081`) for the Metro connection. The iOS 18 simulator (iPhone 17) fails to connect — first with "network connection was lost" on the LAN IP, then "could not connect to development server" on `localhost`. The native `ios/` Xcode project and `CTCMobileWishlist` app were already installed on the simulator, indicating all previous runs used the native build path.
+- **Fix:** Always use `npx expo run:ios` instead of `npx expo start --ios`. The native build embeds `localhost` at compile time and connects directly without Expo Go. No Expo Go networking layer, no LAN IP advertisement.
+- **Resolution:** Confirmed working via native build — bundle loaded in 1452ms, splash dismissed, app running correctly.
